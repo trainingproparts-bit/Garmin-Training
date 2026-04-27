@@ -991,15 +991,22 @@ function showResult(){
   `;
 }
 async function registerResult(pct){
-  const name=document.getElementById('regName').value.trim();
-  if(!name){document.getElementById('regName').style.borderColor='var(--warn)';return;}
-  const btn=document.querySelector('.register-btn');
-  btn.textContent='Enviando...';btn.disabled=true;
-  try{
-    await fetch(SHEETS_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nome:name,modulo:'Módulo 1 — Universo Garmin',nota:pct,acertos:Math.round(pct/10),total:10}),mode:'no-cors'});
-    document.querySelector('.register-form').style.display='none';
-    document.getElementById('regSuccess').style.display='block';
-  }catch(e){btn.textContent='Registrar Conclusão ✓';btn.disabled=false;alert('Erro ao registrar. Verifique sua conexão e tente novamente.');}
+const res = await fetch(SHEETS_URL,{
+  method:'POST',
+  headers:{'Content-Type':'application/json'},
+  body:JSON.stringify({
+    nome:name,
+    modulo:'Módulo 1 — Universo Garmin',
+    nota:pct,
+    acertos:Math.round(pct/10),
+    total:10
+  })
+});
+
+const data = await res.json();
+
+if(!data.success){
+  throw new Error(data.error || 'Erro desconhecido');
 }
 initQuiz();
 <script src="app.js"></script>
