@@ -4,104 +4,119 @@
 // Depois publique como "Aplicativo da Web"
 // ============================================================
 
-// ID da planilha do Google Sheets (substitua pelo seu)
-// Encontre na URL: docs.google.com/spreadsheets/d/1yJhiPOX5eDz1HuiTjWTiqggOvDRTcpke249ZWzzWYWLT-bcx7PRCrwp9/edit
-const SPREADSHEET_ID = '1yJhiPOX5eDz1HuiTjWTiqggOvDRTcpke249ZWzzWYWLT-bcx7PRCrwp9';
+// ID da planilha do Google Sheets
+// Troque pelo ID real da sua planilha, se necessário
+const SPREADSHEET_ID = 'AKfycbyv0UhVSiM52K-g8A31Myih_UMMGKhZIwRAAMcMW_3WwYofjgtNCV-6J7p6iv0ODSsU';
 
 // Nome da aba onde os dados serão salvos
 const SHEET_NAME = 'Resultados';
 
 /**
- * Função principal que recebe os dados do quiz via POST
- * e salva na planilha do Google Sheets
+ * Garante que a aba exista e tenha cabeçalho
+ */
+function getOrCreateSheet_() {
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  let sheet = ss.getSheetByName(SHEET_NAME);
+
+  if (!sheet) {
+    sheet = ss.insertSheet(SHEET_NAME);
+  }
+
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow([
+      'Data/Hora',
+      'Enviado em ISO',
+      'Nome',
+      'Módulo',
+      'Nota (%)',
+      'Acertos',
+      'Total de Questões',
+      'Status',
+      'Origem'
+    ]);
+
+    const header = sheet.getRange(1, 1, 1, 9);
+    header.setBackground('#007CC3');
+    header.setFontColor('#FFFFFF');
+    header.setFontWeight('bold');
+  }
+
+  return sheet;
+}
+
+/**
+ * Endpoint POST para receber os resultados do quiz
  */
 function doPost(e) {
   try {
-    // Lê os dados enviados pelo quiz
+    if (!e || !e.postData || !e.postData.contents) {
+      throw new Error('Nenhum payload recebido no POST.');
+    }
+
     const dados = JSON.parse(e.postData.contents);
 
-    // Abre a planilha
-    const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
-    let sheet = ss.getSheetByName(SHEET_NAME);
+    const nome = dados.nome || 'Não informado';
+    const modulo = dados.modulo || 'Módulo 1';
+    const nota = Number(dados.nota || 0);
+    const acertos = Number(dados.acertos || 0);
+    const total = Number(dados.total || 0);
+    const origem = dados.origem || 'Garmin Training Site';
 
-    // Cria a aba se não existir e adiciona cabeçalho
-    if (!sheet) {
-      sheet = ss.insertSheet(SHEET_NAME);
-      sheet.appendRow([
-        'Data/Hora',
-        'Nome',
-        'Módulo',
-        'Nota (%)',
-        'Acertos',
-        'Total de Questões',
-        'Status'
-      ]);
-      // Formata o cabeçalho
-      const header = sheet.getRange(1, 1, 1, 7);
-      header.setBackground('#007CC3');
-      header.setFontColor('#FFFFFF');
-      header.setFontWeight('bold');
-    }
+    const dataHora = new Date().toLocaleString('pt-BR', {
+      timeZone: 'America/Sao_Paulo'
+    });
+    const enviadoIso = new Date().toISOString();
+    const status = nota >= 70 ? 'APROVADO ✓' : 'Reprovado';
 
-    // Prepara a linha de dados
-    const dataHora = new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
-    const status = dados.nota >= 70 ? 'APROVADO ✓' : 'Reprovado';
+    const sheet = getOrCreateSheet_();
 
-    // Adiciona a linha na planilha
     sheet.appendRow([
       dataHora,
-      dados.nome || 'Não informado',
-      dados.modulo || 'Módulo 1',
-      dados.nota + '%',
-      dados.acertos || '-',
-      dados.total || 10,
-      status
+      enviadoIso,
+      nome,
+      modulo,
+      nota + '%',
+      acertos,
+      total,
+      status,
+      origem
     ]);
 
-    // Formata automaticamente linhas de aprovados em verde
-    if (dados.nota >= 70) {
-      const lastRow = sheet.getLastRow();
-      sheet.getRange(lastRow, 7).setBackground('#e6faf7').setFontColor('#007a6a');
+    const lastRow = sheet.getLastRow();
+
+    if (nota >= 70) {
+      sheet.getRange(lastRow, 8).setBackground('#e6faf7').setFontColor('#007a6a');
+    } else {
+      sheet.getRange(lastRow, 8).setBackground('#fff4f0').setFontColor('#c84a1a');
     }
 
-    // Resposta de sucesso
     return ContentService
-      .createTextOutput(JSON.stringify({ success: true, message: 'Resultado registrado!' }))
+      .createTextOutput(JSON.stringify({
+        success: true,
+        message: 'Resultado registrado com sucesso!',
+        row: lastRow
+      }))
       .setMimeType(ContentService.MimeType.JSON);
 
   } catch (erro) {
-    // Resposta de erro
     return ContentService
-      .createTextOutput(JSON.stringify({ success: false, error: erro.toString() }))
+      .createTextOutput(JSON.stringify({
+        success: false,
+        error: String(erro)
+      }))
       .setMimeType(ContentService.MimeType.JSON);
   }
 }
 
 /**
- * Função GET para testar se o script está funcionando
- * Acesse a URL do Web App no navegador para verificar
+ * Endpoint GET para testar se o Web App está online
  */
 function doGet() {
   return ContentService
     .createTextOutput(JSON.stringify({
+      success: true,
       status: 'online',
-      message: 'Garmin Training Quiz API funcionando!',
-      planilha: SPREADSHEET_ID !== '1yJhiPOX5eDz1HuiTjWTiqggOvDRTcpke249ZWzzWYWLT-bcx7PRCrwp9' ? 'Configurada ✓' : 'NÃO CONFIGURADA ⚠️'
+      message: 'Garmin Training Quiz API funcionando!'
     }))
     .setMimeType(ContentService.MimeType.JSON);
 }
-
-// ============================================================
-// INSTRUÇÕES DE PUBLICAÇÃO:
-//
-// 1. Abra script.google.com
-// 2. Crie um novo projeto
-// 3. Cole este código
-// 4. Substitua SPREADSHEET_ID pelo ID da sua planilha
-// 5. Clique em "Implantar" > "Nova implantação"
-// 6. Tipo: "Aplicativo da Web"
-// 7. Executar como: "Eu (seu e-mail)"
-// 8. Quem pode acessar: "Qualquer pessoa"
-// 9. Clique em "Implantar" e copie a URL gerada
-// 10. Cole a URL no arquivo app.js na variável SHEETS_URL
-// ============================================================
