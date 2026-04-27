@@ -1,32 +1,59 @@
-const SHEETS_URL = "https://script.google.com/macros/s/AKfycbyMWnxsNOLK9yR9D8KfZfxilFMzN267r56Dhq4CTHwMCu75uNd1v8Z-s6TE_mC66N9x/exec";
+const SHEETSURL = 'https://script.google.com/macros/s/AKfycbyv0UhVSiM52K-g8A31Myih_UMMGKhZIwRAAMcMW_3WwYofjgtNCV-6J7p6iv0ODSsU/exec';
 
-function registerResult(pct) {
+async function registerResult(pct) {
   const nameInput = document.getElementById('regName');
-  const name = nameInput ? nameInput.value.trim() : "";
+  const successBox = document.getElementById('regSuccess');
+  const form = document.querySelector('.register-form');
+  const btn = document.querySelector('.register-btn');
+
+  const name = nameInput.value.trim();
 
   if (!name) {
-    alert("Digite seu nome");
+    nameInput.style.borderColor = 'var(--warn)';
+    nameInput.focus();
     return;
   }
 
-  fetch(SHEETS_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
+  nameInput.style.borderColor = 'var(--border)';
+  btn.textContent = 'Enviando...';
+  btn.disabled = true;
+
+  try {
+    const payload = {
       nome: name,
-      modulo: "Módulo 1 — Universo Garmin",
+      modulo: 'Módulo 1 - Universo Garmin',
       nota: pct,
-      acertos: Math.round(pct / 10),
+      acertos: Math.round((pct / 100) * 10),
       total: 10
-    })
-  })
-  .then(() => {
-    alert("Resultado enviado!");
-  })
-  .catch((err) => {
-    console.error(err);
-    alert("Erro ao enviar");
-  });
+    };
+
+    const response = await fetch(SHEETSURL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const text = await response.text();
+    let result = {};
+
+    try {
+      result = JSON.parse(text);
+    } catch (e) {
+      throw new Error('Resposta inválida do Apps Script.');
+    }
+
+    if (!response.ok || result.success === false) {
+      throw new Error(result.error || 'Falha ao registrar resultado.');
+    }
+
+    form.style.display = 'none';
+    successBox.style.display = 'block';
+
+  } catch (error) {
+    btn.textContent = 'Registrar Conclusão';
+    btn.disabled = false;
+    alert('Erro ao registrar: ' + error.message);
+  }
 }
