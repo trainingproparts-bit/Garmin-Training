@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#007CC3">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Garmin Training">
+<title>Garmin Training — by Proparts</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --g:#007CC3;--g2:#005a8e;--g3:#e6f4fb;--g4:#cce8f5;
+  --acc:#00C2A8;--warn:#FF6B35;--gold:#F0A500;
+  --white:#ffffff;--off:#f7f8fa;--border:#e2e6ea;--border2:#c8d0d8;
+  --text:#1a1d21;--text2:#4a5260;--text3:#8a93a0;
+  --r:12px;--r2:8px;
+  --sh:0 2px 12px rgba(0,124,195,0.08);--sh2:0 8px 32px rgba(0,124,195,0.14);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--off);color:var(--text);min-height:100vh;overflow-x:hidden;}
+
+/* HEADER */
+header{background:var(--white);border-bottom:2px solid var(--border);position:sticky;top:0;z-index:300;padding:0 20px;box-shadow:0 2px 16px rgba(0,0,0,0.06);}
+.header-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:center;padding:12px 0;position:relative;}
+.brand{text-align:center;}
+.brand-name{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:22px;letter-spacing:4px;color:var(--text);text-transform:uppercase;}
+.brand-name span{color:var(--g);}
+.brand-sub{font-size:10px;color:var(--text3);letter-spacing:3px;text-transform:uppercase;margin-top:1px;}
+.header-badge{position:absolute;right:0;font-size:10px;color:var(--text3);text-align:right;line-height:1.5;}
+.header-badge strong{color:var(--g);display:block;font-size:11px;}
+
+/* HOME HERO */
+#home{display:block;}
+.home-hero{background:#0a0a0a;color:#fff;padding:32px 20px 28px;position:relative;overflow:hidden;}
+.home-hero::before{content:'';position:absolute;right:-60px;top:-60px;width:240px;height:240px;border-radius:50%;background:rgba(0,124,195,0.12);}
+.home-hero::after{content:'';position:absolute;left:-40px;bottom:-80px;width:200px;height:200px;border-radius:50%;background:rgba(0,124,195,0.06);}
+.hero-inner{max-width:1100px;margin:0 auto;position:relative;z-index:1;text-align:center;}
+.hero-greeting{font-size:11px;opacity:0.5;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
+.hero-title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:30px;letter-spacing:3px;text-transform:uppercase;margin-bottom:6px;color:var(--white);}
+.hero-title span{color:var(--g);}
+.hero-sub{font-size:13px;opacity:0.6;letter-spacing:1px;}
+
+/* DASHBOARD */
+.dashboard-wrap{max-width:1100px;margin:-24px auto 0;padding:0 16px 0;position:relative;z-index:2;}
+.dashboard-card{background:var(--white);border-radius:var(--r);box-shadow:var(--sh2);border:1px solid var(--border);padding:20px 24px;display:grid;grid-template-columns:1fr 1px 1fr;margin-bottom:24px;}
+.dash-divider{background:var(--border);}
+.dash-section{padding:0 24px;}
+.dash-section:first-child{padding-left:0;}
+.dash-section:last-child{padding-right:0;}
+.dash-label{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:12px;display:flex;align-items:center;gap:6px;}
+.dash-label::before{content:'';display:block;width:14px;height:2px;background:var(--g);}
+.rank-mini{display:flex;flex-direction:column;gap:6px;}
+.rank-mini-row{display:flex;align-items:center;gap:10px;padding:7px 10px;background:var(--off);border-radius:var(--r2);font-size:13px;}
+.rank-medal{font-size:16px;width:22px;text-align:center;flex-shrink:0;}
+.rank-name-text{flex:1;font-weight:500;}
+.rank-level-badge{font-size:10px;font-weight:600;color:var(--g2);background:var(--g3);padding:2px 8px;border-radius:20px;}
+.rank-pts-mini{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:16px;color:var(--g);white-space:nowrap;}
+.dash-link{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;color:var(--g);margin-top:10px;cursor:pointer;transition:gap 0.2s;}
+.dash-link:hover{gap:8px;}
+.cert-mini{background:linear-gradient(135deg,var(--g3),var(--g4));border:1px solid var(--g4);border-radius:var(--r2);padding:14px 16px;}
+.cert-mini-level{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--g2);margin-bottom:2px;}
+.cert-mini-name{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:20px;color:var(--g2);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;}
+.cert-mini-module{font-size:13px;color:var(--text2);margin-bottom:12px;line-height:1.5;}
+.cert-mini-btn{display:inline-flex;align-items:center;gap:6px;background:var(--g);color:#fff;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:13px;letter-spacing:1px;padding:8px 16px;border-radius:var(--r2);cursor:pointer;transition:background 0.2s;border:none;text-transform:uppercase;}
+.cert-mini-btn:hover{background:var(--g2);}
+
+/* MENU */
+.menu-wrap{max-width:1100px;margin:0 auto;padding:0 16px 32px;}
+.menu-section-label{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:12px;margin-top:8px;display:flex;align-items:center;gap:8px;}
+.menu-section-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.menu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
+.menu-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:18px 16px;cursor:pointer;transition:all 0.2s;text-align:center;position:relative;overflow:hidden;}
+.menu-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--g);transform:scaleX(0);transition:transform 0.2s;transform-origin:left;}
+.menu-card:hover{border-color:var(--g);box-shadow:var(--sh2);transform:translateY(-2px);}
+.menu-card:hover::before{transform:scaleX(1);}
+.menu-card.priority{border-color:var(--g4);}
+.menu-icon{font-size:28px;margin-bottom:8px;display:block;}
+.menu-name{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;letter-spacing:1px;text-transform:uppercase;color:var(--text);margin-bottom:2px;}
+.menu-desc{font-size:11px;color:var(--text3);line-height:1.4;}
+.menu-badge{position:absolute;top:8px;right:8px;background:var(--warn);color:#fff;font-size:9px;font-weight:700;letter-spacing:1px;padding:2px 6px;border-radius:10px;text-transform:uppercase;}
+.menu-badge.new{background:var(--acc);}
+
+/* PANELS */
+.panel{display:none;}
+.panel.active{display:block;}
+.panel-header{background:var(--white);border-bottom:1px solid var(--border);padding:14px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:73px;z-index:100;}
+.back-btn{background:var(--off);border:1px solid var(--border);border-radius:var(--r2);padding:7px 12px;font-size:13px;font-weight:600;color:var(--text2);cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:6px;}
+.back-btn:hover{background:var(--g3);border-color:var(--g);color:var(--g);}
+.panel-title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:20px;letter-spacing:2px;text-transform:uppercase;color:var(--text);}
+.panel-title span{color:var(--g);}
+.panel-body{max-width:1100px;margin:0 auto;padding:20px 16px 60px;}
+
+/* CARDS */
+.card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:14px;}
+.card:hover{border-color:var(--g4);}
+.card-label{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:6px;}
+.card-title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:17px;color:var(--text);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;}
+.tip{background:var(--g3);border-left:3px solid var(--g);border-radius:0 var(--r2) var(--r2) 0;padding:12px 14px;margin:10px 0;font-size:13px;color:var(--text);line-height:1.6;}
+.warn-tip{background:#fff4f0;border-left:3px solid var(--warn);border-radius:0 var(--r2) var(--r2) 0;padding:12px 14px;margin:10px 0;font-size:13px;color:var(--text);line-height:1.6;}
+.tag{display:inline-block;background:var(--off);border:1px solid var(--border);border-radius:4px;padding:3px 9px;font-size:11px;color:var(--text2);margin:2px;}
+.tag.blue{background:var(--g3);border-color:var(--g4);color:var(--g2);}
+.tag.green{background:#e6faf7;border-color:#b0ede6;color:#007a6a;}
+.tag.orange{background:#fff4f0;border-color:#ffd0bc;color:#c84a1a;}
+.tag.gold{background:#fffbec;border-color:#fce09a;color:#8a6200;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+
+/* ACCORDION */
+.acc-item{background:var(--white);border:1px solid var(--border);border-radius:var(--r);margin-bottom:8px;overflow:hidden;}
+.acc-btn{width:100%;background:none;border:none;color:var(--text);padding:15px 18px;text-align:left;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;transition:background 0.15s;gap:12px;}
+.acc-btn:hover{background:var(--off);}
+.acc-icon{font-size:16px;flex-shrink:0;}
+.acc-chevron{color:var(--g);font-size:11px;transition:transform 0.2s;flex-shrink:0;}
+.acc-item.open .acc-chevron{transform:rotate(180deg);}
+.acc-body{display:none;padding:14px 18px 16px;font-size:13px;color:var(--text2);line-height:1.7;border-top:1px solid var(--border);}
+.acc-item.open .acc-body{display:block;}
+
+/* SEARCH */
+.search-bar{display:flex;align-items:center;gap:10px;background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:11px 14px;margin-bottom:16px;transition:border-color 0.2s;}
+.search-bar:focus-within{border-color:var(--g);}
+.search-bar input{flex:1;background:none;border:none;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);outline:none;}
+.search-bar input::placeholder{color:var(--text3);}
+
+/* FILTERS */
+.filter-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
+.fbtn{background:var(--white);border:1.5px solid var(--border);color:var(--text2);border-radius:var(--r2);padding:6px 14px;font-size:12px;font-weight:600;font-family:'Rajdhani',sans-serif;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;}
+.fbtn.active{background:var(--g);border-color:var(--g);color:#fff;}
+.fbtn:hover:not(.active){border-color:var(--g);color:var(--g);}
+
+/* TABLE */
+.tbl-wrap{overflow-x:auto;border-radius:var(--r);border:1px solid var(--border);margin-bottom:20px;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead th{background:var(--g);color:#fff;font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:11px 14px;text-align:left;white-space:nowrap;}
+tbody tr{border-bottom:1px solid var(--border);transition:background 0.15s;}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:nth-child(even){background:var(--off);}
+tbody tr:hover{background:var(--g3);}
+tbody td{padding:10px 14px;vertical-align:top;}
+.prod-name{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:15px;color:var(--text);text-transform:uppercase;}
+.prod-series{font-size:11px;color:var(--text3);font-weight:400;text-transform:none;display:block;}
+.level-dots{display:flex;gap:3px;margin-top:6px;}
+.ld{width:7px;height:7px;border-radius:50%;background:var(--border);}
+.ld.on{background:var(--g);}
+
+/* PROFILE CARDS */
+.profiles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;}
+.profile-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:all 0.2s;}
+.profile-card:hover{border-color:var(--g);box-shadow:var(--sh2);transform:translateY(-3px);}
+.profile-card-top{padding:18px 18px 14px;border-bottom:1px solid var(--border);background:linear-gradient(135deg,var(--off) 0%,var(--g3) 100%);}
+.p-emoji{font-size:30px;margin-bottom:8px;}
+.p-name{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:17px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text);margin-bottom:3px;}
+.p-tag{font-size:12px;color:var(--text3);font-style:italic;}
+.profile-card-body{padding:14px 18px;}
+.p-sinais-label{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:6px;}
+.p-sinais{list-style:none;padding:0;}
+.p-sinais li{font-size:12.5px;color:var(--text2);padding:3px 0;display:flex;gap:6px;align-items:flex-start;border-bottom:1px solid var(--off);}
+.p-sinais li:last-child{border-bottom:none;}
+.p-sinais li::before{content:'▸';color:var(--g);flex-shrink:0;margin-top:1px;}
+.profile-card-footer{padding:10px 18px 14px;border-top:1px solid var(--off);}
+.p-prods-label{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px;}
+.prod-pill{display:inline-block;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:11px;padding:3px 9px;border-radius:4px;margin:2px;background:var(--text);color:#fff;letter-spacing:0.5px;}
+.prod-pill.main{background:var(--g);}
+
+/* MODAL */
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:600;overflow-y:auto;padding:20px;}
+.modal-ov.open{display:flex;align-items:flex-start;justify-content:center;}
+.modal-box{background:var(--white);border-radius:14px;padding:28px;max-width:620px;width:100%;margin:auto;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.2);}
+.modal-close{position:absolute;top:14px;right:14px;background:var(--off);border:1px solid var(--border);color:var(--text2);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+.modal-close:hover{background:var(--warn);color:#fff;border-color:var(--warn);}
+.modal-emoji{font-size:40px;margin-bottom:8px;}
+.modal-title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:24px;text-transform:uppercase;letter-spacing:1px;color:var(--text);margin-bottom:2px;}
+.modal-sub{font-size:13px;color:var(--text3);margin-bottom:20px;font-style:italic;}
+.modal-section{margin-bottom:18px;}
+.modal-section h4{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:8px;}
+.modal-section ul{list-style:none;padding:0;}
+.modal-section ul li{font-size:13.5px;color:var(--text);padding:5px 0;border-bottom:1px solid var(--off);display:flex;gap:8px;line-height:1.5;}
+.modal-section ul li:last-child{border-bottom:none;}
+.modal-section ul li::before{content:'→';color:var(--g);font-weight:700;flex-shrink:0;}
+.obj-block{background:var(--off);border-radius:var(--r2);padding:12px 14px;margin-bottom:10px;}
+.obj-q{color:var(--warn);font-size:13px;font-weight:600;margin-bottom:6px;}
+.obj-a{color:var(--acc);font-size:13px;line-height:1.6;}
+
+/* SCRIPTS */
+.script-step{display:flex;gap:14px;margin-bottom:20px;}
+.s-num{width:30px;height:30px;border-radius:50%;background:var(--g);color:#fff;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.s-title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:1px;color:var(--text);margin-bottom:8px;}
+.s-dialog{background:var(--g3);border-left:3px solid var(--g);border-radius:0 var(--r2) var(--r2) 0;padding:12px 14px;font-size:13px;color:var(--text);line-height:1.7;font-style:italic;margin-bottom:8px;}
+.no-do-table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:12px;}
+.no-do-table th{padding:8px 12px;text-align:left;font-size:11px;font-family:'Rajdhani',sans-serif;letter-spacing:1px;text-transform:uppercase;}
+.no-do-table td{padding:8px 12px;border-bottom:1px solid var(--border);}
+.no-do-table .bad{color:var(--warn);}
+.no-do-table .good{color:var(--acc);}
+
+/* COMPETITORS */
+.comp-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:14px;}
+.comp-brand{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:20px;letter-spacing:1px;color:var(--text);margin-bottom:6px;}
+.vs-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px;}
+.vs-table th{background:var(--off);color:var(--text3);padding:7px 10px;text-align:left;font-weight:600;border-bottom:1px solid var(--border);font-size:11px;}
+.vs-table td{padding:7px 10px;border-bottom:1px solid var(--border);}
+.vs-table .ours{color:var(--acc);font-weight:500;}
+.vs-table .theirs{color:var(--warn);}
+
+/* INREACH */
+.inreach-hero{background:linear-gradient(135deg,#0d2137,#1a3a52);color:#fff;border-radius:var(--r);padding:24px;margin-bottom:20px;position:relative;overflow:hidden;}
+.inreach-hero::before{content:'🛰️';position:absolute;right:20px;top:50%;transform:translateY(-50%);font-size:80px;opacity:0.1;}
+.inreach-compare{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px;}
+.ir-card{background:var(--white);border:2px solid var(--border);border-radius:var(--r);padding:16px;transition:all 0.2s;}
+.ir-card.recommended{border-color:var(--g);}
+.ir-card.premium{border-color:var(--gold);}
+.ir-name{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:16px;text-transform:uppercase;letter-spacing:1px;color:var(--text);margin-bottom:2px;}
+.ir-tag{font-size:11px;color:var(--text3);margin-bottom:10px;}
+.ir-feature{display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:var(--text2);padding:4px 0;border-bottom:1px solid var(--off);line-height:1.4;}
+.ir-feature:last-child{border-bottom:none;}
+.ir-check{color:var(--acc);flex-shrink:0;font-weight:700;}
+.ir-x{color:var(--warn);flex-shrink:0;font-weight:700;}
+.plans-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:20px;}
+.plan-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:16px;text-align:center;transition:all 0.2s;}
+.plan-card:hover{border-color:var(--g);box-shadow:var(--sh);}
+.plan-name{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:16px;text-transform:uppercase;letter-spacing:1px;color:var(--text);margin-bottom:4px;}
+.plan-price{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:24px;color:var(--g);margin-bottom:8px;}
+.plan-price span{font-size:13px;color:var(--text3);font-weight:400;}
+.plan-desc{font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:10px;}
+.plan-for{font-size:11px;color:var(--g2);font-weight:600;background:var(--g3);padding:4px 8px;border-radius:4px;}
+
+/* GPS DE MÃO */
+.gps-hero{background:linear-gradient(135deg,#0a1a0a,#1a3a1a);color:#fff;border-radius:var(--r);padding:24px;margin-bottom:20px;position:relative;overflow:hidden;}
+.gps-hero::before{content:'🗺️';position:absolute;right:20px;top:50%;transform:translateY(-50%);font-size:80px;opacity:0.12;}
+
+/* NÁUTICO */
+.nautical-hero{background:linear-gradient(135deg,#0a2440,#0e3a5c);color:#fff;border-radius:var(--r);padding:24px;margin-bottom:20px;position:relative;overflow:hidden;}
+.nautical-hero::before{content:'⚓';position:absolute;right:24px;top:50%;transform:translateY(-50%);font-size:80px;opacity:0.1;}
+
+/* UNIVERSE */
+.universe-hero{background:linear-gradient(135deg,var(--g) 0%,#003d6e 100%);color:#fff;border-radius:var(--r);padding:28px;margin-bottom:24px;}
+.timeline{position:relative;padding-left:28px;}
+.timeline::before{content:'';position:absolute;left:10px;top:0;bottom:0;width:2px;background:var(--border);}
+.timeline-item{position:relative;margin-bottom:20px;}
+.timeline-dot{position:absolute;left:-28px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--g);border:2px solid var(--white);box-shadow:0 0 0 3px var(--g3);}
+.timeline-year{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;color:var(--g);letter-spacing:1px;margin-bottom:2px;}
+.timeline-text{font-size:13px;color:var(--text2);line-height:1.6;}
+.tech-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:12px;display:flex;gap:14px;align-items:flex-start;transition:border-color 0.2s;}
+.tech-card:hover{border-color:var(--g);}
+.tech-icon{width:42px;height:42px;border-radius:var(--r2);background:var(--g3);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.tech-name{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text);margin-bottom:3px;}
+.tech-desc{font-size:13px;color:var(--text2);line-height:1.6;}
+
+/* QUIZ */
+.quiz-wrap{background:var(--white);border:2px solid var(--g);border-radius:var(--r);padding:24px;margin-top:24px;}
+.quiz-header{margin-bottom:20px;}
+.quiz-title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:22px;text-transform:uppercase;letter-spacing:1px;color:var(--text);margin-bottom:4px;}
+.quiz-sub{font-size:13px;color:var(--text3);}
+.quiz-progress{height:6px;background:var(--off);border-radius:3px;margin:16px 0;overflow:hidden;}
+.quiz-progress-bar{height:100%;background:var(--g);border-radius:3px;transition:width 0.4s;}
+.quiz-q{font-size:15px;font-weight:600;color:var(--text);margin-bottom:16px;line-height:1.5;}
+.quiz-q-num{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:8px;}
+.quiz-options{display:flex;flex-direction:column;gap:10px;}
+.quiz-opt{background:var(--off);border:1.5px solid var(--border);border-radius:var(--r2);padding:12px 16px;font-size:14px;cursor:pointer;transition:all 0.2s;text-align:left;font-family:'DM Sans',sans-serif;color:var(--text);}
+.quiz-opt:hover{border-color:var(--g);background:var(--g3);}
+.quiz-opt.correct{background:#e6faf7;border-color:var(--acc);color:#007a6a;}
+.quiz-opt.wrong{background:#fff4f0;border-color:var(--warn);color:#c84a1a;}
+.quiz-opt.disabled{cursor:not-allowed;pointer-events:none;}
+.quiz-feedback{padding:12px 14px;border-radius:var(--r2);margin-top:12px;font-size:13px;line-height:1.6;display:none;}
+.quiz-feedback.show{display:block;}
+.quiz-feedback.ok{background:#e6faf7;color:#007a6a;border:1px solid var(--acc);}
+.quiz-feedback.fail{background:#fff4f0;color:#c84a1a;border:1px solid var(--warn);}
+.quiz-nav{display:flex;justify-content:flex-end;margin-top:16px;}
+.quiz-btn{background:var(--g);color:#fff;border:none;border-radius:var(--r2);padding:10px 24px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:background 0.2s;}
+.quiz-btn:hover{background:var(--g2);}
+.quiz-btn:disabled{opacity:0.4;cursor:not-allowed;}
+.quiz-result{text-align:center;padding:20px 0;}
+.quiz-result-emoji{font-size:56px;margin-bottom:12px;}
+.quiz-result-title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:28px;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.quiz-result-score{font-size:16px;color:var(--text2);margin-bottom:20px;}
+.quiz-result-score strong{color:var(--g);font-size:22px;}
+.register-form{background:var(--off);border:1px solid var(--border);border-radius:var(--r2);padding:16px;margin-top:16px;text-align:left;}
+.register-label{font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:8px;display:block;}
+.register-input{width:100%;border:1.5px solid var(--border);border-radius:var(--r2);padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);outline:none;transition:border-color 0.2s;margin-bottom:10px;}
+.register-input:focus{border-color:var(--g);}
+.register-btn{background:var(--acc);color:#fff;border:none;border-radius:var(--r2);padding:10px 20px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;width:100%;transition:background 0.2s;}
+.register-btn:hover{background:#00a090;}
+.register-success{background:#e6faf7;border:1px solid var(--acc);border-radius:var(--r2);padding:14px;text-align:center;color:#007a6a;font-weight:500;font-size:14px;display:none;}
+.confetti-wrap{position:relative;}
+
+/* CERT */
+.cert-trail{display:flex;flex-direction:column;gap:14px;margin-bottom:20px;}
+.cert-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden;transition:all 0.2s;}
+.cert-card.unlocked{cursor:pointer;}
+.cert-card.unlocked:hover{border-color:var(--g);box-shadow:var(--sh2);}
+.cert-card.locked{opacity:0.6;}
+.cert-header{padding:18px 20px;display:flex;align-items:center;gap:16px;}
+.cert-emoji{font-size:36px;}
+.cert-level-text{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:2px;}
+.cert-name-text{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:22px;text-transform:uppercase;letter-spacing:1px;color:var(--text);}
+.cert-stripe{height:3px;background:linear-gradient(90deg,var(--g),var(--acc));}
+.cert-body{padding:16px 20px;}
+.cert-obj{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:12px;}
+.cert-modules{display:flex;gap:8px;flex-wrap:wrap;}
+.cert-mod-pill{background:var(--off);border:1px solid var(--border);border-radius:4px;padding:4px 10px;font-size:11px;color:var(--text2);}
+
+/* RANKING */
+.ranking-hero{background:linear-gradient(135deg,#1a1200,#3a2800);color:#fff;border-radius:var(--r);padding:24px;margin-bottom:20px;}
+.rank-row{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--white);border:1px solid var(--border);border-radius:var(--r);margin-bottom:8px;transition:all 0.2s;}
+.rank-row:hover{border-color:var(--g4);box-shadow:var(--sh);}
+.rank-pos-num{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;width:36px;text-align:center;flex-shrink:0;}
+.rank-pos-num.g1{color:#FFD700;}.rank-pos-num.g2{color:#C0C0C0;}.rank-pos-num.g3{color:#CD7F32;}
+.rank-info{flex:1;}
+.rank-pname{font-weight:600;font-size:14px;color:var(--text);}
+.rank-plevel{font-size:12px;color:var(--text3);}
+.rank-ppts{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:22px;color:var(--g);}
+
+/* HERO CARD */
+.hero-card{background:linear-gradient(135deg,var(--g3),var(--g4));border:1px solid var(--g4);border-radius:var(--r);padding:20px 24px;margin-bottom:20px;position:relative;overflow:hidden;}
+.hero-card::after{content:'';position:absolute;right:-20px;top:-20px;width:100px;height:100px;border-radius:50%;background:rgba(0,124,195,0.1);}
+
+/* INNER TABS */
+.itabs{display:flex;gap:4px;margin-bottom:20px;flex-wrap:wrap;}
+.itab{background:var(--off);border:1.5px solid var(--border);border-radius:var(--r2);padding:7px 16px;font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text2);cursor:pointer;transition:all 0.2s;}
+.itab.active{background:var(--g);border-color:var(--g);color:#fff;}
+
+/* BUL LIST */
+ul.bul{list-style:none;padding:0;}
+ul.bul li{padding:5px 0 5px 16px;position:relative;font-size:13px;color:var(--text2);line-height:1.6;border-bottom:1px solid var(--off);}
+ul.bul li:last-child{border-bottom:none;}
+ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
+
+/* SPORT */
+.sport-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:12px;}
+.sport-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.sport-emoji{font-size:22px;}
+.sport-name{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:16px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text);}
+.metrics-wrap{display:flex;flex-wrap:wrap;gap:5px;}
+
+/* APP ROW */
+.app-row{display:flex;align-items:flex-start;gap:14px;padding:14px;background:var(--white);border:1px solid var(--border);border-radius:var(--r);margin-bottom:8px;transition:border-color 0.2s;}
+.app-row:hover{border-color:var(--g4);}
+.app-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+
+/* RESPONSIVE */
+@media(max-width:700px){
+  .grid2,.grid3{grid-template-columns:1fr;}
+  .inreach-compare{grid-template-columns:1fr;}
+  .dashboard-card{grid-template-columns:1fr;}
+  .dash-divider{display:none;}
+  .dash-section{padding:16px 0 0!important;border-top:1px solid var(--border);}
+  .dash-section:first-child{padding-top:0!important;border-top:none;}
+  .menu-grid{grid-template-columns:1fr 1fr;}
+  .profiles-grid{grid-template-columns:1fr;}
+  .header-badge{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-name">GARMIN <span>Training</span></div>
+      <div class="brand-sub">by Proparts — Uso Interno</div>
+    </div>
+    <div class="header-badge"><strong>Proparts</strong>Importadora Oficial</div>
+  </div>
+</header>
+
+<!-- HOME -->
+<div id="home">
+  <div class="home-hero">
+    <div class="hero-inner">
+      <div class="hero-greeting">portal de treinamento</div>
+      <div class="hero-title">GARMIN <span>Training</span></div>
+      <div class="hero-sub">.</div>
+    </div>
+  </div>
+
+  <div class="dashboard-wrap">
+    <div class="dashboard-card">
+      <div class="dash-section" style="padding-left:0">
+        <div class="dash-label">🏆 Top 3 — Ranking da Equipe</div>
+        <div class="rank-mini" id="rankMini"></div>
+        <div class="dash-link" onclick="openPanel('ranking')">Ver ranking completo →</div>
+      </div>
+      <div class="dash-divider"></div>
+      <div class="dash-section" style="padding-right:0">
+        <div class="dash-label">🎯 Próxima Missão</div>
+        <div class="cert-mini">
+          <div class="cert-mini-level">Explorador · Nível 1</div>
+          <div class="cert-mini-name">🧭 Universo Garmin</div>
+          <div class="cert-mini-module">Módulo 1 — Aprenda a história, tecnologias e posicionamento da marca</div>
+          <button class="cert-mini-btn" onclick="openPanel('universo')">Estudar Agora →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-section-label">Ferramentas de Venda</div>
+    <div class="menu-grid">
+      <div class="menu-card priority" onclick="openPanel('perfis')"><span class="menu-icon">👤</span><div class="menu-name">Perfis</div><div class="menu-desc">Identifique o cliente e indique o produto certo</div></div>
+      <div class="menu-card priority" onclick="openPanel('produtos')"><span class="menu-icon">⌚</span><div class="menu-name">Produtos</div><div class="menu-desc">Catálogo completo com diferenciais</div></div>
+      <div class="menu-card priority" onclick="openPanel('faq')"><span class="menu-icon">❓</span><div class="menu-name">FAQ</div><div class="menu-desc">Respostas para dúvidas comuns dos clientes</div></div>
+      <div class="menu-card" onclick="openPanel('concorrentes')"><span class="menu-icon">⚔️</span><div class="menu-name">Concorrentes</div><div class="menu-desc">Nossos diferenciais vs. outras marcas</div></div>
+      <div class="menu-card" onclick="openPanel('scripts')"><span class="menu-icon">📋</span><div class="menu-name">Scripts</div><div class="menu-desc">Roteiros de atendimento e fechamento</div></div>
+      <div class="menu-card" onclick="openPanel('esportes')"><span class="menu-icon">🏃</span><div class="menu-name">Esportes</div><div class="menu-desc">Métricas por modalidade esportiva</div></div>
+    </div>
+
+    <div class="menu-section-label">Linhas Especiais</div>
+    <div class="menu-grid">
+      <div class="menu-card" onclick="openPanel('inreach')"><div class="menu-badge new">ESPECIAL</div><span class="menu-icon">🛰️</span><div class="menu-name">inReach</div><div class="menu-desc">Mini 2, 3 e 3 Plus — planos e script de venda</div></div>
+      <div class="menu-card" onclick="openPanel('gpsdemao')"><div class="menu-badge new">ESPECIAL</div><span class="menu-icon">🗺️</span><div class="menu-name">GPS de Mão</div><div class="menu-desc">GPSMAP, eTrex — linha completa portátil</div></div>
+      <div class="menu-card" onclick="openPanel('nautico')"><span class="menu-icon">⚓</span><div class="menu-name">Náutico</div><div class="menu-desc">Striker e ECHOMAP — pesca e navegação</div></div>
+    </div>
+
+    <div class="menu-section-label">Apoio & Referência</div>
+    <div class="menu-grid">
+      <div class="menu-card" onclick="openPanel('materiais')"><span class="menu-icon">📱</span><div class="menu-name">Materiais</div><div class="menu-desc">Apps, integrações e tecnologias</div></div>
+    </div>
+
+    <div class="menu-section-label">Formação & Gamificação</div>
+    <div class="menu-grid">
+      <div class="menu-card" onclick="openPanel('universo')"><div class="menu-badge new">NOVO</div><span class="menu-icon">🌍</span><div class="menu-name">Universo Garmin</div><div class="menu-desc">Módulo 1 — História, DNA e tecnologias</div></div>
+      <div class="menu-card" onclick="openPanel('certificacao')"><span class="menu-icon">🏅</span><div class="menu-name">Certificação</div><div class="menu-desc">Sua trilha: Explorador → Triatleta</div></div>
+      <div class="menu-card" onclick="openPanel('ranking')"><span class="menu-icon">🏆</span><div class="menu-name">Ranking</div><div class="menu-desc">Pódio da equipe e pontuação</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PERFIS -->
+<div class="panel" id="panel-perfis">
+  <div class="panel-header"><button class="back-btn" onclick="goHome()">← Início</button><div class="panel-title">Perfis de <span>Cliente</span></div></div>
+  <div class="panel-body">
+    <div class="search-bar"><span>🔍</span><input type="text" id="profileSearch" placeholder="Buscar por perfil, esporte ou produto..." oninput="filterProfiles()"></div>
+    <p style="font-size:13px;color:var(--text3);margin-bottom:16px;">Clique em qualquer perfil para ver sinais, como comunicar e como responder objeções</p>
+    <div class="profiles-grid" id="profilesGrid"></div>
+  </div>
+</div>
+<div class="modal-ov" id="profileModal" onclick="closeModal('profileModal',event)">
+  <div class="modal-box"><button class="modal-close" onclick="document.getElementById('profileModal').classList.remove('open')">✕</button><div id="profileModalContent"></div></div>
+</div>
+
+<!-- PRODUTOS -->
+<div class="panel" id="panel-produtos">
+  <div class="panel-header"><button class="back-btn" onclick="goHome()">← Início</button><div class="panel-title">Portfólio <span>Garmin</span></div></div>
+  <div class="panel-body">
+    <div class="filter-row" id="prodFilters">
+      <button class="fbtn active" onclick="filterProds('todos',this)">Todos</button>
+      <button class="fbtn" onclick="filterProds('forerunner',this)">Forerunner</button>
+      <button class="fbtn" onclick="filterProds('outdoor',this)">Outdoor</button>
+      <button class="fbtn" onclick="filterProds('lifestyle',this)">Lifestyle</button>
+      <button class="fbtn" onclick="filterProds('mergulho',this)">Mergulho</button>
+      <button class="fbtn" onclick="filterProds('edge',this)">Edge</button>
+      <button class="fbtn" onclick="filterProds('gps',this)">GPS/Nav</button>
+      <button class="fbtn" onclick="filterProds('golf',this)">Golfe</button>
+      <button class="fbtn" onclick="filterProds('moto',this)">Moto</button>
+      <button class="fbtn" onclick="filterProds('marine',this)">Náutico</button>
+      <button class="fbtn" onclick="filterProds('acess',this)">Acessórios</button>
+    </div>
+    <div class="tbl-wrap"><table><thead><tr><th>Produto</th><th>Nível</th><th>Para quem</th><th>Destaque principal</th></tr></thead><tbody id="prodsBody"></tbody></table></div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="panel" id="panel-faq">
+  <div class="panel-header"><button class="back-btn" onclick="goHome()">← Início</button><div class="panel-title">Dúvidas <span>Frequentes</span></div></div>
+  <div class="panel-body">
+    <div class="search-bar"><span>🔍</span><input type="text" id="faqSearch" placeholder="Buscar pergunta..." oninput="filterFaq()"></div>
+    <div id="faqList"></div>
+  </div>
+</div>
+
+<!-- CONCORRENTES -->
+<div class="panel" id="panel-concorrentes">
+  <div class="panel-header"><button class="back-btn" onclick="goHome()">← Início</button><div class="panel-title">Concorrentes & <span>Diferenciais</span></div></div>
+  <div class="panel-body">
+    <div class="hero-card"><div class="card-label">Nossa vantagem</div><p style="font-size:14px;line-height:1.7;color:var(--text);">A Garmin é a única marca com <strong>mais de 35 anos de expertise em GPS</strong>. Nossos produtos são ferramentas de atleta — não acessórios de moda com função de saúde. Algoritmos FirstBeat, sensores de quinta geração e um ecossistema impossível de replicar.</p></div>
+    <div id="compList"></div>
+  </div>
+</div>
+
+<!-- SCRIPTS -->
+<div class="panel" id="panel-scripts">
+  <div class="panel-header"><button class="back-btn" onclick="goHome()">← Início</button><div class="panel-title">Scripts de <span>Atendimento</span></div></div>
+  <div class="panel-body">
+    <div class="hero-card"><div class="card-label">⭐ Regra de ouro</div><p style="font-size:15px;font-weight:500;line-height:1.7;color:var(--text);">O cliente deve sair sentindo que foi atendido por um <strong style="color:var(--g)">ESPECIALISTA</strong> que entendeu suas necessidades — não por alguém que precisava bater meta.</p></div>
+    <div class="itabs"><div class="itab active" onclick="showItab('sc-main','sc-ind',this)">Atendimento Principal</div><div class="itab" onclick="showItab('sc-ind','sc-main',this)">Cliente Indeciso</div></div>
+    <div id="sc-main">
+      <div class="script-step"><div class="s-num">1</div><div><div class="s-title">Recepção & Apresentação</div><div class="s-dialog">"Olá, boa tarde! Meu nome é [Nome], sou consultor aqui da Garmin. Pode ficar à vontade — me conta o que você veio ver hoje."</div><div class="tip">💡 Apresentar o nome cria vínculo. "Consultor" posiciona melhor do que "vendedor". Nunca use "Como posso ajudar?" — é genérico e abre pouco espaço.</div></div></div>
+      <div class="script-step"><div class="s-num">2</div><div><div class="s-title">Sondagem</div><div class="card-label">Se ele já sabe o que quer:</div><div class="s-dialog">"Ótimo, você já veio com o modelo em mente! Me conta um pouco mais... É pra você ou é presente? E qual é a ideia de uso, mais esporte ou dia a dia?"</div><div class="card-label" style="margin-top:10px;">Se ele ainda não sabe:</div><div class="s-dialog">"Sem problema nenhum — é exatamente pra isso que estou aqui. Me fala da sua rotina. Você pratica algum esporte ou atividade física?"</div><div class="tip">💡 Perguntas complementares: Você já usa smartwatch? / Tem alguma função que já quer? / Treina de manhã ou à noite? / Já pesquisou algum modelo?</div></div></div>
+      <div class="script-step"><div class="s-num">3</div><div><div class="s-title">Apresentação do Produto</div><div class="s-dialog">"Baseado no que você me contou, o modelo que mais faz sentido pra você é o [produto]. Vou te explicar o porquê."</div><div class="tip">💡 Convide-o a experimentar colocando no pulso. A experiência tátil derruba a indecisão.</div><table class="no-do-table"><tr><th style="background:var(--off);color:var(--warn);">❌ Não fale assim</th><th style="background:var(--off);color:var(--acc);">✅ Fale assim</th></tr><tr><td class="bad">Tem GPS multibanda com GNSS, Glonass e Galileo.</td><td class="good">Você não precisa levar o celular na corrida. No final do treino terá ritmo, distância e mapa exato registrados.</td></tr><tr><td class="bad">Bateria de 13 dias.</td><td class="good">Você carrega uma vez na semana — sem aquela ansiedade de ver a bateria acabar no meio do treino.</td></tr><tr><td class="bad">Tem monitoramento de SpO2.</td><td class="good">Ele monitora sua saturação de oxigênio enquanto você dorme e te avisa se algo estiver fora do normal.</td></tr></table></div></div>
+      <div class="script-step"><div class="s-num">4</div><div><div class="s-title">Contorno de Objeções</div><div class="obj-block"><div class="obj-q">🗣️ "Tá caro, vou pesquisar online."</div><div class="obj-a">✅ Entendo perfeitamente. Mas aqui você tem garantia direta com a Proparts — 2 anos para dispositivos —, suporte técnico presencial e pode experimentar agora. Comprando online, qualquer problema vira um processo muito mais complicado.</div></div><div class="obj-block"><div class="obj-q">🗣️ "O Apple Watch faz a mesma coisa."</div><div class="obj-a">✅ Para quem usa como ferramenta de treino, a diferença é enorme: o Garmin tem bateria de dias (o Apple dura horas com GPS), GPS dedicado muito mais preciso e algoritmos para atletas desenvolvidos por mais de 30 anos.</div></div><div class="obj-block"><div class="obj-q">🗣️ "Vou pensar e volto depois."</div><div class="obj-a">✅ Claro, sem problema! Só quero garantir que você sai com todas as informações. Posso deixar o nosso contato? E se tiver qualquer dúvida, pode me chamar pelo WhatsApp.</div></div></div></div>
+      <div class="script-step"><div class="s-num">5</div><div><div class="s-title">Fechamento & Pós-Venda</div><div class="s-dialog">"Posso fechar pra você? Vou deixar já configurado com seu nome e te mostro como sincronizar com o app."</div><div class="tip">💡 Configure o nome do cliente no relógio na hora — cria um momento de personalização poderoso. Apresente o Garmin Connect brevemente antes de ele sair.</div></div></div>
+    </div>
+    <div id="sc-ind" style="display:none;">
+      <div class="hero-card" style="border-color:var(--warn);background:#fff8f5;"><div class="card-label" style="color:var(--warn);">⚠️ Protocolo</div><div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:20px;text-transform:uppercase;margin-bottom:4px;">Cliente Indeciso</div><p style="font-size:13px;color:var(--text2);">Siga os 5 passos nesta ordem — não pule etapas</p></div>
+      <div class="script-step"><div class="s-num">1</div><div><div class="s-title">Não apresente produtos ainda</div><div class="s-dialog">"Antes de mostrar os modelos, me conta um pouquinho da sua rotina?"</div></div></div>
+      <div class="script-step"><div class="s-num">2</div><div><div class="s-title">Pergunte uso principal + nível de esporte</div><div class="tip">Com isso você elimina 80% do catálogo antes de mostrar qualquer modelo.</div></div></div>
+      <div class="script-step"><div class="s-num">3</div><div><div class="s-title">Apresente no máximo 2 opções</div><div class="s-dialog">"Pra você, o melhor é entre estes dois."</div><div class="tip">💡 Muita opção paralisa. Escolha por ele com base na sondagem.</div></div></div>
+      <div class="script-step"><div class="s-num">4</div><div><div class="s-title">Use a prova social</div><div class="s-dialog">"Esse aqui é o mais vendido para quem tem o seu perfil."</div></div></div>
+      <div class="script-step"><div class="s-num">5</div><div><div class="s-title">Coloque o relógio no pulso do cliente</div><p style="font-size:13px;color:var(--text2);">A experiência tátil derruba a indecisão. Sempre ofereça para experimentar — gentilmente, não como pergunta.</p></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ESPORTES -->
+<div class="panel" id="panel-esportes">
+  <div class="panel-header"><button class="back-btn" onclick="goHome()">← Início</button><div class="panel-title">Esportes & <span>Métricas</span></div></div>
+  <div class="panel-body"><div id="sportsList"></div></div>
+</div>
+
+<!-- INREACH -->
+<div class="panel" id="panel-inreach">
+  <div class="panel-header"><button class="back-btn" onclick="goHome()">← Início</button><div class="panel-title">inReach <span>Mini</span></div></div>
+  <div class="panel-body">
+    <div class="inreach-hero"><div class="card-label" style="color:var(--acc);">Comunicação via Satélite · Rede Iridium®</div><div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:26px;letter-spacing:2px;margin-bottom:6px;">INREACH MINI</div><p style="font-size:14px;opacity:0.85;line-height:1.6;">O único dispositivo que permite enviar mensagens e acionar SOS de qualquer lugar do planeta — mesmo sem cobertura de celular.</p></div>
+    <div class="itabs">
+      <div class="itab active" onclick="switchIRTab('ir-compare',this)">Mini 2 vs 3 vs Plus</div>
+      <div class="itab" onclick="switchIRTab('ir-planos',this)">Planos de Assinatura</div>
+      <div class="itab" onclick="switchIRTab('ir-venda',this)">Como Vender</div>
+    </div>
+    <div id="ir-compare">
+      <div class="inreach-compare">
+        <div class="ir-card">
+          <div class="ir-name">Mini 2</div><div class="ir-tag">Modelo anterior</div>
+          <div class="ir-feature"><span class="ir-check">✓</span>SOS interativo 24/7 global</div>
+          <div class="ir-feature"><span class="ir-check">✓</span>Mensagens bidirecionais via satélite</div>
+          <div class="ir-feature"><span class="ir-check">✓</span>Rastreamento compartilhável</div>
+          <div class="ir-feature"><span class="ir-check">✓</span>GPS multissistema</div>
+          <div class="ir-feature"><span class="ir-x">✗</span>Tela monocromática, sem touch</div>
+          <div class="ir-feature"><span class="ir-x">✗</span>Sem sirene integrada</div>
+          <div class="ir-feature"><span class="ir-x">✗</span>Bateria menor (1250 mAh)</div>
+          <div class="ir-feature"><span class="ir-x">✗</span>Sem voz ou foto via satélite</div>
+        </div>
+        <div class="ir-card recommended">
+          <div style="font-size:10px;font-weight:700;color:var(--g);letter-spacing:1px;margin-bottom:4px;">★ RECOMENDADO</div>
+          <div class="ir-name">Mini 3</div><div class="ir-tag">Modelo atual padrão</div>
+          <div class="ir-feature"><span class="ir-check">✓</span>Tudo do Mini 2, mais:</div>
+          <div class="ir-feature"><span class="ir-check">✓</span>Tela colorida touchscreen</div>
+          <div class="ir-feature"><span class="ir-check">✓</span>GPS multibanda (fix mais rápido)</div>
+          <div class="ir-feature"><span class="ir-check">✓</span>Mapas básicos coloridos</div>
+          <div class="ir-feature"><span class="ir-check">✓</span>Sirene sonora integrada</div>
+          <div class="ir-feature"><span class="ir-check">✓</span>Bateria maior (1800 mAh)</div>
+          <div class="ir-feature"><span class="ir-check">✓</span>Interface muito mais intuitiva</div>
+          <div class="ir-feature"><span class="ir-x">✗</span>Sem voz/foto via satélite</div>
+        </div>
+        <div class="ir-card premium">
+          <div style="font-size:10px;font-weight:700;color:var(--gold);letter-spacing:1px;margin-bottom:4px;">★ PREMIUM</div>
+          <div class="ir-name">Mini 3 Plus</div><div class="ir-tag">Para uso profissional e expedições</div>
+          <div class="ir-feature"><span class="ir-check">✓</span>Tudo do Mini 3, mais:</div>
+          <div class="ir-feature"><span class="ir-check">✓</span>Mensagens de voz de 30s via satélite</div>
+          <div class="ir-feature"><span class="ir-check">✓</span>Fotos via satélite</div>
+          <div class="ir-feature"><span class="ir-check">✓</span>Rede Iridium Certus (maior banda)</div>
+          <div class="ir-feature"><span class="ir-check">✓</span>Comunicação de emergência mais rica</div>
+          <div class="ir-feature"><span class="ir-check">✓</span>Ideal para guias e expedições longas</div>
+        </div>
+      </div>
+      <div class="tip">💡 <strong>Quando indicar o Plus?</strong> Guias de expedição, profissionais em campo remoto e aventureiros que fazem viagens longas frequentes. Em emergência, uma mensagem de voz pode salvar vidas.</div>
+    </div>
+    <div id="ir-planos" style="display:none;">
+      <div class="card" style="margin-bottom:20px;"><div class="card-label">⚠️ Atualização — Junho 2025</div><div class="card-title">Novos Planos Garmin inReach</div><p style="font-size:13px;color:var(--text2);line-height:1.6;">Os planos antigos (Freedom Safety, Recreation, Expedition) foram substituídos. Agora são 4 planos mensais simples. <strong>É possível suspender o plano por até 12 meses sem custo</strong> — ótimo argumento para clientes sazonais.</p></div>
+      <div class="plans-grid">
+        <div class="plan-card"><div class="plan-name">Enabled</div><div class="plan-price">~US$7,99<span>/mês</span></div><div class="plan-desc">SOS interativo + localização básica. Sem mensagens pagas inclusas.</div><div class="plan-for">Backup de emergência</div></div>
+        <div class="plan-card" style="border-color:var(--g);"><div style="font-size:10px;color:var(--g);font-weight:700;letter-spacing:1px;margin-bottom:4px;">MAIS VENDIDO</div><div class="plan-name">Essential</div><div class="plan-price">~US$14,99<span>/mês</span></div><div class="plan-desc">50 mensagens + SOS + rastreamento. Ideal para uso de fim de semana.</div><div class="plan-for">Trilheiro de fim de semana</div></div>
+        <div class="plan-card"><div class="plan-name">Standard</div><div class="plan-price">~US$34,99<span>/mês</span></div><div class="plan-desc">Mensagens ilimitadas + rastreamento + clima premium.</div><div class="plan-for">Aventureiro frequente</div></div>
+        <div class="plan-card"><div class="plan-name">Expedition</div><div class="plan-price">~US$64,99<span>/mês</span></div><div class="plan-desc">Ilimitado completo. Para expedições longas e uso profissional intenso.</div><div class="plan-for">Guias e expedições</div></div>
+      </div>
+      <div class="warn-tip">⚠️ Preços em dólares, cobrados no cartão internacional. Confirme valores atuais em explore.garmin.com. Taxa de ativação única de ~US$34,99.</div>
+      <div class="tip">💡 <strong>Argumento chave:</strong> "Se você usa só em viagens específicas, pode suspender o plano por até 12 meses sem pagar nada — reativa quando quiser, sem taxa."</div>
+    </div>
+    <div id="ir-venda" style="display:none;">
+      <div class="grid2" style="margin-bottom:20px;">
+        <div class="card" style="margin-bottom:0;"><div class="card-title">✅ Cliente ideal</div><ul class="bul"><li>Faz trilhas longas sem sinal de celular</li><li>Tem família que se preocupa quando viaja</li><li>Pratica montanhismo ou acampamento remoto</li><li>Pesca em rios e reservatórios isolados</li><li>Trabalha em campo (agronomia, pesquisa, guia)</li></ul></div>
+        <div class="card" style="margin-bottom:0;"><div class="card-title">❌ Não é o produto certo quando...</div><ul class="bul"><li>Só faz trilhas urbanas com cobertura de celular</li><li>Quer GPS para corrida ou ciclismo</li><li>Não aceita pagar assinatura mensal</li><li>Busca apenas um smartwatch de saúde</li></ul></div>
+      </div>
+      <div class="script-step"><div class="s-num">1</div><div><div class="s-title">Crie o cenário de necessidade</div><div class="s-dialog">"Você já foi a algum lugar sem sinal de celular? Trilha mais longa, área rural, pescaria em rio distante?"</div><div class="tip">Se a resposta for sim — a venda já começou.</div></div></div>
+      <div class="script-step"><div class="s-num">2</div><div><div class="s-title">Mostre o problema real</div><div class="s-dialog">"Sem sinal, se você se machucar ou se perder, como alguém vai te encontrar? O inReach resolve exatamente isso — funciona em qualquer lugar do mundo, usando satélite Iridium."</div></div></div>
+      <div class="script-step"><div class="s-num">3</div><div><div class="s-title">Explique o plano de forma simples</div><div class="s-dialog">"É como um seguro de vida mensal. Você pode suspender quando não for usar. Para quem vai ao campo 3-4 vezes por ano, é o investimento mais importante que existe."</div></div></div>
+      <div class="script-step"><div class="s-num">4</div><div><div class="s-title">Quebre a objeção</div><div class="obj-block"><div class="obj-q">🗣️ "Meu celular já tem GPS."</div><div class="obj-a">✅ GPS funciona com satélite, mas mensagens e SOS precisam de sinal de celular. No meio do Cerrado ou da Amazônia não há torre. O inReach usa satélite Iridium — funciona literalmente em qualquer ponto do planeta.</div></div><div class="obj-block"><div class="obj-q">🗣️ "É caro ter que pagar todo mês."</div><div class="obj-a">✅ Você pode suspender nos meses que não for usar — fica zerado. Muita gente usa 2-3 meses por ano e economiza o resto. E um resgate de helicóptero custa dezenas de milhares de reais...</div></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- GPS DE MÃO -->
+<div class="panel" id="panel-gpsdemao">
+  <div class="panel-header"><button class="back-btn" onclick="goHome()">← Início</button><div class="panel-title">GPS de <span>Mão</span></div></div>
+  <div class="panel-body">
+    <div class="gps-hero"><div class="card-label" style="color:var(--acc);">Navegação Portátil Off-Grid</div><div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:26px;letter-spacing:2px;margin-bottom:6px;">GPS PORTÁTEIS GARMIN</div><p style="font-size:14px;opacity:0.85;line-height:1.6;">Dispositivos dedicados para navegação em trilha, camping, caça e aventuras fora de cobertura. Funcionam sem celular, sem internet e com bateria longa.</p></div>
+
+    <div class="card-label" style="margin-bottom:14px;">Linha GPSMAP — Navegação Avançada</div>
+    <div class="tbl-wrap" style="margin-bottom:24px;">
+      <table>
+        <thead><tr><th>Modelo</th><th>Tela</th><th>GPS</th><th>Mapas</th><th>Diferencial</th><th>Para quem</th></tr></thead>
+        <tbody>
+          <tr><td><div class="prod-name">GPSMAP 65</div></td><td>2.6" Color</td><td>Multibanda</td><td>TopoActive Brasil</td><td>GPS multibanda + múltiplos satélites. Botões físicos, ótimo com luvas.</td><td>Trilheiro / Aventureiro</td></tr>
+          <tr><td><div class="prod-name">GPSMAP 65s</div></td><td>2.6" Color</td><td>Multibanda</td><td>TopoActive Brasil</td><td>65 + barômetro + bússola 3 eixos. Altímetro mais preciso.</td><td>Trekking avançado</td></tr>
+          <tr><td><div class="prod-name">GPSMAP 67</div></td><td>3.0" Color</td><td>Multibanda</td><td>TopoActive Brasil</td><td>Tela maior + altímetro + bússola + barômetro + USB-C. O mais completo da linha portátil.</td><td>Expedição / Aventureiro</td></tr>
+          <tr><td><div class="prod-name">GPSMAP 79</div></td><td>2.6" Color</td><td>Multi-GNSS</td><td>BlueChart G3</td><td>GPS portátil flutuante para uso náutico. Resistente à água IPX7.</td><td>Náutico / Pescador</td></tr>
+          <tr><td><div class="prod-name">GPSMAP 86</div></td><td>3.0" Color</td><td>Multi-GNSS</td><td>BlueChart G3</td><td>GPS náutico portátil flutuante + bússola + barômetro. Para uso em embarcações.</td><td>Náutico / Marinheiro</td></tr>
+          <tr><td><div class="prod-name">GPSMAP H1i</div></td><td>3.5" Color Touch</td><td>Multi-GNSS</td><td>TopoActive + Caça</td><td>GPS específico para caça. Rastreamento de animais + mapas de propriedade.</td><td>Caçador avançado</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card-label" style="margin-bottom:14px;">Linha eTrex — Robustez e Simplicidade</div>
+    <div class="tbl-wrap" style="margin-bottom:24px;">
+      <table>
+        <thead><tr><th>Modelo</th><th>Tela</th><th>GPS</th><th>Bússola/Altímetro</th><th>Diferencial</th><th>Para quem</th></tr></thead>
+        <tbody>
+          <tr><td><div class="prod-name">eTrex 22x</div></td><td>2.2" Color</td><td>GPS+GLONASS</td><td>Básico (via GPS)</td><td>Entrada da linha eTrex. Robusto, simples, mapas TopoActive. Bateria AA.</td><td>Caminhante iniciante</td></tr>
+          <tr><td><div class="prod-name">eTrex 32x</div></td><td>2.2" Color</td><td>GPS+GLONASS</td><td>✓ Bússola 3 eixos + Barômetro</td><td>22x + bússola real + altímetro barométrico. Para quem precisa de direção sem se mover.</td><td>Trilheiro / Trekking</td></tr>
+          <tr><td><div class="prod-name">eTrex Touch</div></td><td>2.6" Color Touch</td><td>GPS+GLONASS</td><td>Básico</td><td>Única versão com touchscreen na linha eTrex. Mais fácil de navegar nos menus.</td><td>Usuário casual / toque</td></tr>
+          <tr><td><div class="prod-name">eTrex Solar</div></td><td>2.2" Mono</td><td>Multi-GNSS (5 constelações)</td><td>Básico</td><td>Carregamento solar + bateria de até 100h. Para quem fica dias sem carregar.</td><td>Expedição / Ultra</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card-label" style="margin-bottom:14px;">Como identificar o cliente certo</div>
+    <div class="grid2" style="margin-bottom:20px;">
+      <div class="card" style="margin-bottom:0;"><div class="card-title">🎯 Sinais de identificação</div><ul class="bul"><li>Pergunta por "GPS de mão" ou "GPS portátil"</li><li>Menciona trilha longa, camping ou expedição</li><li>Fala de caça, pesca em local remoto</li><li>Quer algo que funcione sem celular e sem internet</li><li>Menciona bateria de pilha AA (quer trocar em campo)</li><li>Pergunta sobre mapas do Brasil offline</li></ul></div>
+      <div class="card" style="margin-bottom:0;"><div class="card-title">💬 Como apresentar</div><ul class="bul"><li>GPSMAP 65/67: trilheiros que querem o melhor com multibanda</li><li>eTrex 22x/32x: custo-benefício, bateria AA, simples de operar</li><li>eTrex Solar: quem vai a expedições longas e não quer carregar</li><li>GPSMAP 79/86: clientes que também usam em barco</li><li>H1i: caçadores — destaque rastreamento de animais e mapas de propriedade</li></ul></div>
+    </div>
+
+    <div class="tip">💡 <strong>Argumento de bateria:</strong> "A pilha AA do eTrex muda tudo para quem vai a campo por vários dias. Você compra duas pilhas num posto de gasolina no meio do sertão e continua navegando — algo que nenhum relógio ou celular consegue fazer."</div>
+    <div class="tip">💡 <strong>GPSMAP 65/67 vs eTrex:</strong> O GPSMAP tem tela maior, GPS multibanda (mais preciso), USB-C e tela mais legível. O eTrex é mais compacto, mais barato e usa pilha AA. Para quem vai a expedições longas sem carregador, o eTrex Solar ou o eTrex + pilha AA vence na praticidade.</div>
+  </div>
+</div>
+
+<!-- NÁUTICO -->
+<div class="panel" id="panel-nautico">
+  <div class="panel-header"><button class="back-btn" onclick="goHome()">← Início</button><div class="panel-title">Linha <span>Náutica</span></div></div>
+  <div class="panel-body">
+    <div class="nautical-hero"><div class="card-label" style="color:var(--acc);">Pesca & Navegação</div><div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:26px;letter-spacing:2px;margin-bottom:6px;">LINHA NÁUTICA GARMIN</div><p style="font-size:14px;opacity:0.85;line-height:1.6;">Sonares e chartplotters para quem leva a sério a pesca e a navegação em rios, lagos e mar.</p></div>
+    <div class="grid3" style="margin-bottom:20px;">
+      <div class="card" style="margin-bottom:0;border-top:3px solid var(--g);"><div class="card-label">Entrada</div><div class="card-title">Striker 4</div><p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:10px;">Sonar de pesca 3,5" com GPS básico. A porta de entrada para localizar peixes com tecnologia. Tela simples, fácil de operar.</p><div class="tag blue">Pesca Recreativa</div><div class="tag blue">Rios e Represas</div></div>
+      <div class="card" style="margin-bottom:0;border-top:3px solid var(--g);"><div class="card-label">Intermediário</div><div class="card-title">Striker Vivid 5cv</div><p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:10px;">Sonar 5" colorido vívido + ClearVü + SideVü + GPS. Vê peixes abaixo e ao lado do barco. Excelente custo-benefício.</p><div class="tag blue">ClearVü + SideVü</div><div class="tag blue">Pesca Dedicada</div></div>
+      <div class="card" style="margin-bottom:0;border-top:3px solid var(--acc);"><div class="card-label">Premium</div><div class="card-title">ECHOMAP UHD2 52cv</div><p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:10px;">Chartplotter + sonar UHD2 5". Mapas náuticos BlueChart G3. Para pescador e navegador sério que quer o melhor.</p><div class="tag green">Chartplotter</div><div class="tag green">UHD2 Sonar</div><div class="tag blue">Mapas Náuticos</div></div>
+    </div>
+    <div class="tbl-wrap" style="margin-bottom:20px;"><table><thead><tr><th>Recurso</th><th>Striker 4</th><th>Striker Vivid 5cv</th><th>ECHOMAP UHD2 52cv</th></tr></thead><tbody><tr><td>Tela</td><td>3,5" Mono</td><td>5" Colorida Vívida</td><td>5" Colorida HD</td></tr><tr><td>Sonar</td><td>Tradicional</td><td>ClearVü + SideVü</td><td>UHD2 ClearVü + SideVü</td></tr><tr><td>GPS integrado</td><td>✓</td><td>✓</td><td>✓</td></tr><tr><td>Mapas náuticos</td><td>—</td><td>—</td><td>✓ BlueChart G3</td></tr><tr><td>Para quem</td><td>Pescador iniciante</td><td>Pescador dedicado</td><td>Pescador/navegador sério</td></tr></tbody></table></div>
+    <div class="tip">💡 <strong>Argumento ClearVü:</strong> "Com o sonar ClearVü do Vivid 5cv, você vê os peixes embaixo do barco quase como numa foto — não só como manchas tradicionais. Faz toda a diferença na pescaria."</div>
+  </div>
+</div>
+
+<!-- MATERIAIS -->
+<div class="panel" id="panel-materiais">
+  <div class="panel-header"><button class="back-btn" onclick="goHome()">← Início</button><div class="panel-title">Materiais de <span>Apoio</span></div></div>
+  <div class="panel-body">
+    <div class="itabs" id="matTabs">
+      <div class="itab active" onclick="showMatTab('m-apps')">Apps Garmin</div>
+      <div class="itab" onclick="showMatTab('m-int')">Integrações</div>
+      <div class="itab" onclick="showMatTab('m-tech')">Tecnologias</div>
+    </div>
+    <div id="m-apps">
+      <div class="app-row"><div class="app-icon" style="background:var(--g);">📱</div><div><div class="card-title" style="margin-bottom:2px;">Garmin Connect</div><div class="card-label">App principal</div><p style="font-size:13px;color:var(--text2);line-height:1.6;">Hub central de todos os dados. Sincroniza via Bluetooth. Histórico, insights, planos de treino e comunidade.</p></div></div>
+      <div class="app-row"><div class="app-icon" style="background:var(--acc);">🏪</div><div><div class="card-title" style="margin-bottom:2px;">Connect IQ Store</div><div class="card-label">Apps para o relógio</div><p style="font-size:13px;color:var(--text2);line-height:1.6;">Spotify, Deezer, Woo, Wikiloc e centenas de apps que rodam direto no relógio. Acesse em apps.garmin.com.</p></div></div>
+      <div class="app-row"><div class="app-icon" style="background:#FF6B35;">🛰️</div><div><div class="card-title" style="margin-bottom:2px;">Garmin Explore</div><div class="card-label">Expedições e inReach</div><p style="font-size:13px;color:var(--text2);line-height:1.6;">Planejamento de trilhas e rotas. Integra com inReach para comunicação via satélite.</p></div></div>
+      <div class="app-row"><div class="app-icon" style="background:#34C759;">⛳</div><div><div class="card-title" style="margin-bottom:2px;">Garmin Golf</div><div class="card-label">+42.000 campos mapeados</div><p style="font-size:13px;color:var(--text2);line-height:1.6;">Sincroniza scorecard, distâncias e estatísticas com o relógio Approach. Detecta automaticamente o campo.</p></div></div>
+    </div>
+    <div id="m-int" style="display:none;">
+      <div class="tip" style="margin-bottom:16px;">💡 <strong>Connect IQ</strong> = apps que rodam NO relógio (Spotify, Woo). <strong>Integrações Connect</strong> = plataformas que RECEBEM dados do relógio (Strava, TrainingPeaks).</div>
+      <div class="tbl-wrap"><table><thead><tr><th>Categoria</th><th>App</th><th>O que sincroniza</th></tr></thead><tbody>
+        <tr><td><span class="tag blue">🏃 Corrida</span></td><td>Strava</td><td>Atividades, rotas, segmentos e comunidade</td></tr>
+        <tr><td><span class="tag blue">🏃 Corrida</span></td><td>TrainingPeaks</td><td>Treinos planejados, atividades e métricas</td></tr>
+        <tr><td><span class="tag green">🚴 Ciclismo</span></td><td>Zwift</td><td>Atividades, training load e recuperação</td></tr>
+        <tr><td><span class="tag green">🚴 Ciclismo</span></td><td>TrainerRoad</td><td>Treinos estruturados e atividades</td></tr>
+        <tr><td><span class="tag orange">🪁 Aquático</span></td><td>Woo</td><td>Altura de saltos em tempo real (kitesurf)</td></tr>
+        <tr><td><span class="tag orange">⚡ Potência</span></td><td>Stryd</td><td>Potência de corrida via Connect IQ</td></tr>
+        <tr><td><span class="tag">🗺️ Nav</span></td><td>Wikiloc</td><td>Trilhas + upload automático de percursos</td></tr>
+        <tr><td><span class="tag">🎵 Música</span></td><td>Spotify / Deezer / YouTube Music</td><td>Playlists offline no relógio</td></tr>
+        <tr><td><span class="tag gold">❤️ Saúde</span></td><td>Apple Health</td><td>Passos, FC, treinos, sono e calorias</td></tr>
+        <tr><td><span class="tag gold">🥗 Nutrição</span></td><td>MyFitnessPal</td><td>Calorias, exercícios e peso</td></tr>
+      </tbody></table></div>
+    </div>
+    <div id="m-tech" style="display:none;">
+      <div class="tech-card"><div class="tech-icon">📡</div><div><div class="tech-name">GPS Multibanda (SatIQ)</div><div class="tech-desc">Usa duas frequências de satélite simultaneamente. Traçado muito mais preciso em cidades com prédios, florestas densas e montanhas. Disponível no FR265, 570, 955, 965, 970, Fenix 8, Enduro 3.</div></div></div>
+      <div class="tech-card"><div class="tech-icon">🧠</div><div><div class="tech-name">FirstBeat Analytics & VO2 Max</div><div class="tech-desc">Algoritmos desenvolvidos pela empresa finlandesa FirstBeat (adquirida pela Garmin em 2019). Transformam dados brutos em insights: VO2 Max, Training Load, Recovery Time, Training Readiness e muito mais. A base científica de todos os Garmins modernos.</div></div></div>
+      <div class="tech-card"><div class="tech-icon">🔋</div><div><div class="tech-name">Body Battery™</div><div class="tech-desc">"Imagine um indicador de bateria do seu corpo de 0-100. Sobe enquanto você dorme bem, cai com estresse e exercício. Você aprende quando treinar forte e quando descansar." Exclusivo Garmin.</div></div></div>
+      <div class="tech-card"><div class="tech-icon">😴</div><div><div class="tech-name">Monitoramento de Sono</div><div class="tech-desc">Registra automaticamente fases do sono (leve, profundo, REM), SpO2 noturno, respiração e pontuação de sono. O relógio precisa estar no pulso durante a noite. Dados disponíveis no Garmin Connect pela manhã. Argumento poderoso para clientes de saúde e bem-estar.</div></div></div>
+      <div class="tech-card"><div class="tech-icon">💳</div><div><div class="tech-name">Garmin Pay (NFC)</div><div class="tech-desc">Pagamento por aproximação diretamente pelo relógio. Funciona com cartões de bancos parceiros cadastrados no Garmin Connect. Disponível em: Fenix 8, FR265, 570, 955, 965, 970, Venu 4, Vivoactive 6 e outros. Confirme sempre os bancos compatíveis no site Garmin Brasil.</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- UNIVERSO GARMIN -->
+<div class="panel" id="panel-universo">
+  <div class="panel-header"><button class="back-btn" onclick="goHome()">← Início</button><div class="panel-title">🌍 Universo <span>Garmin</span></div></div>
+  <div class="panel-body">
+    <div class="universe-hero"><div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:0.7;margin-bottom:4px;">Módulo 1 — Explorador · by Proparts</div><div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:28px;letter-spacing:2px;margin-bottom:8px;">O DNA DA GARMIN</div><p style="font-size:14px;opacity:0.85;line-height:1.6;">Entenda a história, os valores e por que a Garmin vence. Seja um consultor que conhece a marca vende com confiança.</p></div>
+
+    <div class="card-label" style="margin-bottom:14px;">📖 História da Marca</div>
+    <div class="card" style="margin-bottom:20px;">
+      <div class="timeline">
+        <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">1989</div><div class="timeline-text">Gary Burrell e Min Kao fundam a empresa em Lenexa, Kansas (EUA). O nome vem das iniciais: <strong>Gar</strong>y + <strong>Min</strong> = Garmin. Foco inicial em GPS para aviação.</div></div>
+        <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">1991</div><div class="timeline-text">Lança o primeiro receptor GPS portátil para consumidores. A Garmin democratiza o acesso ao GPS, que era tecnologia militar.</div></div>
+        <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">2003</div><div class="timeline-text">Lança o primeiro Forerunner — um relógio GPS para corredores. Isso muda tudo. A Garmin passa a ter presença no pulso dos atletas.</div></div>
+        <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">2015</div><div class="timeline-text">Lança o Forerunner 235, primeiro relógio Garmin com sensor óptico de FC no pulso e GPS integrado. Mais de 1 milhão de unidades vendidas.</div></div>
+        <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">2024–25</div><div class="timeline-text">Lança Fenix 8, Forerunner 970, Edge 1050 e Edge 550/850. Consolida liderança absoluta em wearables esportivos premium.</div></div>
+      </div>
+    </div>
+
+    <div class="card-label" style="margin-bottom:14px;">🎯 Por que o Garmin vence?</div>
+    <div class="grid2" style="margin-bottom:20px;">
+      <div class="card" style="margin-bottom:0;"><div class="card-title">Especialização real</div><p style="font-size:13px;color:var(--text2);line-height:1.6;">A Garmin não "também faz relógio". GPS e precisão de posicionamento é o core business há 35+ anos. Cada algoritmo e sensor existe por necessidade de atletas reais.</p></div>
+      <div class="card" style="margin-bottom:0;"><div class="card-title">Ecossistema inigualável</div><p style="font-size:13px;color:var(--text2);line-height:1.6;">Garmin Connect + Connect IQ + 50+ integrações. Atleta que usa Garmin tem todos os dados num só lugar, por anos. Fidelidade que nenhum concorrente consegue replicar.</p></div>
+      <div class="card" style="margin-bottom:0;"><div class="card-title">Bateria que liberta</div><p style="font-size:13px;color:var(--text2);line-height:1.6;">Enquanto concorrentes chegam a 1-2 dias, o Garmin dura semanas. Diferença entre um relógio que monitora sono todos os dias ou um que você precisa carregar toda noite.</p></div>
+      <div class="card" style="margin-bottom:0;"><div class="card-title">Durabilidade e confiança</div><p style="font-size:13px;color:var(--text2);line-height:1.6;">Certificação MIL-STD-810, cristal de safira nas linhas premium, resistência à água. Um Garmin dura 5-8 anos com cuidados básicos.</p></div>
+    </div>
+
+    <div class="card-label" style="margin-bottom:14px;">💡 As 5 Tecnologias que você PRECISA dominar</div>
+    <div class="tech-card"><div class="tech-icon">📡</div><div><div class="tech-name">GPS Multibanda</div><div class="tech-desc">O diferencial mais fácil de explicar: "traça exatamente onde você foi, mesmo em cidade com prédios ou dentro de mata fechada." Disponível do FR265 em cima.</div></div></div>
+    <div class="tech-card"><div class="tech-icon">🧠</div><div><div class="tech-name">FirstBeat & VO2 Max</div><div class="tech-desc">"O relógio calcula sua capacidade aeróbica e diz se você está evoluindo ou sobrecarregado." É o cérebro do Garmin — base científica de toda análise de treino.</div></div></div>
+    <div class="tech-card"><div class="tech-icon">🔋</div><div><div class="tech-name">Body Battery™</div><div class="tech-desc">"Imagine um indicador de bateria do seu corpo de 0-100. Sobe com sono bom, cai com estresse e exercício. Você aprende quando treinar forte e quando descansar."</div></div></div>
+    <div class="tech-card"><div class="tech-icon">😴</div><div><div class="tech-name">Monitoramento de Sono</div><div class="tech-desc">"Ele registra cada fase do seu sono — leve, profundo, REM — e te dá uma pontuação pela manhã. Para quem quer melhorar a qualidade de vida, isso vale mais do que qualquer métrica de treino."</div></div></div>
+    <div class="tech-card"><div class="tech-icon">💳</div><div><div class="tech-name">Garmin Pay</div><div class="tech-desc">"Você pode pagar no café depois do treino sem tirar o celular do bolso — só com o relógio. Funciona nos principais bancos brasileiros: BTG, BB e Santander." Argumento de conveniência que fecha vendas.</div></div></div>
+
+    <!-- QUIZ -->
+    <div class="quiz-wrap" id="quizWrap">
+      <div class="quiz-header">
+        <div class="quiz-title">🎯 Flash Quiz — Módulo 1</div>
+        <div class="quiz-sub">10 perguntas · Mínimo 70% para aprovação · Seu resultado será registrado</div>
+        <div class="quiz-progress"><div class="quiz-progress-bar" id="quizBar" style="width:0%"></div></div>
+      </div>
+      <div id="quizContent"></div>
+    </div>
+  </div>
+</div>
+
+<!-- CERTIFICAÇÃO -->
+<div class="panel" id="panel-certificacao">
+  <div class="panel-header"><button class="back-btn" onclick="goHome()">← Início</button><div class="panel-title">Trilha de <span>Certificação</span></div></div>
+  <div class="panel-body">
+    <div class="hero-card"><div class="card-label">Sua jornada</div><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px;"><span style="font-size:20px;">🧭</span><span style="font-family:'Rajdhani',sans-serif;font-weight:700;color:var(--g);">Explorador</span><span style="color:var(--text3);">→</span><span style="font-size:20px;">🏃</span><span style="font-family:'Rajdhani',sans-serif;font-weight:700;color:var(--text3);">Corredor</span><span style="color:var(--text3);">→</span><span style="font-size:20px;">🏅</span><span style="font-family:'Rajdhani',sans-serif;font-weight:700;color:var(--text3);">Maratonista</span><span style="color:var(--text3);">→</span><span style="font-size:20px;">🏆</span><span style="font-family:'Rajdhani',sans-serif;font-weight:700;color:var(--text3);">Triatleta</span></div></div>
+    <div class="cert-trail" id="certList"></div>
+  </div>
+</div>
+<div class="modal-ov" id="certModal" onclick="closeModal('certModal',event)">
+  <div class="modal-box"><button class="modal-close" onclick="document.getElementById('certModal').classList.remove('open')">✕</button><div id="certModalContent"></div></div>
+</div>
+
+<!-- RANKING -->
+<div class="panel" id="panel-ranking">
+  <div class="panel-header"><button class="back-btn" onclick="goHome()">← Início</button><div class="panel-title">🏆 Ranking da <span>Equipe</span></div></div>
+  <div class="panel-body">
+    <div class="ranking-hero"><div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:22px;letter-spacing:2px;margin-bottom:12px;">COMO PONTUAR</div><div class="grid3"><div style="text-align:center;"><div style="font-size:28px;margin-bottom:4px;">🏅</div><div style="font-family:'Rajdhani',sans-serif;font-weight:700;color:var(--gold);font-size:24px;">+100 pts</div><div style="font-size:12px;opacity:0.75;">Certificação concluída</div></div><div style="text-align:center;"><div style="font-size:28px;margin-bottom:4px;">⚡</div><div style="font-family:'Rajdhani',sans-serif;font-weight:700;color:var(--gold);font-size:24px;">+50 pts</div><div style="font-size:12px;opacity:0.75;">Quiz com nota máxima</div></div><div style="text-align:center;"><div style="font-size:28px;margin-bottom:4px;">🎯</div><div style="font-family:'Rajdhani',sans-serif;font-weight:700;color:var(--gold);font-size:24px;">+25 pts</div><div style="font-size:12px;opacity:0.75;">Quiz aprovado (≥70%)</div></div></div></div>
+    <div id="rankingList"></div>
+    <div class="tip" style="margin-top:16px;">📌 Para atualizar o ranking, entre em contato com a liderança de treinamento da Proparts.</div>
+  </div>
+</div>
+
+<!-- ======================== JS ======================== -->
+<script>
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyMWnxsNOLK9yR9D8KfZfxilFMzN267r56Dhq4CTHwMCu75uNd1v8Z-s6TE_mC66N9x/exec';
+
+// NAV
+function openPanel(id){document.getElementById('home').style.display='none';document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.getElementById('panel-'+id).classList.add('active');window.scrollTo(0,0);}
+function goHome(){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.getElementById('home').style.display='block';window.scrollTo(0,0);}
+function showItab(showId,hideId,tabEl){const s=document.getElementById(showId),h=document.getElementById(hideId);if(s)s.style.display='block';if(h)h.style.display='none';if(tabEl){tabEl.closest('.itabs').querySelectorAll('.itab').forEach(t=>t.classList.remove('active'));tabEl.classList.add('active');}}
+function switchIRTab(tabId,tabEl){['ir-compare','ir-planos','ir-venda'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display=id===tabId?'block':'none';});document.querySelector('#panel-inreach .itabs').querySelectorAll('.itab').forEach(t=>t.classList.remove('active'));if(tabEl)tabEl.classList.add('active');}
+function showMatTab(id){['m-apps','m-int','m-tech'].forEach(i=>{const el=document.getElementById(i);if(el)el.style.display=i===id?'block':'none';});document.getElementById('matTabs').querySelectorAll('.itab').forEach((t,i)=>{t.classList.toggle('active',['m-apps','m-int','m-tech'][i]===id);});}
+function toggleAcc(el){el.closest('.acc-item').classList.toggle('open');}
+function closeModal(id,e){if(e.target===document.getElementById(id))document.getElementById(id).classList.remove('open');}
+
+// RANKING
+const rankingData=[
+  {pos:1,nome:'Beatriz Ferreira',nivel:'Explorador 🧭',pts:0,medal:'🥇'},
+  {pos:2,nome:'Daniel Lucena',nivel:'Explorador 🧭',pts:0,medal:'🥈'},
+  {pos:3,nome:'Joyce Souza',nivel:'Explorador 🧭',pts:0,medal:'🥉'},
+  {pos:4,nome:'Renato Dias',nivel:'Explorador 🧭',pts:0,medal:'4'},
+  {pos:5,nome:'Mayara Araújo',nivel:'Explorador 🧭',pts:0,medal:'5'},
+  {pos:6,nome:'Ailma Ferraz',nivel:'Explorador 🧭',pts:0,medal:'6'},
+  {pos:7,nome:'Dayane',nivel:'Explorador 🧭',pts:0,medal:'7'},
+  {pos:8,nome:'Ribs',nivel:'Explorador 🧭',pts:0,medal:'8'},
+  {pos:9,nome:'Gustavo Morais',nivel:'Explorador 🧭',pts:0,medal:'9'},
+];
+document.getElementById('rankMini').innerHTML=rankingData.slice(0,3).map(r=>`<div class="rank-mini-row"><div class="rank-medal">${r.medal}</div><div class="rank-name-text">${r.nome}</div><div class="rank-level-badge">${r.nivel}</div><div class="rank-pts-mini">${r.pts}</div></div>`).join('');
+document.getElementById('rankingList').innerHTML=rankingData.map(r=>`<div class="rank-row"><div class="rank-pos-num ${r.pos<=3?'g'+r.pos:''}">${r.pos<=3?r.medal:r.pos}</div><div class="rank-info"><div class="rank-pname">${r.nome}</div><div class="rank-plevel">${r.nivel}</div></div><div class="rank-ppts">${r.pts} pts</div></div>`).join('');
+
+// PROFILES
+const profiles=[
+  {emoji:'🏃',name:'Corredor Iniciante',tag:'Está começando a correr, quer monitorar progresso',tags:['Corrida','Iniciante','GPS'],sinais:['Menciona que começou a correr recentemente','Usa tênis de corrida mas não tem relógio esportivo','Fala em 5km, 10km, primeira corrida de rua','Nunca usou GPS ou frequencímetro'],comunicacao:['Foque em GPS + frequência cardíaca — os dois mais úteis para começar','Mostre o Garmin Connect e como registra a evolução','Evite features avançadas — vai confundir','Forerunner 165 é a porta de entrada ideal'],produtos:['Forerunner 55','Forerunner 165'],primario:'Forerunner 55',objections:[{q:'Preciso mesmo de GPS se o celular já tem?',a:'O GPS do celular no bolso perde precisão. No relógio fica no pulso e mostra o ritmo em tempo real sem tirar o celular do bolso.'},{q:'O FR165 vale a diferença de preço?',a:'Sim, se sabe que vai continuar correndo. O 165 tem tela AMOLED muito mais vívida e planos de treino integrados.'}]},
+  {emoji:'⚡',name:'Corredor Dedicado',tag:'Corre 3–5x por semana, quer dados para evoluir',tags:['Corrida','Performance','Intermediário'],sinais:['Menciona pace, intervalado, corrida de rua','Já usou Garmin ou Polar antes','Pergunta sobre zona de FC ou VO2 max','Fala em meia maratona, maratona'],comunicacao:['Use termos técnicos — ele sabe o que é','Compare com o modelo que ele já tem','Destaque GPS multibanda e Elevate Gen 5','Fale do Connect e análise de treino'],produtos:['Forerunner 265','Forerunner 570','Forerunner 955'],primario:'Forerunner 265',objections:[{q:'O Polar tem os mesmos dados.',a:'O Polar é bom para análise, mas o ecossistema Garmin é muito maior: Connect IQ, Wikiloc, Zwift, TrainingPeaks nativos. E a bateria dura muito mais.'},{q:'Meu Garmin ainda funciona, por que trocar?',a:'O 265/570 tem AMOLED mais legível no sol, GPS multibanda mais preciso e sensor novo. Você sente a diferença no primeiro treino.'}]},
+  {emoji:'🏆',name:'Atleta de Elite',tag:'Triatleta, ultramaratonista ou ciclista competitivo',tags:['Triathlon','Elite','Performance'],sinais:['Fala em Ironman, ultratrail, gran fondo','Menciona potenciômetro, Zwift, TrainingPeaks','Compara Garmin com Suunto, Polar ou Coros','Pergunta sobre mapas ou navegação off-line'],comunicacao:['Não simplifique — ele sabe mais do que parece','Foque em GPS multibanda, mapas, bateria','Fale sobre integração com Zwift e TrainingPeaks','O preço alto é justificado pela vida útil e precisão'],produtos:['Forerunner 955','Forerunner 965','Forerunner 970','Fenix 8','Enduro 3'],primario:'Forerunner 965',objections:[{q:'"O Coros Vale Apex 2 Pro é mais barato e tem as mesmas funções"',a:'O Coros é bom, mas o ecossistema Garmin (Connect, IQ, 100+ integrações) e o suporte no Brasil são incomparáveis. Para treino sério, a diferença de dados é real.'},{q:'"Para que pagar mais no 970 se o 965 tem quase tudo?"',a:'O 970 traz cristal de safira, lanterna LED e 32GB. Para provas noturnas ou leitura cardíaca ainda mais precisa, faz sentido.'}]},
+  {emoji:'🌿',name:'Mulher Lifestyle',tag:'Busca saúde, bem-estar e design elegante no dia a dia',tags:['Lifestyle','Saúde','Feminino'],sinais:['Prioriza estética e design do relógio','Menciona pilates, yoga, caminhada, academia','Pergunta sobre sono, ciclo menstrual, estresse','Compara com Apple Watch ou Galaxy Watch'],comunicacao:['Lily 2 para quem quer design joia no pulso','Venu 4 para AMOLED premium + saúde feminina completa','Destaque monitoramento de ciclo menstrual e Body Battery','Mostre o app — é intuitivo e visual'],produtos:['Lily 2','Lily 2 Active','Venu 4','Vivoactive 6'],primario:'Venu 4',objections:[{q:'O Apple Watch tem design mais bonito.',a:'O Apple tem ótimo design, mas a bateria dura 1-2 dias. O Garmin dura até 9 dias. Para monitorar sono, ciclo e estresse de verdade, você precisa de um relógio que não descarrega toda noite.'},{q:'É caro.',a:'O Lily 2 começa abaixo do Apple Watch SE. E o Garmin dura muito mais — sem precisar trocar de modelo todo ano.'}]},
+  {emoji:'🏔️',name:'Aventureiro Outdoor',tag:'Trilhas, camping, escalada, natureza',tags:['Outdoor','Trilha','Aventura'],sinais:['Menciona trilhas, camping, montanhismo','Pergunta sobre durabilidade, bateria','Fala de bússola, altímetro, barômetro','Interessa em mapas topográficos'],comunicacao:['Instinct 3 para custo-benefício outdoor robusto','Fenix 8 para quem quer tudo no pulso','GPSMAP 67 para quem prefere GPS de mão com topo','Destaque MIL-STD-810 e bateria de dias'],produtos:['Instinct 3','Fenix 8','GPSMAP 65','GPSMAP 67','inReach Mini 3'],primario:'Instinct 3',objections:[{q:'Uso o celular para GPS em trilha.',a:'Bateria de celular acaba rápido com GPS ativo. O Instinct 3 dura até 26 dias. Em trilha longa, o relógio é o plano principal — não o backup.'},{q:'Para que o inReach se tenho rádio?',a:'Rádio funciona em linha de visão. O inReach usa satélite — você manda mensagem de dentro de um cânion ou da Amazônia. Se precisar de resgate, a central Garmin Response aciona em qualquer lugar do mundo.'}]},
+  {emoji:'🧘',name:'Foco em Saúde',tag:'Quer melhorar saúde geral, acompanhar atividade',tags:['Saúde','Fitness','Bem-estar'],sinais:['Menciona academia, caminhada como atividades','Pergunta sobre calorias, passos, sono','Fala de médico que recomendou monitorar FC','Não se identifica como atleta'],comunicacao:['Vivoactive 6 com 80+ modos esportivos é perfeito','Destaque Body Battery e monitoramento de sono','Integração com MyFitnessPal para controle de calorias','Venu 4 se quiser a experiência visual premium'],produtos:['Vivoactive 6','Venu 4','Forerunner 165'],primario:'Vivoactive 6',objections:[{q:'A balança + o celular já me dão essas informações.',a:'O diferencial é o contexto contínuo: o relógio monitora 24 horas — como o sono afeta o estresse do dia seguinte, como a caminhada impactou a recuperação. É uma visão holística que app de celular não consegue dar.'}]},
+  {emoji:'🎁',name:'Presenteador',tag:'Compra para outra pessoa',tags:['Presente','Gift'],sinais:['Diz "é pra minha esposa/filho/pai"','Pergunta qual é o mais bonito ou completo','Não sabe o tamanho do pulso da pessoa','Tem orçamento definido'],comunicacao:['Pergunte o perfil da pessoa presenteada, não do presenteador','Mostre opções dentro do orçamento','Mencione a política de troca da Proparts','Lily 2 para mulher elegante, e Fenix 8 para aventureiro'],produtos:['Lily 2','Forerunner 165','Instinct 3','Vivoactive 6'],primario:'Forerunner 165',objections:[{q:'E se ela não gostar?',a:'Efetuando cadastro em nossas lojas, poderá trocar pelo modelo que ela preferir após experimentar. Aqui na Proparts a gente ajuda nesse processo.'}]},
+  {emoji:'🚴',name:'Ciclista',tag:'Pedala com frequência, quer dados de performance',tags:['Ciclismo','Bike','Edge'],sinais:['Fala de watts, FTP, cadência','Menciona Zwift, TrainerRoad, rolo de treino','Pergunta sobre ciclocomputador (Edge)','Usa clipless ou tem bike de estrada/gravel'],comunicacao:['Edge 540/840 para ciclocomputador dedicado no guidão','Edge 1040/1050 para ciclista mais exigente','Pedais Rally para medir potência no pedal','Varia RTL515 — radar traseiro é diferencial de segurança'],produtos:['Edge 540','Edge 840','Edge 1040','Edge 1050','Rally RK 200','Varia RTL515'],primario:'Edge 840',objections:[{q:'Prefiro usar o relógio no pulso.',a:'O relógio é ótimo para multiesporte. Mas o Edge no guidão tem tela maior, navegação mais fácil em velocidade. Para ciclista focado, os dois se complementam.'}]},
+  {emoji:'🤿',name:'Mergulhador',tag:'Pratica mergulho recreativo ou técnico',tags:['Mergulho','Dive','Aquático'],sinais:['Menciona profundidade, descompressão, nitrox','Pergunta sobre computador de mergulho','Fala de mergulho técnico ou trimix'],comunicacao:['Descent G1/G2 para mergulho recreativo','Descent Mk3i para técnico sério','Descent X30 com autonomia de gás e modo técnico','Destaque: smartwatch completo fora da água'],produtos:['Descent G1','Descent G2','Descent Mk3i','Descent X30'],primario:'Descent G2',objections:[{q:'Prefiro um computador de mergulho separado.',a:'Computadores separados não têm GPS de superfície, mapas ou monitoramento de saúde. O Descent faz tudo isso e é um smartwatch completo no dia a dia.'},{q:'O X30 é muito caro.',a:'Para mergulho técnico com trimix e descompressão complexa, não há comparação. É o nível do Shearwater Perdix em hardware de relógio premium.'}]},
+  {emoji:'⛳',name:'Golfista',tag:'Joga golfe com regularidade',tags:['Golfe','Golf'],sinais:['Fala de green, par, bunker, handicap','Pergunta por GPS de golfe','Usa luvas de golfe ou tem look do esporte'],comunicacao:['Approach S44 para entrada com +42.000 campos','Approach S50 para a experiência mais completa com AMOLED','Destaque distâncias automáticas do green','Scorecard digital e estatísticas de handicap'],produtos:['Approach S44','Approach S50'],primario:'Approach S50',objections:[{q:'O app no celular já tem distâncias.',a:'O app serve, mas durante o swing você não vai olhar para o celular. O relógio no pulso mostra a distância instantaneamente, sem tirar o foco do jogo.'}]},
+  {emoji:'🏍️',name:'Motociclista',tag:'Piloto de moto, quer GPS robusto para viagens',tags:['Moto','Viagem','GPS'],sinais:['Fala de viagem de moto, rota, estrada','Pergunta por GPS para moto','Usa roupas ou acessórios de motociclismo'],comunicacao:['Zumo XT2 é o GPS específico para moto da Garmin','Tela resistente a luvas, antirreflexo, suporta chuva','Roteamento evita ruas proibidas para motos','Integração com capacete Bluetooth'],produtos:['Zumo XT2'],primario:'Zumo XT2',objections:[{q:'O celular no suporte não é suficiente?',a:'O Zumo XT2 é feito para ser visto com luvas sob sol forte. Não esquenta, não buga, não depende de plano de dados — e o roteamento é específico para moto.'},{q:'Para que GPS se sei a rota?',a:'Para rotas conhecidas talvez não precise. Mas para explorar rotas novas com segurança, o Zumo XT2 garante a chegada mesmo se cair o sinal no interior.'}]},
+  {emoji:'🎣',name:'Pescador / Náutico',tag:'Pesca em rios, represas ou mar — quer sonar e GPS',tags:['Pesca','Náutico','GPS'],sinais:['Menciona pesca em represa, rio ou mar','Fala de barco, canoa, lancha','Pergunta sobre sonar ou ecobatímetro','Quer saber profundidade e localização de cardumes'],comunicacao:['Striker 4 para pescador que quer o básico','Striker Vivid 5cv para quem quer ClearVü e SideVü','ECHOMAP UHD2 para navegador sério com mapas náuticos','Destaque: GPS marca os pontos de pesca para voltar depois'],produtos:['Striker 4','Striker Vivid 5cv','ECHOMAP UHD2 52cv','GPSMAP 79','GPSMAP 86'],primario:'Striker Vivid 5cv',objections:[{q:'Uso o celular para mapas no barco.',a:'Celular não tem sonar e a tela não aguenta sol forte, maresia e vibrações. O Striker e ECHOMAP são feitos para isso — e marcam os pontos de pesca que o celular não consegue.'},{q:'Preciso mesmo do ECHOMAP se o Vivid já tem GPS?',a:'O Vivid tem GPS básico. O ECHOMAP adiciona mapas náuticos detalhados com profundidade de canais, marinas e pontos de referência — essencial para quem navega em locais desconhecidos.'}]},
+];
+
+function renderProfiles(arr){document.getElementById('profilesGrid').innerHTML=arr.map(p=>`<div class="profile-card" onclick="openProfileModal(${profiles.indexOf(p)})"><div class="profile-card-top"><div class="p-emoji">${p.emoji}</div><div class="p-name">${p.name}</div><div class="p-tag">${p.tag}</div></div><div class="profile-card-body"><div class="p-sinais-label">Sinais de identificação</div><ul class="p-sinais">${p.sinais.slice(0,3).map(s=>`<li>${s}</li>`).join('')}</ul></div><div class="profile-card-footer"><div class="p-prods-label">Produtos indicados</div>${p.produtos.map(pr=>`<span class="prod-pill ${pr===p.primario?'main':''}">${pr}</span>`).join('')}</div></div>`).join('');}
+function filterProfiles(){const q=document.getElementById('profileSearch').value.toLowerCase();renderProfiles(q?profiles.filter(p=>p.name.toLowerCase().includes(q)||p.tag.toLowerCase().includes(q)||p.tags.some(t=>t.toLowerCase().includes(q))||p.produtos.some(pr=>pr.toLowerCase().includes(q))):profiles);}
+function openProfileModal(i){const p=profiles[i];document.getElementById('profileModalContent').innerHTML=`<div class="modal-emoji">${p.emoji}</div><div class="modal-title">${p.name}</div><div class="modal-sub">${p.tag}</div><div style="margin-bottom:14px;">${p.tags.map(t=>`<span class="tag blue">${t}</span>`).join('')}</div><div class="modal-section"><h4>Como identificar</h4><ul>${p.sinais.map(s=>`<li>${s}</li>`).join('')}</ul></div><div class="modal-section"><h4>Como se comunicar</h4><ul>${p.comunicacao.map(c=>`<li>${c}</li>`).join('')}</ul></div><div class="modal-section"><h4>Objeções comuns</h4>${p.objections.map(o=>`<div class="obj-block"><div class="obj-q">🗣️ ${o.q}</div><div class="obj-a">✅ ${o.a}</div></div>`).join('')}</div><div class="modal-section"><h4>Produtos indicados</h4><div>${p.produtos.map(pr=>`<span class="prod-pill ${pr===p.primario?'main':''}">${pr}</span>`).join('')}</div><p style="font-size:11px;color:var(--text3);margin-top:8px;">Azul = recomendação principal</p></div>`;document.getElementById('profileModal').classList.add('open');}
+renderProfiles(profiles);
+
+// PRODUCTS
+const prods=[
+  {name:'Forerunner 55',s:'Forerunner',cat:'forerunner',lvl:1,para:'Corredor Iniciante',dest:'GPS + cardíaco óptico. Porta de entrada perfeita para quem começa a correr.'},
+  {name:'Forerunner 165',s:'Forerunner',cat:'forerunner',lvl:2,para:'Corredor Iniciante / Dedicado',dest:'AMOLED + planos de treino. Ótimo custo-benefício com tela premium.'},
+  {name:'Forerunner 265',s:'Forerunner',cat:'forerunner',lvl:3,para:'Corredor Dedicado',dest:'AMOLED + mapas + GPS multibanda. Melhor da faixa intermediária.'},
+  {name:'Forerunner 570',s:'Forerunner',cat:'forerunner',lvl:3,para:'Corredor Dedicado / Elite',dest:'Lançamento 2025. AMOLED + GPS SatIQ + Elevate Gen 5.'},
+  {name:'Forerunner 955',s:'Forerunner',cat:'forerunner',lvl:4,para:'Atleta de Elite / Triatleta',dest:'30h GPS + mapas topográficos + solar. Referência triatleta.'},
+  {name:'Forerunner 965',s:'Forerunner',cat:'forerunner',lvl:4,para:'Atleta de Elite / Triatleta',dest:'AMOLED + titânio + mapas + 31h GPS. Top de corrida com tela premium.'},
+  {name:'Forerunner 970',s:'Forerunner',cat:'forerunner',lvl:5,para:'Atleta de Elite',dest:'Cristal safira + ECG + lanterna LED + 32GB. Top absoluto da linha.'},
+  {name:'Fenix 8',s:'Fenix',cat:'outdoor',lvl:5,para:'Atleta Elite / Aventureiro',dest:'O multiesporte definitivo. Alto-falante, mic, mergulho, trilha, corrida.'},
+  {name:'Enduro 3',s:'Enduro',cat:'outdoor',lvl:5,para:'Ultra / Expedição',dest:'Bateria 70h+ GPS. Para ultramaratonistas e expedições longas.'},
+  {name:'Instinct 3',s:'Instinct',cat:'outdoor',lvl:3,para:'Aventureiro / Corredor',dest:'MIL-STD-810. Bateria até 26 dias. Custo-benefício outdoor.'},
+  {name:'Instinct E',s:'Instinct',cat:'outdoor',lvl:2,para:'Aventureiro Iniciante',dest:'Versão entrada do Instinct. Robustez com preço acessível.'},
+  {name:'Instinct Crossover',s:'Instinct',cat:'outdoor',lvl:3,para:'Aventureiro / Lifestyle',dest:'GPS + ponteiros analógicos. Estética clássica + tecnologia.'},
+  {name:'Venu 4',s:'Venu',cat:'lifestyle',lvl:3,para:'Mulher Lifestyle / Bem-estar',dest:'AMOLED premium + saúde feminina completa. Até 9 dias de bateria.'},
+  {name:'Venu X1',s:'Venu',cat:'lifestyle',lvl:4,para:'Lifestyle Premium',dest:'Design quadrado moderno. Para quem quer visual tipo Apple Watch.'},
+  {name:'Vivoactive 6',s:'Vivoactive',cat:'lifestyle',lvl:2,para:'Academia / Lifestyle',dest:'80+ modos esportivos + músicas offline. Versátil para academia e dia a dia.'},
+  {name:'Lily 2',s:'Lily',cat:'lifestyle',lvl:1,para:'Mulher Lifestyle / Presente',dest:'Design joia. Menor relógio Garmin. Elegância e saúde no pulso.'},
+  {name:'Lily 2 Active',s:'Lily',cat:'lifestyle',lvl:2,para:'Mulher Lifestyle / Corrida',dest:'Lily com GPS integrado + resistência à água. Corrida + estilo.'},
+  {name:'Descent G1',s:'Descent',cat:'mergulho',lvl:2,para:'Mergulhador Recreativo',dest:'Entrada no mundo Descent. Dive watch + GPS. Até 100m.'},
+  {name:'Descent G2',s:'Descent',cat:'mergulho',lvl:3,para:'Mergulhador Recreativo / Avançado',dest:'Multigas + AMOLED + GPS. Melhor custo-benefício Descent.'},
+  {name:'Descent Mk3i',s:'Descent',cat:'mergulho',lvl:4,para:'Mergulhador Técnico',dest:'Titânio + AMOLED + multibanda. Para mergulhadores técnicos sérios.'},
+  {name:'Descent X30',s:'Descent',cat:'mergulho',lvl:5,para:'Mergulhador Técnico Avançado',dest:'Autonomia de gás + trimix + modo técnico avançado.'},
+  {name:'Edge 540',s:'Edge',cat:'edge',lvl:2,para:'Ciclista Intermediário',dest:'GPS multibanda + botões físicos. Bateria 26h. Compacto e preciso.'},
+  {name:'Edge 550',s:'Edge',cat:'edge',lvl:2,para:'Ciclista / Tela Brilhante',dest:'2025. Tela 1000 nits + speaker + Cycling Coach. Sucessor do 540.'},
+  {name:'Edge 840',s:'Edge',cat:'edge',lvl:3,para:'Ciclista Dedicado',dest:'Touchscreen + botões + GPS multibanda + ClimbPro. Ideal para MTB e estrada.'},
+  {name:'Edge 850',s:'Edge',cat:'edge',lvl:3,para:'Ciclista Dedicado / Avançado',dest:'2025. Tela 1000 nits + speaker + bike bell. Menor Edge 1050.'},
+  {name:'Edge 1040',s:'Edge',cat:'edge',lvl:4,para:'Ciclista Avançado',dest:'Tela 3.5" + mapas + solar disponível. Bateria 35h+ GPS.'},
+  {name:'Edge 1050',s:'Edge',cat:'edge',lvl:5,para:'Ciclista Elite',dest:'Tela 3.5" 1000 nits + Garmin Pay + bike bell + hazard alerts.'},
+  {name:'GPSMAP 65',s:'GPSMAP',cat:'gps',lvl:3,para:'Trilheiro / Aventureiro',dest:'GPS portátil colorido + multibanda. Botões físicos.'},
+  {name:'GPSMAP 65s',s:'GPSMAP',cat:'gps',lvl:3,para:'Trilheiro / Aventureiro',dest:'GPSMAP 65 + barômetro + bússola 3 eixos.'},
+  {name:'GPSMAP 67',s:'GPSMAP',cat:'gps',lvl:4,para:'Aventureiro / Expedição',dest:'Tela 3" + TopoAtivos Brasil + altímetro + bússola + USB-C. O mais completo.'},
+  {name:'GPSMAP 79',s:'GPSMAP',cat:'gps',lvl:3,para:'Pescador / Náutico',dest:'GPS portátil flutuante para uso náutico. Mapas BlueChart.'},
+  {name:'GPSMAP 86',s:'GPSMAP',cat:'gps',lvl:3,para:'Náutico / Marinheiro',dest:'GPS náutico flutuante 3" + bússola + barômetro. Para embarcações.'},
+  {name:'GPSMAP H1i',s:'GPSMAP',cat:'gps',lvl:3,para:'Caçador Avançado',dest:'GPS portátil para caça. Rastreamento de animais + mapas de propriedade. Com tecnologia InReach.'},
+  {name:'eTrex 22x',s:'eTrex',cat:'gps',lvl:1,para:'Caminhante / Iniciante',dest:'Entrada da linha eTrex. Robusto, simples, mapas TopoActive. Bateria AA.'},
+  {name:'eTrex 32x',s:'eTrex',cat:'gps',lvl:2,para:'Trilheiro / Trekking',dest:'eTrex 22x + bússola 3 eixos + altímetro barométrico. Para quem precisa de bússola real.'},
+  {name:'eTrex Touch',s:'eTrex',cat:'gps',lvl:2,para:'Usuário Casual',dest:'Único eTrex com touchscreen. Mais fácil de navegar nos menus.'},
+  {name:'eTrex Solar',s:'eTrex',cat:'gps',lvl:3,para:'Expedição / Ultra',dest:'Carregamento solar + bateria de até 100h. Para quem fica dias sem carregar.'},
+  {name:'inReach Mini 2',s:'inReach',cat:'gps',lvl:3,para:'Aventureiro / Expedição',dest:'Comunicador satélite bidirecional. SOS + mensagens sem sinal de celular.'},
+  {name:'inReach Mini 3',s:'inReach',cat:'gps',lvl:3,para:'Aventureiro / Expedição',dest:'Mini 2 + tela colorida touch + GPS multibanda + sirene. Versão atual.'},
+  {name:'inReach Mini 3 Plus',s:'inReach',cat:'gps',lvl:4,para:'Profissional / Expedição',dest:'Mini 3 + mensagens de voz (30s) + fotos via satélite. Para uso profissional.'},
+  {name:'Drive 53',s:'Drive',cat:'gps',lvl:1,para:'Motorista / Navegador',dest:'GPS veicular 5". Mapas do Brasil podem ser adquiridos a parte. Offline, sem internet.'},
+  {name:'Approach S44',s:'Approach',cat:'golf',lvl:2,para:'Golfista Iniciante',dest:'+42.000 campos. Distâncias automáticas. Entrada ideal no golfe Garmin.'},
+  {name:'Approach S50',s:'Approach',cat:'golf',lvl:3,para:'Golfista Dedicado',dest:'AMOLED + +42.000 campos + visão aérea. Melhor experiência de golfe.'},
+  {name:'Zumo XT2',s:'Zumo',cat:'moto',lvl:4,para:'Motociclista',dest:'GPS para moto. Tela resistente a luvas, chuva e sol. Roteamento anti-pedágio.'},
+  {name:'Striker 4',s:'Striker',cat:'marine',lvl:1,para:'Pescador Iniciante',dest:'Sonar 3.5" com GPS básico. Entrada acessível para pesca.'},
+  {name:'Striker Vivid 5cv',s:'Striker',cat:'marine',lvl:2,para:'Pescador',dest:'Sonar 5" colorido + ClearVü + SideVü + GPS. Ótimo custo-benefício.'},
+  {name:'ECHOMAP UHD2 52cv',s:'ECHOMAP',cat:'marine',lvl:3,para:'Pescador/Navegador',dest:'Chartplotter + sonar UHD2 5". Mapas BlueChart G3.'},
+  {name:'HRM 200',s:'HRM',cat:'acess',lvl:2,para:'Corredor / Ciclista',dest:'Monitor cardíaco de peito. Precisão superior ao óptico de pulso. Não armazena atividades.'},
+  {name:'HRM 600',s:'HRM',cat:'acess',lvl:4,para:'Corredor / Nadador / Triatleta',dest:'Monitor cardíaco premium com dinâmicas de corrida, HRV e armazenamento de atividades.'},
+  {name:'Varia RTL515',s:'Varia',cat:'acess',lvl:3,para:'Ciclista',dest:'Radar traseiro + luz. Detecta veículos a 140m e alerta no relógio.'},
+  {name:'Rally RK 200',s:'Rally',cat:'acess',lvl:4,para:'Ciclista de Performance',dest:'Pedal medidor de potência SPD. Compatível com qualquer pedivela.'},
+];
+function renderProds(filter){const f=filter==='todos'?prods:prods.filter(p=>p.cat===filter);document.getElementById('prodsBody').innerHTML=f.map(p=>{const dots=Array.from({length:5},(_,i)=>`<div class="ld ${i<p.lvl?'on':''}"></div>`).join('');return`<tr><td><div class="prod-name">${p.name}</div><span class="prod-series">${p.s}</span></td><td><div class="level-dots">${dots}</div></td><td style="font-size:12px;color:var(--text3);">${p.para}</td><td style="font-size:12.5px;color:var(--text);max-width:220px;">${p.dest}</td></tr>`;}).join('');}
+function filterProds(cat,btn){document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderProds(cat);}
+renderProds('todos');
+
+// FAQ
+const faqs=[
+  {q:'Qual a diferença entre Garmin Connect e Connect IQ?',a:'Garmin Connect é o app de sincronização — recebe dados do relógio e integra com Strava, Apple Health etc. Connect IQ é a loja de apps que rodam DENTRO do relógio, como Spotify, Wikiloc e Woo. São coisas completamente diferentes!'},
+  {q:'O Garmin tem Spotify?',a:'Sim! Nos modelos com armazenamento interno (FR265, 570, 955, 965, 970, Fenix 8, Venu 4 e outros). Baixe o app Spotify pela Connect IQ Store, sincronize playlists via Wi-Fi e ouça offline com fones Bluetooth conectados direto ao relógio.'},
+  {q:'O Garmin funciona sem celular?',a:'Sim. O GPS é embutido no relógio. Você sai para correr sem celular e registra todos os dados. A sincronização acontece depois, quando você conecta via Bluetooth.'},
+  {q:'Quanto tempo dura a bateria?',a:'Em smartwatch (sem GPS): FR55 ~2 semanas, Instinct 3 ~26 dias, Fenix 8 ~18 dias. Em GPS ativo: FR55 ~20h, FR955 ~30h, Enduro 3 ~70h. GPS multibanda consome ~30-40% mais que o GPS padrão.'},
+  {q:'Qual a diferença entre GPS multibanda e GPS comum?',a:'O GPS comum usa uma frequência de satélite. O multibanda usa duas (L1 e L5) simultaneamente, resultando em traçado muito mais preciso em cidades com prédios, florestas e montanhas. Disponível no FR265, 570, 955, 965, 970, Fenix 8, Enduro 3.'},
+  {q:'O sensor de FC no pulso é preciso?',a:'Preciso em intensidade moderada (corrida, caminhada, ciclismo constante). Em atividades de alta intensidade, recomendamos o HRM de peito (HRM 200 ou HRM 600) para máxima precisão.'},
+  {q:'O que é o VO2 Max da Garmin?',a:'Estimativa do consumo máximo de oxigênio calculada pelo algoritmo FirstBeat, baseada na relação entre FC e velocidade. Não é medição laboratorial, mas é muito correlacionada ao VO2 Max real e serve como excelente indicador de evolução aeróbica.'},
+  {q:'O que é o Body Battery?',a:'Indicador de energia de 0-100 baseado em HRV, sono, estresse e atividade. Sobe com sono de qualidade, cai com estresse e exercício. Ajuda o atleta a saber o melhor momento para treinar forte ou descansar.'},
+  {q:'O Garmin monitora sono?',a:'Sim. Todos os modelos com sensor de FC monitoram sono automaticamente: fases (leve, profundo, REM), SpO2 noturno (em modelos compatíveis) e pontuação de sono. Os dados ficam disponíveis no Garmin Connect pela manhã.'},
+  {q:'O Garmin funciona com Android e iPhone?',a:'Sim. O Garmin Connect é compatível com iOS e Android. Apple Health sincroniza apenas em iPhones. Todas as funcionalidades principais funcionam em ambas as plataformas.'},
+  {q:'O Garmin tem NFC para pagamento?',a:'Sim, via Garmin Pay nos modelos compatíveis: Fenix 8, FR265, 570, 955, 965, 970, Venu 4, Vivoactive 6 e outros. Funciona com cartões de bancos parceiros (BTG, BB e Santander) cadastrados no Garmin Connect.'},
+  {q:'Qual a garantia oferecida pela Proparts?',a:'A Proparts oferece 2 anos de garantia para todos os dispositivos Garmin. Para acessórios, a garantia é de 1 ano. Sempre direcione o cliente a criar/completar o cadastro, isso garante que trocas e garantias sejam acionadas sem problemas.'},
+  {q:'O Edge é diferente do relógio para ciclismo?',a:'Sim. O Edge é um ciclocomputador fixado no guidão — tela maior, ideal para ver dados em velocidade. Relógios como FR955 ou Fenix 8 também registram ciclismo com precisão. Para ciclista focado, os dois se complementam.'},
+  {q:'Qual a diferença entre Edge 540/840 e Edge 550/850?',a:'Os modelos x50 (550/850, lançados em 2025) são a nova geração: tela mais brilhante (1000 nits), speaker integrado e Cycling Coach. A bateria dos x50 é menor (~10-12h) em troca da tela mais brilhante.'},
+  {q:'O inReach Mini precisa de assinatura para funcionar?',a:'Sim. Sem assinatura ativa, as funções via satélite (SOS, mensagens, rastreamento) ficam desativadas. Existe o plano Enabled (~US$7,99/mês) para SOS de emergência. É possível suspender por até 12 meses sem custo.'},
+  {q:'Qual a diferença entre HRM 200 e HRM 600?',a:'O HRM 200 é para corrida e ciclismo — não armazena atividades, precisa estar conectado ao relógio para registrar dados. O HRM 600 é para corrida, natação e triatlo — armazena as atividades internamente, inclusive embaixo da água, e transmite para o relógio depois.'},
+  {q:'Qual rede de satélites o inReach utiliza para comunicação?',a:'O inReach usa a rede de satélites Iridium®, que oferece cobertura global de 100% do planeta — incluindo oceanos, polos e áreas sem qualquer cobertura de celular.'},
+];
+function renderFaq(){document.getElementById('faqList').innerHTML=faqs.map((f,i)=>`<div class="acc-item" id="faq-${i}"><button class="acc-btn" onclick="toggleAcc(this)"><span><span class="acc-icon">❓</span>${f.q}</span><span class="acc-chevron">▼</span></button><div class="acc-body">${f.a}</div></div>`).join('');}
+function filterFaq(){const q=document.getElementById('faqSearch').value.toLowerCase();faqs.forEach((f,i)=>{const el=document.getElementById('faq-'+i);if(el)el.style.display=(!q||f.q.toLowerCase().includes(q)||f.a.toLowerCase().includes(q))?'':'none';});}
+renderFaq();
+
+// COMPETITORS
+const comps=[
+  {name:'Apple Watch',badge:'⚠️ Principal',bc:'orange',desc:'O concorrente mais citado. Forte em design e integração com iPhone. Fraco em bateria e precisão esportiva.',rows:[{a:'Bateria GPS',g:'30h+ (FR955) / 70h (Enduro)',t:'~6-18h dependendo do modelo'},{a:'Precisão GPS',g:'Multibanda + múltiplos satélites',t:'GPS básico (Ultra tem dual frequency)'},{a:'Foco esportivo',g:'Ferramenta de atleta — FirstBeat',t:'Smartwatch com função esportiva'},{a:'Bateria diária',g:'Dias ou semanas',t:'1-2 dias'},{a:'Compatibilidade',g:'iOS e Android',t:'Exclusivo iPhone'}]},
+  {name:'Polar',badge:'⚠️ Principal',bc:'orange',desc:'Referência em análise científica de treino. Boa análise, mas ecossistema menor.',rows:[{a:'Análise de treino',g:'FirstBeat — líder de mercado',t:'Excelente — base acadêmica'},{a:'GPS',g:'Multibanda nos modelos avançados',t:'Preciso mas sem multibanda na maioria'},{a:'Apps no relógio',g:'Connect IQ com centenas de apps',t:'Ecossistema menor'},{a:'Bateria',g:'Dias ou semanas',t:'Até ~40h GPS nos top'}]},
+  {name:'Coros',badge:'⚡ Crescente',bc:'blue',desc:'Marca chinesa com preço agressivo. Principal argumento do cliente sensível a preço.',rows:[{a:'Preço',g:'Premium — qualidade justifica',t:'Até 30-40% mais barato'},{a:'Ecossistema',g:'Connect IQ + 50+ integrações',t:'Ecossistema em desenvolvimento'},{a:'Suporte no Brasil',g:'Rede oficial Proparts',t:'Suporte mais limitado'},{a:'Histórico',g:'+35 anos no mercado',t:'Marca recente (2012)'}]},
+  {name:'Samsung Galaxy Watch',badge:'💡 Lifestyle',bc:'blue',desc:'Forte em design e Android. Não compete em esporte de performance.',rows:[{a:'Bateria',g:'Dias ou semanas com GPS',t:'1-3 dias com GPS ativo'},{a:'Esportes avançados',g:'Algoritmos específicos por modalidade',t:'Modo esportivo básico'},{a:'Compatibilidade',g:'iOS e Android',t:'Melhor com Samsung Android'}]},
+  {name:'Suunto',badge:'🌿 Nicho Outdoor',bc:'blue',desc:'Herança em outdoor e mergulho. Qualidade, mas ecossistema menor.',rows:[{a:'Outdoor / Trilha',g:'Fenix 8, Instinct 3 — referência',t:'Suunto 9 é boa proposta'},{a:'Mergulho',g:'Série Descent — mais completa',t:'Tradição em dive computers'},{a:'Integrações',g:'Connect IQ + dezenas',t:'Ecossistema mais limitado'},{a:'Distribuição BR',g:'Rede Proparts ampla',t:'Distribuição mais restrita'}]},
+];
+document.getElementById('compList').innerHTML=comps.map(c=>`<div class="comp-card"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;"><div class="comp-brand">${c.name}</div><span class="tag ${c.bc}">${c.badge}</span></div><p style="font-size:13px;color:var(--text2);margin-bottom:12px;line-height:1.6;">${c.desc}</p><table class="vs-table"><tr><th>Aspecto</th><th class="ours">✅ Garmin / Proparts</th><th class="theirs">○ ${c.name}</th></tr>${c.rows.map(r=>`<tr><td style="color:var(--text3);">${r.a}</td><td class="ours">${r.g}</td><td class="theirs">${r.t}</td></tr>`).join('')}</table></div>`).join('');
+
+// SPORTS
+const sports=[
+  {emoji:'🏃',name:'Corrida',metrics:['Distância','Ritmo (min/km)','Cadência (passos/min)','Tempo de contato com solo','FC','Extensão da passada','Oscilação vertical','PacePRO','Potência de corrida','Elevação','VO2 Max estimado','Training Effect']},
+  {emoji:'🚴',name:'Ciclismo',metrics:['Distância','Velocidade (atual/média/máx)','Cadência (RPM)','Elevação acumulada','Potência (com pedal Rally)','FTP estimado','FC','Training Load']},
+  {emoji:'🏊',name:'Natação',metrics:['Distância','Ritmo (min/100m)','Frequência de braçadas','Tipo de braçada (crawl, costas, peito, borboleta)','SWOLF (eficiência)','Tempo de descanso entre séries']},
+  {emoji:'💪',name:'Academia / Força',metrics:['Séries e repetições (detecção automática)','Calorias ativas','Mapa muscular','FC','Tempo de descanso']},
+  {emoji:'🥾',name:'Trilha / Trekking',metrics:['Distância','Subida total acumulada','Velocidade média','FC','Elevação atual','Mapa topográfico (modelos compatíveis)','Wikiloc / Komoot integrado']},
+  {emoji:'🏄',name:'Surf',metrics:['Número de ondas','Velocidade máxima','Distância em ondas','Tempo de sessão','FC']},
+  {emoji:'🪁',name:'Kitesurf',metrics:['Distância total','FC','Velocidade máxima','Altura de saltos em tempo real (app Woo)','Dados de sessão via Hoolan']},
+  {emoji:'⛳',name:'Golfe',metrics:['Scorecard digital','Distância até frente/meio/fundo do green','Detecção automática de tacadas','Handicap','Par do buraco']},
+  {emoji:'🤿',name:'Mergulho (Descent)',metrics:['Profundidade atual e máxima','Tempo de fundo','NDL (limite sem descompressão)','Temperatura da água','Algoritmo Bühlmann','Modo Nitrox','Autonomia de gás (X30)','Modo apneia']},
+  {emoji:'🏍️',name:'Moto (Zumo XT2)',metrics:['Roteamento específico para moto','Evita estradas proibidas','Integração capacete Bluetooth','Rastreamento de rota']},
+];
+document.getElementById('sportsList').innerHTML=sports.map(s=>`<div class="sport-card"><div class="sport-header"><div class="sport-emoji">${s.emoji}</div><div class="sport-name">${s.name}</div></div><div class="metrics-wrap">${s.metrics.map(m=>`<span class="tag">${m}</span>`).join('')}</div></div>`).join('');
+
+// CERTIFICATION
+const certs=[
+  {emoji:'🧭',level:'Nível 1',name:'Explorador',color:'#007CC3',unlocked:true,obj:'Dominar o portfólio básico Garmin, entender os perfis de cliente mais comuns e realizar um atendimento estruturado do início ao fim.',skills:['Identificar os perfis de cliente mais frequentes','Apresentar o produto certo baseado na sondagem','Usar o script de atendimento com confiança','Explicar o Garmin Connect e a sincronização','Contornar as 3 objeções mais comuns'],mods:[{n:1,t:'O Universo Garmin',c:'História, posicionamento e DNA da marca.'},{n:2,t:'Perfis de Cliente',c:'Os 12 perfis: como identificar e comunicar.'},{n:3,t:'Script de Atendimento',c:'Os 5 passos do atendimento presencial.'},{n:4,t:'Objeções Comuns',c:'As principais objeções e como respondê-las.'},{n:5,t:'Quiz Explorador',c:'10 questões. Mínimo 70%. (+100 pts no ranking)'}]},
+  {emoji:'🏃',level:'Nível 2',name:'Corredor',color:'#00C2A8',unlocked:false,obj:'Dominar tecnicamente toda a linha Forerunner e vender para corredores de todos os níveis com autoridade.',skills:['Diferenciar cada modelo Forerunner','Explicar GPS multibanda e FirstBeat','Apresentar PacePRO, Training Readiness e Body Battery','Integrar Garmin com Strava e TrainingPeaks'],mods:[{n:1,t:'Linha Forerunner Completa',c:'FR55 ao FR970: diferenças técnicas.'},{n:2,t:'Métricas de Corrida',c:'PacePRO, potência, VO2 Max, Training Effect.'},{n:3,t:'Ecossistema do Corredor',c:'Strava, TrainingPeaks, Stryd, planos adaptativos.'},{n:4,t:'Quiz Corredor',c:'25 questões. Mínimo 70%. (+100 pts no ranking)'}]},
+  {emoji:'🏅',level:'Nível 3',name:'Maratonista',color:'#F0A500',unlocked:false,obj:'Dominar linhas premium (Fenix, Instinct, Descent, Edge) e vender para atletas de alta performance.',skills:['Apresentar Fenix 8 e Descent com autoridade','Dominar linha Edge de ciclocomputadores','Conduzir comparação Garmin vs concorrentes'],mods:[{n:1,t:'Linha Premium: Fenix, Enduro, Instinct',c:'Diferenciais técnicos e argumentação.'},{n:2,t:'Mergulho: Série Descent',c:'Bühlmann, nitrox e modos técnicos.'},{n:3,t:'Ciclismo: Edge + Rally + Varia',c:'Edge 540/840/1050 + pedais de potência + radar.'},{n:4,t:'Concorrentes em Profundidade',c:'Apple Watch, Polar, Coros — argumentação.'},{n:5,t:'Quiz Maratonista',c:'30 questões. Mínimo 75%. (+100 pts no ranking)'}]},
+  {emoji:'🏆',level:'Nível 4',name:'Triatleta',color:'#FF6B35',unlocked:false,obj:'Tornar-se referência técnica da equipe e ter capacidade de treinar novos colaboradores.',skills:['Dominar 100% do portfólio incluindo náutico e GPS portátil','Conduzir treinamentos para novos colaboradores','Configurar qualquer produto Garmin ao vivo'],mods:[{n:1,t:'Portfólio Completo: Náutico, inReach, GPS',c:'ECHOMAP, Striker, GPSMAP, inReach, Zumo.'},{n:2,t:'Configuração Avançada',c:'Configurar qualquer modelo, Connect IQ, planos.'},{n:3,t:'Mentoria e Liderança',c:'Como transmitir o conhecimento para novos.'},{n:4,t:'Quiz Final Triatleta',c:'40 questões. Mínimo 80%. (+100 pts no ranking)'}]},
+];
+document.getElementById('certList').innerHTML=certs.map((c,i)=>`<div class="cert-card ${c.unlocked?'unlocked':'locked'}" ${c.unlocked?`onclick="openCertModal(${i})"`:''} ><div class="cert-header"><div class="cert-emoji">${c.emoji}</div><div><div class="cert-level-text">${c.level}</div><div class="cert-name-text">${c.name}</div></div>${c.unlocked?`<div style="margin-left:auto;font-size:12px;font-weight:600;color:var(--g);">Disponível →</div>`:`<div style="margin-left:auto;font-size:20px;">🔒</div>`}</div><div class="cert-stripe" style="background:linear-gradient(90deg,${c.color},transparent);"></div><div class="cert-body"><div class="cert-obj">${c.obj}</div><div class="cert-modules">${c.mods.map(m=>`<span class="cert-mod-pill">Módulo ${m.n}: ${m.t}</span>`).join('')}</div>${c.unlocked?'<div style="font-size:12px;font-weight:600;color:var(--g);margin-top:12px;">Toque para ver os módulos →</div>':''}</div></div>`).join('');
+function openCertModal(i){const c=certs[i];document.getElementById('certModalContent').innerHTML=`<div style="font-size:40px;margin-bottom:8px;">${c.emoji}</div><div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:2px;">${c.level}</div><div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:24px;text-transform:uppercase;color:var(--text);margin-bottom:6px;">${c.name}</div><div style="height:3px;background:linear-gradient(90deg,${c.color},transparent);border-radius:2px;margin-bottom:16px;"></div><div class="modal-section"><h4>Objetivo</h4><p style="font-size:13px;color:var(--text);line-height:1.6;">${c.obj}</p></div><div class="modal-section"><h4>Habilidades desenvolvidas</h4><ul>${c.skills.map(s=>`<li>${s}</li>`).join('')}</ul></div><div class="modal-section"><h4>Módulos</h4>${c.mods.map(m=>`<div style="background:var(--off);border-radius:8px;padding:12px;margin-bottom:8px;"><div style="font-family:'Rajdhani',sans-serif;font-weight:700;color:var(--g);font-size:14px;margin-bottom:3px;">Módulo ${m.n}: ${m.t}</div><div style="font-size:12px;color:var(--text2);line-height:1.6;">${m.c}</div></div>`).join('')}</div>`;document.getElementById('certModal').classList.add('open');}
+function closeCertModal(e){if(e.target===document.getElementById('certModal'))document.getElementById('certModal').classList.remove('open');}
+
+// ===== QUIZ =====
+const quizData=[
+  {q:'Em que ano a Garmin foi fundada?',opts:['1985','1989','1993','1999'],correct:1,exp:'A Garmin foi fundada em 1989 por Gary Burrell e Min Kao em Lenexa, Kansas, EUA.'},
+  {q:'O que significa o nome "Garmin"?',opts:['Acrônimo de GPS Advanced Routing Monitoring & Intelligence Navigation','Junção das iniciais de Gary Burrell e Min Kao (GAR + MIN)','Nome de uma cidade no Kansas onde foi fundada','Palavra de origem japonesa que significa "precisão"'],correct:1,exp:'GAR + MIN = GARMIN. O nome vem das iniciais dos dois fundadores: Gary Burrell e Min Kao.'},
+  {q:'Quais são os 5 segmentos oficiais da Garmin?',opts:['Fitness, Outdoor, Aviation, Marine e Auto','Sports, Adventure, Navigation, Diving e Cycling','Watches, GPS, Cycling, Marine e Automotive','Running, Cycling, Swimming, Hiking e Driving'],correct:0,exp:'Os 5 segmentos oficiais são: Fitness, Outdoor, Aviation (Aviação), Marine (Náutico) e Auto (Automotivo).'},
+  {q:'Qual rede de satélites o inReach utiliza para comunicação?',opts:['Starlink (SpaceX)','GPS americano (NAVSTAR)','Iridium®','Galileo (europeu)'],correct:2,exp:'O inReach usa a rede Iridium®, que oferece cobertura global de 100% do planeta — incluindo oceanos e polos.'},
+  {q:'O que é o Body Battery™?',opts:['Indicador da capacidade da bateria do relógio','Indicador de energia do corpo de 0-100 baseado em HRV, sono e estresse','Medidor de força muscular durante treinos de academia','Estimativa de calorias restantes para consumir no dia'],correct:1,exp:'Body Battery é um indicador exclusivo Garmin que mede a energia disponível do corpo (0-100) com base em HRV, qualidade do sono e níveis de estresse.'},
+  {q:'Qual a principal diferença do GPS multibanda para o GPS comum?',opts:['O multibanda conecta a mais satélites ao mesmo tempo, chegando a 50','O multibanda usa duas frequências de satélite (L1 e L5) resultando em traçado muito mais preciso em cidades e florestas','O multibanda funciona sem bateria usando energia solar','O multibanda é exclusivo para atividades aquáticas'],correct:1,exp:'O GPS multibanda usa duas frequências (L1 e L5) simultaneamente, resultando em muito mais precisão de traçado em ambientes com interferência como cidades com prédios altos e florestas densas.'},
+  {q:'O que é o VO2 Max no contexto Garmin?',opts:['Velocidade máxima registrada em uma corrida','Volume máximo de batimentos cardíacos por minuto','Estimativa do consumo máximo de oxigênio calculada pelo algoritmo FirstBeat','Medição de oxigenação do sangue durante o sono'],correct:2,exp:'O VO2 Max do Garmin é uma estimativa calculada pelo algoritmo FirstBeat baseada na relação entre FC e velocidade durante treinos. É um excelente indicador de evolução da capacidade aeróbica.'},
+  {q:'O que diferencia o Garmin Connect do Connect IQ?',opts:['Connect é para relógios e Connect IQ é para ciclocomputadores','Connect é o app de sincronização de dados; Connect IQ é a loja de apps que rodam dentro do relógio','Connect é gratuito e Connect IQ é pago','Connect é para iOS e Connect IQ é para Android'],correct:1,exp:'Garmin Connect = app que recebe e sincroniza dados do relógio. Connect IQ = loja de apps que instalam e rodam diretamente no relógio, como Spotify, Woo e Wikiloc.'},
+  {q:'Qual a política de garantia da Proparts para dispositivos Garmin?',opts:['6 meses de garantia para todos os produtos','1 ano para dispositivos e 6 meses para acessórios','2 anos para dispositivos e 1 ano para acessórios','1 ano para todos os produtos sem distinção'],correct:2,exp:'A Proparts oferece 2 anos de garantia para dispositivos e 1 ano para acessórios. Sempre guarde a nota fiscal para acionar a garantia.'},
+  {q:'Qual das afirmações sobre a Garmin é CORRETA?',opts:['A Garmin foi fundada no Japão e é uma empresa asiática','A Garmin é especializada exclusivamente em relógios esportivos desde 1989','A Garmin tem mais de 35 anos de expertise em GPS e atua em 5 segmentos: Fitness, Outdoor, Aviation, Marine e Auto','A Garmin foi a primeira empresa a criar um smartphone com GPS integrado'],correct:2,exp:'Correto! A Garmin foi fundada em 1989 nos EUA, tem mais de 35 anos de expertise em GPS e atua em 5 segmentos oficiais: Fitness, Outdoor, Aviation, Marine e Auto.'},
+];
+
+let currentQ=0,score=0,answered=false;
+function initQuiz(){currentQ=0;score=0;answered=false;renderQuestion();}
+function renderQuestion(){
+  const q=quizData[currentQ];
+  const pct=((currentQ)/quizData.length)*100;
+  document.getElementById('quizBar').style.width=pct+'%';
+  document.getElementById('quizContent').innerHTML=`
+    <div class="quiz-q-num">Pergunta ${currentQ+1} de ${quizData.length}</div>
+    <div class="quiz-q">${q.q}</div>
+    <div class="quiz-options">
+      ${q.opts.map((o,i)=>`<button class="quiz-opt" onclick="answerQ(${i})" id="opt-${i}">${o}</button>`).join('')}
+    </div>
+    <div class="quiz-feedback" id="quizFeedback"></div>
+    <div class="quiz-nav"><button class="quiz-btn" id="nextBtn" onclick="nextQ()" disabled>${currentQ<quizData.length-1?'Próxima →':'Ver Resultado'}</button></div>
+  `;
+  answered=false;
+}
+function answerQ(i){
+  if(answered)return;
+  answered=true;
+  const q=quizData[currentQ];
+  document.querySelectorAll('.quiz-opt').forEach(b=>b.classList.add('disabled'));
+  const opts=document.querySelectorAll('.quiz-opt');
+  const fb=document.getElementById('quizFeedback');
+  if(i===q.correct){
+    opts[i].classList.add('correct');
+    fb.className='quiz-feedback show ok';
+    fb.textContent='✅ Correto! '+q.exp;
+    score++;
+  } else {
+    opts[i].classList.add('wrong');
+    opts[q.correct].classList.add('correct');
+    fb.className='quiz-feedback show fail';
+    fb.textContent='❌ Incorreto. '+q.exp;
+  }
+  document.getElementById('nextBtn').disabled=false;
+}
+function nextQ(){
+  currentQ++;
+  if(currentQ<quizData.length){renderQuestion();}
+  else{showResult();}
+}
+function showResult(){
+  const pct=Math.round((score/quizData.length)*100);
+  const passed=pct>=70;
+  document.getElementById('quizBar').style.width='100%';
+  document.getElementById('quizContent').innerHTML=`
+    <div class="quiz-result">
+      <div class="quiz-result-emoji">${passed?'🎉':'📚'}</div>
+      <div class="quiz-result-title" style="color:${passed?'var(--acc)':'var(--warn)'};">${passed?'Parabéns! Aprovado!':'Continue estudando!'}</div>
+      <div class="quiz-result-score">Você acertou <strong>${score}</strong> de ${quizData.length} questões — <strong>${pct}%</strong></div>
+      ${passed?`
+        <div class="register-form">
+          <label class="register-label">📝 Registre sua conclusão — informe seu nome ou código</label>
+          <input type="text" class="register-input" id="regName" placeholder="Ex: Leticia Castro ou 05" maxlength="60">
+          <button class="register-btn" onclick="registerResult(${pct})">Registrar Conclusão ✓</button>
+          <div class="register-success" id="regSuccess">✅ Registrado com sucesso! Resultado enviado para a liderança da Proparts.</div>
+        </div>
+      `:''}
+      <div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+        <button class="quiz-btn" onclick="initQuiz()" style="background:var(--text2);">Refazer Quiz</button>
+        ${passed?'':'<button class="quiz-btn" onclick="goHome();setTimeout(()=>openPanel(\'universo\'),100)">Revisar Conteúdo</button>'}
+      </div>
+    </div>
+  `;
+}
+async function registerResult(pct){
+  const name=document.getElementById('regName').value.trim();
+  if(!name){document.getElementById('regName').style.borderColor='var(--warn)';return;}
+  const btn=document.querySelector('.register-btn');
+  btn.textContent='Enviando...';btn.disabled=true;
+  try{
+    await fetch(SHEETS_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nome:name,modulo:'Módulo 1 — Universo Garmin',nota:pct,acertos:Math.round(pct/10),total:10}),mode:'no-cors'});
+    document.querySelector('.register-form').style.display='none';
+    document.getElementById('regSuccess').style.display='block';
+  }catch(e){btn.textContent='Registrar Conclusão ✓';btn.disabled=false;alert('Erro ao registrar. Verifique sua conexão e tente novamente.');}
+}
+initQuiz();
+</script>
+</body>
+</html>
