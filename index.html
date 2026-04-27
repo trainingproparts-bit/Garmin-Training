@@ -745,7 +745,9 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
 </div>
 
 <!-- ======================== JS ======================== -->
-  
+  <script>
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyv0UhVSiM52K-g8A31Myih_UMMGKhZIwRAAMcMW_3WwYofjgtNCV-6J7p6iv0ODSsU/exec';
+
 // NAV
 function openPanel(id){document.getElementById('home').style.display='none';document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.getElementById('panel-'+id).classList.add('active');window.scrollTo(0,0);}
 function goHome(){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.getElementById('home').style.display='block';window.scrollTo(0,0);}
