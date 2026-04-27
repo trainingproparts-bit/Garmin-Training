@@ -6,7 +6,7 @@
 
 // ID da planilha do Google Sheets
 // Troque pelo ID real da sua planilha, se necessário
-const SPREADSHEET_ID = 'AKfycbyv0UhVSiM52K-g8A31Myih_UMMGKhZIwRAAMcMW_3WwYofjgtNCV-6J7p6iv0ODSsU';
+const SPREADSHEET_ID = '1jltq1uvJOnO8_Bw4Fjn752kCmWkYMc01x90tL_fx7es';
 
 // Nome da aba onde os dados serão salvos
 const SHEET_NAME = 'Resultados';
