@@ -12,7 +12,6 @@ const ASSETS_TO_CACHE = [
   './manifest.json',
   './icons/icon-192.png',
   './icons/icon-512.png',
-  // Fontes do Google (serão cacheadas na primeira visita)
   'https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap'
 ];
 
@@ -49,16 +48,13 @@ self.addEventListener('activate', (event) => {
 
 // ── FETCH: Cache-First, fallback para rede ──
 self.addEventListener('fetch', (event) => {
-  // Ignora requisições que não são GET
   if (event.request.method !== 'GET') return;
 
-  // Ignora requisições para o Google Sheets (quiz) — sempre usa a rede
   if (event.request.url.includes('script.google.com')) return;
 
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) {
-        // Retorna do cache E atualiza em background (stale-while-revalidate)
         const fetchPromise = fetch(event.request).then((networkResponse) => {
           if (networkResponse && networkResponse.status === 200) {
             caches.open(CACHE_NAME).then((cache) => {
@@ -66,11 +62,10 @@ self.addEventListener('fetch', (event) => {
             });
           }
           return networkResponse;
-        }).catch(() => {}); // Falha silenciosa na atualização em background
+        }).catch(() => {});
         return cachedResponse;
       }
 
-      // Não está em cache — busca na rede e cacheia
       return fetch(event.request).then((networkResponse) => {
         if (!networkResponse || networkResponse.status !== 200 || networkResponse.type === 'opaque') {
           return networkResponse;
@@ -81,7 +76,6 @@ self.addEventListener('fetch', (event) => {
         });
         return networkResponse;
       }).catch(() => {
-        // Offline e não está em cache: retorna página offline básica
         if (event.request.destination === 'document') {
           return caches.match('./index.html');
         }
