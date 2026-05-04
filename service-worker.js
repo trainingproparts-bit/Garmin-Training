@@ -2,8 +2,7 @@
 // SERVICE WORKER — Garmin Training PWA
 // Estratégia: Cache-First para assets estáticos
 // ============================================================
-
-const CACHE_NAME = 'garmin-training-v1';
+const CACHE_NAME = 'garmin-training-v2';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -14,7 +13,6 @@ const ASSETS_TO_CACHE = [
   './icons/icon-512.png',
   'https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap'
 ];
-
 // ── INSTALL: cacheia os arquivos principais ──
 self.addEventListener('install', (event) => {
   console.log('[SW] Instalando...');
@@ -28,7 +26,6 @@ self.addEventListener('install', (event) => {
       .catch((err) => console.error('[SW] Erro no cache:', err))
   );
 });
-
 // ── ACTIVATE: limpa caches antigos ──
 self.addEventListener('activate', (event) => {
   console.log('[SW] Ativando...');
@@ -45,13 +42,10 @@ self.addEventListener('activate', (event) => {
     }).then(() => self.clients.claim())
   );
 });
-
 // ── FETCH: Cache-First, fallback para rede ──
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
-
   if (event.request.url.includes('script.google.com')) return;
-
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) {
@@ -65,7 +59,6 @@ self.addEventListener('fetch', (event) => {
         }).catch(() => {});
         return cachedResponse;
       }
-
       return fetch(event.request).then((networkResponse) => {
         if (!networkResponse || networkResponse.status !== 200 || networkResponse.type === 'opaque') {
           return networkResponse;
