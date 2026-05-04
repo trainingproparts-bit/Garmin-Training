@@ -1,6 +1,6 @@
 // ============================================================
 // APP.JS — Garmin Training PWA
-// Proparts · Importadora Oficial Garmin no Brasil
+// Operação By Proparts · Importadora Oficial
 // ============================================================
 
 // ── CONFIGURAÇÃO — EDITE AQUI ──────────────────────────────
