@@ -417,7 +417,8 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
 
     <div class="menu-section-label">Formação & Gamificação</div>
     <div class="menu-grid">
-      <div class="menu-card" onclick="openPanel('universo')"><div class="menu-badge new">NOVO</div><span class="menu-icon">🌍</span><div class="menu-name">Universo Garmin</div><div class="menu-desc">Módulo 1 — História, DNA e tecnologias</div></div>
+      <div class="menu-card" onclick="openPanel('universo')"><div class="menu-badge new">MÓDULO 1</div><span class="menu-icon">🌍</span><div class="menu-name">Universo Garmin</div><div class="menu-desc">Módulo 1 — História, DNA e tecnologias</div></div>
+      <div class="menu-card" onclick="openPanel('perfis-modulo')"><div class="menu-badge new">MÓDULO 2</div><span class="menu-icon">👥</span><div class="menu-name">Perfis de Cliente</div><div class="menu-desc">Módulo 2 — Identifique e conquiste cada perfil</div></div>
       <div class="menu-card" onclick="openPanel('certificacao')"><span class="menu-icon">🏅</span><div class="menu-name">Certificação</div><div class="menu-desc">Sua trilha: Explorador → Triatleta</div></div>
       <div class="menu-card" onclick="openPanel('ranking')"><span class="menu-icon">🏆</span><div class="menu-name">Ranking</div><div class="menu-desc">Pódio da equipe e pontuação</div></div>
     </div>
@@ -719,6 +720,280 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
       </div>
       <div id="quizContent"></div>
     </div>
+  </div>
+</div>
+
+<!-- MÓDULO 2 — PERFIS DE CLIENTE -->
+<div class="panel" id="panel-perfis-modulo">
+  <div class="panel-header"><button class="back-btn" onclick="goHome()">← Início</button><div class="panel-title">👥 Perfis de <span>Cliente</span></div></div>
+  <div class="panel-body">
+
+    <div class="universe-hero" style="background:linear-gradient(135deg,#0a1628,#112244);"><div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:0.7;margin-bottom:4px;">Módulo 2 — Explorador · by Proparts</div><div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:28px;letter-spacing:2px;margin-bottom:8px;">CONHEÇA SEU CLIENTE</div><p style="font-size:14px;opacity:0.85;line-height:1.6;">Identificar o perfil certo é a diferença entre vender o produto perfeito e perder a venda. Cada cliente tem sinais claros — aprenda a ler e a responder com confiança.</p></div>
+
+    <!-- ── BLOCO 1: CORREDORES ── -->
+    <div class="card-label" style="margin-top:8px;margin-bottom:14px;">🏃 Perfis de Corrida</div>
+
+    <div class="card" style="border-left:4px solid var(--g);margin-bottom:14px;">
+      <div class="card-title">🏃 Corredor Iniciante</div>
+      <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:10px;">Começa a correr agora ou retorna ao esporte. Nunca usou GPS, quer algo simples para monitorar tempo e distância.</p>
+      <div class="grid2" style="gap:10px;">
+        <div>
+          <div class="p-sinais-label" style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:6px;">Como identificar</div>
+          <ul class="bul"><li>Nunca usou relógio GPS</li><li>Fala de "começar a correr"</li><li>Pergunta o modelo mais simples</li><li>Quer monitorar tempo e distância</li></ul>
+        </div>
+        <div>
+          <div class="p-sinais-label" style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:6px;">Como apresentar</div>
+          <ul class="bul"><li>FR55 — porta de entrada ideal</li><li>FR165 — AMOLED desde o início</li><li>Fale dos planos de treino adaptativos</li><li>Mostre sincronização fácil com celular</li></ul>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <span class="prod-pill main">Forerunner 55</span>
+        <span class="prod-pill">Forerunner 165</span>
+      </div>
+    </div>
+
+    <div class="card" style="border-left:4px solid var(--acc);margin-bottom:14px;">
+      <div class="card-title">🏅 Corredor Dedicado</div>
+      <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:10px;">Treina com frequência, corre 3+ vezes por semana e busca evolução. Já usa relógio GPS básico e quer mais métricas.</p>
+      <div class="grid2" style="gap:10px;">
+        <div>
+          <div class="p-sinais-label" style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:6px;">Como identificar</div>
+          <ul class="bul"><li>Fala em ritmo, pace, PR</li><li>Corre 3+ vezes por semana</li><li>Pergunta por GPS multibanda</li><li>Menciona VO2 Max</li></ul>
+        </div>
+        <div>
+          <div class="p-sinais-label" style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:6px;">Como apresentar</div>
+          <ul class="bul"><li>FR265 ou 570 — GPS multibanda completo</li><li>Fale do Training Readiness</li><li>PacePRO para estratégia de prova</li><li>Destaque Strava, TrainingPeaks</li></ul>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <span class="prod-pill main">Forerunner 265</span>
+        <span class="prod-pill">Forerunner 570</span>
+        <span class="prod-pill">Forerunner 955</span>
+      </div>
+    </div>
+
+    <div class="card" style="border-left:4px solid var(--gold);margin-bottom:20px;">
+      <div class="card-title">🏆 Atleta de Elite / Triatleta</div>
+      <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:10px;">Alto volume de treino, compete em triathlon ou ultras. Treina 10h+ por semana e quer o melhor em bateria e precisão.</p>
+      <div class="grid2" style="gap:10px;">
+        <div>
+          <div class="p-sinais-label" style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:6px;">Como identificar</div>
+          <ul class="bul"><li>Menciona triathlon, Ironman, ultra</li><li>Pede bateria de 30h+ GPS real</li><li>Já tem relógio, quer upgrade</li><li>Treina 10h+ por semana</li></ul>
+        </div>
+        <div>
+          <div class="p-sinais-label" style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:6px;">Como apresentar</div>
+          <ul class="bul"><li>FR955 ou 965 — ferramentas de triatleta</li><li>Fenix 8 para outdoor + esporte</li><li>Bateria 30h+ GPS real</li><li>Training Readiness para periodização</li></ul>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <span class="prod-pill main">Forerunner 965</span>
+        <span class="prod-pill">Forerunner 955</span>
+        <span class="prod-pill">Forerunner 970</span>
+        <span class="prod-pill">Fenix 8</span>
+      </div>
+    </div>
+
+    <!-- ── BLOCO 2: OUTDOOR & LIFESTYLE ── -->
+    <div class="card-label" style="margin-bottom:14px;">🌿 Outdoor, Lifestyle & Especialidades</div>
+
+    <div class="card" style="border-left:4px solid #2e7d32;margin-bottom:14px;">
+      <div class="card-title">🌿 Aventureiro / Trilheiro</div>
+      <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:10px;">Ama trilhas, camping e expedições. Quer resistência militar, bateria longa e mapas topográficos offline.</p>
+      <div class="grid2" style="gap:10px;">
+        <div>
+          <div class="p-sinais-label" style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:6px;">Como identificar</div>
+          <ul class="bul"><li>Fala de trilha, serra, montanha</li><li>Pede GPS com mapa topográfico</li><li>Quer resistência e bateria longa</li><li>Menciona acampamento ou expedição</li></ul>
+        </div>
+        <div>
+          <div class="p-sinais-label" style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:6px;">Como apresentar</div>
+          <ul class="bul"><li>Instinct 3 — MIL-STD-810, 26 dias de bateria</li><li>Fenix 8 para o máximo em outdoor</li><li>Mapas TopoActive e trilhas offline</li><li>inReach para expedições sem sinal</li></ul>
+        </div>
+      </div>
+      <div class="tip" style="margin:10px 0 6px;">💡 <strong>MIL-STD-810</strong> = certificação militar americana de resistência a impacto, temperatura extrema, umidade, altitude e vibração. Argumento decisivo para quem vai a expedições longas.</div>
+      <div>
+        <span class="prod-pill main">Instinct 3</span>
+        <span class="prod-pill">Fenix 8</span>
+        <span class="prod-pill">Enduro 3</span>
+      </div>
+    </div>
+
+    <div class="card" style="border-left:4px solid #c2185b;margin-bottom:14px;">
+      <div class="card-title">💎 Mulher Lifestyle</div>
+      <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:10px;">Quer design elegante com funções inteligentes. Compara com Apple Watch no design e valoriza saúde feminina.</p>
+      <div class="grid2" style="gap:10px;">
+        <div>
+          <div class="p-sinais-label" style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:6px;">Como identificar</div>
+          <ul class="bul"><li>Pede relógio menor ou mais bonito</li><li>Quer saúde feminina (ciclo)</li><li>Compra de presente para ela</li><li>Compara com Apple Watch no design</li></ul>
+        </div>
+        <div>
+          <div class="p-sinais-label" style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:6px;">Como apresentar</div>
+          <ul class="bul"><li>Lily 2 — menor e mais elegante, design joia</li><li>Lily 2 Active — Lily com GPS integrado</li><li>Venu 4 — AMOLED premium, saúde feminina</li><li>Ciclo, gravidez, menopausa no Garmin</li></ul>
+        </div>
+      </div>
+      <div class="obj-block" style="margin-top:10px;"><div class="obj-q">🗣️ "O Apple Watch tem mais funções de smartwatch."</div><div class="obj-a">✅ O Lily 2 Active tem GPS integrado e bateria de até 7 dias. O Apple Watch dura 1-2 dias com GPS. Para quem não quer carregar todo dia, o Garmin vence.</div></div>
+      <div>
+        <span class="prod-pill main">Lily 2 Active</span>
+        <span class="prod-pill">Lily 2</span>
+        <span class="prod-pill">Venu 4</span>
+      </div>
+    </div>
+
+    <div class="card" style="border-left:4px solid #1565c0;margin-bottom:14px;">
+      <div class="card-title">🚴 Ciclista</div>
+      <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:10px;">Pedala com frequência — estrada, MTB ou casual. Quer GPS no guidão, métricas de cadência ou potência, e segurança.</p>
+      <div class="grid2" style="gap:10px;">
+        <div>
+          <div class="p-sinais-label" style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:6px;">Como identificar</div>
+          <ul class="bul"><li>Menciona bike, MTB, estrada, gravel</li><li>Pergunta por GPS para guidão</li><li>Fala de Strava, subidas, cadência</li><li>Quer medir cadência ou potência</li></ul>
+        </div>
+        <div>
+          <div class="p-sinais-label" style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:6px;">Como apresentar</div>
+          <ul class="bul"><li>Edge 540/840 — GPS no guidão</li><li>Varia RTL515 — radar, detecta carros a 140m</li><li>Rally RK 200 — pedal medidor de potência SPD</li><li>FR955 ou Fenix 8 para multiesporte</li></ul>
+        </div>
+      </div>
+      <div class="tip" style="margin:10px 0 6px;">💡 <strong>Potência</strong> é a métrica mais honesta do ciclismo — não é afetada por cansaço, calor ou adrenalina. Com o Rally RK 200, o ciclista treina nas zonas certas e para de "pedalar por sentimento".</div>
+      <div>
+        <span class="prod-pill main">Edge 840</span>
+        <span class="prod-pill">Edge 540</span>
+        <span class="prod-pill">Edge 1050</span>
+        <span class="prod-pill">Varia RTL515</span>
+        <span class="prod-pill">Rally RK 200</span>
+      </div>
+    </div>
+
+    <div class="card" style="border-left:4px solid var(--acc);margin-bottom:14px;">
+      <div class="card-title">🏊 Nadador / Triatleta</div>
+      <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:10px;">Nada regularmente ou compete em triathlon. Quer métricas de natação e um relógio que funcione bem na água.</p>
+      <div class="grid2" style="gap:10px;">
+        <div>
+          <div class="p-sinais-label" style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:6px;">Como identificar</div>
+          <ul class="bul"><li>Fala de piscina, mar, braçadas</li><li>Quer SWOLF ou eficiência de braçada</li><li>Menciona triathlon ou duathlon</li><li>Pede relógio para natação</li></ul>
+        </div>
+        <div>
+          <div class="p-sinais-label" style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:6px;">Como apresentar</div>
+          <ul class="bul"><li>FR955 ou 965 — natação + ciclismo + corrida</li><li>Fenix 8 para o triatleta top</li><li>HRM 600 — FC na água</li><li>SWOLF: quanto menor, mais eficiente</li></ul>
+        </div>
+      </div>
+      <div>
+        <span class="prod-pill main">Forerunner 955</span>
+        <span class="prod-pill">Forerunner 965</span>
+        <span class="prod-pill">Fenix 8</span>
+        <span class="prod-pill">HRM 600</span>
+      </div>
+    </div>
+
+    <div class="card" style="border-left:4px solid #00838f;margin-bottom:14px;">
+      <div class="card-title">🤿 Mergulhador</div>
+      <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:10px;">Pratica mergulho recreativo ou técnico. Pergunta sobre profundidade, descompressão, nitrox e computador de mergulho.</p>
+      <div class="grid2" style="gap:10px;">
+        <div>
+          <div class="p-sinais-label" style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:6px;">Como identificar</div>
+          <ul class="bul"><li>Menciona profundidade, NDL, nitrox</li><li>Pergunta sobre computador de mergulho</li><li>Fala de mergulho técnico ou trimix</li><li>Quer algo que funcione a mais de 40m</li></ul>
+        </div>
+        <div>
+          <div class="p-sinais-label" style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:6px;">Como apresentar</div>
+          <ul class="bul"><li>Descent G2 — smartwatch completo + mergulho</li><li>Descent Mk3i para técnico sério</li><li>Descent X30 com autonomia de gás</li><li>Argumento: smartwatch full no dia a dia</li></ul>
+        </div>
+      </div>
+      <div class="obj-block" style="margin-top:10px;"><div class="obj-q">🗣️ "Prefiro um computador de mergulho separado."</div><div class="obj-a">✅ Computadores separados não têm GPS de superfície, mapas ou monitoramento de saúde. O Descent faz tudo isso e é um smartwatch completo no dia a dia.</div></div>
+      <div>
+        <span class="prod-pill main">Descent G2</span>
+        <span class="prod-pill">Descent Mk3i</span>
+        <span class="prod-pill">Descent X30</span>
+      </div>
+    </div>
+
+    <div class="card" style="border-left:4px solid var(--gold);margin-bottom:14px;">
+      <div class="card-title">⛳ Golfista</div>
+      <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:10px;">Joga golfe com regularidade e quer distâncias automáticas do green, scorecard digital e estatísticas de handicap.</p>
+      <div class="grid2" style="gap:10px;">
+        <div>
+          <div class="p-sinais-label" style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:6px;">Como identificar</div>
+          <ul class="bul"><li>Fala de green, par, bunker, handicap</li><li>Pergunta por GPS de golfe</li><li>Usa luvas de golfe ou tem look do esporte</li><li>Quer scorecard digital</li></ul>
+        </div>
+        <div>
+          <div class="p-sinais-label" style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:6px;">Como apresentar</div>
+          <ul class="bul"><li>Approach S44 — entrada com +42.000 campos</li><li>Approach S50 — AMOLED, experiência completa</li><li>Distâncias automáticas do green</li><li>Scorecard e estatísticas de handicap</li></ul>
+        </div>
+      </div>
+      <div>
+        <span class="prod-pill main">Approach S50</span>
+        <span class="prod-pill">Approach S44</span>
+      </div>
+    </div>
+
+    <div class="card" style="border-left:4px solid var(--warn);margin-bottom:14px;">
+      <div class="card-title">🏍️ Motociclista</div>
+      <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:10px;">Piloto de moto que faz viagens longas e quer GPS robusto, legível com luvas e com roteamento específico para moto.</p>
+      <div class="grid2" style="gap:10px;">
+        <div>
+          <div class="p-sinais-label" style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:6px;">Como identificar</div>
+          <ul class="bul"><li>Fala de viagem de moto, rota, estrada</li><li>Pergunta por GPS para moto</li><li>Usa roupas ou acessórios de motociclismo</li></ul>
+        </div>
+        <div>
+          <div class="p-sinais-label" style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:6px;">Como apresentar</div>
+          <ul class="bul"><li>Zumo XT2 — GPS específico para moto</li><li>Tela resistente a luvas e chuva</li><li>Roteamento evita ruas proibidas para motos</li><li>Integração com capacete Bluetooth</li></ul>
+        </div>
+      </div>
+      <div>
+        <span class="prod-pill main">Zumo XT2</span>
+      </div>
+    </div>
+
+    <div class="card" style="border-left:4px solid #0277bd;margin-bottom:20px;">
+      <div class="card-title">🎣 Pescador / Náutico</div>
+      <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:10px;">Pesca em rios, represas ou mar. Quer sonar, GPS náutico e rastrear pontos de pesca.</p>
+      <div class="grid2" style="gap:10px;">
+        <div>
+          <div class="p-sinais-label" style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:6px;">Como identificar</div>
+          <ul class="bul"><li>Menciona pesca em represa, rio ou mar</li><li>Fala de barco, canoa, lancha</li><li>Pergunta sobre sonar ou ecobatímetro</li></ul>
+        </div>
+        <div>
+          <div class="p-sinais-label" style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:6px;">Como apresentar</div>
+          <ul class="bul"><li>Striker 4 — entrada para pesca</li><li>Striker Vivid 5cv — ClearVü e SideVü</li><li>ECHOMAP UHD2 — mapas náuticos detalhados</li><li>GPS marca os pontos de pesca</li></ul>
+        </div>
+      </div>
+      <div>
+        <span class="prod-pill main">Striker Vivid 5cv</span>
+        <span class="prod-pill">Striker 4</span>
+        <span class="prod-pill">ECHOMAP UHD2 52cv</span>
+      </div>
+    </div>
+
+    <!-- ── DICAS GERAIS DE SONDAGEM ── -->
+    <div class="card-label" style="margin-bottom:14px;">💬 Como Sondar e Identificar</div>
+    <div class="grid2" style="margin-bottom:20px;">
+      <div class="card" style="margin-bottom:0;">
+        <div class="card-title">🎯 As 3 Perguntas Essenciais</div>
+        <ul class="bul">
+          <li><strong>"Qual atividade você pratica?"</strong> — define a linha do produto</li>
+          <li><strong>"Você já tem relógio GPS?"</strong> — define nível de entrada</li>
+          <li><strong>"O que você quer monitorar?"</strong> — alinha expectativa e produto</li>
+        </ul>
+      </div>
+      <div class="card" style="margin-bottom:0;">
+        <div class="card-title">⚡ Erros a Evitar</div>
+        <ul class="bul">
+          <li>Oferecer o mais caro sem sondar o perfil</li>
+          <li>Focar em especificações antes de entender a dor</li>
+          <li>Ignorar sinais visuais (roupa, acessórios, vocabulário)</li>
+          <li>Não perguntar para quem é o presente</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tip">💡 <strong>Regra de ouro:</strong> O cliente sempre revela o perfil dele. Ouça o vocabulário que ele usa — "pace", "Ironman", "trilha", "par", "braçada" — e você já sabe qual linha indicar antes mesmo de perguntar.</div>
+
+    <!-- ── QUIZ MÓDULO 2 ── -->
+    <div class="quiz-wrap" id="quizWrap2" style="margin-top:24px;">
+      <div class="quiz-header">
+        <div class="quiz-title">🎯 Flash Quiz — Módulo 2</div>
+        <div class="quiz-sub">15 perguntas · Mínimo 70% para aprovação · Seu resultado será registrado</div>
+        <div class="quiz-progress"><div class="quiz-progress-bar" id="quizBar2" style="width:0%"></div></div>
+      </div>
+      <div id="quizContent2"></div>
+    </div>
+
   </div>
 </div>
 
