@@ -62,6 +62,10 @@ function openPanel(id) {
   if (panel) {
     panel.classList.add('active');
     window.scrollTo(0, 0);
+
+    // Inicializa quiz do módulo correspondente ao abrir o painel
+    if (id === 'universo') initQuiz();
+    if (id === 'perfis-modulo') initQuiz2();
   } else {
     console.warn('[Nav] Painel não encontrado: panel-' + id);
     goHome();
@@ -959,8 +963,264 @@ async function registerResult(pct) {
   }
 }
 
-// Inicializa o quiz quando o painel for aberto
-initQuiz();
+// Inicializa o quiz 1 se o painel estiver disponível
+if (document.getElementById('quizContent')) initQuiz();
+
+
+// ============================================================
+// 13. QUIZ — Módulo 2: Perfis de Cliente
+// ============================================================
+const quizData2 = [
+  {
+    q: 'Um cliente chega à loja e diz: "Estou começando a correr agora e quero monitorar minha distância e tempo." Qual produto você indica primeiro?',
+    opts: ['Fenix 8 — o melhor da linha', 'Forerunner 55 — porta de entrada ideal para iniciantes', 'Instinct 3 — robusto e com GPS', 'Venu 4 — tela AMOLED bonita'],
+    correct: 1,
+    exp: 'O Forerunner 55 é a porta de entrada perfeita para o Corredor Iniciante: GPS, frequência cardíaca e treinos básicos sem complicação. O FR165 é uma alternativa com AMOLED para quem quer tela premium desde o início.'
+  },
+  {
+    q: 'Qual é o sinal mais claro de que o cliente à sua frente é um "Corredor Dedicado"?',
+    opts: ['Nunca usou relógio GPS antes', 'Fala em ritmo, pace, PR (recorde pessoal) e treina 3+ vezes por semana', 'Pergunta por relógio elegante para o dia a dia', 'Quer um relógio para usar na piscina'],
+    correct: 1,
+    exp: 'O Corredor Dedicado treina com frequência e usa vocabulário técnico: ritmo, pace, PR, VO2 Max. Ele já tem um relógio básico e busca evolução — os sinais certos para indicar FR265 ou FR570.'
+  },
+  {
+    q: 'Um cliente menciona "Ironman", "Triathlon" e pergunta por "bateria de 30h+ GPS real". Qual é o perfil dele?',
+    opts: ['Aventureiro / Trilheiro', 'Corredor Iniciante', 'Atleta de Elite / Triatleta', 'Golfista'],
+    correct: 2,
+    exp: 'Ironman, triathlon e bateria longa são sinais claros do Atleta de Elite / Triatleta. A indicação principal é FR955 ou FR965, e para quem também faz outdoor, o Fenix 8 é o topo.'
+  },
+  {
+    q: 'Para o perfil "Mulher Lifestyle", qual objeção é mais comum e qual é a resposta correta?',
+    opts: ['"O GPS não funciona bem" — responda que o GPS é multibanda', '"O Apple Watch tem mais funções de smartwatch" — responda que o Garmin tem bateria muito superior e GPS integrado', '"Não tem Spotify" — responda que tem Spotify em todos os modelos', '"É muito pesado" — responda que o Fenix 8 é leve'],
+    correct: 1,
+    exp: 'A objeção mais comum é a comparação com Apple Watch. A resposta: o Lily 2 Active tem GPS integrado e bateria de até 7 dias — enquanto o Apple Watch dura 1-2 dias. Para quem não quer carregar todo dia, o Garmin vence.'
+  },
+  {
+    q: 'Qual produto é a recomendação principal para o perfil "Aventureiro / Trilheiro"?',
+    opts: ['Forerunner 265', 'Venu 4', 'Instinct 3', 'Edge 840'],
+    correct: 2,
+    exp: 'O Instinct 3 é a indicação principal para trilheiros: certificação MIL-STD-810, bateria de 26 dias e mapas TopoActive. Para quem quer o máximo em outdoor + esporte, o Fenix 8 é a upgrade.'
+  },
+  {
+    q: 'O que é MIL-STD-810 e por que é importante para o perfil Aventureiro?',
+    opts: ['É uma certificação de resistência à água apenas', 'É a certificação militar americana de resistência: impacto, temperatura extrema, umidade, altitude e vibração', 'É o nível de precisão do GPS em trilhas', 'É o padrão de duração de bateria em GPS militar'],
+    correct: 1,
+    exp: 'MIL-STD-810 é a certificação militar americana que testa impacto, temperatura extrema, umidade, altitude e vibração. Significa que o relógio passou por condições além do que qualquer aventura normal exige — argumento poderoso para trilheiros.'
+  },
+  {
+    q: 'Um ciclista pergunta sobre um produto que detecta carros se aproximando por trás. O que você indica?',
+    opts: ['Edge 1050 com alerta de tráfego', 'Varia RTL515 — radar traseiro que detecta veículos a 140m', 'HRM 600 com sensor traseiro', 'Rally RK 200 com sensores de proximidade'],
+    correct: 1,
+    exp: 'O Varia RTL515 é o radar traseiro Garmin que detecta veículos a 140m e alerta no relógio ou Edge. É um argumento de segurança poderoso, especialmente para ciclistas de estrada.'
+  },
+  {
+    q: 'Para o perfil "Ciclista", qual é a diferença que justifica recomendar o medidor de potência Rally RK 200?',
+    opts: ['Ele monitora a frequência cardíaca com mais precisão do que o pulso', 'Potência é a métrica mais honesta do ciclismo — não é afetada por cansaço ou adrenalina, permitindo treino nas zonas certas', 'O Rally tem GPS integrado, dispensando o Edge', 'O Rally sincroniza com Strava automaticamente'],
+    correct: 1,
+    exp: 'Potência é a métrica mais honesta do ciclismo — não é afetada por cansaço, calor ou adrenalina. Com o Rally, o ciclista treina nas zonas certas e para de "pedalar por sentimento". Argumento que encanta ciclistas de performance.'
+  },
+  {
+    q: 'Qual é a métrica exclusiva de natação que o Garmin registra e que encanta nadadores dedicados?',
+    opts: ['VO2 Max aquático', 'SWOLF — indicador de eficiência de braçada (quanto menor, mais eficiente)', 'Training Readiness subaquático', 'Body Battery de piscina'],
+    correct: 1,
+    exp: 'SWOLF combina o número de braçadas com o tempo por volta — quanto menor, mais eficiente. É uma métrica exclusiva de natação que encanta nadadores pois permite medir evolução técnica de forma objetiva.'
+  },
+  {
+    q: 'Um cliente pergunta por um "computador de mergulho". O que diferencia o Descent de um computador dedicado?',
+    opts: ['O Descent é mais barato que computadores dedicados', 'O Descent tem mais autonomia de gás do que qualquer outro', 'O Descent é um smartwatch completo no dia a dia: GPS, monitoramento de saúde e mergulho em um único dispositivo', 'O Descent não precisa de certificação para uso em mergulho técnico'],
+    correct: 2,
+    exp: 'A diferença principal: computadores dedicados não têm GPS de superfície, mapas ou monitoramento de saúde. O Descent faz tudo isso E é um smartwatch completo no dia a dia — dois produtos em um.'
+  },
+  {
+    q: 'Qual produto indicar para um golfista que pergunta por distâncias automáticas do green e experiência premium?',
+    opts: ['Forerunner 165 com modo golfe', 'Approach S50 — AMOLED com +42.000 campos e experiência mais completa', 'Instinct 3 com modo golfe', 'Fenix 8 com app de golfe'],
+    correct: 1,
+    exp: 'O Approach S50 é a experiência mais completa para golfistas: AMOLED, +42.000 campos, visão aérea do buraco e estatísticas. O Approach S44 é a porta de entrada para quem quer só o essencial.'
+  },
+  {
+    q: 'Qual é o principal argumento para rebater "o celular no suporte não é suficiente?" para um ciclista?',
+    opts: ['O Edge tem Garmin Pay integrado, o celular não', 'O Edge foi feito para isso: tela legível sob sol forte, não esquenta, modo específico para MTB e bateria que dura toda a etapa', 'O Edge tem GPS multibanda, o celular não', 'O Edge sincroniza com Strava em tempo real, o celular não'],
+    correct: 1,
+    exp: 'O celular no sol laga, esquenta e a tela escurece. O Edge foi construído especificamente para uso em bike: tela legível sob sol forte, modo MTB, alerta de subidas e bateria que dura toda a etapa sem depender de dados móveis.'
+  },
+  {
+    q: 'Para o perfil "Pescador / Náutico", qual a diferença principal entre o Striker Vivid 5cv e o ECHOMAP UHD2?',
+    opts: ['O ECHOMAP é mais barato que o Striker', 'O Striker tem GPS, o ECHOMAP não', 'O ECHOMAP adiciona mapas náuticos detalhados com profundidade de canais e pontos de referência — essencial para quem navega em locais desconhecidos', 'O ECHOMAP tem sonar mais fraco que o Striker'],
+    correct: 2,
+    exp: 'O Striker tem GPS básico. O ECHOMAP adiciona mapas náuticos BlueChart G3 com profundidade de canais, marinas e pontos de referência — essencial para quem navega em locais desconhecidos ou em mar aberto.'
+  },
+  {
+    q: 'Um cliente diz "eu uso as sapatilhas SPD". Qual produto Garmin específico você pode oferecer para ele?',
+    opts: ['Varia RTL515 — radar traseiro', 'Edge 1050 com suporte SPD integrado', 'Rally RK 200 — pedal medidor de potência SPD compatível com qualquer pedivela', 'HRM 600 com sensor de cadência SPD'],
+    correct: 2,
+    exp: 'O Rally RK 200 é o pedal medidor de potência Garmin com sistema de encaixe SPD — o mesmo sistema das sapatilhas do cliente. É compatível com qualquer pedivela e mede potência bilateral.'
+  },
+  {
+    q: 'Qual perfil de cliente é mais provável de comparar o Garmin com o Apple Watch no design?',
+    opts: ['Atleta de Elite / Triatleta', 'Aventureiro / Trilheiro', 'Mulher Lifestyle', 'Mergulhador'],
+    correct: 2,
+    exp: 'O perfil "Mulher Lifestyle" frequentemente compara o Garmin com Apple Watch pelo design. Os argumentos: o Lily 2 tem design joia, é o menor relógio Garmin, e o Venu 4 tem AMOLED premium — além de saúde feminina completa e bateria muito superior.'
+  },
+];
+
+let currentQ2 = 0, score2 = 0, answered2 = false;
+
+function initQuiz2() {
+  currentQ2 = 0;
+  score2 = 0;
+  answered2 = false;
+  renderQuestion2();
+}
+
+function renderQuestion2() {
+  const q = quizData2[currentQ2];
+  const pct = (currentQ2 / quizData2.length) * 100;
+
+  const bar = document.getElementById('quizBar2');
+  if (bar) bar.style.width = pct + '%';
+
+  const content = document.getElementById('quizContent2');
+  if (!content) return;
+
+  content.innerHTML = `
+    <div class="quiz-q-num">Pergunta ${currentQ2 + 1} de ${quizData2.length}</div>
+    <div class="quiz-q">${q.q}</div>
+    <div class="quiz-options">
+      ${q.opts.map((o, i) => `<button class="quiz-opt" onclick="answerQ2(${i})" id="opt2-${i}">${o}</button>`).join('')}
+    </div>
+    <div class="quiz-feedback" id="quizFeedback2"></div>
+    <div class="quiz-nav">
+      <button class="quiz-btn" id="nextBtn2" onclick="nextQ2()" disabled>
+        ${currentQ2 < quizData2.length - 1 ? 'Próxima →' : 'Ver Resultado'}
+      </button>
+    </div>
+  `;
+  answered2 = false;
+}
+
+function answerQ2(i) {
+  if (answered2) return;
+  answered2 = true;
+
+  const q = quizData2[currentQ2];
+  document.querySelectorAll('#quizContent2 .quiz-opt').forEach(b => b.classList.add('disabled'));
+
+  const opts = document.querySelectorAll('#quizContent2 .quiz-opt');
+  const fb = document.getElementById('quizFeedback2');
+
+  if (i === q.correct) {
+    opts[i].classList.add('correct');
+    fb.className = 'quiz-feedback show ok';
+    fb.textContent = '✅ Correto! ' + q.exp;
+    score2++;
+  } else {
+    opts[i].classList.add('wrong');
+    opts[q.correct].classList.add('correct');
+    fb.className = 'quiz-feedback show fail';
+    fb.textContent = '❌ Incorreto. ' + q.exp;
+  }
+
+  document.getElementById('nextBtn2').disabled = false;
+}
+
+function nextQ2() {
+  currentQ2++;
+  if (currentQ2 < quizData2.length) {
+    renderQuestion2();
+  } else {
+    showResult2();
+  }
+}
+
+function showResult2() {
+  const pct = Math.round((score2 / quizData2.length) * 100);
+  const passed = pct >= 70;
+
+  const bar = document.getElementById('quizBar2');
+  if (bar) bar.style.width = '100%';
+
+  const content = document.getElementById('quizContent2');
+  if (!content) return;
+
+  content.innerHTML = `
+    <div class="quiz-result">
+      <div class="quiz-result-emoji">${passed ? '🎉' : '📚'}</div>
+      <div class="quiz-result-title" style="color:${passed ? 'var(--acc)' : 'var(--warn)'};">
+        ${passed ? 'Parabéns! Aprovado!' : 'Continue estudando!'}
+      </div>
+      <div class="quiz-result-score">
+        Você acertou <strong>${score2}</strong> de ${quizData2.length} questões — <strong>${pct}%</strong>
+      </div>
+      ${passed ? `
+        <div class="register-form" id="registerForm2">
+          <label class="register-label">📝 Registre sua conclusão — informe seu nome completo</label>
+          <input type="text" class="register-input" id="regName2"
+            placeholder="Ex: Samara Pereira" maxlength="60"
+            onkeydown="if(event.key==='Enter') registerResult2(${pct})">
+          <button class="register-btn" onclick="registerResult2(${pct})">
+            Registrar Conclusão ✓
+          </button>
+          <div class="register-success" id="regSuccess2">
+            ✅ Registrado com sucesso! Resultado enviado para a liderança.
+          </div>
+        </div>
+      ` : ''}
+      <div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+        <button class="quiz-btn" onclick="initQuiz2()" style="background:var(--text2);">Refazer Quiz</button>
+        ${!passed ? '<button class="quiz-btn" onclick="goHome();setTimeout(()=>openPanel(\'perfis-modulo\'),100)">Revisar Conteúdo</button>' : ''}
+      </div>
+    </div>
+  `;
+}
+
+async function registerResult2(pct) {
+  const nameInput = document.getElementById('regName2');
+  const name = nameInput ? nameInput.value.trim() : '';
+
+  if (!name) {
+    if (nameInput) nameInput.style.borderColor = 'var(--warn)';
+    return;
+  }
+
+  const btn = document.querySelector('#registerForm2 .register-btn');
+  if (!btn) return;
+
+  btn.textContent = 'Enviando...';
+  btn.disabled = true;
+
+  const payload = {
+    nome: name,
+    modulo: 'Módulo 2 — Perfis de Cliente',
+    nota: pct,
+    acertos: score2,
+    total: quizData2.length
+  };
+
+  try {
+    await fetch(SHEETS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      mode: 'no-cors'
+    });
+
+    const form = document.getElementById('registerForm2');
+    if (form) form.style.display = 'none';
+    const success = document.getElementById('regSuccess2');
+    if (success) success.style.display = 'block';
+
+  } catch (err) {
+    console.error('[Quiz2] Erro ao enviar para Sheets:', err);
+    btn.textContent = 'Registrar Conclusão ✓';
+    btn.disabled = false;
+    alert('Erro ao registrar. Verifique sua conexão e tente novamente.');
+  }
+}
+
+// Inicializa o quiz 2 se o painel estiver disponível
+if (document.getElementById('quizContent2')) {
+  initQuiz2();
+}
 
 
 // ============================================================
