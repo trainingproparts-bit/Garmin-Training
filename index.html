@@ -1295,9 +1295,9 @@ const profiles = [
   {
     emoji: '🏅', name: 'Corredor Dedicado', tag: 'Treina com frequência e busca evolução',
     tags: ['Corrida', 'Intermediário', 'Métricas'],
-    sinais: ['Já usa relógio GPS básico', 'Corre 3+ vezes por semana', 'Fala em ritmo, pace, PR (recorde pessoal)', 'Pergunta por GPS multibanda ou VO2 Max'],
+    sinais: ['Já usa relógio com GPS básico (linhas mais antigas ou concorrente)', 'Corre 3+ vezes por semana', 'Fala em ritmo, treino intervalado, PR (recorde pessoal)', 'Pergunta por precisão e métricas mais avançadas'],
     comunicacao: ['FR265 ou 570 — GPS multibanda e métricas completas', 'Fale do Training Readiness: saber o dia certo para treinar forte', 'PacePRO para quem quer estratégia de prova', 'Destaque o ecossistema: Strava, TrainingPeaks, Stryd'],
-    produtos: ['Forerunner 265', 'Forerunner 570', 'Forerunner 955'],
+    produtos: ['Forerunner 265', 'Forerunner 570', 'Forerunner 965'],
     primario: 'Forerunner 265',
     objections: [
       { q: 'O FR165 já não é suficiente?', a: 'O FR165 é ótimo para iniciar. O FR265 adiciona GPS multibanda — muito mais preciso em cidades —, mapas topográficos e Training Readiness. Para quem treina sério, a diferença é sentida a cada quilômetro.' },
@@ -1310,7 +1310,7 @@ const profiles = [
     sinais: ['Menciona triathlon, Ironman, ultra', 'Pergunta por bateria longa e GPS preciso', 'Já tem relógio mas quer upgrade', 'Treina mais de 10h por semana'],
     comunicacao: ['FR955 ou 965 — ferramentas de triatleta', 'Fenix 8 para quem também faz outdoor e quer o melhor', 'Bateria 30h+ GPS real, não estimada', 'Garmin Coach e Training Readiness para periodização'],
     produtos: ['Forerunner 955', 'Forerunner 965', 'Forerunner 970', 'Fenix 8'],
-    primario: 'Forerunner 965',
+    primario: 'Forerunner 970',
     objections: [
       { q: 'O FR955 não mudou muito do 945.', a: 'O 955 trouxe GPS multibanda, sensor HRV Status, Training Readiness e carregamento solar. Para quem faz provas longas, a autonomia e a precisão de GPS em floresta e cidade mudam completamente a experiência.' },
       { q: 'Fenix ou FR970?', a: 'O FR970 é o top de corrida — cristal de safira, lanterna LED integrada, 32GB e foco total em corrida e triathlon. O Fenix 8 adiciona alto-falante, mic, mergulho e é mais versátil no dia a dia.' }
@@ -1345,8 +1345,8 @@ const profiles = [
     tags: ['Ciclismo', 'MTB', 'Estrada', 'Bike'],
     sinais: ['Menciona bike, MTB, estrada, gravel', 'Pergunta por GPS para guidão', 'Fala de Strava, Komoot, subidas', 'Quer medir cadência ou potência'],
     comunicacao: ['Edge 540/840 para quem quer GPS no guidão com tela maior', 'FR970 ou Fenix 8 para quem já tem relógio e quer multiesporte', 'Varia RTL515 — radar traseiro que detecta carros a 140m', 'Rally RK 200 — pedal medidor de potência SPD (sistema de encaixe para sapatilhas)'],
-    produtos: ['Edge 540', 'Edge 840', 'Edge 1050', 'Varia RTL515', 'Rally RK 200'],
-    primario: 'Edge 840',
+    produtos: ['Edge 550', 'Edge 850', 'Edge 1050', 'Varia RTL515', 'Rally RK 200'],
+    primario: 'Edge 850',
     objections: [
       { q: 'Uso o celular no suporte.', a: 'O celular no sol laga, esquenta e a tela escurece. O Edge foi feito para isso: tela legível sob sol forte, modo específico para MTB, alerta de subidas e bateria que dura toda a etapa.' },
       { q: 'Para que medidor de potência?', a: 'Potência é a métrica mais honesta do ciclismo — não é afetada por cansaço, calor ou adrenalina. Com o Rally, você treina nas zonas certas e para de "pedalar por sentimento".' }
@@ -1360,7 +1360,7 @@ const profiles = [
     produtos: ['Forerunner 970', 'Forerunner 965', 'Fenix 8', 'HRM 600'],
     primario: 'Forerunner 970',
     objections: [
-      { q: 'Não existe relógio que funcione bem na água.', a: 'Os Garmin têm resistência à água de 5 ATM (50m de pressão). O FR970 reconhece automaticamente o tipo de braçada, conta voltas e mede SWOLF — é um relógio completo para piscina e águas abertas.' }
+      { q: 'Não existe relógio que funcione bem na água.', a: 'O Garmin têm resistência à água de 5 ATM (50m de pressão). O FR970 reconhece automaticamente o tipo de braçada, conta voltas e mede SWOLF — é um relógio completo para piscina e águas abertas.' }
     ]
   },
   {
@@ -1389,7 +1389,7 @@ const profiles = [
   {
     emoji: '🏍️', name: 'Motociclista', tag: 'Piloto de moto, quer GPS robusto para viagens',
     tags: ['Moto', 'Viagem', 'GPS'],
-    sinais: ['Fala de viagem de moto, rota, estrada', 'Pergunta por GPS para moto', 'Usa roupas ou acessórios de motociclismo'],
+    sinais: ['Fala de viagem de moto, rota, estrada', 'Pergunta por GPS para moto', 'Usa acessórios de motociclismo'],
     comunicacao: ['Zumo XT2 é o GPS específico para moto da Garmin', 'Tela resistente a luvas, antirreflexo, suporta chuva', 'Roteamento evita ruas proibidas para motos', 'Integração com capacete Bluetooth'],
     produtos: ['Zumo XT2'],
     primario: 'Zumo XT2',
@@ -1479,7 +1479,7 @@ renderProfiles(profiles);
 // 7. PRODUTOS / CATÁLOGO
 // ============================================================
 const prods = [
-  { name: 'Forerunner 55',      s: 'Forerunner', cat: 'forerunner', lvl: 1, para: 'Corredor Iniciante',           dest: 'GPS + cardíaco óptico. Porta de entrada perfeita para quem começa a correr.' },
+  { name: 'Forerunner 55',      s: 'Forerunner', cat: 'forerunner', lvl: 1, para: 'Corredor Iniciante',           dest: 'GPS + cardíaco óptico. Porta de entrada para quem começa a correr.' },
   { name: 'Forerunner 165',     s: 'Forerunner', cat: 'forerunner', lvl: 2, para: 'Corredor Iniciante / Dedicado', dest: 'AMOLED + planos de treino adaptativos + treino de força. Ótimo custo-benefício com tela premium.' },
   { name: 'Forerunner 265',     s: 'Forerunner', cat: 'forerunner', lvl: 3, para: 'Corredor Dedicado',            dest: 'AMOLED + mapas + GPS multibanda. Melhor da faixa intermediária.' },
   { name: 'Forerunner 570',     s: 'Forerunner', cat: 'forerunner', lvl: 3, para: 'Corredor Dedicado / Elite',    dest: 'Lançamento 2025. AMOLED + GPS SatIQ + Elevate Gen 5. Treino intervalado preciso.' },
