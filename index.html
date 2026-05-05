@@ -2064,33 +2064,33 @@ if (document.getElementById('quizContent')) initQuiz();
 const quizData2 = [
   {
     q: 'Um cliente chega à loja e diz: "Estou começando a correr agora e quero monitorar minha distância e tempo." Qual produto você indica primeiro?',
-    opts: ['Fenix 8 — o melhor da linha', 'Forerunner 55 — porta de entrada ideal para iniciantes', 'Instinct 3 — robusto e com GPS', 'Venu 4 — tela AMOLED bonita'],
+    opts: ['Fenix 8 — o melhor da linha', 'Forerunner 55 ou 165 — porta de entrada ideal para iniciantes', 'Instinct 3 — robusto e com GPS', 'Venu 4 — tela AMOLED bonita'],
     correct: 1,
     exp: 'O Forerunner 55 é a porta de entrada perfeita para o Corredor Iniciante: GPS, frequência cardíaca e treinos básicos sem complicação. O FR165 é uma alternativa com AMOLED para quem quer tela premium desde o início.'
   },
   {
     q: 'Qual é o sinal mais claro de que o cliente à sua frente é um "Corredor Dedicado"?',
-    opts: ['Nunca usou relógio GPS antes', 'Fala em ritmo, pace, PR (recorde pessoal) e treina 3+ vezes por semana', 'Pergunta por relógio elegante para o dia a dia', 'Quer um relógio para usar na piscina'],
+    opts: ['Nunca usou relógio GPS antes', 'Fala em ritmo, treino intervalado, PR (recorde pessoal) e treina 3+ vezes por semana', 'Pergunta por relógio elegante para o dia a dia', 'Quer um relógio para usar na piscina'],
     correct: 1,
-    exp: 'O Corredor Dedicado treina com frequência e usa vocabulário técnico: ritmo, pace, PR, VO2 Max. Ele já tem um relógio básico e busca evolução — os sinais certos para indicar FR265 ou FR570.'
+    exp: 'O Corredor Dedicado treina com frequência e usa vocabulário técnico: ritmo, distância, PR, VO2 Max. Ele já tem um relógio básico e busca evolução — os sinais certos para indicar FR265 ou FR570.'
   },
   {
     q: 'Um cliente menciona "Ironman", "Triathlon" e pergunta por "bateria de 30h+ GPS real". Qual é o perfil dele?',
     opts: ['Aventureiro / Trilheiro', 'Corredor Iniciante', 'Atleta de Elite / Triatleta', 'Golfista'],
     correct: 2,
-    exp: 'Ironman, triathlon e bateria longa são sinais claros do Atleta de Elite / Triatleta. A indicação principal é FR955 ou FR965, e para quem também faz outdoor, o Fenix 8 é o topo.'
+    exp: 'Ironman, triathlon e bateria longa são sinais claros do Atleta de Elite / Triatleta. A indicação principal é o FR965 e FR970, e para quem também faz outdoor, o Fenix 8 é o topo.'
   },
   {
     q: 'Para o perfil "Mulher Lifestyle", qual objeção é mais comum e qual é a resposta correta?',
-    opts: ['"O GPS não funciona bem" — responda que o GPS é multibanda', '"O Apple Watch tem mais funções de smartwatch" — responda que o Garmin tem bateria muito superior e GPS integrado', '"Não tem Spotify" — responda que tem Spotify em todos os modelos', '"É muito pesado" — responda que o Fenix 8 é leve'],
+    opts: ['"São muito esportivos e grandes para o meu pulso" — Apresente a linha Lily 2, Lily 2 Active, Vivoactive 6 ou Venu 4', '"O Apple Watch tem mais funções de smartwatch" — responda que o Garmin tem bateria muito superior', '"Não vou me adaptar - responda que a garmin é mais indicada para corredores', '"É muito pesado" — responda que o Fenix 8 é leve'],
     correct: 1,
-    exp: 'A objeção mais comum é a comparação com Apple Watch. A resposta: o Lily 2 Active tem GPS integrado e bateria de até 7 dias — enquanto o Apple Watch dura 1-2 dias. Para quem não quer carregar todo dia, o Garmin vence.'
+    exp: 'As linhas lifestyle tem design sofisticado e opções de 38 a 42mm. Além disso, a objeção mais comum é a comparação com Apple Watch. A resposta: o Lily 2 Active tem GPS integrado e bateria de até 7 dias — enquanto o Apple Watch dura 1-2 dias. Para quem não quer carregar todo dia, o Garmin vence.'
   },
   {
     q: 'Qual produto é a recomendação principal para o perfil "Aventureiro / Trilheiro"?',
     opts: ['Forerunner 265', 'Venu 4', 'Instinct 3', 'Edge 840'],
     correct: 2,
-    exp: 'O Instinct 3 é a indicação principal para trilheiros: certificação MIL-STD-810, bateria de 26 dias e mapas TopoActive. Para quem quer o máximo em outdoor + esporte, o Fenix 8 é a upgrade.'
+    exp: 'O Instinct 3 é a indicação principal para trilheiros: certificação MIL-STD-810, bateria de até 26 dias e possibilidade de gravar e seguir rotas. Para quem quer o máximo em outdoor + esporte, o Enduro 3 é o upgrade.'
   },
   {
     q: 'O que é MIL-STD-810 e por que é importante para o perfil Aventureiro?',
@@ -2111,9 +2111,9 @@ const quizData2 = [
     exp: 'Potência é a métrica mais honesta do ciclismo — não é afetada por cansaço, calor ou adrenalina. Com o Rally, o ciclista treina nas zonas certas e para de "pedalar por sentimento". Argumento que encanta ciclistas de performance.'
   },
   {
-    q: 'Qual é a métrica exclusiva de natação que o Garmin registra e que encanta nadadores dedicados?',
+    q: 'Qual é a métrica de natação que o Garmin registra e que encanta nadadores dedicados?',
     opts: ['VO2 Max aquático', 'SWOLF — indicador de eficiência de braçada (quanto menor, mais eficiente)', 'Training Readiness subaquático', 'Body Battery de piscina'],
-    correct: 1,
+    correct: 2,
     exp: 'SWOLF combina o número de braçadas com o tempo por volta — quanto menor, mais eficiente. É uma métrica exclusiva de natação que encanta nadadores pois permite medir evolução técnica de forma objetiva.'
   },
   {
@@ -2124,7 +2124,7 @@ const quizData2 = [
   },
   {
     q: 'Qual produto indicar para um golfista que pergunta por distâncias automáticas do green e experiência premium?',
-    opts: ['Forerunner 165 com modo golfe', 'Approach S50 — AMOLED com +42.000 campos e experiência mais completa', 'Instinct 3 com modo golfe', 'Fenix 8 com app de golfe'],
+    opts: ['Forerunner 165 com modo golfe', 'Approach S50 — AMOLED com +42.000 campos e experiência mais completa', 'Instinct 3 com modo golfe', 'Forerunner 265 com app de golfe'],
     correct: 1,
     exp: 'O Approach S50 é a experiência mais completa para golfistas: AMOLED, +42.000 campos, visão aérea do buraco e estatísticas. O Approach S44 é a porta de entrada para quem quer só o essencial.'
   },
@@ -2132,7 +2132,7 @@ const quizData2 = [
     q: 'Qual é o principal argumento para rebater "o celular no suporte não é suficiente?" para um ciclista?',
     opts: ['O Edge tem Garmin Pay integrado, o celular não', 'O Edge foi feito para isso: tela legível sob sol forte, não esquenta, modo específico para MTB e bateria que dura toda a etapa', 'O Edge tem GPS multibanda, o celular não', 'O Edge sincroniza com Strava em tempo real, o celular não'],
     correct: 1,
-    exp: 'O celular no sol laga, esquenta e a tela escurece. O Edge foi construído especificamente para uso em bike: tela legível sob sol forte, modo MTB, alerta de subidas e bateria que dura toda a etapa sem depender de dados móveis.'
+    exp: 'O celular no sol trava, esquenta e a tela escurece. O Edge foi construído especificamente para uso em bike: tela legível sob sol forte, modo MTB, alerta de subidas e bateria que dura toda a etapa sem depender de dados móveis.'
   },
   {
     q: 'Para o perfil "Pescador / Náutico", qual a diferença principal entre o Striker Vivid 5cv e o ECHOMAP UHD2?',
@@ -2150,7 +2150,7 @@ const quizData2 = [
     q: 'Qual perfil de cliente é mais provável de comparar o Garmin com o Apple Watch no design?',
     opts: ['Atleta de Elite / Triatleta', 'Aventureiro / Trilheiro', 'Mulher Lifestyle', 'Mergulhador'],
     correct: 2,
-    exp: 'O perfil "Mulher Lifestyle" frequentemente compara o Garmin com Apple Watch pelo design. Os argumentos: o Lily 2 tem design joia, é o menor relógio Garmin, e o Venu 4 tem AMOLED premium — além de saúde feminina completa e bateria muito superior.'
+    exp: 'O perfil "Mulher Lifestyle" frequentemente compara o Garmin com Apple Watch pelo design. Os argumentos: o Lily 2 tem design joia, é o menor relógio disponível, e o Venu 4 tem AMOLED — além de saúde feminina completa, bateria superior, microfone integrado e design muito sofisticado.'
   },
 ];
 
