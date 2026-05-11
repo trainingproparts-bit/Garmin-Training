@@ -2,7 +2,7 @@
 // SERVICE WORKER — Garmin Training PWA
 // Estratégia: Cache-First para assets estáticos
 // ============================================================
-const CACHE_NAME = 'garmin-training-v6';
+const CACHE_NAME = 'garmin-training-v7';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
