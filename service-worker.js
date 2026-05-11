@@ -1,17 +1,14 @@
 // ============================================================
-// SERVICE WORKER — Garmin Training PWA
+// SERVICE WORKER — Proparts Training PWA
 // Estratégia: Cache-First para assets estáticos
 // ============================================================
-const CACHE_NAME = 'garmin-training-v8';
+const CACHE_NAME = 'proparts-training-v1';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
-  './styles.css',
-  './manifest.json',
-  './icons/icon-192.png',
-  './icons/icon-512.png',
-  'https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap'
+  'https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&family=Barlow+Condensed:ital,wght@1,700;1,800&display=swap'
 ];
+
 // ── INSTALL: cacheia os arquivos principais ──
 self.addEventListener('install', (event) => {
   console.log('[SW] Instalando...');
@@ -25,6 +22,7 @@ self.addEventListener('install', (event) => {
       .catch((err) => console.error('[SW] Erro no cache:', err))
   );
 });
+
 // ── ACTIVATE: limpa caches antigos ──
 self.addEventListener('activate', (event) => {
   console.log('[SW] Ativando...');
@@ -41,23 +39,35 @@ self.addEventListener('activate', (event) => {
     }).then(() => self.clients.claim())
   );
 });
+
 // ── FETCH: Cache-First, fallback para rede ──
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
+
+  // Nunca intercepta chamadas ao Google Sheets
   if (event.request.url.includes('script.google.com')) return;
+
+  // Nunca intercepta chamadas ao Google Fonts (deixa a rede resolver)
+  if (event.request.url.includes('fonts.googleapis.com') ||
+      event.request.url.includes('fonts.gstatic.com')) return;
+
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) {
-        const fetchPromise = fetch(event.request).then((networkResponse) => {
-          if (networkResponse && networkResponse.status === 200) {
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(event.request, networkResponse.clone());
-            });
-          }
-          return networkResponse;
-        }).catch(() => {});
+        // Atualiza o cache em background (stale-while-revalidate)
+        fetch(event.request)
+          .then((networkResponse) => {
+            if (networkResponse && networkResponse.status === 200 && networkResponse.type !== 'opaque') {
+              caches.open(CACHE_NAME).then((cache) => {
+                cache.put(event.request, networkResponse.clone());
+              });
+            }
+          })
+          .catch(() => {});
         return cachedResponse;
       }
+
+      // Não estava no cache — busca na rede e cacheia
       return fetch(event.request).then((networkResponse) => {
         if (!networkResponse || networkResponse.status !== 200 || networkResponse.type === 'opaque') {
           return networkResponse;
@@ -68,8 +78,9 @@ self.addEventListener('fetch', (event) => {
         });
         return networkResponse;
       }).catch(() => {
+        // Offline e não está em cache — retorna o HTML principal como fallback
         if (event.request.destination === 'document') {
-          return caches.match('./index.html');
+          return caches.match('./');
         }
       });
     })
