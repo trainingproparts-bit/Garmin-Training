@@ -537,11 +537,6 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
       <div class="menu-card" onclick="openPanel('ranking')"><span class="menu-icon">🏆</span><div class="menu-name">Ranking</div><div class="menu-desc">Pódio da equipe e pontuação</div></div>
     </div>
 
-    <div class="menu-section-label">Quizzes Especiais</div>
-    <div class="menu-grid">
-      <div class="menu-card" onclick="openPwdModal('quiz-ipx')"><div class="menu-badge" style="background:var(--g);">🔒 ACESSO</div><span class="menu-icon">💧</span><div class="menu-name">Quiz IPX</div><div class="menu-desc">Resistência à água, ATM, Garmin & Shokz — situações de venda</div></div>
-      <div class="menu-card" onclick="openPwdModal('quiz-atendimento')"><div class="menu-badge" style="background:var(--g);">🔒 ACESSO</div><span class="menu-icon">🎭</span><div class="menu-name">Quiz Atendimento</div><div class="menu-desc">Script completo, objeções e finalização com acessórios</div></div>
-    </div>
   </div>
 </div>
 
@@ -850,6 +845,36 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
       </div>
     </div>
     <div class="tip">💡 Novos módulos são liberados conforme a trilha evolui. Complete os disponíveis e acumule pontos no ranking!</div>
+
+    <!-- QUIZZES ESPECIAIS CARD -->
+    <div class="card" style="border-left:4px solid var(--warn);margin-top:8px;margin-bottom:14px;">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+        <div style="font-size:36px;">🔒</div>
+        <div>
+          <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--warn);margin-bottom:2px;">Quizzes Especiais</div>
+          <div class="card-title" style="margin-bottom:2px;">Avaliações por Ciclo</div>
+          <p style="font-size:13px;color:var(--text2);line-height:1.5;">Quizzes liberados por senha a cada ciclo de treinamento. Acesse com o código fornecido pela liderança.</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;align-items:center;gap:14px;background:var(--off);border-radius:var(--r2);padding:14px 16px;cursor:pointer;border:1.5px solid var(--border);transition:all 0.2s;" onclick="openPwdModal('quiz-ipx')" onmouseover="this.style.borderColor='var(--g)'" onmouseout="this.style.borderColor='var(--border)'">
+          <div style="font-size:28px;">💧</div>
+          <div style="flex:1;">
+            <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text);margin-bottom:2px;">Quiz IPX — Resistência à Água</div>
+            <div style="font-size:12px;color:var(--text3);">IPX, ATM, Garmin & Shokz · 18 questões · Mínimo 70%</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;background:var(--g);color:#fff;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:6px 12px;border-radius:6px;white-space:nowrap;">🔒 Acessar</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;background:var(--off);border-radius:var(--r2);padding:14px 16px;cursor:pointer;border:1.5px solid var(--border);transition:all 0.2s;" onclick="openPwdModal('quiz-atendimento')" onmouseover="this.style.borderColor='var(--g)'" onmouseout="this.style.borderColor='var(--border)'">
+          <div style="font-size:28px;">🎭</div>
+          <div style="flex:1;">
+            <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text);margin-bottom:2px;">Quiz Atendimento — Script de Venda</div>
+            <div style="font-size:12px;color:var(--text3);">Script completo, objeções e Shokz · 15 questões · Mínimo 70%</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;background:var(--g);color:#fff;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:6px 12px;border-radius:6px;white-space:nowrap;">🔒 Acessar</div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1645,115 +1670,27 @@ document.getElementById('pwdModal').addEventListener('click', function(e) {
 
 // ── QUIZ IPX ──────────────────────────────────────────────────
 const quizDataIPX = [
-  {
-    q: 'O que significa a sigla IPX?',
-    opts: ['Impermeabilidade Por Exposição', 'Ingress Protection (Proteção contra Penetração) com poeira não avaliada', 'International Protection Extra', 'Índice de Proteção para Xeque'],
-    correct: 1,
-    exp: 'IPX significa Ingress Protection. O "X" indica que a proteção contra poeira não foi avaliada — apenas a resistência à água.'
-  },
-  {
-    q: 'Um cliente chega com o Instinct 3 e diz que ele parou de funcionar depois de uma sauna. O que você explica?',
-    opts: ['Deve ter sido defeito de fabricação — aciona a garantia', 'A certificação IPX/ATM é testada com água limpa e fria. Vapor e calor da sauna alteram a pressão interna e podem vencer a vedação — não está coberto pela garantia', 'O Instinct 3 deveria suportar sauna pois é 10 ATM', 'Depende da temperatura da sauna'],
-    correct: 1,
-    exp: 'A certificação é realizada com água limpa em temperatura ambiente. Água quente, vapor e sauna alteram a pressão interna e podem vencer a vedação. Dano por água em condições fora do certificado normalmente não tem cobertura de garantia.'
-  },
-  {
-    q: 'Qual é a classificação mínima recomendada para um cliente que quer nadar em piscina com o relógio Garmin?',
-    opts: ['1 ATM', '5 ATM', '10 ATM', 'IPX4'],
-    correct: 1,
-    exp: '5 ATM é o mínimo para natação em piscina e uso na chuva. Equivale aproximadamente a IPX7/IPX8 para uso do dia a dia. FR165, Venu 4 e Vivoactive 6 são exemplos com 5 ATM.'
-  },
-  {
-    q: 'Um cliente pergunta se o Forerunner 965 e resistente ou a prova de agua. Como voce responde corretamente?',
-    opts: ['"Sim, ele e a prova de agua!"', '"Nao, ele nao tem protecao contra agua."', '"Ele tem certificacao 10 ATM — suporta esportes aquaticos, snorkel e surf, mas nenhum dispositivo e 100% a prova de agua para sempre."', '"Ele tem IPX7, entao aguenta ate 1 metro."'],
-    correct: 2,
-    exp: 'Nunca diga "a prova de agua" sem especificar os limites. O FR965 tem 10 ATM — suporta pressao dinamica da agua como surf e snorkel. Toda certificacao tem condicoes e limites especificos.'
-  },
-  {
-    q: 'Qual a diferença entre IPX7 e IPX8?',
-    opts: ['IPX7 protege contra respingos, IPX8 contra chuva forte', 'IPX7 suporta imersão até 1m por 30min; IPX8 suporta imersão além de 1m', 'IPX7 é para GPS portátil, IPX8 é para relógios', 'Não há diferença prática entre eles'],
-    correct: 1,
-    exp: 'IPX7 = imersão em até 1 metro por até 30 minutos. IPX8 = imersão além de 1 metro. Quanto maior o número, maior a proteção.'
-  },
-  {
-    q: 'Um cliente quer um Shokz para usar correndo na chuva forte. Qual modelo você indica?',
-    opts: ['OpenRun Pro (IP55) — tem mais recursos de som', 'OpenRun (IP67) — proteção total contra poeira e imersão até 1m', 'Os dois são iguais para chuva forte', 'Nenhum dos dois aguenta chuva forte'],
-    correct: 1,
-    exp: 'O OpenRun tem IP67 — proteção total contra poeira (nível 6) e imersão até 1m por 30min (nível 7). Para chuva forte, é a escolha certa. O OpenRun Pro tem IP55, que aguenta suor e chuva leve, mas não é recomendado para chuva muito forte.'
-  },
-  {
-    q: 'O que o número "6" na classificação IP67 do Shokz OpenRun significa?',
-    opts: ['Resistência a jatos d'água de alta pressão', 'Proteção total contra poeira', 'Suporta imersão em 6 metros', 'Nível de resistência a impacto'],
-    correct: 1,
-    exp: 'Na classificação IP completa (não IPX), o primeiro número indica proteção contra sólidos/poeira. Nível 6 = proteção total contra poeira. O segundo número (7) indica resistência à água — imersão até 1m por 30min.'
-  },
-  {
-    q: 'Um cliente vai usar o GPS Garmin em um caiaque. Qual recurso você destaca além da certificação IPX7?',
-    opts: ['GPS multibanda', 'Modelos com flutuação (como GPSMAP 79s/86sci) — se cair na água, sobe à superfície em vez de afundar', 'Tela touchscreen', 'Bateria de longa duração'],
-    correct: 1,
-    exp: 'Para uso náutico, o fator flutuação é decisivo. IPX7 garante sobrevivência à imersão por 30min em 1m, mas em mar aberto ou rio com correnteza o GPS pode afundar além desse limite. Modelos flutuantes ficam visíveis na superfície e podem ser recuperados.'
-  },
-  {
-    q: 'Qual certificação os relógios Garmin usam (não os GPS portáteis)?',
-    opts: ['IPX — Ingress Protection', 'ATM — baseado na norma ISO 22810', 'IPX8 — imersão profunda', 'EN 13319 — padrão europeu'],
-    correct: 1,
-    exp: 'Os relógios Garmin seguem a norma ISO 22810, medida em ATM. A norma IPX é usada em GPS portáteis, fones (Shokz) e acessórios. É importante saber diferenciar para explicar corretamente ao cliente.'
-  },
-  {
-    q: 'Um Garmin com 10 ATM + EN 13319 — qual o uso indicado?',
-    opts: ['Natação em piscina', 'Corrida na chuva', 'Mergulho com equipamento — como Descent MK3i e Fenix 8', 'Surf apenas'],
-    correct: 2,
-    exp: '10 ATM + EN 13319 é a certificação de mergulho técnico real. O Descent MK3i e o Fenix 8 têm essa certificação, suportando profundidades de até 200m dependendo do modelo.'
-  },
-  {
-    q: 'O IPX4 protege contra qual tipo de exposição à água?',
-    opts: ['Imersão até 1 metro', 'Respingos de qualquer direção — protege contra suor e chuva leve', 'Jatos d'água de alta pressão', 'Submersão por até 10 minutos'],
-    correct: 1,
-    exp: 'IPX4 = respingos de água de qualquer direção. Protege contra suor e chuva leve. Não pode ser submerso nem exposto à chuva forte. É o nível mais básico de proteção.'
-  },
-  {
-    q: 'Por que danos causados por água geralmente não têm cobertura de garantia?',
-    opts: ['Porque a Garmin não cobre danos líquidos em nenhum modelo', 'Porque é difícil provar as condições do incidente — se o uso foi dentro dos limites certificados ou não', 'Porque a certificação IPX não existe legalmente no Brasil', 'Porque o cliente sempre usa errado'],
-    correct: 1,
-    exp: 'A certificação IPX é um teste laboratorial em condições controladas. Na prática, é difícil provar se o dano ocorreu dentro ou fora dos limites (temperatura, profundidade, tempo). Por isso, danos por água costumam não ter cobertura. Oriente o cliente corretamente antes da venda.'
-  },
-  {
-    q: 'Um cliente quer o Shokz OpenRun Pro para nadar. O que você diz?',
-    opts: ['Pode usar tranquilamente — IP55 cobre natação', '"O OpenRun Pro tem IP55 — aguenta suor e respingos, mas não é recomendado para submersão. Para natação, você precisaria de um fone específico para água."', 'IP55 é equivalente a IPX7, então serve para nadar', 'Qualquer Shokz pode ser usado na água'],
-    correct: 1,
-    exp: 'IP55 = proteção parcial contra poeira (nível 5) e jatos d'água de baixa pressão (nível 5). Não deve ser submerso. Para natação, o OpenRun Pro não é indicado — e nenhum modelo Shokz atual é certificado para uso na água.'
-  },
-  {
-    q: 'O Forerunner 165 tem 5 ATM. O que isso significa na prática para um cliente nadador?',
-    opts: ['Não pode ser usado na piscina', 'Suporta natação em piscina e chuva — é o mínimo recomendado para quem nada', 'Suporta mergulho até 5 metros', 'Apenas protege contra respingos'],
-    correct: 1,
-    exp: '5 ATM equivale aproximadamente a IPX7/IPX8 para uso do dia a dia. É o mínimo para recomendar a quem nada. O FR165 é indicado para natação em piscina e mar, além de chuva forte durante treinos.'
-  },
-  {
-    q: 'Qual a forma CORRETA de explicar a resistencia a agua de um produto ao cliente?',
-    opts: ['"Este produto e a prova de agua, pode usar em qualquer situacao."', '"Ele tem certificacao IPX7 — suporta imersao acidental em ate 1 metro por 30 minutos, mas nao e indicado para mergulho ou jatos de alta pressao."', '"E resistente a agua, mas melhor nao molhar muito."', '"Depende de como voce usar."'],
-    correct: 1,
-    exp: 'Sempre especifique o nivel e os limites. "A prova de agua" nao existe tecnicamente. A comunicacao correta evita expectativas erradas, frustracoes e devolucoes — e protege a relacao de confianca com o cliente.'
-  },
-  {
-    q: 'Um cliente usa o Shokz Open Dots para academia e pergunta se pode usar na chuva no caminho. O que você responde?',
-    opts: ['"Pode usar na chuva tranquilamente, todos os Shokz sao resistentes."', '"O Open Dots tem IP54 — aguenta respingos e suor intenso, mas para chuva forte nao e o mais indicado. Para uso na rua com chuva, o OpenRun (IP67) seria mais seguro."', '"IP54 e o mesmo que IPX7, pode usar normalmente."', '"Nao pode usar em nenhuma condicao com agua."'],
-    correct: 1,
-    exp: 'O Open Dots tem IP54 — o 5 indica protecao parcial contra poeira e o 4 indica protecao contra respingos de qualquer direcao. Aguenta suor e respingos leves, mas nao e recomendado para chuva forte prolongada. Para uso externo com chuva, o OpenRun IP67 e mais adequado.'
-  },
-  {
-    q: 'Qual a diferenca de protecao entre o Shokz OpenFit Air 2+ (IP55) e o Open Dots (IP54)?',
-    opts: ['Sao iguais — IP54 e IP55 tem a mesma protecao', 'O OpenFit Air 2+ tem protecao ligeiramente superior — aguenta jatos de agua de baixa pressao, enquanto o Open Dots suporta apenas respingos', 'O Open Dots e mais resistente que o OpenFit Air 2+', 'O OpenFit Air 2+ e a prova de agua, o Open Dots nao'],
-    correct: 1,
-    exp: 'IP54: protecao parcial contra poeira (5) + respingos de qualquer direcao (4). IP55: protecao parcial contra poeira (5) + jatos de agua de baixa pressao (5). O OpenFit Air 2+ tem um nivel a mais de protecao — aguenta chuva leve e lavagem rapida, enquanto o Open Dots e mais indicado para ambientes com suor.'
-  },
-  {
-    q: 'Um cliente quer um Shokz para treinar na academia com muito suor e lavar com agua corrente apos o treino. Qual voce indica?',
-    opts: ['Open Dots (IP54) — suficiente para suor', 'OpenFit Air 2+ (IP55) ou OpenRun Pro (IP55) — aguenta suor intenso e lavagem rapida com agua corrente', 'Nenhum Shokz aguenta ser lavado', 'OpenRun (IP67) — unico que aguenta lavagem'],
-    correct: 1,
-    exp: 'IP55 e o minimo recomendado para quem quer lavar o fone com agua corrente apos o treino. Tanto o OpenFit Air 2+ quanto o OpenRun Pro tem IP55 — jatos de agua de baixa pressao. O Open Dots (IP54) aguenta suor mas nao e recomendado para lavagem direta.'
-  },
+  {q:"O que significa a sigla IPX?",opts:["Impermeabilidade Por Exposicao","Ingress Protection (Protecao contra Penetracao) com poeira nao avaliada","International Protection Extra","Indice de Protecao para Xeque"],correct:1,exp:"IPX significa Ingress Protection. O X indica que a protecao contra poeira nao foi avaliada — apenas a resistencia a agua."},
+  {q:"Um cliente chega com o Instinct 3 e diz que parou de funcionar depois de uma sauna. O que voce explica?",opts:["Deve ter sido defeito de fabricacao — aciona a garantia","A certificacao IPX/ATM e testada com agua limpa e fria. Vapor e calor da sauna alteram a pressao interna e podem vencer a vedacao — nao esta coberto pela garantia","O Instinct 3 deveria suportar sauna pois e 10 ATM","Depende da temperatura da sauna"],correct:1,exp:"A certificacao e realizada com agua limpa em temperatura ambiente. Agua quente, vapor e sauna alteram a pressao interna e podem vencer a vedacao. Dano por agua em condicoes fora do certificado normalmente nao tem cobertura de garantia."},
+  {q:"Qual e a classificacao minima recomendada para um cliente que quer nadar em piscina com o relogio Garmin?",opts:["1 ATM","5 ATM","10 ATM","IPX4"],correct:1,exp:"5 ATM e o minimo para natacao em piscina e uso na chuva. Equivale aproximadamente a IPX7/IPX8 para uso do dia a dia. FR165, Venu 4 e Vivoactive 6 sao exemplos com 5 ATM."},
+  {q:"Um cliente pergunta se o Forerunner 965 e resistente a agua. Como voce responde corretamente?",opts:["Sim, ele e a prova de agua!","Nao, ele nao tem protecao contra agua.","Ele tem certificacao 10 ATM — suporta esportes aquaticos, snorkel e surf, mas nenhum dispositivo e 100% a prova de agua para sempre.","Ele tem IPX7, entao aguenta ate 1 metro."],correct:2,exp:"Nunca diga a prova de agua sem especificar os limites. O FR965 tem 10 ATM — suporta pressao dinamica da agua como surf e snorkel. Toda certificacao tem condicoes e limites especificos."},
+  {q:"Qual a diferenca entre IPX7 e IPX8?",opts:["IPX7 protege contra respingos, IPX8 contra chuva forte","IPX7 suporta imersao ate 1m por 30min; IPX8 suporta imersao alem de 1m","IPX7 e para GPS portatil, IPX8 e para relogios","Nao ha diferenca pratica entre eles"],correct:1,exp:"IPX7 = imersao em ate 1 metro por ate 30 minutos. IPX8 = imersao alem de 1 metro. Quanto maior o numero, maior a protecao."},
+  {q:"Um cliente quer um Shokz para usar correndo na chuva forte. Qual modelo voce indica?",opts:["OpenRun Pro (IP55) — tem mais recursos de som","OpenRun (IP67) — protecao total contra poeira e imersao ate 1m","Os dois sao iguais para chuva forte","Nenhum dos dois aguenta chuva forte"],correct:1,exp:"O OpenRun tem IP67 — protecao total contra poeira (nivel 6) e imersao ate 1m por 30min (nivel 7). Para chuva forte, e a escolha certa. O OpenRun Pro tem IP55, que aguenta suor e chuva leve, mas nao e recomendado para chuva muito forte."},
+  {q:"O que o numero 6 na classificacao IP67 do Shokz OpenRun significa?",opts:["Resistencia a jatos de agua de alta pressao","Protecao total contra poeira","Suporta imersao em 6 metros","Nivel de resistencia a impacto"],correct:1,exp:"Na classificacao IP completa, o primeiro numero indica protecao contra solidos/poeira. Nivel 6 = protecao total contra poeira. O segundo numero (7) indica resistencia a agua — imersao ate 1m por 30min."},
+  {q:"Um cliente vai usar o GPS Garmin em um caiaque. Qual recurso voce destaca alem da certificacao IPX7?",opts:["GPS multibanda","Modelos com flutuacao (como GPSMAP 79s/86sci) — se cair na agua, sobe a superficie em vez de afundar","Tela touchscreen","Bateria de longa duracao"],correct:1,exp:"Para uso nautico, o fator flutuacao e decisivo. IPX7 garante sobrevivencia a imersao por 30min em 1m, mas em mar aberto o GPS pode afundar alem desse limite. Modelos flutuantes ficam visiveis na superficie."},
+  {q:"Qual certificacao os relogios Garmin usam (nao os GPS portateis)?",opts:["IPX — Ingress Protection","ATM — baseado na norma ISO 22810","IPX8 — imersao profunda","EN 13319 — padrao europeu"],correct:1,exp:"Os relogios Garmin seguem a norma ISO 22810, medida em ATM. A norma IPX e usada em GPS portateis, fones (Shokz) e acessorios."},
+  {q:"Um Garmin com 10 ATM + EN 13319 — qual o uso indicado?",opts:["Natacao em piscina","Corrida na chuva","Mergulho com equipamento — como Descent MK3i e Fenix 8","Surf apenas"],correct:2,exp:"10 ATM + EN 13319 e a certificacao de mergulho tecnico real. O Descent MK3i e o Fenix 8 tem essa certificacao, suportando profundidades de ate 200m dependendo do modelo."},
+  {q:"O IPX4 protege contra qual tipo de exposicao a agua?",opts:["Imersao ate 1 metro","Respingos de qualquer direcao — protege contra suor e chuva leve","Jatos de agua de alta pressao","Submersao por ate 10 minutos"],correct:1,exp:"IPX4 = respingos de agua de qualquer direcao. Protege contra suor e chuva leve. Nao pode ser submerso nem exposto a chuva forte. E o nivel mais basico de protecao."},
+  {q:"Por que danos causados por agua geralmente nao tem cobertura de garantia?",opts:["Porque a Garmin nao cobre danos liquidos em nenhum modelo","Porque e dificil provar as condicoes do incidente — se o uso foi dentro dos limites certificados ou nao","Porque a certificacao IPX nao existe legalmente no Brasil","Porque o cliente sempre usa errado"],correct:1,exp:"A certificacao IPX e um teste laboratorial em condicoes controladas. Na pratica, e dificil provar se o dano ocorreu dentro ou fora dos limites. Por isso, danos por agua costumam nao ter cobertura."},
+  {q:"Um cliente quer o Shokz OpenRun Pro para nadar. O que voce diz?",opts:["Pode usar tranquilamente — IP55 cobre natacao","O OpenRun Pro tem IP55 — aguenta suor e respingos, mas nao e recomendado para submersao. Para natacao voce precisaria de um fone especifico para agua.","IP55 e equivalente a IPX7, entao serve para nadar","Qualquer Shokz pode ser usado na agua"],correct:1,exp:"IP55 = protecao parcial contra poeira (nivel 5) e jatos de agua de baixa pressao (nivel 5). Nao deve ser submerso. Para natacao, o OpenRun Pro nao e indicado."},
+  {q:"O Forerunner 165 tem 5 ATM. O que isso significa para um cliente nadador?",opts:["Nao pode ser usado na piscina","Suporta natacao em piscina e chuva — e o minimo recomendado para quem nada","Suporta mergulho ate 5 metros","Apenas protege contra respingos"],correct:1,exp:"5 ATM equivale aproximadamente a IPX7/IPX8 para uso do dia a dia. E o minimo para recomendar a quem nada. O FR165 e indicado para natacao em piscina e mar."},
+  {q:"Qual a forma CORRETA de explicar a resistencia a agua de um produto ao cliente?",opts:["Este produto e a prova de agua, pode usar em qualquer situacao.","Ele tem certificacao IPX7 — suporta imersao acidental em ate 1 metro por 30 minutos, mas nao e indicado para mergulho ou jatos de alta pressao.","E resistente a agua, mas melhor nao molhar muito.","Depende de como voce usar."],correct:1,exp:"Sempre especifique o nivel e os limites. A prova de agua nao existe tecnicamente. A comunicacao correta evita expectativas erradas, frustracoes e devolucoes."},
+  {q:"Um cliente usa o Shokz Open Dots para academia e pergunta se pode usar na chuva no caminho. O que voce responde?",opts:["Pode usar na chuva tranquilamente, todos os Shokz sao resistentes.","O Open Dots tem IP54 — aguenta respingos e suor intenso, mas para chuva forte nao e o mais indicado. Para uso na rua com chuva, o OpenRun (IP67) seria mais seguro.","IP54 e o mesmo que IPX7, pode usar normalmente.","Nao pode usar em nenhuma condicao com agua."],correct:1,exp:"O Open Dots tem IP54 — o 5 indica protecao parcial contra poeira e o 4 indica protecao contra respingos de qualquer direcao. Aguenta suor e respingos leves, mas nao e recomendado para chuva forte."},
+  {q:"Qual a diferenca de protecao entre o Shokz OpenFit Air 2+ (IP55) e o Open Dots (IP54)?",opts:["Sao iguais — IP54 e IP55 tem a mesma protecao","O OpenFit Air 2+ tem protecao ligeiramente superior — aguenta jatos de agua de baixa pressao, enquanto o Open Dots suporta apenas respingos","O Open Dots e mais resistente que o OpenFit Air 2+","O OpenFit Air 2+ e a prova de agua, o Open Dots nao"],correct:1,exp:"IP54: protecao parcial contra poeira (5) + respingos de qualquer direcao (4). IP55: protecao parcial contra poeira (5) + jatos de agua de baixa pressao (5). O OpenFit Air 2+ tem um nivel a mais de protecao."},
+  {q:"Um cliente quer um Shokz para treinar na academia com muito suor e lavar com agua corrente apos o treino. Qual voce indica?",opts:["Open Dots (IP54) — suficiente para suor","OpenFit Air 2+ (IP55) ou OpenRun Pro (IP55) — aguenta suor intenso e lavagem rapida com agua corrente","Nenhum Shokz aguenta ser lavado","OpenRun (IP67) — unico que aguenta lavagem"],correct:1,exp:"IP55 e o minimo recomendado para quem quer lavar o fone com agua corrente apos o treino. Tanto o OpenFit Air 2+ quanto o OpenRun Pro tem IP55. O Open Dots (IP54) aguenta suor mas nao e recomendado para lavagem direta."},
 ];
+
+// ── QUIZ ATENDIMENTO
 
 // ── QUIZ ATENDIMENTO ──────────────────────────────────────────
 const quizDataAT = [
