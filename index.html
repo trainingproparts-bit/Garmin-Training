@@ -1651,9 +1651,11 @@ function closePwdModal() {
 function confirmPwd() {
   const input = document.getElementById('pwdInput').value.trim();
   const correct = QUIZ_PASSWORDS[currentQuizTarget];
+
   if (input === correct) {
+    const target = currentQuizTarget; // guarda antes
     closePwdModal();
-    openPanel(currentQuizTarget);
+    openPanel(target);
   } else {
     const inp = document.getElementById('pwdInput');
     inp.classList.add('error');
