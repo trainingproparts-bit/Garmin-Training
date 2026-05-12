@@ -7,6 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Proparts Training">
 <title>Proparts Training</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&family=Barlow+Condensed:ital,wght@1,700;1,800&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -1014,7 +1015,11 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
 // PROPARTS TRAINING — APP.JS
 // ============================================================
 
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyv0UhVSiM52K-g8A31Myih_UMMGKhZIwRAAMcMW_3WwYofjgtNCV-6J7p6iv0ODSsU/exec';
+// ── EmailJS Config ──
+const EMAILJS_SERVICE  = 'service_c8ti1np';
+const EMAILJS_TEMPLATE = 'template_z1zo7so';
+const EMAILJS_PUBLIC   = '085pozzWyUhuiYn9B';
+emailjs.init(EMAILJS_PUBLIC);
 
 // ── BRAND SELECTOR ──────────────────────────────────────────
 function enterPortal(brand) {
@@ -1430,15 +1435,32 @@ async function registerResult(pct){
   const nameInput=document.getElementById('regName');
   const name=nameInput?nameInput.value.trim():'';
   if(!name){if(nameInput)nameInput.style.borderColor='var(--warn)';return;}
-  const btn=document.querySelector('.register-btn');
+  const btn=document.querySelector('#registerForm .register-btn');
   if(!btn) return;
   btn.textContent='Enviando...';btn.disabled=true;
-  const payload={nome:name,modulo:'Módulo 1 — Universo Garmin',nota:pct,acertos:score,total:quizData.length};
+  const now=new Date();
+  const data=now.toLocaleDateString('pt-BR');
+  const hora=now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  const status=pct>=70?'✅ APROVADO':'❌ Não atingiu 70%';
+  const message=`👤 Colaborador: ${name}\n📚 Módulo: Módulo 1 — Universo Garmin\n🎯 Nota: ${pct}%\n✅ Acertos: ${score} de ${quizData.length}\n📅 Data: ${data}\n⏰ Hora: ${hora}\n📊 Status: ${status}`;
   try{
-    await fetch(SHEETS_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),mode:'no-cors'});
+    await emailjs.send(EMAILJS_SERVICE, EMAILJS_TEMPLATE, {
+      nome: name,
+      modulo: 'Módulo 1 — Universo Garmin',
+      nota: pct+'%',
+      acertos: score+' de '+quizData.length,
+      data: data,
+      hora: hora,
+      status: status,
+      message: message
+    });
     const form=document.getElementById('registerForm');if(form)form.style.display='none';
     const success=document.getElementById('regSuccess');if(success)success.style.display='block';
-  }catch(err){btn.textContent='Registrar Conclusão ✓';btn.disabled=false;alert('Erro ao registrar. Verifique sua conexão.');}
+  }catch(err){
+    console.error('[EmailJS] Erro:',err);
+    btn.textContent='Registrar Conclusão ✓';btn.disabled=false;
+    alert('Erro ao enviar. Verifique sua conexão e tente novamente.');
+  }
 }
 if(document.getElementById('quizContent')) initQuiz();
 
@@ -1505,12 +1527,29 @@ async function registerResult2(pct){
   const btn=document.querySelector('#registerForm2 .register-btn');
   if(!btn) return;
   btn.textContent='Enviando...';btn.disabled=true;
-  const payload={nome:name,modulo:'Módulo 2 — Perfis de Cliente',nota:pct,acertos:score2,total:quizData2.length};
+  const now=new Date();
+  const data=now.toLocaleDateString('pt-BR');
+  const hora=now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  const status=pct>=70?'✅ APROVADO':'❌ Não atingiu 70%';
+  const message=`👤 Colaborador: ${name}\n📚 Módulo: Módulo 2 — Perfis de Cliente\n🎯 Nota: ${pct}%\n✅ Acertos: ${score2} de ${quizData2.length}\n📅 Data: ${data}\n⏰ Hora: ${hora}\n📊 Status: ${status}`;
   try{
-    await fetch(SHEETS_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),mode:'no-cors'});
+    await emailjs.send(EMAILJS_SERVICE, EMAILJS_TEMPLATE, {
+      nome: name,
+      modulo: 'Módulo 2 — Perfis de Cliente',
+      nota: pct+'%',
+      acertos: score2+' de '+quizData2.length,
+      data: data,
+      hora: hora,
+      status: status,
+      message: message
+    });
     const form=document.getElementById('registerForm2');if(form)form.style.display='none';
     const success=document.getElementById('regSuccess2');if(success)success.style.display='block';
-  }catch(err){btn.textContent='Registrar Conclusão ✓';btn.disabled=false;alert('Erro ao registrar. Verifique sua conexão.');}
+  }catch(err){
+    console.error('[EmailJS] Erro:',err);
+    btn.textContent='Registrar Conclusão ✓';btn.disabled=false;
+    alert('Erro ao enviar. Verifique sua conexão e tente novamente.');
+  }
 }
 if(document.getElementById('quizContent2')) initQuiz2();
 
