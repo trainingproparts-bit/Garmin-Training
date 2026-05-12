@@ -371,6 +371,39 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
 .app-row:hover{border-color:var(--g4);}
 .app-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
 
+
+/* QUIZZES ESPECIAIS */
+.special-quiz-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;}
+.special-quiz-card{background:var(--white);border:2px solid var(--border);border-radius:var(--r);padding:24px;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;}
+.special-quiz-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--g);transform:scaleX(0);transition:transform 0.2s;transform-origin:left;}
+.special-quiz-card:hover{border-color:var(--g);box-shadow:var(--sh2);transform:translateY(-2px);}
+.special-quiz-card:hover::before{transform:scaleX(1);}
+.sq-lock{font-size:28px;margin-bottom:12px;}
+.sq-title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:18px;text-transform:uppercase;letter-spacing:1px;color:var(--text);margin-bottom:4px;}
+.sq-desc{font-size:12px;color:var(--text3);line-height:1.5;margin-bottom:14px;}
+.sq-meta{display:flex;gap:6px;flex-wrap:wrap;}
+.sq-btn{display:inline-flex;align-items:center;gap:6px;background:var(--g);color:#fff;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;padding:8px 16px;border-radius:var(--r2);border:none;cursor:pointer;transition:background 0.2s;margin-top:14px;}
+.sq-btn:hover{background:var(--g2);}
+
+/* PASSWORD MODAL */
+.pwd-modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:700;align-items:center;justify-content:center;padding:20px;}
+.pwd-modal-ov.open{display:flex;}
+.pwd-modal-box{background:var(--white);border-radius:16px;padding:32px;max-width:360px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
+.pwd-modal-icon{font-size:40px;margin-bottom:12px;}
+.pwd-modal-title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:22px;text-transform:uppercase;letter-spacing:1px;color:var(--text);margin-bottom:4px;}
+.pwd-modal-sub{font-size:13px;color:var(--text3);margin-bottom:20px;}
+.pwd-input{width:100%;border:2px solid var(--border);border-radius:var(--r2);padding:12px 16px;font-family:'Rajdhani',sans-serif;font-size:20px;letter-spacing:6px;text-align:center;color:var(--text);outline:none;transition:border-color 0.2s;margin-bottom:10px;}
+.pwd-input:focus{border-color:var(--g);}
+.pwd-input.error{border-color:var(--warn);animation:shake 0.3s;}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.pwd-error{font-size:12px;color:var(--warn);margin-bottom:10px;display:none;}
+.pwd-error.show{display:block;}
+.pwd-confirm-btn{width:100%;background:var(--g);color:#fff;border:none;border-radius:var(--r2);padding:12px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:background 0.2s;margin-bottom:8px;}
+.pwd-confirm-btn:hover{background:var(--g2);}
+.pwd-cancel-btn{width:100%;background:transparent;color:var(--text3);border:1px solid var(--border);border-radius:var(--r2);padding:10px;font-family:'Rajdhani',sans-serif;font-weight:600;font-size:13px;cursor:pointer;transition:all 0.2s;}
+.pwd-cancel-btn:hover{border-color:var(--text3);color:var(--text);}
+@media(max-width:700px){.special-quiz-grid{grid-template-columns:1fr;}}
+
 /* RESPONSIVE */
 @media(max-width:700px){
   .grid2,.grid3{grid-template-columns:1fr;}
@@ -502,6 +535,12 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
       <div class="menu-card priority" onclick="openPanel('formacao')"><div class="menu-badge new">NOVO</div><span class="menu-icon">🎓</span><div class="menu-name">Formação</div><div class="menu-desc">Trilha de módulos — estude e seja certificado</div></div>
       <div class="menu-card" onclick="openPanel('certificacao')"><span class="menu-icon">🏅</span><div class="menu-name">Certificação</div><div class="menu-desc">Sua trilha: Explorador → Triatleta</div></div>
       <div class="menu-card" onclick="openPanel('ranking')"><span class="menu-icon">🏆</span><div class="menu-name">Ranking</div><div class="menu-desc">Pódio da equipe e pontuação</div></div>
+    </div>
+
+    <div class="menu-section-label">Quizzes Especiais</div>
+    <div class="menu-grid">
+      <div class="menu-card" onclick="openPwdModal('quiz-ipx')"><div class="menu-badge" style="background:var(--g);">🔒 ACESSO</div><span class="menu-icon">💧</span><div class="menu-name">Quiz IPX</div><div class="menu-desc">Resistência à água, ATM, Garmin & Shokz — situações de venda</div></div>
+      <div class="menu-card" onclick="openPwdModal('quiz-atendimento')"><div class="menu-badge" style="background:var(--g);">🔒 ACESSO</div><span class="menu-icon">🎭</span><div class="menu-name">Quiz Atendimento</div><div class="menu-desc">Script completo, objeções e finalização com acessórios</div></div>
     </div>
   </div>
 </div>
@@ -1555,6 +1594,386 @@ async function registerResult2(pct){
 }
 if(document.getElementById('quizContent2')) initQuiz2();
 
+
+
+// ── PASSWORD MODAL ────────────────────────────────────────────
+const QUIZ_PASSWORDS = {
+  'quiz-ipx': '1163',
+  'quiz-atendimento': '1164'
+};
+const QUIZ_TITLES = {
+  'quiz-ipx': '💧 Quiz IPX',
+  'quiz-atendimento': '🎭 Quiz Atendimento'
+};
+
+let currentQuizTarget = null;
+
+function openPwdModal(quizId) {
+  currentQuizTarget = quizId;
+  document.getElementById('pwdModalTitle').textContent = QUIZ_TITLES[quizId];
+  document.getElementById('pwdInput').value = '';
+  document.getElementById('pwdInput').classList.remove('error');
+  document.getElementById('pwdError').classList.remove('show');
+  document.getElementById('pwdModal').classList.add('open');
+  setTimeout(() => document.getElementById('pwdInput').focus(), 100);
+}
+
+function closePwdModal() {
+  document.getElementById('pwdModal').classList.remove('open');
+  currentQuizTarget = null;
+}
+
+function confirmPwd() {
+  const input = document.getElementById('pwdInput').value.trim();
+  const correct = QUIZ_PASSWORDS[currentQuizTarget];
+  if (input === correct) {
+    closePwdModal();
+    openPanel(currentQuizTarget);
+  } else {
+    const inp = document.getElementById('pwdInput');
+    inp.classList.add('error');
+    document.getElementById('pwdError').classList.add('show');
+    inp.value = '';
+    setTimeout(() => inp.classList.remove('error'), 400);
+  }
+}
+
+// Close pwd modal on outside click
+document.getElementById('pwdModal').addEventListener('click', function(e) {
+  if (e.target === this) closePwdModal();
+});
+
+// ── QUIZ IPX ──────────────────────────────────────────────────
+const quizDataIPX = [
+  {
+    q: 'O que significa a sigla IPX?',
+    opts: ['Impermeabilidade Por Exposição', 'Ingress Protection (Proteção contra Penetração) com poeira não avaliada', 'International Protection Extra', 'Índice de Proteção para Xeque'],
+    correct: 1,
+    exp: 'IPX significa Ingress Protection. O "X" indica que a proteção contra poeira não foi avaliada — apenas a resistência à água.'
+  },
+  {
+    q: 'Um cliente chega com o Instinct 3 e diz que ele parou de funcionar depois de uma sauna. O que você explica?',
+    opts: ['Deve ter sido defeito de fabricação — aciona a garantia', 'A certificação IPX/ATM é testada com água limpa e fria. Vapor e calor da sauna alteram a pressão interna e podem vencer a vedação — não está coberto pela garantia', 'O Instinct 3 deveria suportar sauna pois é 10 ATM', 'Depende da temperatura da sauna'],
+    correct: 1,
+    exp: 'A certificação é realizada com água limpa em temperatura ambiente. Água quente, vapor e sauna alteram a pressão interna e podem vencer a vedação. Dano por água em condições fora do certificado normalmente não tem cobertura de garantia.'
+  },
+  {
+    q: 'Qual é a classificação mínima recomendada para um cliente que quer nadar em piscina com o relógio Garmin?',
+    opts: ['1 ATM', '5 ATM', '10 ATM', 'IPX4'],
+    correct: 1,
+    exp: '5 ATM é o mínimo para natação em piscina e uso na chuva. Equivale aproximadamente a IPX7/IPX8 para uso do dia a dia. FR165, Venu 4 e Vivoactive 6 são exemplos com 5 ATM.'
+  },
+  {
+    q: 'Um cliente pergunta se o Forerunner 965 é "à prova d'água". Como você responde corretamente?',
+    opts: ['"Sim, ele é à prova d'água!"', '"Não, ele não tem proteção contra água."', '"Ele tem certificação 10 ATM, o que significa que suporta esportes aquáticos, snorkel e surf — mas nenhum dispositivo é 100% à prova d'água para sempre."', '"Ele tem IPX7, então aguenta até 1 metro."'],
+    correct: 2,
+    exp: 'Nunca diga "à prova d'água" sem especificar os limites. O FR965 tem 10 ATM — suporta pressão dinâmica da água como surf e snorkel. Toda certificação tem condições e limites específicos.'
+  },
+  {
+    q: 'Qual a diferença entre IPX7 e IPX8?',
+    opts: ['IPX7 protege contra respingos, IPX8 contra chuva forte', 'IPX7 suporta imersão até 1m por 30min; IPX8 suporta imersão além de 1m', 'IPX7 é para GPS portátil, IPX8 é para relógios', 'Não há diferença prática entre eles'],
+    correct: 1,
+    exp: 'IPX7 = imersão em até 1 metro por até 30 minutos. IPX8 = imersão além de 1 metro. Quanto maior o número, maior a proteção.'
+  },
+  {
+    q: 'Um cliente quer um Shokz para usar correndo na chuva forte. Qual modelo você indica?',
+    opts: ['OpenRun Pro (IP55) — tem mais recursos de som', 'OpenRun (IP67) — proteção total contra poeira e imersão até 1m', 'Os dois são iguais para chuva forte', 'Nenhum dos dois aguenta chuva forte'],
+    correct: 1,
+    exp: 'O OpenRun tem IP67 — proteção total contra poeira (nível 6) e imersão até 1m por 30min (nível 7). Para chuva forte, é a escolha certa. O OpenRun Pro tem IP55, que aguenta suor e chuva leve, mas não é recomendado para chuva muito forte.'
+  },
+  {
+    q: 'O que o número "6" na classificação IP67 do Shokz OpenRun significa?',
+    opts: ['Resistência a jatos d'água de alta pressão', 'Proteção total contra poeira', 'Suporta imersão em 6 metros', 'Nível de resistência a impacto'],
+    correct: 1,
+    exp: 'Na classificação IP completa (não IPX), o primeiro número indica proteção contra sólidos/poeira. Nível 6 = proteção total contra poeira. O segundo número (7) indica resistência à água — imersão até 1m por 30min.'
+  },
+  {
+    q: 'Um cliente vai usar o GPS Garmin em um caiaque. Qual recurso você destaca além da certificação IPX7?',
+    opts: ['GPS multibanda', 'Modelos com flutuação (como GPSMAP 79s/86sci) — se cair na água, sobe à superfície em vez de afundar', 'Tela touchscreen', 'Bateria de longa duração'],
+    correct: 1,
+    exp: 'Para uso náutico, o fator flutuação é decisivo. IPX7 garante sobrevivência à imersão por 30min em 1m, mas em mar aberto ou rio com correnteza o GPS pode afundar além desse limite. Modelos flutuantes ficam visíveis na superfície e podem ser recuperados.'
+  },
+  {
+    q: 'Qual certificação os relógios Garmin usam (não os GPS portáteis)?',
+    opts: ['IPX — Ingress Protection', 'ATM — baseado na norma ISO 22810', 'IPX8 — imersão profunda', 'EN 13319 — padrão europeu'],
+    correct: 1,
+    exp: 'Os relógios Garmin seguem a norma ISO 22810, medida em ATM. A norma IPX é usada em GPS portáteis, fones (Shokz) e acessórios. É importante saber diferenciar para explicar corretamente ao cliente.'
+  },
+  {
+    q: 'Um Garmin com 10 ATM + EN 13319 — qual o uso indicado?',
+    opts: ['Natação em piscina', 'Corrida na chuva', 'Mergulho com equipamento — como Descent MK3i e Fenix 8', 'Surf apenas'],
+    correct: 2,
+    exp: '10 ATM + EN 13319 é a certificação de mergulho técnico real. O Descent MK3i e o Fenix 8 têm essa certificação, suportando profundidades de até 200m dependendo do modelo.'
+  },
+  {
+    q: 'O IPX4 protege contra qual tipo de exposição à água?',
+    opts: ['Imersão até 1 metro', 'Respingos de qualquer direção — protege contra suor e chuva leve', 'Jatos d'água de alta pressão', 'Submersão por até 10 minutos'],
+    correct: 1,
+    exp: 'IPX4 = respingos de água de qualquer direção. Protege contra suor e chuva leve. Não pode ser submerso nem exposto à chuva forte. É o nível mais básico de proteção.'
+  },
+  {
+    q: 'Por que danos causados por água geralmente não têm cobertura de garantia?',
+    opts: ['Porque a Garmin não cobre danos líquidos em nenhum modelo', 'Porque é difícil provar as condições do incidente — se o uso foi dentro dos limites certificados ou não', 'Porque a certificação IPX não existe legalmente no Brasil', 'Porque o cliente sempre usa errado'],
+    correct: 1,
+    exp: 'A certificação IPX é um teste laboratorial em condições controladas. Na prática, é difícil provar se o dano ocorreu dentro ou fora dos limites (temperatura, profundidade, tempo). Por isso, danos por água costumam não ter cobertura. Oriente o cliente corretamente antes da venda.'
+  },
+  {
+    q: 'Um cliente quer o Shokz OpenRun Pro para nadar. O que você diz?',
+    opts: ['Pode usar tranquilamente — IP55 cobre natação', '"O OpenRun Pro tem IP55 — aguenta suor e respingos, mas não é recomendado para submersão. Para natação, você precisaria de um fone específico para água."', 'IP55 é equivalente a IPX7, então serve para nadar', 'Qualquer Shokz pode ser usado na água'],
+    correct: 1,
+    exp: 'IP55 = proteção parcial contra poeira (nível 5) e jatos d'água de baixa pressão (nível 5). Não deve ser submerso. Para natação, o OpenRun Pro não é indicado — e nenhum modelo Shokz atual é certificado para uso na água.'
+  },
+  {
+    q: 'O Forerunner 165 tem 5 ATM. O que isso significa na prática para um cliente nadador?',
+    opts: ['Não pode ser usado na piscina', 'Suporta natação em piscina e chuva — é o mínimo recomendado para quem nada', 'Suporta mergulho até 5 metros', 'Apenas protege contra respingos'],
+    correct: 1,
+    exp: '5 ATM equivale aproximadamente a IPX7/IPX8 para uso do dia a dia. É o mínimo para recomendar a quem nada. O FR165 é indicado para natação em piscina e mar, além de chuva forte durante treinos.'
+  },
+  {
+    q: 'Qual a forma CORRETA de explicar a resistência à água de um produto ao cliente?',
+    opts: ['"Este produto é à prova d'água, pode usar em qualquer situação."', '"Ele tem certificação IPX7, o que significa que suporta imersão acidental em até 1 metro por 30 minutos — mas não é indicado para mergulho ou jatos d'água de alta pressão."', '"É resistente à água, mas melhor não molhar muito."', '"Depende de como você usar."'],
+    correct: 1,
+    exp: 'Sempre especifique o nível e os limites. "À prova d'água" não existe tecnicamente. A comunicação correta evita expectativas erradas, frustrações e devoluções — e protege a relação de confiança com o cliente.'
+  },
+  {
+    q: 'Um cliente usa o Shokz Open Dots para academia e pergunta se pode usar na chuva no caminho até a academia. O que você responde?',
+    opts: ['"Pode usar na chuva tranquilamente, todos os Shokz são resistentes."', '"O Open Dots tem IP54 — aguenta respingos e suor intenso, mas para chuva moderada a forte não é o mais indicado. Para uso na rua com chuva, o OpenRun (IP67) seria mais seguro."', '"IP54 é o mesmo que IPX7, pode usar normalmente."', '"Não pode usar em nenhuma condição com água."'],
+    correct: 1,
+    exp: 'O Open Dots tem IP54 — o "5" indica proteção parcial contra poeira e o "4" indica proteção contra respingos de qualquer direção. Aguenta suor e respingos leves, mas não é recomendado para chuva forte ou moderada prolongada. Para uso externo com chuva, o OpenRun IP67 é mais adequado.'
+  },
+  {
+    q: 'Qual a diferença de proteção entre o Shokz OpenFit Air 2+ (IP55) e o Open Dots (IP54)?',
+    opts: ['São iguais — IP54 e IP55 têm a mesma proteção', 'O OpenFit Air 2+ tem proteção ligeiramente superior à água — aguenta jatos d'água de baixa pressão, enquanto o Open Dots suporta apenas respingos', 'O Open Dots é mais resistente que o OpenFit Air 2+', 'O OpenFit Air 2+ é à prova d'água, o Open Dots não'],
+    correct: 1,
+    exp: 'IP54: proteção parcial contra poeira (5) + respingos de qualquer direção (4). IP55: proteção parcial contra poeira (5) + jatos d'água de baixa pressão (5). O OpenFit Air 2+ tem um nível a mais de proteção à água — aguenta chuva leve e lavagem rápida, enquanto o Open Dots é mais indicado para ambientes secos com suor.'
+  },
+  {
+    q: 'Um cliente quer um Shokz para treinar na academia com muito suor e ocasionalmente lavar com água corrente após o treino. Qual você indica?',
+    opts: ['Open Dots (IP54) — é suficiente para suor', 'OpenFit Air 2+ (IP55) ou OpenRun Pro (IP55) — aguenta suor intenso e lavagem rápida com água corrente', 'Nenhum Shokz aguenta ser lavado', 'OpenRun (IP67) — único que aguenta lavagem'],
+    correct: 1,
+    exp: 'IP55 é o mínimo recomendado para quem quer lavar o fone com água corrente após o treino. Tanto o OpenFit Air 2+ quanto o OpenRun Pro têm IP55 — jatos d'água de baixa pressão. O Open Dots (IP54) aguenta suor mas não é recomendado para lavagem direta.'
+  },
+];
+
+// ── QUIZ ATENDIMENTO ──────────────────────────────────────────
+const quizDataAT = [
+  {
+    q: 'Um cliente entra na loja e você diz "Como posso ajudar?". Por que essa abordagem não é ideal?',
+    opts: ['É uma pergunta muito formal', 'É genérica e abre pouco espaço — o cliente geralmente responde "só estou olhando" e a conversa trava', 'O correto é não falar nada e esperar o cliente se aproximar', 'Deveria perguntar o nome do cliente primeiro'],
+    correct: 1,
+    exp: '"Como posso ajudar?" é uma abertura genérica que convida respostas fechadas. O ideal é apresentar seu nome e convidar o cliente a falar sobre o que veio ver — abrindo espaço para a sondagem.'
+  },
+  {
+    q: 'Na sondagem, um cliente diz que já sabe o modelo que quer. Qual é a próxima pergunta ideal?',
+    opts: ['Ir direto buscar o produto sem perguntar mais nada', '"É pra você ou é presente? E qual é a ideia de uso, mais esporte ou dia a dia?"', '"Você tem certeza? Posso te mostrar outros modelos."', '"Qual é o seu orçamento?"'],
+    correct: 1,
+    exp: 'Mesmo quando o cliente já tem um modelo em mente, é essencial entender o contexto: é presente ou para ele? Esporte ou dia a dia? Essas respostas podem confirmar a escolha ou revelar um produto mais adequado.'
+  },
+  {
+    q: 'Um cliente diz "Tá caro, vou pesquisar online." Como você responde?',
+    opts: ['"Tudo bem, qualquer dúvida pode entrar em contato."', '"Entendo. Mas aqui você tem garantia direta com a Proparts — 2 anos para dispositivos —, suporte técnico presencial e pode experimentar agora. Comprando online, qualquer problema vira um processo muito mais complicado."', '"Posso fazer um desconto especial."', '"Online pode vir sem garantia, cuidado."'],
+    correct: 1,
+    exp: 'O argumento correto valoriza os diferenciais da Proparts: garantia oficial de 2 anos, suporte presencial e a experiência de testar antes de comprar. Não entre em guerra de preço — venda a segurança e o serviço.'
+  },
+  {
+    q: 'Qual é a melhor forma de apresentar a bateria do Garmin ao cliente?',
+    opts: ['"Tem bateria de 13 dias com GPS multibanda ativo."', '"Você carrega uma vez na semana — sem aquela ansiedade de ver a bateria acabar no meio do treino."', '"A bateria é muito boa, uma das melhores do mercado."', '"Dura mais do que o Apple Watch."'],
+    correct: 1,
+    exp: 'Traduza especificações em benefícios reais. "13 dias" é um número — "carrega uma vez na semana sem ansiedade no treino" é uma experiência que o cliente imagina e deseja. Sempre conecte a função ao dia a dia do cliente.'
+  },
+  {
+    q: 'O cliente indeciso está vendo 5 modelos diferentes ao mesmo tempo. O que você faz?',
+    opts: ['Explica as diferenças de todos os 5 modelos em detalhes', 'Reduz para no máximo 2 opções baseadas na sondagem e diz "Pra você, o melhor é entre estes dois"', 'Deixa o cliente decidir sozinho para não influenciar', 'Indica o modelo mais caro'],
+    correct: 1,
+    exp: 'Muita opção paralisa a decisão. Com base na sondagem, você já sabe o perfil do cliente — use isso para eliminar opções e apresentar no máximo 2 modelos. Isso demonstra expertise e facilita o fechamento.'
+  },
+  {
+    q: 'Como você usa a experiência tátil para derrubar a indecisão do cliente?',
+    opts: ['Mostra fotos do produto no celular', 'Coloca o relógio no pulso do cliente — gentilmente, não como pergunta', 'Entrega a caixa para ele segurar', 'Mostra o relógio funcionando sem colocar no pulso'],
+    correct: 1,
+    exp: 'A experiência tátil é uma das ferramentas mais poderosas do atendimento presencial. Quando o cliente coloca o relógio no pulso, ele começa a se imaginar usando — e a decisão de compra se torna emocional, não só racional.'
+  },
+  {
+    q: 'Um cliente diz "O Apple Watch faz a mesma coisa." Como você responde?',
+    opts: ['"O Apple Watch é muito inferior ao Garmin."', '"Para quem usa como ferramenta de treino, a diferença é enorme: o Garmin tem bateria de dias, GPS dedicado muito mais preciso e algoritmos para atletas desenvolvidos por mais de 30 anos."', '"O Apple Watch é bom, mas o Garmin é melhor."', '"Depende do que você precisa."'],
+    correct: 1,
+    exp: 'Nunca desqualifique o concorrente diretamente. Apresente os diferenciais concretos: bateria (dias vs horas), precisão de GPS (multibanda vs básico) e especialização esportiva (35 anos vs smartwatch generalista). Deixe os fatos falarem.'
+  },
+  {
+    q: 'Na finalização da venda, qual ação cria um momento poderoso de personalização?',
+    opts: ['Dar um brinde junto com o produto', 'Configurar o nome do cliente no relógio na hora e mostrar como sincronizar com o app', 'Embrulhar o produto com cuidado', 'Oferecer parcelamento em mais vezes'],
+    correct: 1,
+    exp: 'Configurar o nome do cliente no relógio na hora cria um momento de pertencimento — o produto já é dele antes de sair da loja. Apresentar o Garmin Connect brevemente também garante que ele vai usar o produto corretamente.'
+  },
+  {
+    q: 'Um cliente comprou um Forerunner 265. Como você faz a finalização oferecendo acessórios?',
+    opts: ['Mostra o catálogo completo de acessórios', '"Já que você vai usar para corrida, posso te mostrar a pulseira de silicone extra — é ótima para treino. E também temos o Shokz OpenRun, que é o fone de condução óssea ideal para correr ouvindo música sem tapar os ouvidos."', '"Temos pulseiras se quiser."', 'Não oferece nada para não parecer que está forçando venda'],
+    correct: 1,
+    exp: 'A finalização com acessórios deve ser natural e conectada ao perfil do cliente. Uma pulseira extra para treino e o Shokz OpenRun são complementos diretos para o corredor — não é forçar venda, é completar a experiência.'
+  },
+  {
+    q: 'O que é o Shokz OpenRun e por que é relevante oferecer junto com um relógio Garmin?',
+    opts: ['É um smartwatch concorrente do Garmin', 'É um fone de condução óssea que transmite o som pelos ossos da cabeça, deixando os ouvidos abertos — ideal para corredores que querem ouvir música sem perder a percepção do ambiente', 'É um acessório exclusivo para mergulhadores', 'É um monitor cardíaco de pulso'],
+    correct: 1,
+    exp: 'O Shokz usa tecnologia de condução óssea — o som é transmitido pelos ossos da maçã do rosto, deixando os ouvidos completamente abertos. Para corredores, ciclistas e trilheiros, isso significa música + segurança ao mesmo tempo. É um complemento natural ao relógio esportivo.'
+  },
+  {
+    q: 'Um cliente diz "Vou pensar e volto depois." Como você responde sem pressionar?',
+    opts: ['"Tudo bem, nos vemos quando voltar."', '"Claro, sem problema! Só quero garantir que você sai com todas as informações. Posso anotar o modelo pra você comparar? E se tiver qualquer dúvida, pode me chamar pelo WhatsApp."', '"Se você sair sem comprar, não temos garantia de que vai ter estoque."', '"Posso fazer um preço especial só hoje."'],
+    correct: 1,
+    exp: 'Respeite a decisão sem pressionar. O objetivo é garantir que o cliente saia com informação suficiente e com uma ponte de contato (WhatsApp). Isso mantém o relacionamento e aumenta a chance de ele voltar ou fechar por mensagem.'
+  },
+  {
+    q: 'Qual é a "regra de ouro" do atendimento Proparts?',
+    opts: ['Sempre oferecer o produto mais caro primeiro', 'O cliente deve sair sentindo que foi atendido por um ESPECIALISTA que entendeu suas necessidades — não por alguém que precisava bater meta', 'Fechar a venda o mais rápido possível', 'Nunca falar em concorrentes'],
+    correct: 1,
+    exp: 'A regra de ouro define a postura de todo o atendimento. Quando o cliente percebe que você está genuinamente interessado em resolver o problema dele — não em vender qualquer coisa —, a confiança aumenta e a venda acontece naturalmente.'
+  },
+  {
+    q: 'Um cliente de corrida comprou o relógio. Como você aborda a venda do Shokz de forma natural?',
+    opts: ['"Quer comprar um fone também?"', '"Para completar a sua experiência de corrida, temos o Shokz — o fone de condução óssea que a maioria dos corredores sérios usa. Você ouve música e ainda escuta o barulho do ambiente. Posso te mostrar?"', '"Temos fones também se quiser."', 'Não menciona o Shokz para não parecer que está tentando vender mais'],
+    correct: 1,
+    exp: 'A oferta de complemento deve ser contextualizada no perfil do cliente. "Para completar a experiência de corrida" conecta o produto ao momento do cliente, não parece uma venda separada. O convite para mostrar abre a conversa sem pressão.'
+  },
+  {
+    q: 'Qual das alternativas representa a forma ERRADA de apresentar uma função técnica ao cliente?',
+    opts: ['"Você não precisa levar o celular na corrida — o GPS registra tudo."', '"Tem GPS multibanda com GNSS, Glonass e Galileo."', '"Ele monitora sua saturação de oxigênio enquanto você dorme e te avisa se algo estiver fora do normal."', '"Você carrega uma vez na semana."'],
+    correct: 1,
+    exp: 'Falar em "GPS multibanda com GNSS, Glonass e Galileo" são termos técnicos que o cliente não consegue traduzir em benefício. O correto é sempre transformar a função em experiência: "traça exatamente onde você foi, mesmo em cidade com prédios ou mata fechada."'
+  },
+  {
+    q: 'Um cliente está entre o Forerunner 265 e o 570. Como você usa a técnica de prova social para ajudar na decisão?',
+    opts: ['"Os dois são ótimos, você que decide."', '"O FR570 é lançamento 2025 — tem o sensor mais novo da Garmin (Elevate Gen 5), mais preciso em alta intensidade. Para quem treina intervalado, é o que a maioria dos nossos clientes corredores sérios está escolhendo."', '"O 265 é mais barato, então mais vendido."', '"Posso dar um desconto no 570 se quiser."'],
+    correct: 1,
+    exp: 'Prova social + diferencial técnico contextualizado. "A maioria dos corredores sérios está escolhendo" cria validação social. Adicionar o diferencial técnico (Elevate Gen 5 para treino intervalado) conecta a escolha ao perfil específico do cliente.'
+  },
+];
+
+// ── QUIZ IPX ENGINE ───────────────────────────────────────────
+let currentQIPX=0, scoreIPX=0, answeredIPX=false, wrongIPX=[];
+
+function initQuizIPX(){currentQIPX=0;scoreIPX=0;answeredIPX=false;wrongIPX=[];renderQuestionIPX();}
+
+function renderQuestionIPX(){
+  const q=quizDataIPX[currentQIPX];
+  const bar=document.getElementById('quizBarIPX');
+  if(bar) bar.style.width=(currentQIPX/quizDataIPX.length*100)+'%';
+  const content=document.getElementById('quizContentIPX');
+  if(!content) return;
+  content.innerHTML=`<div class="quiz-q-num">Pergunta ${currentQIPX+1} de ${quizDataIPX.length}</div><div class="quiz-q">${q.q}</div><div class="quiz-options">${q.opts.map((o,i)=>`<button class="quiz-opt" onclick="answerIPX(${i})">${o}</button>`).join('')}</div><div class="quiz-feedback" id="quizFeedbackIPX"></div><div class="quiz-nav"><button class="quiz-btn" id="nextBtnIPX" onclick="nextIPX()" disabled>${currentQIPX<quizDataIPX.length-1?'Próxima →':'Ver Resultado'}</button></div>`;
+  answeredIPX=false;
+}
+
+function answerIPX(i){
+  if(answeredIPX) return; answeredIPX=true;
+  const q=quizDataIPX[currentQIPX];
+  document.querySelectorAll('#quizContentIPX .quiz-opt').forEach(b=>b.classList.add('disabled'));
+  const opts=document.querySelectorAll('#quizContentIPX .quiz-opt');
+  const fb=document.getElementById('quizFeedbackIPX');
+  if(i===q.correct){opts[i].classList.add('correct');fb.className='quiz-feedback show ok';fb.textContent='✅ Correto! '+q.exp;scoreIPX++;}
+  else{opts[i].classList.add('wrong');opts[q.correct].classList.add('correct');fb.className='quiz-feedback show fail';fb.textContent='❌ Incorreto. '+q.exp;wrongIPX.push('Q'+(currentQIPX+1)+' — '+q.q);}
+  document.getElementById('nextBtnIPX').disabled=false;
+}
+
+function nextIPX(){currentQIPX++;if(currentQIPX<quizDataIPX.length)renderQuestionIPX();else showResultIPX();}
+
+function showResultIPX(){
+  const pct=Math.round(scoreIPX/quizDataIPX.length*100);
+  const passed=pct>=70;
+  const bar=document.getElementById('quizBarIPX');
+  if(bar) bar.style.width='100%';
+  const content=document.getElementById('quizContentIPX');
+  if(!content) return;
+  content.innerHTML=`<div class="quiz-result"><div class="quiz-result-emoji">${passed?'🎉':'📚'}</div><div class="quiz-result-title" style="color:${passed?'var(--acc)':'var(--warn)'};">${passed?'Parabéns! Aprovado!':'Continue estudando!'}</div><div class="quiz-result-score">Você acertou <strong>${scoreIPX}</strong> de ${quizDataIPX.length} questões — <strong>${pct}%</strong></div>${passed?`<div class="register-form" id="registerFormIPX"><label class="register-label">📝 Registre sua conclusão — informe seu nome completo</label><input type="text" class="register-input" id="regNameIPX" placeholder="Ex: Samara Pereira" maxlength="60" onkeydown="if(event.key==='Enter') registerIPX(${pct})"><button class="register-btn" onclick="registerIPX(${pct})">Registrar Conclusão ✓</button><div class="register-success" id="regSuccessIPX">✅ Registrado com sucesso! Resultado enviado.</div></div>`:''}<div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><button class="quiz-btn" onclick="initQuizIPX()" style="background:var(--text2);">Refazer Quiz</button>${!passed?'<button class="quiz-btn" onclick="goHome()">← Início</button>':''}</div></div>`;
+}
+
+async function registerIPX(pct){
+  const nameInput=document.getElementById('regNameIPX');
+  const name=nameInput?nameInput.value.trim():'';
+  if(!name){if(nameInput)nameInput.style.borderColor='var(--warn)';return;}
+  const btn=document.querySelector('#registerFormIPX .register-btn');
+  if(!btn) return;
+  btn.textContent='Enviando...';btn.disabled=true;
+  const now=new Date();
+  const data=now.toLocaleDateString('pt-BR');
+  const hora=now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  const status=pct>=70?'✅ APROVADO':'❌ Não atingiu 70%';
+  const erradas=wrongIPX.length>0?'\n\n❌ Questões erradas:\n'+wrongIPX.map(q=>'• '+q).join('\n'):'\n\n✅ Nenhuma questão errada!';
+  const message=`👤 Colaborador: ${name}\n📚 Módulo: Quiz Especial — IPX & Resistência à Água\n🎯 Nota: ${pct}%\n✅ Acertos: ${scoreIPX} de ${quizDataIPX.length}\n📅 Data: ${data}\n⏰ Hora: ${hora}\n📊 Status: ${status}${erradas}`;
+  try{
+    await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{nome:name,modulo:'Quiz Especial — IPX & Resistência à Água',nota:pct+'%',acertos:scoreIPX+' de '+quizDataIPX.length,data,hora,status,message});
+    const form=document.getElementById('registerFormIPX');if(form)form.style.display='none';
+    const success=document.getElementById('regSuccessIPX');if(success)success.style.display='block';
+  }catch(err){btn.textContent='Registrar Conclusão ✓';btn.disabled=false;alert('Erro ao enviar. Verifique sua conexão.');}
+}
+
+// ── QUIZ ATENDIMENTO ENGINE ───────────────────────────────────
+let currentQAT=0, scoreAT=0, answeredAT=false, wrongAT=[];
+
+function initQuizAT(){currentQAT=0;scoreAT=0;answeredAT=false;wrongAT=[];renderQuestionAT();}
+
+function renderQuestionAT(){
+  const q=quizDataAT[currentQAT];
+  const bar=document.getElementById('quizBarAT');
+  if(bar) bar.style.width=(currentQAT/quizDataAT.length*100)+'%';
+  const content=document.getElementById('quizContentAT');
+  if(!content) return;
+  content.innerHTML=`<div class="quiz-q-num">Pergunta ${currentQAT+1} de ${quizDataAT.length}</div><div class="quiz-q">${q.q}</div><div class="quiz-options">${q.opts.map((o,i)=>`<button class="quiz-opt" onclick="answerAT(${i})">${o}</button>`).join('')}</div><div class="quiz-feedback" id="quizFeedbackAT"></div><div class="quiz-nav"><button class="quiz-btn" id="nextBtnAT" onclick="nextAT()" disabled>${currentQAT<quizDataAT.length-1?'Próxima →':'Ver Resultado'}</button></div>`;
+  answeredAT=false;
+}
+
+function answerAT(i){
+  if(answeredAT) return; answeredAT=true;
+  const q=quizDataAT[currentQAT];
+  document.querySelectorAll('#quizContentAT .quiz-opt').forEach(b=>b.classList.add('disabled'));
+  const opts=document.querySelectorAll('#quizContentAT .quiz-opt');
+  const fb=document.getElementById('quizFeedbackAT');
+  if(i===q.correct){opts[i].classList.add('correct');fb.className='quiz-feedback show ok';fb.textContent='✅ Correto! '+q.exp;scoreAT++;}
+  else{opts[i].classList.add('wrong');opts[q.correct].classList.add('correct');fb.className='quiz-feedback show fail';fb.textContent='❌ Incorreto. '+q.exp;wrongAT.push('Q'+(currentQAT+1)+' — '+q.q);}
+  document.getElementById('nextBtnAT').disabled=false;
+}
+
+function nextAT(){currentQAT++;if(currentQAT<quizDataAT.length)renderQuestionAT();else showResultAT();}
+
+function showResultAT(){
+  const pct=Math.round(scoreAT/quizDataAT.length*100);
+  const passed=pct>=70;
+  const bar=document.getElementById('quizBarAT');
+  if(bar) bar.style.width='100%';
+  const content=document.getElementById('quizContentAT');
+  if(!content) return;
+  content.innerHTML=`<div class="quiz-result"><div class="quiz-result-emoji">${passed?'🎉':'📚'}</div><div class="quiz-result-title" style="color:${passed?'var(--acc)':'var(--warn)'};">${passed?'Parabéns! Aprovado!':'Continue estudando!'}</div><div class="quiz-result-score">Você acertou <strong>${scoreAT}</strong> de ${quizDataAT.length} questões — <strong>${pct}%</strong></div>${passed?`<div class="register-form" id="registerFormAT"><label class="register-label">📝 Registre sua conclusão — informe seu nome completo</label><input type="text" class="register-input" id="regNameAT" placeholder="Ex: Samara Pereira" maxlength="60" onkeydown="if(event.key==='Enter') registerAT(${pct})"><button class="register-btn" onclick="registerAT(${pct})">Registrar Conclusão ✓</button><div class="register-success" id="regSuccessAT">✅ Registrado com sucesso! Resultado enviado.</div></div>`:''}<div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><button class="quiz-btn" onclick="initQuizAT()" style="background:var(--text2);">Refazer Quiz</button>${!passed?'<button class="quiz-btn" onclick="goHome()">← Início</button>':''}</div></div>`;
+}
+
+async function registerAT(pct){
+  const nameInput=document.getElementById('regNameAT');
+  const name=nameInput?nameInput.value.trim():'';
+  if(!name){if(nameInput)nameInput.style.borderColor='var(--warn)';return;}
+  const btn=document.querySelector('#registerFormAT .register-btn');
+  if(!btn) return;
+  btn.textContent='Enviando...';btn.disabled=true;
+  const now=new Date();
+  const data=now.toLocaleDateString('pt-BR');
+  const hora=now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  const status=pct>=70?'✅ APROVADO':'❌ Não atingiu 70%';
+  const erradas=wrongAT.length>0?'\n\n❌ Questões erradas:\n'+wrongAT.map(q=>'• '+q).join('\n'):'\n\n✅ Nenhuma questão errada!';
+  const message=`👤 Colaborador: ${name}\n📚 Módulo: Quiz Especial — Script de Atendimento\n🎯 Nota: ${pct}%\n✅ Acertos: ${scoreAT} de ${quizDataAT.length}\n📅 Data: ${data}\n⏰ Hora: ${hora}\n📊 Status: ${status}${erradas}`;
+  try{
+    await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{nome:name,modulo:'Quiz Especial — Script de Atendimento',nota:pct+'%',acertos:scoreAT+' de '+quizDataAT.length,data,hora,status,message});
+    const form=document.getElementById('registerFormAT');if(form)form.style.display='none';
+    const success=document.getElementById('regSuccessAT');if(success)success.style.display='block';
+  }catch(err){btn.textContent='Registrar Conclusão ✓';btn.disabled=false;alert('Erro ao enviar. Verifique sua conexão.');}
+}
+
+// Init quizzes when panels open (already handled by openPanel)
+// Additional init hooks
+const _origOpenPanel = openPanel;
+openPanel = function(id) {
+  _origOpenPanel(id);
+  if(id === 'quiz-ipx') initQuizIPX();
+  if(id === 'quiz-atendimento') initQuizAT();
+};
+
 // ── SERVICE WORKER ────────────────────────────────────────────
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>{
@@ -1564,5 +1983,60 @@ if('serviceWorker' in navigator){
   });
 }
 </script>
+
+<!-- PASSWORD MODAL -->
+<div class="pwd-modal-ov" id="pwdModal">
+  <div class="pwd-modal-box">
+    <div class="pwd-modal-icon">🔒</div>
+    <div class="pwd-modal-title" id="pwdModalTitle">Quiz Especial</div>
+    <div class="pwd-modal-sub">Digite a senha de acesso</div>
+    <input type="password" class="pwd-input" id="pwdInput" placeholder="••••" maxlength="10"
+      onkeydown="if(event.key==='Enter') confirmPwd()">
+    <div class="pwd-error" id="pwdError">Senha incorreta. Tente novamente.</div>
+    <button class="pwd-confirm-btn" onclick="confirmPwd()">Acessar →</button>
+    <button class="pwd-cancel-btn" onclick="closePwdModal()">Cancelar</button>
+  </div>
+</div>
+
+<!-- QUIZ IPX PANEL -->
+<div class="panel" id="panel-quiz-ipx">
+  <div class="panel-header"><button class="back-btn" onclick="goHome()">← Início</button><div class="panel-title">💧 Quiz <span>IPX</span></div></div>
+  <div class="panel-body">
+    <div class="universe-hero" style="background:linear-gradient(135deg,#001a33,#003366);">
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:0.7;margin-bottom:4px;">Quiz Especial · by Proparts</div>
+      <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:28px;letter-spacing:2px;margin-bottom:8px;">RESISTÊNCIA À ÁGUA</div>
+      <p style="font-size:14px;opacity:0.85;line-height:1.6;">IPX, ATM, limites de uso e como orientar o cliente corretamente. 15 questões práticas voltadas para situações reais de venda.</p>
+    </div>
+    <div class="quiz-wrap" id="quizWrapIPX">
+      <div class="quiz-header">
+        <div class="quiz-title">💧 Quiz IPX — Resistência à Água</div>
+        <div class="quiz-sub">15 perguntas · Mínimo 70% para aprovação · Resultado enviado por email</div>
+        <div class="quiz-progress"><div class="quiz-progress-bar" id="quizBarIPX" style="width:0%"></div></div>
+      </div>
+      <div id="quizContentIPX"></div>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ ATENDIMENTO PANEL -->
+<div class="panel" id="panel-quiz-atendimento">
+  <div class="panel-header"><button class="back-btn" onclick="goHome()">← Início</button><div class="panel-title">🎭 Quiz <span>Atendimento</span></div></div>
+  <div class="panel-body">
+    <div class="universe-hero" style="background:linear-gradient(135deg,#1a0a00,#3d1800);">
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:0.7;margin-bottom:4px;">Quiz Especial · by Proparts</div>
+      <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:28px;letter-spacing:2px;margin-bottom:8px;">SCRIPT DE ATENDIMENTO</div>
+      <p style="font-size:14px;opacity:0.85;line-height:1.6;">Situações reais de loja, objeções, fechamento e finalização com pulseiras e fones Shokz. 15 questões práticas.</p>
+    </div>
+    <div class="quiz-wrap" id="quizWrapAT">
+      <div class="quiz-header">
+        <div class="quiz-title">🎭 Quiz Atendimento</div>
+        <div class="quiz-sub">15 perguntas · Mínimo 70% para aprovação · Resultado enviado por email</div>
+        <div class="quiz-progress"><div class="quiz-progress-bar" id="quizBarAT" style="width:0%"></div></div>
+      </div>
+      <div id="quizContentAT"></div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
