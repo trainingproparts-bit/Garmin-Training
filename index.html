@@ -1653,14 +1653,16 @@ function confirmPwd() {
   const correct = QUIZ_PASSWORDS[currentQuizTarget];
 
   if (input === correct) {
-    const target = currentQuizTarget; // guarda antes
+    const target = currentQuizTarget; // salva antes
+
     closePwdModal();
-    openPanel(target);
+    openPanel(target); // usa o valor salvo
   } else {
     const inp = document.getElementById('pwdInput');
     inp.classList.add('error');
     document.getElementById('pwdError').classList.add('show');
     inp.value = '';
+
     setTimeout(() => inp.classList.remove('error'), 400);
   }
 }
