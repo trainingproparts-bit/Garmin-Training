@@ -2,7 +2,7 @@
 // SERVICE WORKER — Proparts Training PWA
 // Estratégia: Cache-First para assets estáticos
 // ============================================================
-const CACHE_NAME = 'proparts-training-v8';
+const CACHE_NAME = 'proparts-training-v9';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
