@@ -523,6 +523,7 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
       <div class="menu-card" onclick="openPanel('inreach')"><div class="menu-badge new">ESPECIAL</div><span class="menu-icon">🛰️</span><div class="menu-name">inReach</div><div class="menu-desc">Mini 2, 3 e 3 Plus — planos e script de venda</div></div>
       <div class="menu-card" onclick="openPanel('gpsdemao')"><div class="menu-badge new">ESPECIAL</div><span class="menu-icon">🗺️</span><div class="menu-name">GPS de Mão</div><div class="menu-desc">GPSMAP, eTrex — linha completa portátil</div></div>
       <div class="menu-card" onclick="openPanel('nautico')"><span class="menu-icon">⚓</span><div class="menu-name">Náutico</div><div class="menu-desc">Striker e ECHOMAP — pesca e navegação</div></div>
+      <div class="menu-card" onclick="openPanel('edge-ciclismo')"><div class="menu-badge new">NOVO</div><span class="menu-icon">🚴</span><div class="menu-name">Edge</div><div class="menu-desc">540, 550, 840, 850, 1040, 1050 — funcionalidades avançadas</div></div>
     </div>
 
     <div class="menu-section-label">Apoio & Referência</div>
@@ -746,6 +747,301 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
     </div>
     <div class="tbl-wrap" style="margin-bottom:20px;"><table><thead><tr><th>Recurso</th><th>Striker 4</th><th>Striker Vivid 5cv</th><th>ECHOMAP UHD2 52cv</th></tr></thead><tbody><tr><td>Tela</td><td>3,5" Mono</td><td>5" Colorida Vívida</td><td>5" Colorida HD</td></tr><tr><td>Sonar</td><td>Tradicional</td><td>ClearVü</td><td>UHD2 ClearVü</td></tr><tr><td>GPS integrado</td><td>✓</td><td>✓</td><td>✓</td></tr><tr><td>Mapas náuticos</td><td>—</td><td>—</td><td>✓ BlueChart G3</td></tr><tr><td>Para quem</td><td>Pescador iniciante</td><td>Pescador dedicado</td><td>Pescador/navegador sério</td></tr></tbody></table></div>
     <div class="tip">💡 <strong>Argumento ClearVü:</strong> "Com o sonar ClearVü do Vivid 5cv, você vê os peixes embaixo do barco quase como numa foto — não só como manchas tradicionais."</div>
+  </div>
+</div>
+
+  <!-- EDGE CICLOCOMPUTADORES -->
+<div class="panel" id="panel-edge-ciclismo">
+  <div class="panel-header"><button class="back-btn" onclick="goHome()">← Início</button><div class="panel-title">Edge <span>Ciclocomputadores</span></div></div>
+  <div class="panel-body">
+    <div style="background:linear-gradient(135deg,#0a0f1a,#1a2540);color:#fff;border-radius:var(--r);padding:24px;margin-bottom:20px;position:relative;overflow:hidden;">
+      <div style="position:absolute;right:20px;top:50%;transform:translateY(-50%);font-size:80px;opacity:0.1;">🚴</div>
+      <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:6px;">Linha Edge · GPS para Guidão</div>
+      <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:26px;letter-spacing:2px;margin-bottom:8px;">EDGE CICLOCOMPUTADORES</div>
+      <p style="font-size:14px;opacity:0.85;line-height:1.6;">GPS dedicado para ciclismo: estrada, MTB, gravel e cicloviagem. Tela maior que qualquer relógio, legível sob sol forte, e funcionalidades específicas impossíveis no pulso.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;">
+        <span class="tag blue">Edge 540</span><span class="tag blue">Edge 550</span><span class="tag blue">Edge 840</span><span class="tag blue">Edge 850</span><span class="tag blue">Edge 1040</span><span class="tag blue">Edge 1050</span>
+      </div>
+    </div>
+
+    <div class="itabs" id="edgeTabs">
+      <div class="itab active" onclick="switchEdgeTab('edge-func',this)">Funcionalidades</div>
+      <div class="itab" onclick="switchEdgeTab('edge-modelos',this)">Modelos & Comparativo</div>
+      <div class="itab" onclick="switchEdgeTab('edge-venda',this)">Como Vender</div>
+    </div>
+
+    <!-- ABA: FUNCIONALIDADES -->
+    <div id="edge-func">
+
+      <!-- CLIMBPRO -->
+      <div class="tech-card" style="border-left:4px solid var(--g);margin-bottom:12px;">
+        <div class="tech-icon" style="background:#fef0f1;">⛰️</div>
+        <div>
+          <div class="tech-name">ClimbPro</div>
+          <div class="tech-desc" style="margin-bottom:8px;">Exibe dados detalhados de cada subida que está por vir na rota carregada: nome da subida, distância até o início, comprimento total, ganho de altitude e gradiente médio/máximo. O ciclista sabe exatamente o que vai enfrentar <strong>antes</strong> de chegar na base.</div>
+          <div class="tip" style="margin:0;">"Você vai subir 4,2 km com gradiente médio de 7% — preparar o ritmo antes da subida é a diferença entre terminar forte ou explodir na metade."</div>
+          <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;">
+            <span class="tag green">✓ Edge 540</span><span class="tag green">✓ Edge 550</span><span class="tag green">✓ Edge 840</span><span class="tag green">✓ Edge 850</span><span class="tag green">✓ Edge 1040</span><span class="tag green">✓ Edge 1050</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- GUIA DE ENERGIA -->
+      <div class="tech-card" style="border-left:4px solid var(--gold);margin-bottom:12px;">
+        <div class="tech-icon" style="background:#fffbec;">⚡</div>
+        <div>
+          <div class="tech-name">Guia de Energia (Stamina)</div>
+          <div class="tech-desc" style="margin-bottom:8px;">Monitora em tempo real a "reserva de energia" do ciclista baseada em esforço, potência e distância restante da rota. Exibe quanto tempo/distância o atleta consegue manter o ritmo atual antes de "bater na parede". Avisa quando é necessário reduzir o esforço para terminar a prova.</div>
+          <div class="tip" style="margin:0;">"É como o GPS de combustível do carro — mas para o seu corpo. Você vê se vai ter energia sobrando ou se precisa economizar agora para não explodir nos últimos 20 km."</div>
+          <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;">
+            <span class="tag orange">✗ Edge 540</span><span class="tag orange">✗ Edge 550</span><span class="tag green">✓ Edge 840</span><span class="tag green">✓ Edge 850</span><span class="tag green">✓ Edge 1040</span><span class="tag green">✓ Edge 1050</span>
+          </div>
+          <div class="warn-tip" style="margin-top:8px;margin-bottom:0;">⚠️ Requer rota carregada no dispositivo para exibir a estimativa corretamente.</div>
+        </div>
+      </div>
+
+      <!-- DINÂMICAS DE CICLISMO -->
+      <div class="tech-card" style="border-left:4px solid var(--acc);margin-bottom:12px;">
+        <div class="tech-icon" style="background:#e6faf7;">📊</div>
+        <div>
+          <div class="tech-name">Dinâmicas de Ciclismo</div>
+          <div class="tech-desc" style="margin-bottom:8px;">Métricas avançadas de pedalada que requerem pedais com medidor de potência (Rally) ou cassete Shimano Di2 compatível. Incluem: <strong>Posição da plataforma de força</strong> (onde o pé aplica força no pedal), <strong>Suavidade de pedalada</strong> (quão redonda é a pedalada), <strong>Equilíbrio esquerda/direita</strong> e <strong>Fase de potência</strong> (em qual ponto do giro você gera mais força).</div>
+          <div class="tip" style="margin:0;">"Com os pedais Rally, o Edge mostra se você está pedalando de forma eficiente ou desperdiçando energia — como um técnico de ciclismo analisando sua biomecânica em tempo real."</div>
+          <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;">
+            <span class="tag orange">✗ Edge 540</span><span class="tag orange">✗ Edge 550</span><span class="tag green">✓ Edge 840</span><span class="tag green">✓ Edge 850</span><span class="tag green">✓ Edge 1040</span><span class="tag green">✓ Edge 1050</span>
+          </div>
+          <div class="warn-tip" style="margin-top:8px;margin-bottom:0;">⚠️ Requer pedal Rally RS/RK/XC ou cassete Di2 compatível. Não funciona apenas com o Edge.</div>
+        </div>
+      </div>
+
+      <!-- GROUPRIDE -->
+      <div class="tech-card" style="border-left:4px solid #7c3aed;margin-bottom:12px;">
+        <div class="tech-icon" style="background:#f5f0ff;">👥</div>
+        <div>
+          <div class="tech-name">GroupRide</div>
+          <div class="tech-desc" style="margin-bottom:8px;">Permite criar ou entrar em um grupo virtual onde todos os participantes com Edge compatível aparecem no mapa em tempo real. Você vê onde cada membro do grupo está, recebe alertas se alguém ficou para trás e pode enviar mensagens simples predefinidas (como "Aguarde" ou "Problema mecânico"). Funciona via conexão de dados do celular pareado.</div>
+          <div class="tip" style="margin:0;">"Para grupos de pedal e treinamentos em equipe, é o fim de perder o companheiro no pelotão. Todos aparecem no mapa — você sabe se alguém furou ou se separou do grupo."</div>
+          <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;">
+            <span class="tag orange">✗ Edge 540</span><span class="tag orange">✗ Edge 550</span><span class="tag green">✓ Edge 840</span><span class="tag green">✓ Edge 850</span><span class="tag green">✓ Edge 1040</span><span class="tag green">✓ Edge 1050</span>
+          </div>
+          <div class="warn-tip" style="margin-top:8px;margin-bottom:0;">⚠️ Requer celular pareado com dados ativos. Todos os participantes precisam de Edge compatível.</div>
+        </div>
+      </div>
+
+      <!-- LIVETRACK -->
+      <div class="tech-card" style="border-left:4px solid #0ea5e9;margin-bottom:12px;">
+        <div class="tech-icon" style="background:#e0f2fe;">📍</div>
+        <div>
+          <div class="tech-name">LiveTrack</div>
+          <div class="tech-desc" style="margin-bottom:8px;">Compartilha a localização em tempo real do ciclista via link — família, amigos ou treinador acompanham o percurso pelo navegador, sem precisar instalar nenhum app. O ciclista ativa antes de sair e o Edge transmite a posição via celular pareado. Ideal para pedais longos e treinos solos em locais isolados.</div>
+          <div class="tip" style="margin:0;">"Você manda um link pelo WhatsApp antes de sair pedalando. Sua família acompanha em tempo real onde você está — sem precisar ficar ligando para saber se chegou."</div>
+          <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;">
+            <span class="tag green">✓ Edge 540</span><span class="tag green">✓ Edge 550</span><span class="tag green">✓ Edge 840</span><span class="tag green">✓ Edge 850</span><span class="tag green">✓ Edge 1040</span><span class="tag green">✓ Edge 1050</span>
+          </div>
+          <div class="warn-tip" style="margin-top:8px;margin-bottom:0;">⚠️ Requer celular pareado com dados ativos durante o pedal.</div>
+        </div>
+      </div>
+
+    </div><!-- /edge-func -->
+
+    <!-- ABA: MODELOS -->
+    <div id="edge-modelos" style="display:none;">
+      <div class="tip" style="margin-bottom:16px;">💡 Todos os modelos têm GPS multibanda (SatIQ), ClimbPro, mapa de rota, navegação turn-by-turn e LiveTrack. A diferença está nas funcionalidades avançadas e na tela.</div>
+
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Função</th>
+              <th>Edge 540</th>
+              <th>Edge 550 <span style="font-size:9px;opacity:0.7;">2025</span></th>
+              <th>Edge 840</th>
+              <th>Edge 850 <span style="font-size:9px;opacity:0.7;">2025</span></th>
+              <th>Edge 1040</th>
+              <th>Edge 1050</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:600;color:var(--text2);">Tela</td>
+              <td>2.6" Color</td>
+              <td>2.6" · 1000 nits</td>
+              <td>3.0" Touch+Btn</td>
+              <td>2.6" · 1000 nits</td>
+              <td>3.5" Touch</td>
+              <td>3.5" · 1000 nits</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;color:var(--text2);">GPS Multibanda</td>
+              <td><span style="color:var(--acc);font-weight:700;">✓</span></td>
+              <td><span style="color:var(--acc);font-weight:700;">✓</span></td>
+              <td><span style="color:var(--acc);font-weight:700;">✓</span></td>
+              <td><span style="color:var(--acc);font-weight:700;">✓</span></td>
+              <td><span style="color:var(--acc);font-weight:700;">✓</span></td>
+              <td><span style="color:var(--acc);font-weight:700;">✓</span></td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;color:var(--text2);">ClimbPro</td>
+              <td><span style="color:var(--acc);font-weight:700;">✓</span></td>
+              <td><span style="color:var(--acc);font-weight:700;">✓</span></td>
+              <td><span style="color:var(--acc);font-weight:700;">✓</span></td>
+              <td><span style="color:var(--acc);font-weight:700;">✓</span></td>
+              <td><span style="color:var(--acc);font-weight:700;">✓</span></td>
+              <td><span style="color:var(--acc);font-weight:700;">✓</span></td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;color:var(--text2);">LiveTrack</td>
+              <td><span style="color:var(--acc);font-weight:700;">✓</span></td>
+              <td><span style="color:var(--acc);font-weight:700;">✓</span></td>
+              <td><span style="color:var(--acc);font-weight:700;">✓</span></td>
+              <td><span style="color:var(--acc);font-weight:700;">✓</span></td>
+              <td><span style="color:var(--acc);font-weight:700;">✓</span></td>
+              <td><span style="color:var(--acc);font-weight:700;">✓</span></td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;color:var(--text2);">Guia de Energia</td>
+              <td><span style="color:var(--warn);font-weight:700;">—</span></td>
+              <td><span style="color:var(--warn);font-weight:700;">—</span></td>
+              <td><span style="color:var(--acc);font-weight:700;">✓</span></td>
+              <td><span style="color:var(--acc);font-weight:700;">✓</span></td>
+              <td><span style="color:var(--acc);font-weight:700;">✓</span></td>
+              <td><span style="color:var(--acc);font-weight:700;">✓</span></td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;color:var(--text2);">Dinâmicas de Ciclismo</td>
+              <td><span style="color:var(--warn);font-weight:700;">—</span></td>
+              <td><span style="color:var(--warn);font-weight:700;">—</span></td>
+              <td><span style="color:var(--acc);font-weight:700;">✓</span></td>
+              <td><span style="color:var(--acc);font-weight:700;">✓</span></td>
+              <td><span style="color:var(--acc);font-weight:700;">✓</span></td>
+              <td><span style="color:var(--acc);font-weight:700;">✓</span></td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;color:var(--text2);">GroupRide</td>
+              <td><span style="color:var(--warn);font-weight:700;">—</span></td>
+              <td><span style="color:var(--warn);font-weight:700;">—</span></td>
+              <td><span style="color:var(--acc);font-weight:700;">✓</span></td>
+              <td><span style="color:var(--acc);font-weight:700;">✓</span></td>
+              <td><span style="color:var(--acc);font-weight:700;">✓</span></td>
+              <td><span style="color:var(--acc);font-weight:700;">✓</span></td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;color:var(--text2);">Speaker integrado</td>
+              <td><span style="color:var(--warn);font-weight:700;">—</span></td>
+              <td><span style="color:var(--acc);font-weight:700;">✓</span></td>
+              <td><span style="color:var(--warn);font-weight:700;">—</span></td>
+              <td><span style="color:var(--acc);font-weight:700;">✓</span></td>
+              <td><span style="color:var(--warn);font-weight:700;">—</span></td>
+              <td><span style="color:var(--acc);font-weight:700;">✓</span></td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;color:var(--text2);">Garmin Pay</td>
+              <td><span style="color:var(--warn);font-weight:700;">—</span></td>
+              <td><span style="color:var(--warn);font-weight:700;">—</span></td>
+              <td><span style="color:var(--warn);font-weight:700;">—</span></td>
+              <td><span style="color:var(--warn);font-weight:700;">—</span></td>
+              <td><span style="color:var(--warn);font-weight:700;">—</span></td>
+              <td><span style="color:var(--acc);font-weight:700;">✓</span></td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;color:var(--text2);">Bateria GPS</td>
+              <td>~26h</td>
+              <td>~26h</td>
+              <td>~26h</td>
+              <td>~26h</td>
+              <td>~35h (+solar)</td>
+              <td>~35h</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;color:var(--text2);">Perfil ideal</td>
+              <td style="font-size:12px;color:var(--text3);">Entrada / Compacto</td>
+              <td style="font-size:12px;color:var(--text3);">Entrada / 2025</td>
+              <td style="font-size:12px;color:var(--text3);">Intermediário</td>
+              <td style="font-size:12px;color:var(--text3);">Intermediário / 2025</td>
+              <td style="font-size:12px;color:var(--text3);">Avançado / Tela grande</td>
+              <td style="font-size:12px;color:var(--text3);">Elite / Completo</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="grid2" style="margin-top:16px;">
+        <div class="card" style="margin-bottom:0;border-top:3px solid var(--text3);">
+          <div class="card-label">Família 540/550 — Entrada</div>
+          <div class="card-title">Edge 540 & 550</div>
+          <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:10px;">GPS multibanda, ClimbPro e navegação precisa. Compacto, botões físicos — funciona com luvas. O <strong>550</strong> é o lançamento 2025 com tela de 1000 nits e speaker integrado.</p>
+          <div><span class="tag">GPS Multibanda</span><span class="tag">ClimbPro</span><span class="tag">LiveTrack</span><span class="tag blue">Sem GroupRide</span></div>
+        </div>
+        <div class="card" style="margin-bottom:0;border-top:3px solid var(--g);">
+          <div class="card-label">Família 840/850 — Intermediário ★ Recomendado</div>
+          <div class="card-title">Edge 840 & 850</div>
+          <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:10px;">Touchscreen + botões físicos. Desbloqueia Guia de Energia, Dinâmicas de Ciclismo e GroupRide. O <strong>850</strong> (2025) tem tela 1000 nits e speaker. Melhor custo-benefício da linha.</p>
+          <div><span class="tag green">GroupRide</span><span class="tag green">Guia de Energia</span><span class="tag green">Dinâmicas</span></div>
+        </div>
+        <div class="card" style="margin-bottom:0;border-top:3px solid var(--gold);">
+          <div class="card-label">Família 1040/1050 — Premium</div>
+          <div class="card-title">Edge 1040 & 1050</div>
+          <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:10px;">Tela de 3.5" — a maior da linha. O <strong>1040</strong> tem opção solar (+bateria). O <strong>1050</strong> (2025) tem tela 1000 nits, speaker, Garmin Pay e hazard alerts. Para quem quer o máximo.</p>
+          <div><span class="tag gold">Tela 3.5"</span><span class="tag gold">Garmin Pay (1050)</span><span class="tag gold">Solar (1040)</span></div>
+        </div>
+        <div class="card" style="margin-bottom:0;border-left:4px solid var(--acc);">
+          <div class="card-title">540 vs 550 — Qual escolher?</div>
+          <ul class="bul" style="margin-top:8px;">
+            <li><strong>540:</strong> botões físicos, sem speaker, preço de entrada</li>
+            <li><strong>550:</strong> tela 1000 nits (mais legível no sol) + speaker para alertas sonoros</li>
+            <li>Ambos têm GPS multibanda, ClimbPro e LiveTrack</li>
+            <li>Nenhum tem GroupRide, Guia de Energia ou Dinâmicas</li>
+          </ul>
+        </div>
+      </div>
+    </div><!-- /edge-modelos -->
+
+    <!-- ABA: COMO VENDER -->
+    <div id="edge-venda" style="display:none;">
+      <div class="hero-card" style="margin-bottom:20px;">
+        <div class="card-label">⭐ Argumento principal</div>
+        <p style="font-size:15px;font-weight:500;line-height:1.7;color:var(--text);">"O celular no guidão trava no sol, esquenta, a tela apaga — e não tem as métricas específicas de ciclismo que o Edge oferece. Um ciclocomputador dedicado é a ferramenta certa para quem leva o pedal a sério."</p>
+      </div>
+
+      <div class="grid2" style="margin-bottom:20px;">
+        <div class="card" style="margin-bottom:0;">
+          <div class="card-title">🎯 Sinais de que o cliente quer um Edge</div>
+          <ul class="bul">
+            <li>Usa o celular no suporte e reclama que esquenta ou a tela apaga</li>
+            <li>Pedala em grupo e quer ver onde os amigos estão</li>
+            <li>Faz subidas longas e quer planejar o esforço</li>
+            <li>Já tem medidor de potência (Rally) e quer extrair mais dados</li>
+            <li>Faz pedais de mais de 5h e precisa de bateria longa</li>
+            <li>Treina com técnico e usa TrainingPeaks ou Zwift</li>
+          </ul>
+        </div>
+        <div class="card" style="margin-bottom:0;">
+          <div class="card-title">📦 Qual modelo indicar</div>
+          <ul class="bul">
+            <li><strong>Pedaleiro iniciante:</strong> Edge 540 ou 550 — GPS preciso e simples</li>
+            <li><strong>Grupo de pedal + treinamento sério:</strong> Edge 840 ou 850 — GroupRide + Guia de Energia</li>
+            <li><strong>Ciclista com Rally (potência):</strong> 840+ para Dinâmicas de Ciclismo</li>
+            <li><strong>Quem faz gran fondos e centuries:</strong> 1040 — bateria solar + tela grande</li>
+            <li><strong>Ciclista de elite ou tudo ou nada:</strong> Edge 1050 — o mais completo</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="script-step"><div class="s-num">1</div><div><div class="s-title">Identifique o tipo de uso</div><div class="s-dialog">"Você pedalada mais em estrada, MTB ou gravel? E treina sozinho ou em grupo?"</div><div class="tip">💡 Grupo de pedal = empurre o GroupRide (840+). Solo em subidas = ClimbPro (todos). Potência = Dinâmicas (840+).</div></div></div>
+
+      <div class="script-step"><div class="s-num">2</div><div><div class="s-title">Mostre o ClimbPro na prática</div><div class="s-dialog">"Imagina você numa Gran Fondo com 3 subidas pela frente. O Edge já mostra no mapa qual a próxima, quantos quilômetros tem e qual o gradiente médio. Você não vai mais ser surpreendido por uma subida."</div></div></div>
+
+      <div class="script-step"><div class="s-num">3</div><div><div class="s-title">Para quem pedala em grupo — venda o GroupRide</div><div class="s-dialog">"Sabe quando alguém do grupo fura ou fica para trás e você só descobre 10 km depois? Com o GroupRide, todos aparecem no mapa em tempo real. Dá até para mandar mensagem para o grupo direto pelo Edge."</div></div></div>
+
+      <div class="script-step"><div class="s-num">4</div><div><div class="s-title">Quebra de objeções</div>
+        <div class="obj-block"><div class="obj-q">🗣️ "Meu celular com suporte já funciona."</div><div class="obj-a">✅ Celular no sol esquenta, trava e a tela escurece automaticamente. O Edge tem tela de até 1000 nits feita para sol forte, não esquenta, não buga e não depende de sinal para o GPS funcionar. Além disso, o celular não tem ClimbPro, GroupRide nem Guia de Energia.</div></div>
+        <div class="obj-block"><div class="obj-q">🗣️ "Meu relógio Garmin já mede ciclismo."</div><div class="obj-a">✅ O relógio é ótimo para multiesporte — mas o Edge tem tela 3x maior, navegação por mapa com visão de birdseye, ClimbPro com gráfico da subida e GroupRide. Para quem leva o ciclismo a sério, os dois se complementam.</div></div>
+        <div class="obj-block"><div class="obj-q">🗣️ "Qual a diferença do 540 para o 840?"</div><div class="obj-a">✅ O 540 tem GPS multibanda e ClimbPro — é excelente para navegação precisa. O 840 adiciona Guia de Energia (saber se vai ter "gasolina" para o final), Dinâmicas de Ciclismo (se você tem pedais de potência) e GroupRide para pedalar em grupo. Se você treina sério ou pedala em grupo, o 840 vale muito mais.</div></div>
+      </div></div>
+
+      <div class="tip">💡 <strong>Upsell natural:</strong> Se o cliente já tem ou quer os pedais Rally RK 200 (SPD), indique Edge 840 ou superior — é a combinação que desbloqueia todas as Dinâmicas de Ciclismo e transforma os dados de potência em insights de pedalada.</div>
+    </div><!-- /edge-venda -->
+
   </div>
 </div>
 
@@ -1178,6 +1474,18 @@ function switchIRTab(showId, btn) {
   }
 }
 
+  function switchEdgeTab(showId, btn) {
+  ['edge-func','edge-modelos','edge-venda'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+  const target = document.getElementById(showId);
+  if (target) target.style.display = 'block';
+  if (btn) {
+    btn.closest('.itabs').querySelectorAll('.itab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+  }
+}
 // ── RANKING ───────────────────────────────────────────────────
 const rankingData = [
   { name:'Ailma Ferraz',     pts:0, level:'Explorador' },
