@@ -534,6 +534,7 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
     <div class="menu-section-label">Formação & Gamificação</div>
     <div class="menu-grid">
       <div class="menu-card priority" onclick="openPanel('formacao')"><div class="menu-badge new">NOVO</div><span class="menu-icon">🎓</span><div class="menu-name">Formação</div><div class="menu-desc">Trilha de módulos — estude e seja certificado</div></div>
+      <div class="menu-card" onclick="openPanel('quizzes')"><span class="menu-icon">📝</span><div class="menu-name">Quizzes</div><div class="menu-desc">Avaliações técnicas — IPX, Atendimento, Instinct 3</div></div>
       <div class="menu-card" onclick="openPanel('certificacao')"><span class="menu-icon">🏅</span><div class="menu-name">Certificação</div><div class="menu-desc">Sua trilha: Explorador → Triatleta</div></div>
       <div class="menu-card" onclick="openPanel('ranking')"><span class="menu-icon">🏆</span><div class="menu-name">Ranking</div><div class="menu-desc">Pódio da equipe e pontuação</div></div>
     </div>
@@ -1140,37 +1141,7 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
         <div style="font-size:20px;">🔒</div>
       </div>
     </div>
-    <div class="tip">💡 Novos módulos são liberados conforme a trilha evolui. Complete os disponíveis e acumule pontos no ranking!</div>
-
-    <!-- QUIZZES ESPECIAIS CARD -->
-    <div class="card" style="border-left:4px solid var(--warn);margin-top:8px;margin-bottom:14px;">
-      <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
-        <div style="font-size:36px;">🔒</div>
-        <div>
-          <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--warn);margin-bottom:2px;">Quizzes Especiais</div>
-          <div class="card-title" style="margin-bottom:2px;">Avaliações por Ciclo</div>
-          <p style="font-size:13px;color:var(--text2);line-height:1.5;">Quizzes liberados por senha a cada ciclo de treinamento. Acesse com o código fornecido pela liderança.</p>
-        </div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:10px;">
-        <div style="display:flex;align-items:center;gap:14px;background:var(--off);border-radius:var(--r2);padding:14px 16px;cursor:pointer;border:1.5px solid var(--border);transition:all 0.2s;" onclick="openPwdModal('quiz-ipx')" onmouseover="this.style.borderColor='var(--g)'" onmouseout="this.style.borderColor='var(--border)'">
-          <div style="font-size:28px;">💧</div>
-          <div style="flex:1;">
-            <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text);margin-bottom:2px;">Quiz IPX — Resistência à Água</div>
-            <div style="font-size:12px;color:var(--text3);">IPX, ATM, Garmin & Shokz · 18 questões · Mínimo 70%</div>
-          </div>
-          <div style="display:flex;align-items:center;gap:6px;background:var(--g);color:#fff;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:6px 12px;border-radius:6px;white-space:nowrap;">🔒 Acessar</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:14px;background:var(--off);border-radius:var(--r2);padding:14px 16px;cursor:pointer;border:1.5px solid var(--border);transition:all 0.2s;" onclick="openPwdModal('quiz-atendimento')" onmouseover="this.style.borderColor='var(--g)'" onmouseout="this.style.borderColor='var(--border)'">
-          <div style="font-size:28px;">🎭</div>
-          <div style="flex:1;">
-            <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text);margin-bottom:2px;">Quiz Atendimento — Script de Venda</div>
-            <div style="font-size:12px;color:var(--text3);">Script completo, objeções e Shokz · 15 questões · Mínimo 70%</div>
-          </div>
-          <div style="display:flex;align-items:center;gap:6px;background:var(--g);color:#fff;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:6px 12px;border-radius:6px;white-space:nowrap;">🔒 Acessar</div>
-        </div>
-      </div>
-    </div>
+    <div class="tip">💡 Novos módulos são liberados conforme a trilha evolui. Complete os disponíveis e acumule pontos no ranking! Para os quizzes de avaliação, acesse a aba <strong>Quizzes</strong> no menu principal.</div>
   </div>
 </div>
 
@@ -1340,7 +1311,7 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
     <div class="quiz-wrap" id="quizWrap2" style="margin-top:24px;">
       <div class="quiz-header">
         <div class="quiz-title">🎯 Flash Quiz — Módulo 2</div>
-        <div class="quiz-sub">15 perguntas · Mínimo 70% para aprovação · Seu resultado será registrado</div>
+        <div class="quiz-sub">18 perguntas · Mínimo 70% para aprovação · Seu resultado será registrado</div>
         <div class="quiz-progress"><div class="quiz-progress-bar" id="quizBar2" style="width:0%"></div></div>
       </div>
       <div id="quizContent2"></div>
@@ -1783,8 +1754,8 @@ function renderQuestion(){
 function answerQ(i){
   if(answered) return; answered=true;
   const q=quizData[currentQ];
-  document.querySelectorAll('.quiz-opt').forEach(b=>b.classList.add('disabled'));
-  const opts=document.querySelectorAll('.quiz-opt');
+  document.querySelectorAll('#quizContent .quiz-opt').forEach(b=>b.classList.add('disabled'));
+  const opts=document.querySelectorAll('#quizContent .quiz-opt');
   const fb=document.getElementById('quizFeedback');
   if(i===q.correct){opts[i].classList.add('correct');fb.className='quiz-feedback show ok';fb.textContent='✅ Correto! '+q.exp;score++;}
   else{opts[i].classList.add('wrong');opts[q.correct].classList.add('correct');fb.className='quiz-feedback show fail';fb.textContent='❌ Incorreto. '+q.exp;wrongAnswers.push('Q'+(currentQ+1)+' — '+q.q);}
@@ -1800,7 +1771,7 @@ function showResult(){
   if(bar) bar.style.width='100%';
   const content=document.getElementById('quizContent');
   if(!content) return;
-  content.innerHTML=`<div class="quiz-result"><div class="quiz-result-emoji">${passed?'🎉':'📚'}</div><div class="quiz-result-title" style="color:${passed?'var(--acc)':'var(--warn)'};">${passed?'Parabéns! Aprovado!':'Continue estudando!'}</div><div class="quiz-result-score">Você acertou <strong>${score}</strong> de ${quizData.length} questões — <strong>${pct}%</strong></div>${passed?`<div class="register-form" id="registerForm"><label class="register-label">📝 Registre sua conclusão — informe seu nome completo</label><input type="text" class="register-input" id="regName" placeholder="Ex: Samara Pereira" maxlength="60" onkeydown="if(event.key==='Enter') registerResult(${pct})"><button class="register-btn" onclick="registerResult(${pct})">Registrar Conclusão ✓</button><div class="register-success" id="regSuccess">✅ Registrado com sucesso! Resultado enviado para a liderança.</div></div>`:''}<div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">${!passed?'<button class="quiz-btn" onclick="openPanel(\'formacao\')">← Voltar à Formação</button>':''}</div></div>`;
+  content.innerHTML=`<div class="quiz-result"><div class="quiz-result-emoji">${passed?'🎉':'📚'}</div><div class="quiz-result-title" style="color:${passed?'var(--acc)':'var(--warn)'};">${passed?'Parabéns! Aprovado!':'Continue estudando!'}</div><div class="quiz-result-score">Você acertou <strong>${score}</strong> de ${quizData.length} questões — <strong>${pct}%</strong></div>${passed?`<div class="register-form" id="registerForm"><label class="register-label">📝 Registre sua conclusão — informe seu nome completo</label><input type="text" class="register-input" id="regName" placeholder="Ex: Samara Pereira" maxlength="60" onkeydown="if(event.key==='Enter') registerResult(${pct})"><button class="register-btn" onclick="registerResult(${pct})">Registrar Conclusão ✓</button><div class="register-success" id="regSuccess">✅ Registrado com sucesso! Resultado enviado para a liderança.</div></div>`:''}<div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">${!passed?'<button class="quiz-btn" style="margin-right:8px;background:var(--text2);" onclick="initQuiz()">↺ Tentar Novamente</button><button class="quiz-btn" onclick="openPanel(\'formacao\')">← Formação</button>':'<button class="quiz-btn" onclick="openPanel(\'formacao\')">← Formação</button>'}</div></div>`;
 }
 
 async function registerResult(pct){
@@ -1835,7 +1806,7 @@ async function registerResult(pct){
     alert('Erro ao enviar. Verifique sua conexão e tente novamente.');
   }
 }
-if(document.getElementById('quizContent')) initQuiz();
+
 
 // ── QUIZ MÓDULO 2 ─────────────────────────────────────────────
 const quizData2 = [
@@ -1890,7 +1861,7 @@ function showResult2(){
   if(bar) bar.style.width='100%';
   const content=document.getElementById('quizContent2');
   if(!content) return;
-  content.innerHTML=`<div class="quiz-result"><div class="quiz-result-emoji">${passed?'🎉':'📚'}</div><div class="quiz-result-title" style="color:${passed?'var(--acc)':'var(--warn)'};">${passed?'Parabéns! Aprovado!':'Continue estudando!'}</div><div class="quiz-result-score">Você acertou <strong>${score2}</strong> de ${quizData2.length} questões — <strong>${pct}%</strong></div>${passed?`<div class="register-form" id="registerForm2"><label class="register-label">📝 Registre sua conclusão — informe seu nome completo</label><input type="text" class="register-input" id="regName2" placeholder="Ex: Samara Pereira" maxlength="60" onkeydown="if(event.key==='Enter') registerResult2(${pct})"><button class="register-btn" onclick="registerResult2(${pct})">Registrar Conclusão ✓</button><div class="register-success" id="regSuccess2">✅ Registrado com sucesso! Resultado enviado para a liderança.</div></div>`:''}<div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">${!passed?'<button class="quiz-btn" onclick="openPanel(\'formacao\')">← Voltar à Formação</button>':''}</div></div>`;
+  content.innerHTML=`<div class="quiz-result"><div class="quiz-result-emoji">${passed?'🎉':'📚'}</div><div class="quiz-result-title" style="color:${passed?'var(--acc)':'var(--warn)'};">${passed?'Parabéns! Aprovado!':'Continue estudando!'}</div><div class="quiz-result-score">Você acertou <strong>${score2}</strong> de ${quizData2.length} questões — <strong>${pct}%</strong></div>${passed?`<div class="register-form" id="registerForm2"><label class="register-label">📝 Registre sua conclusão — informe seu nome completo</label><input type="text" class="register-input" id="regName2" placeholder="Ex: Samara Pereira" maxlength="60" onkeydown="if(event.key==='Enter') registerResult2(${pct})"><button class="register-btn" onclick="registerResult2(${pct})">Registrar Conclusão ✓</button><div class="register-success" id="regSuccess2">✅ Registrado com sucesso! Resultado enviado para a liderança.</div></div>`:''}<div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">${!passed?'<button class="quiz-btn" style="margin-right:8px;background:var(--text2);" onclick="initQuiz2()">↺ Tentar Novamente</button><button class="quiz-btn" onclick="openPanel(\'formacao\')">← Formação</button>':'<button class="quiz-btn" onclick="openPanel(\'formacao\')">← Formação</button>'}</div></div>`;
 }
 
 async function registerResult2(pct){
@@ -1925,56 +1896,11 @@ async function registerResult2(pct){
     alert('Erro ao enviar. Verifique sua conexão e tente novamente.');
   }
 }
-if(document.getElementById('quizContent2')) initQuiz2();
 
 
 
-// ── PASSWORD MODAL ────────────────────────────────────────────
-const QUIZ_PASSWORDS = {
-  'quiz-ipx': '1163',
-  'quiz-atendimento': '1164'
-};
-const QUIZ_TITLES = {
-  'quiz-ipx': '💧 Quiz IPX',
-  'quiz-atendimento': '🎭 Quiz Atendimento'
-};
 
-let currentQuizTarget = null;
 
-function openPwdModal(quizId) {
-  currentQuizTarget = quizId;
-  document.getElementById('pwdModalTitle').textContent = QUIZ_TITLES[quizId];
-  document.getElementById('pwdInput').value = '';
-  document.getElementById('pwdInput').classList.remove('error');
-  document.getElementById('pwdError').classList.remove('show');
-  document.getElementById('pwdModal').classList.add('open');
-  setTimeout(() => document.getElementById('pwdInput').focus(), 100);
-}
-
-function closePwdModal() {
-  document.getElementById('pwdModal').classList.remove('open');
-  currentQuizTarget = null;
-}
-
-function confirmPwd() {
-  const input = document.getElementById('pwdInput').value.trim();
-  const correct = QUIZ_PASSWORDS[currentQuizTarget];
-  if (input === correct) {
-    closePwdModal();
-    openPanel(currentQuizTarget);
-  } else {
-    const inp = document.getElementById('pwdInput');
-    inp.classList.add('error');
-    document.getElementById('pwdError').classList.add('show');
-    inp.value = '';
-    setTimeout(() => inp.classList.remove('error'), 400);
-  }
-}
-
-// Close pwd modal on outside click
-document.getElementById('pwdModal').addEventListener('click', function(e) {
-  if (e.target === this) closePwdModal();
-});
 
 // ── QUIZ IPX ──────────────────────────────────────────────────
 const quizDataIPX = [
@@ -2127,7 +2053,7 @@ function showResultIPX(){
   if(bar) bar.style.width='100%';
   const content=document.getElementById('quizContentIPX');
   if(!content) return;
-  content.innerHTML=`<div class="quiz-result"><div class="quiz-result-emoji">${passed?'🎉':'📚'}</div><div class="quiz-result-title" style="color:${passed?'var(--acc)':'var(--warn)'};">${passed?'Parabéns! Aprovado!':'Continue estudando!'}</div><div class="quiz-result-score">Você acertou <strong>${scoreIPX}</strong> de ${quizDataIPX.length} questões — <strong>${pct}%</strong></div>${passed?`<div class="register-form" id="registerFormIPX"><label class="register-label">📝 Registre sua conclusão — informe seu nome completo</label><input type="text" class="register-input" id="regNameIPX" placeholder="Ex: Samara Pereira" maxlength="60" onkeydown="if(event.key==='Enter') registerIPX(${pct})"><button class="register-btn" onclick="registerIPX(${pct})">Registrar Conclusão ✓</button><div class="register-success" id="regSuccessIPX">✅ Registrado com sucesso! Resultado enviado.</div></div>`:''}<div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">${!passed?'<button class="quiz-btn" onclick="goHome()">← Início</button>':''}</div></div>`;
+  content.innerHTML=`<div class="quiz-result"><div class="quiz-result-emoji">${passed?'🎉':'📚'}</div><div class="quiz-result-title" style="color:${passed?'var(--acc)':'var(--warn)'};">${passed?'Parabéns! Aprovado!':'Continue estudando!'}</div><div class="quiz-result-score">Você acertou <strong>${scoreIPX}</strong> de ${quizDataIPX.length} questões — <strong>${pct}%</strong></div>${passed?`<div class="register-form" id="registerFormIPX"><label class="register-label">📝 Registre sua conclusão — informe seu nome completo</label><input type="text" class="register-input" id="regNameIPX" placeholder="Ex: Samara Pereira" maxlength="60" onkeydown="if(event.key==='Enter') registerIPX(${pct})"><button class="register-btn" onclick="registerIPX(${pct})">Registrar Conclusão ✓</button><div class="register-success" id="regSuccessIPX">✅ Registrado com sucesso! Resultado enviado.</div></div>`:''}<div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">${!passed?'<button class="quiz-btn" style="margin-right:8px;background:var(--text2);" onclick="initQuizIPX()">↺ Tentar Novamente</button><button class="quiz-btn" onclick="openPanel(\'quizzes\')">← Quizzes</button>':'<button class="quiz-btn" onclick="openPanel(\'quizzes\')">← Quizzes</button>'}</div></div>`;
 }
 
 async function registerIPX(pct){
@@ -2185,7 +2111,7 @@ function showResultAT(){
   if(bar) bar.style.width='100%';
   const content=document.getElementById('quizContentAT');
   if(!content) return;
-  content.innerHTML=`<div class="quiz-result"><div class="quiz-result-emoji">${passed?'🎉':'📚'}</div><div class="quiz-result-title" style="color:${passed?'var(--acc)':'var(--warn)'};">${passed?'Parabéns! Aprovado!':'Continue estudando!'}</div><div class="quiz-result-score">Você acertou <strong>${scoreAT}</strong> de ${quizDataAT.length} questões — <strong>${pct}%</strong></div>${passed?`<div class="register-form" id="registerFormAT"><label class="register-label">📝 Registre sua conclusão — informe seu nome completo</label><input type="text" class="register-input" id="regNameAT" placeholder="Ex: Samara Pereira" maxlength="60" onkeydown="if(event.key==='Enter') registerAT(${pct})"><button class="register-btn" onclick="registerAT(${pct})">Registrar Conclusão ✓</button><div class="register-success" id="regSuccessAT">✅ Registrado com sucesso! Resultado enviado.</div></div>`:''}<div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">${!passed?'<button class="quiz-btn" onclick="goHome()">← Início</button>':''}</div></div>`;
+  content.innerHTML=`<div class="quiz-result"><div class="quiz-result-emoji">${passed?'🎉':'📚'}</div><div class="quiz-result-title" style="color:${passed?'var(--acc)':'var(--warn)'};">${passed?'Parabéns! Aprovado!':'Continue estudando!'}</div><div class="quiz-result-score">Você acertou <strong>${scoreAT}</strong> de ${quizDataAT.length} questões — <strong>${pct}%</strong></div>${passed?`<div class="register-form" id="registerFormAT"><label class="register-label">📝 Registre sua conclusão — informe seu nome completo</label><input type="text" class="register-input" id="regNameAT" placeholder="Ex: Samara Pereira" maxlength="60" onkeydown="if(event.key==='Enter') registerAT(${pct})"><button class="register-btn" onclick="registerAT(${pct})">Registrar Conclusão ✓</button><div class="register-success" id="regSuccessAT">✅ Registrado com sucesso! Resultado enviado.</div></div>`:''}<div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">${!passed?'<button class="quiz-btn" style="margin-right:8px;background:var(--text2);" onclick="initQuizAT()">↺ Tentar Novamente</button><button class="quiz-btn" onclick="openPanel(\'quizzes\')">← Quizzes</button>':'<button class="quiz-btn" onclick="openPanel(\'quizzes\')">← Quizzes</button>'}</div></div>`;
 }
 
 async function registerAT(pct){
@@ -2208,13 +2134,85 @@ async function registerAT(pct){
   }catch(err){btn.textContent='Registrar Conclusão ✓';btn.disabled=false;alert('Erro ao enviar. Verifique sua conexão.');}
 }
 
-// Init quizzes when panels open (already handled by openPanel)
+// ── QUIZ INSTINCT 3 ───────────────────────────────────────────
+const quizDataI3 = [
+  {q:"Quais são as funções principais do botão CTRL (LIGHT) no Instinct 3 Solar?",opts:["Liga o dispositivo, controla a iluminação e, ao manter pressionado, abre controles rápidos e assistência","Liga o relógio, abre automaticamente o menu de atividades e ativa GPS em toque longo","É responsável apenas pela lanterna e brilho da tela"],correct:0,exp:"O botão CTRL (LIGHT) liga o dispositivo e a iluminação da tela. Mantê-lo pressionado por ~2s abre o menu de controles. 5s ativa a solicitação de assistência. Duas pressões rápidas ligam/desligam a lanterna (Torch)."},
+  {q:"Como o usuário deve interpretar o gráfico de carregamento solar?",opts:["Mostra exatamente quantos % de bateria foram gerados pela luz solar","Exibe intensidade de exposição solar recente e média, ajudando a entender eficiência do ambiente para carga","Indica quando a lente Power Glass™ precisa de calibração"],correct:1,exp:"O Instinct 3 Solar mostra a intensidade de exposição solar das últimas 6 horas e a média da semana anterior. Não informa % exata de bateria gerada. A Power Glass™ não exige calibração pelo usuário."},
+  {q:"Como personalizar o visor do relógio (Watch Face)?",opts:["Pelo Garmin Connect apenas, sem possibilidade de edição no relógio","Mantendo MENU pressionado no visor principal e escolhendo opções de personalização","Pressionando GPS e escolhendo um tema automático"],correct:1,exp:"No visor principal, mantenha MENU pressionado e selecione 'Visor do relógio'. Com UP/DOWN navegue pelas opções. Selecione 'Adicionar' para criar um visor personalizado, ajustando dados exibidos, cor de fundo e cor de destaque."},
+  {q:"O que é o Body Battery™ e como ele auxilia no gerenciamento de energia do atleta?",opts:["Uma métrica de recuperação baseada apenas na intensidade do treino","Um indicador de energia corporal influenciado por sono, estresse e atividade física","Uma nota diária baseada exclusivamente na frequência cardíaca média"],correct:1,exp:"O Body Battery™ é uma métrica de 5 a 100 que estima a reserva de energia corporal. Recarrega com sono e repouso, sendo reduzida por estresse e exercícios intensos. Cafeína não altera o Body Battery — sono de qualidade é o principal fator de recarga."},
+  {q:"Qual o requisito para gerar o Status de VFC (Variabilidade da Frequência Cardíaca)?",opts:["Três semanas de dados consistentes de sono","Quatorze dias de treinos acima de 70% da frequência cardíaca máxima","Atualização do software e sete dias de uso contínuo"],correct:0,exp:"O relógio analisa a variabilidade cardíaca durante o sono. Para criar uma linha de base pessoal e gerar um status (equilibrado, baixo ou desequilibrado) são necessárias três semanas de dados consistentes de sono."},
+  {q:"Como o PacePro™ otimiza a estratégia de um corredor?",opts:["Ajusta automaticamente zonas cardíacas conforme o cansaço do atleta","Cria um plano de ritmo considerando elevação do percurso e meta final","Mantém um pace fixo do início ao fim para evitar variações"],correct:1,exp:"O PacePro™ cria um plano de ritmo personalizado baseado no percurso. Ele analisa mudanças de elevação e sugere ajustes de velocidade em tempo real, ajudando o corredor a atingir a meta sem esgotamento em subidas."},
+  {q:"Quais são os critérios técnicos para obter estimativas de VO2 Máximo precisas?",opts:["Corrida ao ar livre com GPS e intensidade mínima próxima de 70% da FC máxima; no ciclismo, medidor de potência e FC","Qualquer treino cardiovascular acima de 20 minutos com frequência cardíaca ativa","Caminhada rápida com monitor cardíaco ligado por pelo menos 10 minutos"],correct:0,exp:"Para corrida: ao ar livre com GPS ativo, mantendo ≥70% da FC máxima por 10 minutos. Para ciclismo: obrigatório medidor de potência + monitor cardíaco, por pelo menos 20 minutos em intensidade moderada a alta."},
+  {q:"Como interpretar as categorias do Status de Treino?",opts:["O recurso mostra se a carga está ajudando, mantendo ou prejudicando a evolução física do usuário","É apenas uma classificação da intensidade cardíaca diária","O resultado depende principalmente da distância percorrida na semana"],correct:0,exp:"O Status de Treino avalia o impacto da carga no condicionamento. Categorias: Produtivo (evolução consistente), Mantendo (carga estável), Recuperação (estímulo leve), Ultrapassando Limites (carga excessiva, risco de fadiga/lesão)."},
+  {q:"O que representa a métrica de Carga Aguda?",opts:["A intensidade do treino mais recente do usuário","A soma ponderada das pontuações de carga dos exercícios realizados nos últimos sete dias","O tempo necessário para recuperação muscular antes do próximo treino"],correct:1,exp:"A Carga Aguda é a soma ponderada das pontuações de carga de exercícios dos últimos 7 dias. Ajuda a entender se o volume atual de treino está dentro de uma faixa ideal para melhorar o condicionamento sem causar exaustão."},
+  {q:"Como funciona o recurso de Treino Sugerido Diariamente?",opts:["O relógio entrega treinos padronizados iguais para qualquer usuário","O sistema analisa histórico, recuperação, VO2 máximo e carga recente para sugerir treinos específicos","O recurso funciona apenas para atletas avançados ou corredores profissionais"],correct:1,exp:"O algoritmo considera VO2 Máximo, Status de Treino, tempo de recuperação e histórico recente para sugerir um treino de corrida ou ciclismo específico para aquele dia. Não é exclusivo para avançados — usuários de diferentes níveis recebem recomendações adaptadas."}
+];
+
+let currentQI3=0,scoreI3=0,answeredI3=false,wrongI3=[];
+function initQuizI3(){currentQI3=0;scoreI3=0;answeredI3=false;wrongI3=[];renderI3();}
+function renderI3(){
+  const q=quizDataI3[currentQI3];
+  const bar=document.getElementById('quizBarI3');
+  if(bar) bar.style.width=(currentQI3/quizDataI3.length*100)+'%';
+  const content=document.getElementById('quizContentI3');
+  if(!content) return;
+  content.innerHTML=`<div class="quiz-q-num">Pergunta ${currentQI3+1} de ${quizDataI3.length}</div><div class="quiz-q">${q.q}</div><div class="quiz-options">${q.opts.map((o,i)=>`<button class="quiz-opt" onclick="answerI3(${i})">${o}</button>`).join('')}</div><div class="quiz-feedback" id="quizFeedbackI3"></div><div class="quiz-nav"><button class="quiz-btn" id="nextBtnI3" onclick="nextI3()" disabled>${currentQI3<quizDataI3.length-1?'Próxima →':'Ver Resultado'}</button></div>`;
+  answeredI3=false;
+}
+function answerI3(i){
+  if(answeredI3) return; answeredI3=true;
+  const q=quizDataI3[currentQI3];
+  document.querySelectorAll('#quizContentI3 .quiz-opt').forEach(b=>b.classList.add('disabled'));
+  const opts=document.querySelectorAll('#quizContentI3 .quiz-opt');
+  const fb=document.getElementById('quizFeedbackI3');
+  if(i===q.correct){opts[i].classList.add('correct');fb.className='quiz-feedback show ok';fb.textContent='✅ Correto! '+q.exp;scoreI3++;}
+  else{opts[i].classList.add('wrong');opts[q.correct].classList.add('correct');fb.className='quiz-feedback show fail';fb.textContent='❌ Incorreto. '+q.exp;wrongI3.push('Q'+(currentQI3+1)+' — '+q.q);}
+  document.getElementById('nextBtnI3').disabled=false;
+}
+function nextI3(){
+  if(currentQI3<quizDataI3.length-1){currentQI3++;renderI3();}
+  else showResultI3();
+}
+function showResultI3(){
+  const pct=Math.round(scoreI3/quizDataI3.length*100);
+  const pass=pct>=70;
+  const bar=document.getElementById('quizBarI3');
+  if(bar) bar.style.width='100%';
+  const content=document.getElementById('quizContentI3');
+  if(!content) return;
+  if(pass){
+    content.innerHTML=`<div class="quiz-result"><div class="quiz-result-emoji">🏆</div><div class="quiz-result-title" style="color:var(--acc);">Aprovado!</div><div class="quiz-result-score">Você acertou <strong>${scoreI3} de ${quizDataI3.length}</strong> questões — <strong>${pct}%</strong></div><div id="registerFormI3" style="margin-top:16px;"><input type="text" class="pwd-input" id="nameI3" placeholder="Seu nome completo" style="margin-bottom:10px;"><button class="quiz-btn" onclick="sendResultI3()">Registrar Conclusão ✓</button></div><div id="regSuccessI3" style="display:none;color:var(--acc);font-weight:700;margin-top:12px;">✅ Resultado registrado com sucesso!</div><div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><button class="quiz-btn" style="background:var(--text2);" onclick="openPanel('quizzes')">← Quizzes</button></div></div>`;
+  } else {
+    content.innerHTML=`<div class="quiz-result"><div class="quiz-result-emoji">😅</div><div class="quiz-result-title" style="color:var(--warn);">Não atingiu 70%</div><div class="quiz-result-score">Você acertou <strong>${scoreI3} de ${quizDataI3.length}</strong> questões — <strong>${pct}%</strong></div><div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><button class="quiz-btn" onclick="initQuizI3()">↺ Tentar Novamente</button><button class="quiz-btn" style="background:var(--text2);" onclick="openPanel('quizzes')">← Quizzes</button></div></div>`;
+  }
+}
+async function sendResultI3(){
+  const name=document.getElementById('nameI3').value.trim();
+  if(!name){alert('Digite seu nome.');return;}
+  const pct=Math.round(scoreI3/quizDataI3.length*100);
+  const btn=document.querySelector('#registerFormI3 .quiz-btn');
+  if(!btn) return;
+  btn.textContent='Enviando...';btn.disabled=true;
+  const now=new Date();
+  const data=now.toLocaleDateString('pt-BR');
+  const hora=now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  const status=pct>=70?'✅ APROVADO':'❌ Não atingiu 70%';
+  const erradas=wrongI3.length>0?'\n\n❌ Questões erradas:\n'+wrongI3.map(q=>'• '+q).join('\n'):'\n\n✅ Nenhuma questão errada!';
+  const message=`👤 Colaborador: ${name}\n📚 Módulo: Quiz Técnico — Instinct 3\n🎯 Nota: ${pct}%\n✅ Acertos: ${scoreI3} de ${quizDataI3.length}\n📅 Data: ${data}\n⏰ Hora: ${hora}\n📊 Status: ${status}${erradas}`;
+  try{
+    await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{nome:name,modulo:'Quiz Técnico — Instinct 3',nota:pct+'%',acertos:scoreI3+' de '+quizDataI3.length,data,hora,status,message});
+    const form=document.getElementById('registerFormI3');if(form)form.style.display='none';
+    const success=document.getElementById('regSuccessI3');if(success)success.style.display='block';
+  }catch(err){btn.textContent='Registrar Conclusão ✓';btn.disabled=false;alert('Erro ao enviar. Verifique sua conexão.');}
+}
+
 // Additional init hooks
 const _origOpenPanel = openPanel;
 openPanel = function(id) {
   _origOpenPanel(id);
   if(id === 'quiz-ipx') initQuizIPX();
   if(id === 'quiz-atendimento') initQuizAT();
+  if(id === 'quiz-instinct3') initQuizI3();
 };
 
 // ── SERVICE WORKER ────────────────────────────────────────────
@@ -2227,23 +2225,59 @@ if('serviceWorker' in navigator){
 }
 </script>
 
-<!-- PASSWORD MODAL -->
-<div class="pwd-modal-ov" id="pwdModal">
-  <div class="pwd-modal-box">
-    <div class="pwd-modal-icon">🔒</div>
-    <div class="pwd-modal-title" id="pwdModalTitle">Quiz Especial</div>
-    <div class="pwd-modal-sub">Digite a senha de acesso</div>
-    <input type="password" class="pwd-input" id="pwdInput" placeholder="••••" maxlength="10"
-      onkeydown="if(event.key==='Enter') confirmPwd()">
-    <div class="pwd-error" id="pwdError">Senha incorreta. Tente novamente.</div>
-    <button class="pwd-confirm-btn" onclick="confirmPwd()">Acessar →</button>
-    <button class="pwd-cancel-btn" onclick="closePwdModal()">Cancelar</button>
+<!-- QUIZZES PANEL -->
+<div class="panel" id="panel-quizzes">
+  <div class="panel-header"><button class="back-btn" onclick="goHome()">← Início</button><div class="panel-title">📝 <span>Quizzes</span></div></div>
+  <div class="panel-body">
+    <div class="universe-hero" style="background:linear-gradient(135deg,#0a1a0a,#1a3a1a);">
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:0.7;margin-bottom:4px;">Avaliações Técnicas · by Proparts</div>
+      <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:28px;letter-spacing:2px;margin-bottom:8px;">QUIZZES DE CONHECIMENTO</div>
+      <p style="font-size:14px;opacity:0.85;line-height:1.6;">Teste seu domínio técnico. Mínimo 70% para aprovação. Registre seu resultado ao final.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;margin-top:8px;">
+      <div class="card" style="border-left:4px solid #0066cc;cursor:pointer;" onclick="openPanel('quiz-ipx')">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="font-size:36px;">💧</div>
+          <div style="flex:1;">
+            <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#0066cc;margin-bottom:2px;">Resistência à Água</div>
+            <div class="card-title" style="margin-bottom:4px;">Quiz IPX</div>
+            <p style="font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:8px;">IPX, ATM, limites de uso e como orientar o cliente corretamente. Situações reais de venda.</p>
+            <div><span class="tag blue">18 questões</span> <span class="tag green">Mínimo 70%</span></div>
+          </div>
+          <div style="font-size:20px;color:#0066cc;font-weight:700;flex-shrink:0;">→</div>
+        </div>
+      </div>
+      <div class="card" style="border-left:4px solid #cc5500;cursor:pointer;" onclick="openPanel('quiz-atendimento')">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="font-size:36px;">🎭</div>
+          <div style="flex:1;">
+            <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#cc5500;margin-bottom:2px;">Script de Venda</div>
+            <div class="card-title" style="margin-bottom:4px;">Quiz Atendimento</div>
+            <p style="font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:8px;">Situações reais de loja, objeções, fechamento e finalização com pulseiras e fones Shokz.</p>
+            <div><span class="tag blue">18 questões</span> <span class="tag green">Mínimo 70%</span></div>
+          </div>
+          <div style="font-size:20px;color:#cc5500;font-weight:700;flex-shrink:0;">→</div>
+        </div>
+      </div>
+      <div class="card" style="border-left:4px solid var(--g);cursor:pointer;" onclick="openPanel('quiz-instinct3')">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="font-size:36px;">⌚</div>
+          <div style="flex:1;">
+            <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:2px;">Quiz Técnico</div>
+            <div class="card-title" style="margin-bottom:4px;">Quiz Instinct 3</div>
+            <p style="font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:8px;">Body Battery, PacePro, VO2 Máximo, Status de Treino e mais. Domine o produto tecnicamente.</p>
+            <div><span class="tag blue">10 questões</span> <span class="tag green">Mínimo 70%</span></div>
+          </div>
+          <div style="font-size:20px;color:var(--g);font-weight:700;flex-shrink:0;">→</div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
 <!-- QUIZ IPX PANEL -->
 <div class="panel" id="panel-quiz-ipx">
-  <div class="panel-header"><button class="back-btn" onclick="goHome()">← Início</button><div class="panel-title">💧 Quiz <span>IPX</span></div></div>
+  <div class="panel-header"><button class="back-btn" onclick="openPanel('quizzes')">← Quizzes</button><div class="panel-title">💧 Quiz <span>IPX</span></div></div>
   <div class="panel-body">
     <div class="universe-hero" style="background:linear-gradient(135deg,#001a33,#003366);">
       <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:0.7;margin-bottom:4px;">Quiz Especial · by Proparts</div>
@@ -2253,7 +2287,7 @@ if('serviceWorker' in navigator){
     <div class="quiz-wrap" id="quizWrapIPX">
       <div class="quiz-header">
         <div class="quiz-title">💧 Quiz IPX — Resistência à Água</div>
-        <div class="quiz-sub">15 perguntas · Mínimo 70% para aprovação · Resultado enviado por email</div>
+        <div class="quiz-sub">18 perguntas · Mínimo 70% para aprovação · Resultado enviado por email</div>
         <div class="quiz-progress"><div class="quiz-progress-bar" id="quizBarIPX" style="width:0%"></div></div>
       </div>
       <div id="quizContentIPX"></div>
@@ -2263,7 +2297,7 @@ if('serviceWorker' in navigator){
 
 <!-- QUIZ ATENDIMENTO PANEL -->
 <div class="panel" id="panel-quiz-atendimento">
-  <div class="panel-header"><button class="back-btn" onclick="goHome()">← Início</button><div class="panel-title">🎭 Quiz <span>Atendimento</span></div></div>
+  <div class="panel-header"><button class="back-btn" onclick="openPanel('quizzes')">← Quizzes</button><div class="panel-title">🎭 Quiz <span>Atendimento</span></div></div>
   <div class="panel-body">
     <div class="universe-hero" style="background:linear-gradient(135deg,#1a0a00,#3d1800);">
       <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:0.7;margin-bottom:4px;">Quiz Especial · by Proparts</div>
@@ -2273,10 +2307,30 @@ if('serviceWorker' in navigator){
     <div class="quiz-wrap" id="quizWrapAT">
       <div class="quiz-header">
         <div class="quiz-title">🎭 Quiz Atendimento</div>
-        <div class="quiz-sub">15 perguntas · Mínimo 70% para aprovação · Resultado enviado por email</div>
+        <div class="quiz-sub">18 perguntas · Mínimo 70% para aprovação · Resultado enviado por email</div>
         <div class="quiz-progress"><div class="quiz-progress-bar" id="quizBarAT" style="width:0%"></div></div>
       </div>
       <div id="quizContentAT"></div>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ NÍVEL TÉCNICO PANEL -->
+<div class="panel" id="panel-quiz-instinct3">
+  <div class="panel-header"><button class="back-btn" onclick="openPanel('quizzes')">← Quizzes</button><div class="panel-title">⌚ Quiz <span>Instinct 3</span></div></div>
+  <div class="panel-body">
+    <div class="universe-hero" style="background:linear-gradient(135deg,#0a1a0a,#003300);">
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:0.7;margin-bottom:4px;">Quiz Técnico · by Proparts</div>
+      <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:28px;letter-spacing:2px;margin-bottom:8px;">DOMÍNIO TÉCNICO - NÍVEL FÁCIL</div>
+      <p style="font-size:14px;opacity:0.85;line-height:1.6;">Body Battery, PacePro, VO2 Máximo, Status de Treino e mais. 10 questões práticas.</p>
+    </div>
+    <div class="quiz-wrap" id="quizWrapI3">
+      <div class="quiz-header">
+        <div class="quiz-title">⌚ Quiz Técnico</div>
+        <div class="quiz-sub">10 perguntas · Mínimo 70% para aprovação · Resultado enviado por email</div>
+        <div class="quiz-progress"><div class="quiz-progress-bar" id="quizBarI3" style="width:0%"></div></div>
+      </div>
+      <div id="quizContentI3"></div>
     </div>
   </div>
 </div>
