@@ -1904,117 +1904,79 @@ async function registerResult2(pct){
 
 // ── QUIZ IPX ──────────────────────────────────────────────────
 const quizDataIPX = [
-  {q:"O que significa a sigla IPX?",opts:["Impermeabilidade Por Exposicao","Ingress Protection (Protecao contra Penetracao) com poeira nao avaliada","International Protection Extra","Indice de Protecao para Xeque"],correct:1,exp:"IPX significa Ingress Protection. O X indica que a protecao contra poeira nao foi avaliada — apenas a resistencia a agua."},
-  {q:"Um cliente chega com o Instinct 3 e diz que parou de funcionar depois de uma sauna. O que voce explica?",opts:["Deve ter sido defeito de fabricacao — aciona a garantia","A certificacao IPX/ATM e testada com agua limpa e fria. Vapor e calor da sauna alteram a pressao interna e podem vencer a vedacao — nao esta coberto pela garantia","O Instinct 3 deveria suportar sauna pois e 10 ATM","Depende da temperatura da sauna"],correct:1,exp:"A certificacao e realizada com agua limpa em temperatura ambiente. Agua quente, vapor e sauna alteram a pressao interna e podem vencer a vedacao. Dano por agua em condicoes fora do certificado normalmente nao tem cobertura de garantia."},
-  {q:"Qual e a classificacao minima recomendada para um cliente que quer nadar em piscina com o relogio Garmin?",opts:["1 ATM","5 ATM","10 ATM","IPX4"],correct:1,exp:"5 ATM e o minimo para natacao em piscina e uso na chuva. Equivale aproximadamente a IPX7/IPX8 para uso do dia a dia. FR165, Venu 4 e Vivoactive 6 sao exemplos com 5 ATM."},
-  {q:"Um cliente pergunta se o Forerunner 965 e resistente a agua. Como voce responde corretamente?",opts:["Sim, ele e a prova de agua!","Nao, ele nao tem protecao contra agua.","Ele tem certificacao 10 ATM — suporta esportes aquaticos, snorkel e surf, mas nenhum dispositivo e 100% a prova de agua para sempre.","Ele tem IPX7, entao aguenta ate 1 metro."],correct:2,exp:"Nunca diga a prova de agua sem especificar os limites. O FR965 tem 10 ATM — suporta pressao dinamica da agua como surf e snorkel. Toda certificacao tem condicoes e limites especificos."},
-  {q:"Qual a diferenca entre IPX7 e IPX8?",opts:["IPX7 protege contra respingos, IPX8 contra chuva forte","IPX7 suporta imersao ate 1m por 30min; IPX8 suporta imersao alem de 1m","IPX7 e para GPS portatil, IPX8 e para relogios","Nao ha diferenca pratica entre eles"],correct:1,exp:"IPX7 = imersao em ate 1 metro por ate 30 minutos. IPX8 = imersao alem de 1 metro. Quanto maior o numero, maior a protecao."},
-  {q:"Um cliente quer um Shokz para usar correndo na chuva forte. Qual modelo voce indica?",opts:["OpenRun Pro (IP55) — tem mais recursos de som","OpenRun (IP67) — protecao total contra poeira e imersao ate 1m","Os dois sao iguais para chuva forte","Nenhum dos dois aguenta chuva forte"],correct:1,exp:"O OpenRun tem IP67 — protecao total contra poeira (nivel 6) e imersao ate 1m por 30min (nivel 7). Para chuva forte, e a escolha certa. O OpenRun Pro tem IP55, que aguenta suor e chuva leve, mas nao e recomendado para chuva muito forte."},
-  {q:"O que o numero 6 na classificacao IP67 do Shokz OpenRun significa?",opts:["Resistencia a jatos de agua de alta pressao","Protecao total contra poeira","Suporta imersao em 6 metros","Nivel de resistencia a impacto"],correct:1,exp:"Na classificacao IP completa, o primeiro numero indica protecao contra solidos/poeira. Nivel 6 = protecao total contra poeira. O segundo numero (7) indica resistencia a agua — imersao ate 1m por 30min."},
-  {q:"Um cliente vai usar o GPS Garmin em um caiaque. Qual recurso voce destaca alem da certificacao IPX7?",opts:["GPS multibanda","Modelos com flutuacao (como GPSMAP 79s/86sci) — se cair na agua, sobe a superficie em vez de afundar","Tela touchscreen","Bateria de longa duracao"],correct:1,exp:"Para uso nautico, o fator flutuacao e decisivo. IPX7 garante sobrevivencia a imersao por 30min em 1m, mas em mar aberto o GPS pode afundar alem desse limite. Modelos flutuantes ficam visiveis na superficie."},
-  {q:"Qual certificacao os relogios Garmin usam (nao os GPS portateis)?",opts:["IPX — Ingress Protection","ATM — baseado na norma ISO 22810","IPX8 — imersao profunda","EN 13319 — padrao europeu"],correct:1,exp:"Os relogios Garmin seguem a norma ISO 22810, medida em ATM. A norma IPX e usada em GPS portateis, fones (Shokz) e acessorios."},
-  {q:"Um Garmin com 10 ATM + EN 13319 — qual o uso indicado?",opts:["Natacao em piscina","Corrida na chuva","Mergulho com equipamento — como Descent MK3i e Fenix 8","Surf apenas"],correct:2,exp:"10 ATM + EN 13319 e a certificacao de mergulho tecnico real. O Descent MK3i e o Fenix 8 tem essa certificacao, suportando profundidades de ate 200m dependendo do modelo."},
-  {q:"O IPX4 protege contra qual tipo de exposicao a agua?",opts:["Imersao ate 1 metro","Respingos de qualquer direcao — protege contra suor e chuva leve","Jatos de agua de alta pressao","Submersao por ate 10 minutos"],correct:1,exp:"IPX4 = respingos de agua de qualquer direcao. Protege contra suor e chuva leve. Nao pode ser submerso nem exposto a chuva forte. E o nivel mais basico de protecao."},
-  {q:"Por que danos causados por agua geralmente nao tem cobertura de garantia?",opts:["Porque a Garmin nao cobre danos liquidos em nenhum modelo","Porque e dificil provar as condicoes do incidente — se o uso foi dentro dos limites certificados ou nao","Porque a certificacao IPX nao existe legalmente no Brasil","Porque o cliente sempre usa errado"],correct:1,exp:"A certificacao IPX e um teste laboratorial em condicoes controladas. Na pratica, e dificil provar se o dano ocorreu dentro ou fora dos limites. Por isso, danos por agua costumam nao ter cobertura."},
-  {q:"Um cliente quer o Shokz OpenRun Pro para nadar. O que voce diz?",opts:["Pode usar tranquilamente — IP55 cobre natacao","O OpenRun Pro tem IP55 — aguenta suor e respingos, mas nao e recomendado para submersao. Para natacao voce precisaria de um fone especifico para agua.","IP55 e equivalente a IPX7, entao serve para nadar","Qualquer Shokz pode ser usado na agua"],correct:1,exp:"IP55 = protecao parcial contra poeira (nivel 5) e jatos de agua de baixa pressao (nivel 5). Nao deve ser submerso. Para natacao, o OpenRun Pro nao e indicado."},
-  {q:"O Forerunner 165 tem 5 ATM. O que isso significa para um cliente nadador?",opts:["Nao pode ser usado na piscina","Suporta natacao em piscina e chuva — e o minimo recomendado para quem nada","Suporta mergulho ate 5 metros","Apenas protege contra respingos"],correct:1,exp:"5 ATM equivale aproximadamente a IPX7/IPX8 para uso do dia a dia. E o minimo para recomendar a quem nada. O FR165 e indicado para natacao em piscina e mar."},
-  {q:"Qual a forma CORRETA de explicar a resistencia a agua de um produto ao cliente?",opts:["Este produto e a prova de agua, pode usar em qualquer situacao.","Ele tem certificacao IPX7 — suporta imersao acidental em ate 1 metro por 30 minutos, mas nao e indicado para mergulho ou jatos de alta pressao.","E resistente a agua, mas melhor nao molhar muito.","Depende de como voce usar."],correct:1,exp:"Sempre especifique o nivel e os limites. A prova de agua nao existe tecnicamente. A comunicacao correta evita expectativas erradas, frustracoes e devolucoes."},
-  {q:"Um cliente usa o Shokz Open Dots para academia e pergunta se pode usar na chuva no caminho. O que voce responde?",opts:["Pode usar na chuva tranquilamente, todos os Shokz sao resistentes.","O Open Dots tem IP54 — aguenta respingos e suor intenso, mas para chuva forte nao e o mais indicado. Para uso na rua com chuva, o OpenRun (IP67) seria mais seguro.","IP54 e o mesmo que IPX7, pode usar normalmente.","Nao pode usar em nenhuma condicao com agua."],correct:1,exp:"O Open Dots tem IP54 — o 5 indica protecao parcial contra poeira e o 4 indica protecao contra respingos de qualquer direcao. Aguenta suor e respingos leves, mas nao e recomendado para chuva forte."},
-  {q:"Qual a diferenca de protecao entre o Shokz OpenFit Air 2+ (IP55) e o Open Dots (IP54)?",opts:["Sao iguais — IP54 e IP55 tem a mesma protecao","O OpenFit Air 2+ tem protecao ligeiramente superior — aguenta jatos de agua de baixa pressao, enquanto o Open Dots suporta apenas respingos","O Open Dots e mais resistente que o OpenFit Air 2+","O OpenFit Air 2+ e a prova de agua, o Open Dots nao"],correct:1,exp:"IP54: protecao parcial contra poeira (5) + respingos de qualquer direcao (4). IP55: protecao parcial contra poeira (5) + jatos de agua de baixa pressao (5). O OpenFit Air 2+ tem um nivel a mais de protecao."},
-  {q:"Um cliente quer um Shokz para treinar na academia com muito suor e lavar com agua corrente apos o treino. Qual voce indica?",opts:["Open Dots (IP54) — suficiente para suor","OpenFit Air 2+ (IP55) ou OpenRun Pro (IP55) — aguenta suor intenso e lavagem rapida com agua corrente","Nenhum Shokz aguenta ser lavado","OpenRun (IP67) — unico que aguenta lavagem"],correct:1,exp:"IP55 e o minimo recomendado para quem quer lavar o fone com agua corrente apos o treino. Tanto o OpenFit Air 2+ quanto o OpenRun Pro tem IP55. O Open Dots (IP54) aguenta suor mas nao e recomendado para lavagem direta."},
+  {q:"O que significa a sigla IPX?",opts:["Ingress Protection — só a resistência à água é avaliada, não a proteção contra poeira","International Protection Extra — padrão que avalia poeira e resistência a jatos d'água","Impermeabilidade Por Exposição — certificação brasileira para eletrônicos em ambiente úmido","Índice de Proteção eXtended — versão avançada do padrão IP para dispositivos submersos"],correct:0,exp:"IPX significa Ingress Protection. O X indica que a proteção contra poeira não foi avaliada — apenas a resistência à água."},
+  {q:"Qual certificação os relógios Garmin usam (diferente dos GPS portáteis)?",opts:["IPX — Ingress Protection","IPX8 — imersão profunda","EN 13319 — padrão europeu","ATM — baseado na norma ISO 22810"],correct:3,exp:"Os relógios Garmin seguem a norma ISO 22810, medida em ATM. A norma IPX é usada em GPS portáteis, fones (Shokz) e acessórios."},
+  {q:"Um cliente chega com o Instinct 3 e diz que parou de funcionar depois de uma sauna. O que você explica?",opts:["A sauna seca é tolerada até 60°C — acima disso o vapor começa a comprometer os sensores","O Instinct 3 é 10 ATM e inclui proteção a vapor — provavelmente foi exposição muito prolongada","A norma usa água fria — vapor e calor alteram a pressão interna e podem vencer a vedação","Defeito de fabricação pode ocorrer em ambientes úmidos — vale acionar a garantia com laudo"],correct:2,exp:"A certificação é realizada com água limpa em temperatura ambiente. Água quente, vapor e sauna alteram a pressão interna e podem vencer a vedação. Dano por água fora dos limites certificados geralmente não tem cobertura de garantia."},
+  {q:"Qual a classificação mínima para um cliente que quer nadar em piscina com o relógio Garmin?",opts:["10 ATM","5 ATM","1 ATM","IPX4"],correct:1,exp:"5 ATM é o mínimo para natação em piscina e uso na chuva. FR165, Venu 4 e Vivoactive 6 são exemplos com 5 ATM."},
+  {q:"Um cliente quer um Shokz para usar correndo na chuva forte. Qual modelo você indica?",opts:["OpenRun (IP67) — nível 7 de resistência à água, aguenta imersão até 1m por 30min","Ambos têm proteção equivalente na chuva — IP55 e IP67 suportam o mesmo volume d'água","Nenhum dos dois é indicado — fones de condução óssea não são certificados para chuva forte","OpenRun Pro (IP55) — driver de titânio garante vedação superior em condições úmidas"],correct:0,exp:"O OpenRun tem IP67 — proteção total contra poeira (nível 6) e imersão até 1m por 30min (nível 7). O OpenRun Pro tem IP55, que aguenta suor e chuva leve, mas não é recomendado para chuva muito forte."},
+  {q:"Qual a diferença entre IPX7 e IPX8?",opts:["Não há diferença prática — ambos suportam o mesmo tipo de imersão em uso cotidiano","IPX7 é para GPS portátil, IPX8 é certificação exclusiva para relógios esportivos","IPX7 protege contra respingos intensos, IPX8 cobre exposição contínua à chuva forte","IPX7: imersão até 1m por 30min; IPX8: imersão além de 1m"],correct:3,exp:"IPX7 = imersão em até 1 metro por até 30 minutos. IPX8 = imersão além de 1 metro. Quanto maior o número, maior a proteção."},
+  {q:"Um cliente vai usar o GPS Garmin em um caiaque. Qual recurso você destaca além da certificação IPX7?",opts:["Modelos com flutuação como o GPSMAP 79s — se cair na água, sobe à superfície","GPS multibanda — sinal mais preciso mesmo em ambientes aquáticos e sob cobertura densa","Bateria de longa duração — essencial para travessias sem possibilidade de recarga","Tela de alto contraste — visível mesmo com reflexo da água e uso com óculos de sol"],correct:0,exp:"Para uso náutico, a flutuação é decisiva. IPX7 garante sobrevivência à imersão por 30min em 1m, mas em mar aberto o GPS pode afundar além desse limite. Modelos flutuantes ficam visíveis na superfície."},
+  {q:"O IPX4 protege contra qual tipo de exposição à água?",opts:["Submersão em água parada por até 10 minutos — ideal para lavagem rápida do produto","Imersão até 1 metro por 30 minutos — equivalente ao IPX7 em condições controladas","Respingos de qualquer direção — protege contra suor e chuva leve","Jatos de água de baixa pressão em qualquer ângulo — inclui uso sob chuveiro fraco"],correct:2,exp:"IPX4 = respingos de água de qualquer direção. Protege contra suor e chuva leve. Não pode ser submerso. É o nível mais básico de proteção."},
+  {q:"Um Garmin com 10 ATM + EN 13319 — qual o uso indicado?",opts:["Corrida intensa com exposição constante a respingos e suor em ambiente externo","Mergulho com equipamento — modelos como Descent MK3i suportam até 200m de profundidade","Natação em piscina com treinamentos intervalados de alta intensidade e viradas frequentes","Surf com exposição a ondas — a norma EN 13319 cobre impacto de água salgada"],correct:1,exp:"10 ATM + EN 13319 é a certificação de mergulho técnico real. O Descent MK3i e o Fenix 8 têm essa certificação, suportando profundidades de até 200m dependendo do modelo."},
+  {q:"Como você explica corretamente a resistência à água de um produto ao cliente?",opts:["Resistente a respingos e suor, mas evite submersão mesmo breve — não é à prova d'água.","Depende do modelo — alguns suportam natação, outros só chuva leve. Confira a ficha técnica.","À prova d'água e pode ser usado em qualquer profundidade — a certificação garante isso.","Tem certificação IPX7 — aguenta imersão até 1m por 30min, mas não é indicado para mergulho."],correct:3,exp:"Sempre especifique o nível e os limites. 'À prova de água' não existe tecnicamente. A comunicação correta evita expectativas erradas e devoluções."},
 ];
 
 // ── QUIZ ATENDIMENTO ──────────────────────────────────────────
 const quizDataAT = [
   {
     q: 'Um cliente entra na loja e você diz "Como posso ajudar?". Por que essa abordagem não é ideal?',
-    opts: ['É uma pergunta muito formal', 'É genérica e abre pouco espaço — o cliente geralmente responde "só estou olhando" e a conversa trava', 'O correto é não falar nada e esperar o cliente se aproximar', 'Deveria perguntar o nome do cliente primeiro'],
-    correct: 1,
+    opts: ['É muito formal para uma loja de esporte — o ideal é uma abordagem mais descontraída', 'O correto é aguardar o cliente se aproximar para não invadir seu espaço de escolha', 'É genérica — o cliente costuma responder "só estou olhando" e a conversa trava', 'Deveria primeiro se apresentar pelo nome antes de fazer qualquer pergunta ao cliente'],
+    correct: 2,
     exp: '"Como posso ajudar?" é uma abertura genérica que convida respostas fechadas. O ideal é apresentar seu nome e convidar o cliente a falar sobre o que veio ver — abrindo espaço para a sondagem.'
   },
   {
     q: 'Na sondagem, um cliente diz que já sabe o modelo que quer. Qual é a próxima pergunta ideal?',
-    opts: ['Ir direto buscar o produto sem perguntar mais nada', '"É pra você ou é presente? E qual é a ideia de uso, mais esporte ou dia a dia?"', '"Você tem certeza? Posso te mostrar outros modelos."', '"Qual é o seu orçamento?"'],
-    correct: 1,
+    opts: ['"É pra você ou é presente? Esporte ou dia a dia?"', 'Ir direto buscar o produto sem perguntar mais nada', '"Você tem certeza? Posso te mostrar outros modelos."', '"Qual é o seu orçamento?"'],
+    correct: 0,
     exp: 'Mesmo quando o cliente já tem um modelo em mente, é essencial entender o contexto: é presente ou para ele? Esporte ou dia a dia? Essas respostas podem confirmar a escolha ou revelar um produto mais adequado.'
   },
   {
     q: 'Um cliente diz "Tá caro, vou pesquisar online." Como você responde?',
-    opts: ['"Tudo bem, qualquer dúvida pode entrar em contato."', '"Entendo. Mas aqui você tem garantia direta com a Proparts — 2 anos para dispositivos —, suporte técnico presencial e pode experimentar agora. Comprando online, qualquer problema vira um processo muito mais complicado."', '"Posso fazer um desconto especial."', '"Online pode vir sem garantia, cuidado."'],
+    opts: ['"Vou falar com o gerente pra ver se consigo um desconto especial pra fechar hoje."', '"Entendo. Aqui tem garantia de 2 anos, suporte presencial e você experimenta agora — resolver problemas online é muito mais difícil."', '"Online é arriscado — já tivemos clientes que receberam produto falsificado sem suporte."', '"Sem problema, pode pesquisar. Se decidir, pode me chamar no WhatsApp."'],
     correct: 1,
     exp: 'O argumento correto valoriza os diferenciais da Proparts: garantia oficial de 2 anos, suporte presencial e a experiência de testar antes de comprar. Não entre em guerra de preço — venda a segurança e o serviço.'
   },
   {
     q: 'Qual é a melhor forma de apresentar a bateria do Garmin ao cliente?',
-    opts: ['"Tem bateria de 13 dias com GPS multibanda ativo."', '"Você carrega uma vez na semana — sem aquela ansiedade de ver a bateria acabar no meio do treino."', '"A bateria é muito boa, uma das melhores do mercado."', '"Dura mais do que o Apple Watch."'],
-    correct: 1,
+    opts: ['"A bateria Garmin é líder de mercado — nenhum concorrente chega perto da durabilidade."', '"Dura muito mais que o Apple Watch, que precisa ser carregado praticamente todo dia."', '"Tem 13 dias de duração com GPS multibanda ativo e 26 dias no modo smartwatch."', '"Você carrega uma vez na semana — sem aquela ansiedade de a bateria acabar no treino."'],
+    correct: 3,
     exp: 'Traduza especificações em benefícios reais. "13 dias" é um número — "carrega uma vez na semana sem ansiedade no treino" é uma experiência que o cliente imagina e deseja. Sempre conecte a função ao dia a dia do cliente.'
   },
   {
-    q: 'O cliente indeciso está vendo 5 modelos diferentes ao mesmo tempo. O que você faz?',
-    opts: ['Explica as diferenças de todos os 5 modelos em detalhes', 'Reduz para no máximo 2 opções baseadas na sondagem e diz "Pra você, o melhor é entre estes dois"', 'Deixa o cliente decidir sozinho para não influenciar', 'Indica o modelo mais caro'],
-    correct: 1,
+    q: 'O cliente indeciso está vendo 5 modelos ao mesmo tempo. O que você faz?',
+    opts: ['Filtra para 2 opções pelo perfil levantado — "Pra você, o melhor é um destes dois"', 'Apresenta todos os 5 modelos com prós e contras para o cliente escolher com informação', 'Deixa o cliente em paz para não criar pressão — ele vai decidir quando estiver pronto', 'Recomenda o modelo mais caro, já que qualidade sempre justifica o investimento'],
+    correct: 0,
     exp: 'Muita opção paralisa a decisão. Com base na sondagem, você já sabe o perfil do cliente — use isso para eliminar opções e apresentar no máximo 2 modelos. Isso demonstra expertise e facilita o fechamento.'
   },
   {
     q: 'Como você usa a experiência tátil para derrubar a indecisão do cliente?',
-    opts: ['Mostra fotos do produto no celular', 'Coloca o relógio no pulso do cliente — gentilmente, não como pergunta', 'Entrega a caixa para ele segurar', 'Mostra o relógio funcionando sem colocar no pulso'],
-    correct: 1,
-    exp: 'A experiência tátil é uma das ferramentas mais poderosas do atendimento presencial. Quando o cliente coloca o relógio no pulso, ele começa a se imaginar usando — e a decisão de compra se torna emocional, não só racional.'
+    opts: ['Mostra fotos e vídeos do produto no celular para ilustrar as funções em uso real', 'Entrega a caixa fechada para ele ter a experiência de abrir como se fosse o produto dele', 'Coloca o relógio no pulso do cliente — de forma natural, não como pergunta', 'Demonstra o relógio funcionando e pergunta se ele quer experimentar por conta própria'],
+    correct: 2,
+    exp: 'A experiência tátil é uma das ferramentas mais poderosas do atendimento presencial. Quando o cliente coloca o relógio no pulso, ele começa a se imaginar usando — e a decisão se torna emocional, não só racional.'
   },
   {
     q: 'Um cliente diz "O Apple Watch faz a mesma coisa." Como você responde?',
-    opts: ['"O Apple Watch é muito inferior ao Garmin."', '"Para quem usa como ferramenta de treino, a diferença é enorme: o Garmin tem bateria de dias, GPS dedicado muito mais preciso e algoritmos para atletas desenvolvidos por mais de 30 anos."', '"O Apple Watch é bom, mas o Garmin é melhor."', '"Depende do que você precisa."'],
+    opts: ['"Depende do que você prioriza — design e iPhone têm seu ponto forte no Apple Watch."', '"Para treino a diferença é real: bateria de dias, GPS multibanda e 35 anos de algoritmos para atletas."', '"O Apple Watch é um produto muito inferior em tudo que envolve performance esportiva."', '"O Apple Watch é bom pra quem usa iPhone, mas o Garmin é melhor para esporte."'],
     correct: 1,
-    exp: 'Nunca desqualifique o concorrente diretamente. Apresente os diferenciais concretos: bateria (dias vs horas), precisão de GPS (multibanda vs básico) e especialização esportiva (35 anos vs smartwatch generalista). Deixe os fatos falarem.'
+    exp: 'Nunca desqualifique o concorrente diretamente. Apresente diferenciais concretos: bateria (dias vs horas), precisão de GPS (multibanda vs básico) e especialização esportiva. Deixe os fatos falarem.'
   },
   {
     q: 'Na finalização da venda, qual ação cria um momento poderoso de personalização?',
-    opts: ['Dar um brinde junto com o produto', 'Configurar o nome do cliente no relógio na hora e mostrar como sincronizar com o app', 'Embrulhar o produto com cuidado', 'Oferecer parcelamento em mais vezes'],
-    correct: 1,
-    exp: 'Configurar o nome do cliente no relógio na hora cria um momento de pertencimento — o produto já é dele antes de sair da loja. Apresentar o Garmin Connect brevemente também garante que ele vai usar o produto corretamente.'
-  },
-  {
-    q: 'Um cliente comprou um Forerunner 265. Como você faz a finalização oferecendo acessórios?',
-    opts: ['Mostra o catálogo completo de acessórios', '"Já que você vai usar para corrida, posso te mostrar a pulseira de silicone extra — é ótima para treino. E também temos o Shokz OpenRun, que é o fone de condução óssea ideal para correr ouvindo música sem tapar os ouvidos."', '"Temos pulseiras se quiser."', 'Não oferece nada para não parecer que está forçando venda'],
-    correct: 1,
-    exp: 'A finalização com acessórios deve ser natural e conectada ao perfil do cliente. Uma pulseira extra para treino e o Shokz OpenRun são complementos diretos para o corredor — não é forçar venda, é completar a experiência.'
-  },
-  {
-    q: 'O que é o Shokz OpenRun e por que é relevante oferecer junto com um relógio Garmin?',
-    opts: ['É um smartwatch concorrente do Garmin', 'É um fone de condução óssea que transmite o som pelos ossos da cabeça, deixando os ouvidos abertos — ideal para corredores que querem ouvir música sem perder a percepção do ambiente', 'É um acessório exclusivo para mergulhadores', 'É um monitor cardíaco de pulso'],
-    correct: 1,
-    exp: 'O Shokz usa tecnologia de condução óssea — o som é transmitido pelos ossos da maçã do rosto, deixando os ouvidos completamente abertos. Para corredores, ciclistas e trilheiros, isso significa música + segurança ao mesmo tempo. É um complemento natural ao relógio esportivo.'
-  },
-  {
-    q: 'Um cliente diz "Vou pensar e volto depois." Como você responde sem pressionar?',
-    opts: ['"Tudo bem, nos vemos quando voltar."', '"Claro, sem problema! Só quero garantir que você sai com todas as informações. Posso anotar o modelo pra você comparar? E se tiver qualquer dúvida, pode me chamar pelo WhatsApp."', '"Se você sair sem comprar, não temos garantia de que vai ter estoque."', '"Posso fazer um preço especial só hoje."'],
-    correct: 1,
-    exp: 'Respeite a decisão sem pressionar. O objetivo é garantir que o cliente saia com informação suficiente e com uma ponte de contato (WhatsApp). Isso mantém o relacionamento e aumenta a chance de ele voltar ou fechar por mensagem.'
-  },
-  {
-    q: 'Qual é a "regra de ouro" do atendimento Proparts?',
-    opts: ['Sempre oferecer o produto mais caro primeiro', 'O cliente deve sair sentindo que foi atendido por um ESPECIALISTA que entendeu suas necessidades — não por alguém que precisava bater meta', 'Fechar a venda o mais rápido possível', 'Nunca falar em concorrentes'],
-    correct: 1,
-    exp: 'A regra de ouro define a postura de todo o atendimento. Quando o cliente percebe que você está genuinamente interessado em resolver o problema dele — não em vender qualquer coisa —, a confiança aumenta e a venda acontece naturalmente.'
+    opts: ['Entregar um brinde personalizado para criar memória afetiva com a marca Garmin', 'Embalar o produto com cuidado e capricho para reforçar a qualidade na entrega', 'Oferecer condições de parcelamento diferenciadas para facilitar a decisão de compra', 'Configurar o nome do cliente no relógio e mostrar o Garmin Connect rapidamente'],
+    correct: 3,
+    exp: 'Configurar o nome do cliente no relógio na hora cria um momento de pertencimento — o produto já é dele antes de sair da loja. Apresentar o Garmin Connect brevemente garante que ele vai usar o produto corretamente.'
   },
   {
     q: 'Um cliente de corrida comprou o relógio. Como você aborda a venda do Shokz de forma natural?',
-    opts: ['"Quer comprar um fone também?"', '"Para completar a sua experiência de corrida, temos o Shokz — o fone de condução óssea que a maioria dos corredores sérios usa. Você ouve música e ainda escuta o barulho do ambiente. Posso te mostrar?"', '"Temos fones também se quiser."', 'Não menciona o Shokz para não parecer que está tentando vender mais'],
-    correct: 1,
-    exp: 'A oferta de complemento deve ser contextualizada no perfil do cliente. "Para completar a experiência de corrida" conecta o produto ao momento do cliente, não parece uma venda separada. O convite para mostrar abre a conversa sem pressão.'
+    opts: ['"Corrida é com Shokz — condução óssea, você ouve música e ainda escuta o ambiente. Posso mostrar?"', '"Se tiver interesse em acessórios, temos fones que podem complementar sua experiência."', '"Aproveitando que gosta de corrida, o Shokz é bem popular — quer que eu mostre?"', '"Prefiro não mencionar outros produtos para não parecer que estou forçando mais vendas."'],
+    correct: 0,
+    exp: '"Para completar a experiência de corrida" conecta o produto ao momento do cliente. O convite para mostrar abre a conversa sem pressão. Não é forçar venda — é completar a experiência.'
   },
   {
-    q: 'Qual das alternativas representa a forma ERRADA de apresentar uma função técnica ao cliente?',
-    opts: ['"Você não precisa levar o celular na corrida — o GPS registra tudo."', '"Tem GPS multibanda com GNSS, Glonass e Galileo."', '"Ele monitora sua saturação de oxigênio enquanto você dorme e te avisa se algo estiver fora do normal."', '"Você carrega uma vez na semana."'],
-    correct: 1,
-    exp: 'Falar em "GPS multibanda com GNSS, Glonass e Galileo" são termos técnicos que o cliente não consegue traduzir em benefício. O correto é sempre transformar a função em experiência: "traça exatamente onde você foi, mesmo em cidade com prédios ou mata fechada."'
-  },
-  {
-    q: 'Um cliente está entre o Forerunner 265 e o 570. Como você usa a técnica de prova social para ajudar na decisão?',
-    opts: ['"Os dois são ótimos, você que decide."', '"O FR570 é lançamento 2025 — tem o sensor mais novo da Garmin (Elevate Gen 5), mais preciso em alta intensidade. Para quem treina intervalado, é o que a maioria dos nossos clientes corredores sérios está escolhendo."', '"O 265 é mais barato, então mais vendido."', '"Posso dar um desconto no 570 se quiser."'],
-    correct: 1,
-    exp: 'Prova social + diferencial técnico contextualizado. "A maioria dos corredores sérios está escolhendo" cria validação social. Adicionar o diferencial técnico (Elevate Gen 5 para treino intervalado) conecta a escolha ao perfil específico do cliente.'
+    q: 'Um cliente diz "Vou pensar e volto depois." Como você responde sem pressionar?',
+    opts: ['"Se sair sem comprar não garantimos estoque — esse modelo está saindo bastante esta semana."', '"Consigo uma condição especial de preço hoje, mas só consigo manter até o fim do dia."', '"Claro! Posso anotar o modelo pra você? Se surgir dúvida, me chama no WhatsApp."', '"Sem problema, fique à vontade — a gente está aqui quando você decidir voltar."'],
+    correct: 2,
+    exp: 'Respeite a decisão sem pressionar. O objetivo é garantir que o cliente saia com informação suficiente e com uma ponte de contato (WhatsApp). Isso mantém o relacionamento e aumenta a chance de fechar por mensagem.'
   },
 ];
 
@@ -2136,16 +2098,16 @@ async function registerAT(pct){
 
 // ── QUIZ INSTINCT 3 ───────────────────────────────────────────
 const quizDataI3 = [
-  {q:"Quais são as funções principais do botão CTRL (LIGHT) no Instinct 3 Solar?",opts:["Liga o dispositivo, controla a iluminação e, ao manter pressionado, abre controles rápidos e assistência","Liga o relógio, abre automaticamente o menu de atividades e ativa GPS em toque longo","É responsável apenas pela lanterna e brilho da tela"],correct:0,exp:"O botão CTRL (LIGHT) liga o dispositivo e a iluminação da tela. Mantê-lo pressionado por ~2s abre o menu de controles. 5s ativa a solicitação de assistência. Duas pressões rápidas ligam/desligam a lanterna (Torch)."},
-  {q:"Como o usuário deve interpretar o gráfico de carregamento solar?",opts:["Mostra exatamente quantos % de bateria foram gerados pela luz solar","Exibe intensidade de exposição solar recente e média, ajudando a entender eficiência do ambiente para carga","Indica quando a lente Power Glass™ precisa de calibração"],correct:1,exp:"O Instinct 3 Solar mostra a intensidade de exposição solar das últimas 6 horas e a média da semana anterior. Não informa % exata de bateria gerada. A Power Glass™ não exige calibração pelo usuário."},
-  {q:"Como personalizar o visor do relógio (Watch Face)?",opts:["Pelo Garmin Connect apenas, sem possibilidade de edição no relógio","Mantendo MENU pressionado no visor principal e escolhendo opções de personalização","Pressionando GPS e escolhendo um tema automático"],correct:1,exp:"No visor principal, mantenha MENU pressionado e selecione 'Visor do relógio'. Com UP/DOWN navegue pelas opções. Selecione 'Adicionar' para criar um visor personalizado, ajustando dados exibidos, cor de fundo e cor de destaque."},
-  {q:"O que é o Body Battery™ e como ele auxilia no gerenciamento de energia do atleta?",opts:["Uma métrica de recuperação baseada apenas na intensidade do treino","Um indicador de energia corporal influenciado por sono, estresse e atividade física","Uma nota diária baseada exclusivamente na frequência cardíaca média"],correct:1,exp:"O Body Battery™ é uma métrica de 5 a 100 que estima a reserva de energia corporal. Recarrega com sono e repouso, sendo reduzida por estresse e exercícios intensos. Cafeína não altera o Body Battery — sono de qualidade é o principal fator de recarga."},
-  {q:"Qual o requisito para gerar o Status de VFC (Variabilidade da Frequência Cardíaca)?",opts:["Três semanas de dados consistentes de sono","Quatorze dias de treinos acima de 70% da frequência cardíaca máxima","Atualização do software e sete dias de uso contínuo"],correct:0,exp:"O relógio analisa a variabilidade cardíaca durante o sono. Para criar uma linha de base pessoal e gerar um status (equilibrado, baixo ou desequilibrado) são necessárias três semanas de dados consistentes de sono."},
-  {q:"Como o PacePro™ otimiza a estratégia de um corredor?",opts:["Ajusta automaticamente zonas cardíacas conforme o cansaço do atleta","Cria um plano de ritmo considerando elevação do percurso e meta final","Mantém um pace fixo do início ao fim para evitar variações"],correct:1,exp:"O PacePro™ cria um plano de ritmo personalizado baseado no percurso. Ele analisa mudanças de elevação e sugere ajustes de velocidade em tempo real, ajudando o corredor a atingir a meta sem esgotamento em subidas."},
-  {q:"Quais são os critérios técnicos para obter estimativas de VO2 Máximo precisas?",opts:["Corrida ao ar livre com GPS e intensidade mínima próxima de 70% da FC máxima; no ciclismo, medidor de potência e FC","Qualquer treino cardiovascular acima de 20 minutos com frequência cardíaca ativa","Caminhada rápida com monitor cardíaco ligado por pelo menos 10 minutos"],correct:0,exp:"Para corrida: ao ar livre com GPS ativo, mantendo ≥70% da FC máxima por 10 minutos. Para ciclismo: obrigatório medidor de potência + monitor cardíaco, por pelo menos 20 minutos em intensidade moderada a alta."},
-  {q:"Como interpretar as categorias do Status de Treino?",opts:["O recurso mostra se a carga está ajudando, mantendo ou prejudicando a evolução física do usuário","É apenas uma classificação da intensidade cardíaca diária","O resultado depende principalmente da distância percorrida na semana"],correct:0,exp:"O Status de Treino avalia o impacto da carga no condicionamento. Categorias: Produtivo (evolução consistente), Mantendo (carga estável), Recuperação (estímulo leve), Ultrapassando Limites (carga excessiva, risco de fadiga/lesão)."},
-  {q:"O que representa a métrica de Carga Aguda?",opts:["A intensidade do treino mais recente do usuário","A soma ponderada das pontuações de carga dos exercícios realizados nos últimos sete dias","O tempo necessário para recuperação muscular antes do próximo treino"],correct:1,exp:"A Carga Aguda é a soma ponderada das pontuações de carga de exercícios dos últimos 7 dias. Ajuda a entender se o volume atual de treino está dentro de uma faixa ideal para melhorar o condicionamento sem causar exaustão."},
-  {q:"Como funciona o recurso de Treino Sugerido Diariamente?",opts:["O relógio entrega treinos padronizados iguais para qualquer usuário","O sistema analisa histórico, recuperação, VO2 máximo e carga recente para sugerir treinos específicos","O recurso funciona apenas para atletas avançados ou corredores profissionais"],correct:1,exp:"O algoritmo considera VO2 Máximo, Status de Treino, tempo de recuperação e histórico recente para sugerir um treino de corrida ou ciclismo específico para aquele dia. Não é exclusivo para avançados — usuários de diferentes níveis recebem recomendações adaptadas."}
+  {q:"Quais são as funções principais do botão CTRL (LIGHT) no Instinct 3 Solar?",opts:["Liga o dispositivo, controla a iluminação e, ao manter pressionado, abre controles rápidos e assistência","Liga o relógio, abre automaticamente o menu de atividades e ativa GPS em toque longo","É responsável apenas pela lanterna e brilho da tela"],correct:0,fb:["Acertou! Você já está no nível de pegar o relógio da mão do cliente e sair mostrando função escondida.","Quase convenceu! Parece função premium, mas o GPS não manda no relógio inteiro.","O CTRL ficou levemente ofendido de ser reduzido a um botão de brilho."],exp:"O botão CTRL (LIGHT) liga o dispositivo e a iluminação da tela. Mantê-lo pressionado por ~2s abre o menu de controles. 5s ativa a solicitação de assistência. Duas pressões rápidas ligam/desligam a lanterna (Torch)."},
+  {q:"Como o usuário deve interpretar o gráfico de carregamento solar?",opts:["Mostra exatamente quantos % de bateria foram gerados pela luz solar","Exibe intensidade de exposição solar recente e média, ajudando a entender eficiência do ambiente para carga","Indica quando a lente Power Glass™ precisa de calibração"],correct:1,fb:["Parece técnico o bastante pra soar convincente numa conversa rápida 😭","Boa! Agora você já consegue explicar o Solar sem cair no 'ele carrega sozinho e pronto'.","Se tivesse que calibrar lente solar, metade das pessoas desistia no primeiro dia."],exp:"O Instinct 3 Solar mostra a intensidade de exposição solar das últimas 6 horas e a média da semana anterior. Não informa % exata de bateria gerada. A Power Glass™ não exige calibração pelo usuário."},
+  {q:"Como personalizar o visor do relógio (Watch Face)?",opts:["Pelo Garmin Connect apenas, sem possibilidade de edição no relógio","Mantendo MENU pressionado no visor principal e escolhendo opções de personalização","Pressionando GPS e escolhendo um tema automático"],correct:1,fb:["Quase! O app ajuda bastante, mas o relógio também gosta de independência.","Acertou! Essa é daquelas demonstrações que fazem o cliente ficar mexendo no relógio por 10 minutos.","O GPS entrou numa função que nem era dele 😭"],exp:"No visor principal, mantenha MENU pressionado e selecione 'Visor do relógio'. Com UP/DOWN navegue pelas opções. Selecione 'Adicionar' para criar um visor personalizado, ajustando dados exibidos, cor de fundo e cor de destaque."},
+  {q:"Como o usuário registra uma captura durante a atividade de Pesca no Instinct 3?",opts:["O relógio detecta o movimento de lançada automaticamente e registra cada captura","Pressiona GPS e seleciona 'Registrar captura' — incrementa o contador e salva a localização no GPS","O relógio marca automaticamente a posição a cada parada prolongada durante a atividade","Sincroniza com o app Garmin Connect ao final para registrar as capturas por coordenadas"],correct:1,fb:["O relógio ainda não aprendeu a interpretar gesto de lançada — por enquanto precisa de ajuda humana 😭","Acertou! Você já pode ajudar o pescador a mapear os melhores pontos do lago.","Parada prolongada seria uma armadilha — o pescador fica parado a tarde toda esperando mordida 😭","Sincronizar só no final perderia a localização exata de cada ponto — e esse é o pulo do gato."],exp:"Na atividade Pesca, pressione GPS e selecione 'Registrar captura'. Isso incrementa o contador de peixes e salva a localização geográfica exata para análise posterior no Garmin Connect."},
+  {q:"O que é e para quem serve o Applied Ballistics® presente no Instinct 3 Solar Tactical Edition?",opts:["É um giroscópio avançado para medir estabilidade do relógio em atividades de alto impacto","Calcula a altitude de salto em paraquedas usando dados balísticos de queda livre","Solução de mira para tiro de longo alcance — calcula correções de elevação e vento integrada ao app Applied Ballistics Quantum","Mede velocidade de impacto e força G em esportes de contato como mountain bike e trail"],correct:2,fb:["O giroscópio agradece a menção, mas ele não resolve correção de vento pra 1km de distância 😭","Boa tentativa misturando dois modos táticos — mas o Jumpmaster já cuida dos saltos.","Acertou! Esse é o tipo de função que faz o cliente militar entrar em modo 'eu preciso disso'.","O ciclista agradece, mas para isso já existem sensores de impacto muito mais simples."],exp:"O Applied Ballistics® é uma solução de mira para tiro de precisão de longo alcance. O relógio calcula correções de elevação e vento, integrando-se ao app Applied Ballistics Quantum para gerenciar perfis complexos de armas e munições."},
+  {q:"Qual a vantagem do modo Jumpmaster para o público militar e paraquedista?",opts:["Segue diretrizes militares para calcular o ponto de salto (HARP) em modalidades HAHO, HALO e Estático, usando barômetro e bússola","Registra altitude máxima e mínima durante o salto para análise de performance pós-voo","Monitora frequência cardíaca e saturação de oxigênio em altitude para segurança do paraquedista","Calcula automaticamente o momento ideal para abrir o paraquedas e emite um alerta de vibração"],correct:0,fb:["Acertou! Você já pode convencer um militar de que o relógio dele faz mais do que ele imaginava.","Analisar performance do salto é bacana, mas o Jumpmaster é sobre navegar até o ponto certo, não medir o voo 😭","O oxímetro ajuda em altitude, mas o Jumpmaster é sobre chegar no lugar certo, não sobre como o coração está 😭","O relógio seria responsabilizado por muita coisa se errasse o timing aí 😭"],exp:"O modo Jumpmaster segue diretrizes militares para calcular o ponto de salto de alta altitude (HARP) em três modalidades: HAHO, HALO e Estático. Usa o barômetro e a bússola para guiar o usuário até o ponto de impacto desejado (DIP)."},
+  {q:"Quais são os diferenciais exclusivos do Stealth Mode e do Kill Switch na Tactical Edition?",opts:["O Stealth Mode escurece a tela para uso noturno; o Kill Switch desativa o alarme sonoro em campo","O Stealth Mode pausa as atividades de treino; o Kill Switch reinicia o relógio em caso de travamento","O Stealth Mode desativa a tela para economia; o Kill Switch bloqueia os botões contra acionamento acidental","O Stealth Mode interrompe GPS e conexões sem fio; o Kill Switch limpa todos os dados e restaura o padrão de fábrica em 10 segundos"],correct:3,fb:["Parece configuração de relógio casual — nada contra, mas a Tactical Edition é outra dimensão 😭","O Kill Switch como botão de reinício seria um reset bem radical pro cliente 😭","Bloquear botões é função de qualquer relógio — o Kill Switch vai muito além disso.","Acertou! Esse é o tipo de função que faz o cliente de operações especiais parar de olhar o catálogo."],exp:"O Modo Stealth interrompe o armazenamento e compartilhamento de localização GPS e desativa conexões sem fio. O Kill Switch (Interruptor de Bloqueio) limpa todos os dados do usuário e restaura o padrão de fábrica em 10 segundos, protegendo informações sensíveis."},
+  {q:"O que são os sensores ABC do Instinct 3 e para que servem?",opts:["Altímetro, Barômetro e Bússola — usados para navegação e monitoramento de variações climáticas","Acelerômetro, Bluetooth e Capacitor solar — sistema de conectividade e recarga integrada","Altitude Beacon Controller — sistema integrado de alerta de altitude e variação de pressão","Monitor de Atividade, Biometria e Controle de Carga — sensores de bem-estar integrados"],correct:0,fb:["Acertou! ABC é clássico e qualquer cliente que adora trilha vai amar saber disso.","Bluetooth não é sensor — ele só conversa com outros aparelhos, não mede o ambiente 😭","Altitude Beacon Controller soa como função de farol de aeronave 😭","Biometria, Atividade e Controle seria um bom nome, mas os sensores reais são outros."],exp:"Os sensores ABC do Instinct 3 são: Altímetro (mede altitude pela pressão do ar), Barômetro (monitora variações de pressão para prever clima) e Bússola (orientação magnética). São fundamentais para navegação off-road e montanhismo."},
+  {q:"Como funciona o Storm Alert (Alerta de Tempestade) do Instinct 3?",opts:["Usa o GPS para verificar a previsão do tempo online e exibe alertas baseados em dados meteorológicos","Mede temperatura e umidade do ar para prever precipitação nas próximas 6 horas","Emite um alerta quando a pressão barométrica cai rapidamente, indicando possível tempestade","Detecta interferência eletromagnética de raios e ativa o modo de emergência com localização"],correct:2,fb:["O relógio não tem internet — seria ótimo, mas ele mede o ambiente, não consulta app de tempo 😭","Temperatura e umidade ajudam, mas a variação de pressão é o indicador mais confiável de tempestade.","Acertou! Agora você sabe explicar por que o Instinct 3 é mais esperto que a maioria dos apps de tempo.","Detector de raios seria incrível, mas por enquanto o barômetro ainda cuida desse trabalho 😭"],exp:"O Storm Alert monitora continuamente a pressão barométrica. Quando detecta uma queda rápida de pressão (≥4 mbar em 3 horas), emite uma vibração de alerta indicando possibilidade de tempestade iminente."},
+  {q:"O que é o Expedition Mode e qual o seu principal benefício?",opts:["Desativa todos os sensores exceto o barômetro para máxima economia em campo","Reduz a frequência de gravação do GPS para marcações periódicas — ideal para travessias de vários dias","Entra em modo de carregamento contínuo, priorizando a bateria solar sobre as funções","Limita o relógio ao modo básico de horas, desativando funções esportivas e de saúde"],correct:1,fb:["Só o barômetro sozinho não guia ninguém por uma expedição de 10 dias 😭","Acertou! Agora já dá pra explicar por que o Instinct 3 dura semanas em uso real de campo.","Modo de carregamento prioritário seria ótimo no inverno, mas o sol não trabalha por agendamento 😭","Desativar tudo seria triste demais pra um relógio desse nível 😭"],exp:"O Expedition Mode reduz a frequência de gravação de GPS (registra posição a cada minuto ou mais), eliminando a atualização contínua. Isso estende drasticamente a duração da bateria para expedições de múltiplos dias."}
 ];
 
 let currentQI3=0,scoreI3=0,answeredI3=false,wrongI3=[];
@@ -2165,8 +2127,19 @@ function answerI3(i){
   document.querySelectorAll('#quizContentI3 .quiz-opt').forEach(b=>b.classList.add('disabled'));
   const opts=document.querySelectorAll('#quizContentI3 .quiz-opt');
   const fb=document.getElementById('quizFeedbackI3');
-  if(i===q.correct){opts[i].classList.add('correct');fb.className='quiz-feedback show ok';fb.textContent='✅ Correto! '+q.exp;scoreI3++;}
-  else{opts[i].classList.add('wrong');opts[q.correct].classList.add('correct');fb.className='quiz-feedback show fail';fb.textContent='❌ Incorreto. '+q.exp;wrongI3.push('Q'+(currentQI3+1)+' — '+q.q);}
+  const funny=q.fb?q.fb[i]:'';
+  if(i===q.correct){
+    opts[i].classList.add('correct');
+    fb.className='quiz-feedback show ok';
+    fb.innerHTML='✅ '+funny+'<br><small style="opacity:0.85;font-style:italic;">'+q.exp+'</small>';
+    scoreI3++;
+  } else {
+    opts[i].classList.add('wrong');
+    opts[q.correct].classList.add('correct');
+    fb.className='quiz-feedback show fail';
+    fb.innerHTML='❌ '+funny+'<br><small style="opacity:0.85;font-style:italic;">'+q.exp+'</small>';
+    wrongI3.push('Q'+(currentQI3+1)+' — '+q.q);
+  }
   document.getElementById('nextBtnI3').disabled=false;
 }
 function nextI3(){
@@ -2206,6 +2179,89 @@ async function sendResultI3(){
   }catch(err){btn.textContent='Registrar Conclusão ✓';btn.disabled=false;alert('Erro ao enviar. Verifique sua conexão.');}
 }
 
+// ── QUIZ TÉCNICO GARMIN ───────────────────────────────────────
+const quizDataTEC = [
+  {q:"O que é o Body Battery™ e como ele auxilia no gerenciamento de energia do atleta?",opts:["Uma métrica de recuperação baseada apenas na intensidade do treino recente","Um indicador de energia corporal influenciado por sono, estresse e atividade física","Uma nota diária calculada exclusivamente pela frequência cardíaca média","Uma pontuação baseada no número de passos e calorias gastas no dia"],correct:1,fb:["Faz sentido à primeira vista, mas o relógio repara quando a pessoa dormiu 4 horas e quer agir como atleta olímpico 😭","Boa! Essa costuma ser uma das funções que faz o cliente pensar: 'ok… talvez eu precise desse relógio'.","O coração ajuda, mas ele sozinho não segura toda a responsabilidade 😭","Passos e calorias contribuem, mas o sono é o principal motor de recarga do Body Battery."],exp:"O Body Battery™ é uma métrica de 5 a 100 que estima a reserva de energia corporal. Recarrega com sono e repouso, sendo reduzida por estresse e exercícios intensos. Sono de qualidade é o principal fator de recarga."},
+  {q:"Qual o requisito para gerar o Status de VFC (Variabilidade da Frequência Cardíaca)?",opts:["Três semanas de dados consistentes de sono","Quatorze dias de treinos acima de 70% da frequência cardíaca máxima","Sete dias de uso contínuo com atualização recente do software","Sincronização diária com o Garmin Connect por pelo menos 10 dias"],correct:0,fb:["Acertou! O relógio primeiro conhece o dono antes de sair julgando a fisiologia dele.","Você misturou um pouco com os requisitos do VO2 Máximo 😭","Atualizar o relógio sempre ajuda, mas aqui o segredo é paciência e sono regular.","Sincronizar ajuda, mas o dado que importa é o que acontece à noite, não a transferência."],exp:"O relógio analisa a variabilidade cardíaca durante o sono. Para criar uma linha de base pessoal e gerar um status (equilibrado, baixo ou desequilibrado) são necessárias três semanas de dados consistentes de sono."},
+  {q:"Como o PacePro™ otimiza a estratégia de pace de um corredor?",opts:["Ajusta automaticamente as zonas cardíacas conforme o cansaço do atleta ao longo do percurso","Cria um plano de ritmo considerando a elevação do percurso e a meta de tempo final","Mantém um pace fixo e constante do início ao fim para evitar variações de velocidade","Calcula o pace médio dos últimos 5 treinos e sugere esse ritmo para a próxima corrida"],correct:1,fb:["Parece função premium o suficiente pra existir, confesso 😭","Boa! O corredor ainda sofre na subida, mas agora sofre com planejamento.","Pace fixo em corrida com desnível positivo seria uma conversa difícil com as pernas 😭","Média dos últimos treinos é dado útil, mas o PacePro olha para o percurso à frente, não para o passado."],exp:"O PacePro™ cria um plano de ritmo personalizado baseado no percurso. Analisa mudanças de elevação e sugere ajustes de velocidade em tempo real, ajudando o corredor a atingir a meta sem esgotamento nas subidas."},
+  {q:"Quais são os critérios técnicos para obter estimativas de VO2 Máximo precisas?",opts:["Corrida ao ar livre com GPS ativo e intensidade mínima de 70% da FC máxima; no ciclismo, medidor de potência e FC","Qualquer treino cardiovascular acima de 20 minutos com frequência cardíaca ativa no relógio","Caminhada rápida com monitor cardíaco por pelo menos 10 minutos consecutivos em ritmo estável","Natação em piscina ou corrida em esteira com velocidade constante por no mínimo 30 minutos"],correct:0,fb:["Acertou! Agora já dá pra responder aquele cliente que pergunta 'mas esse dado é confiável?' 😌","Parece convincente, mas o relógio é um pouco mais exigente que isso 😭","Se fosse tão fácil, toda caminhada até a padaria virava dado de performance avançada 😭","Esteira sem GPS externo e natação sem os critérios corretos não geram VO2 Máximo preciso."],exp:"Para corrida: ao ar livre com GPS ativo, mantendo ≥70% da FC máxima por 10 minutos. Para ciclismo: obrigatório medidor de potência + monitor cardíaco, por pelo menos 20 minutos em intensidade moderada a alta."},
+  {q:"Como interpretar as categorias do Status de Treino?",opts:["O recurso mostra se a carga está ajudando, mantendo ou prejudicando a evolução física do usuário","É uma classificação da intensidade cardíaca diária comparada com a média da semana anterior","O resultado depende principalmente da distância total percorrida nos últimos sete dias","Avalia exclusivamente a qualidade do sono e do estresse para indicar o estado de recuperação"],correct:0,fb:["Boa! O relógio basicamente responde: 'você está evoluindo ou só colecionando cansaço?' 😄","O coração participa da conversa, mas ele não toma todas as decisões sozinho 😭","O velocista e o maratonista com a mesma distância poderiam ter statuses bem diferentes 😭","Sono e estresse são fatores do Body Battery — o Status de Treino olha para a carga de exercício."],exp:"O Status de Treino avalia o impacto da carga no condicionamento. Categorias: Produtivo (evolução consistente), Mantendo (carga estável), Recuperação (estímulo leve), Ultrapassando Limites (carga excessiva, risco de fadiga/lesão)."},
+  {q:"O que representa a métrica de Carga Aguda?",opts:["A intensidade do treino mais recente, usada para calcular o intervalo mínimo de descanso","A soma ponderada das pontuações de carga dos exercícios realizados nos últimos sete dias","O tempo estimado necessário para recuperação muscular antes do próximo treino intenso","A média de esforço percebido registrado manualmente pelo usuário na semana"],correct:1,fb:["Faz sentido pensar assim, mas o relógio gosta de olhar o filme da semana, não só o episódio do dia 😭","Acertou! Agora você sabe explicar por que treinar forte todo dia nem sempre significa treinar melhor.","Recuperação e carga até são parentes próximos, mas moram em abas diferentes 😭","Esforço percebido manual é útil, mas a Carga Aguda é calculada automaticamente pelo relógio."],exp:"A Carga Aguda é a soma ponderada das pontuações de carga de exercícios dos últimos 7 dias. Ajuda a entender se o volume atual de treino está dentro de uma faixa ideal para melhorar o condicionamento sem causar exaustão."},
+  {q:"Como funciona o recurso de Treino Sugerido Diariamente?",opts:["O relógio entrega treinos padronizados iguais para qualquer usuário independente do perfil","O sistema analisa histórico, recuperação, VO2 máximo e carga recente para sugerir treinos específicos","O recurso funciona apenas para atletas avançados ou corredores com pelo menos 6 meses de uso","Sincroniza planos de treino do Garmin Connect criados por um treinador externo para o dia"],correct:1,fb:["Se fosse assim, sedentário e maratonista iam sofrer juntos por igualdade esportiva 😭","Boa! É praticamente um treinador pessoal… só que sem bronca quando você ignora o treino.","O iniciante pediu inclusão e o relógio atendeu — é para todos os níveis.","Sincronizar plano de treinador é função separada — o Treino Sugerido é gerado pelo algoritmo do relógio."],exp:"O algoritmo considera VO2 Máximo, Status de Treino, tempo de recuperação e histórico recente para sugerir um treino de corrida ou ciclismo específico para aquele dia. Não é exclusivo para avançados — usuários de diferentes níveis recebem recomendações adaptadas."},
+  {q:"Como o Descanso Automático facilita o treino de natação em piscina?",opts:["O relógio vibra a cada 25 metros para sinalizar que o intervalo de descanso deve começar","O usuário pressiona GPS na parede para registrar o intervalo manualmente a cada série","O relógio detecta a parada na parede — se ultrapassar 15 segundos, cria um intervalo automático","O modo pausa é ativado quando a frequência cardíaca cai abaixo do limiar aeróbico"],correct:2,fb:["Vibrar a cada 25 metros seria um treino de reflexo condicionado além da natação 😭","Se precisasse apertar botão molhado na parede a cada série, metade das pessoas desistiria do treino.","Acertou! Essa é uma das funções que faz o nadador largar o cronômetro do celular de vez.","Frequência cardíaca na piscina funciona, mas não é ela que define o intervalo aqui 😭"],exp:"Exclusivo para natação em piscina, o relógio detecta quando o usuário para na parede. Se o repouso exceder 15 segundos, um intervalo de descanso é criado automaticamente. Ao retomar o nado, inicia um novo intervalo sem apertar nenhum botão."},
+  {q:"Para que serve o Registro de Exercícios (Drill Logging) na natação?",opts:["Permite criar treinos estruturados com séries e intervalos programados antes de entrar na piscina","Grava automaticamente exercícios de perna detectando a ausência de braçadas por mais de 10 segundos","Sincroniza treinos do treinador pelo Garmin Connect e os exibe na tela durante a atividade","Registra manualmente tempo e distância de exercícios que o relógio não detecta, como nado com prancha"],correct:3,fb:["Isso seria o modo de treino estruturado — o Drill Logging resolve um problema diferente 😭","Detectar ausência de braçadas seria criativo, mas o relógio precisaria entender de pedagogia aquática 😭","Sincronizar treino do professor é função separada — o Drill Logging é sobre o que o relógio não mede.","Acertou! Essa função garante que o esforço real do treino seja contabilizado, mesmo fora do padrão."],exp:"O Drill Logging permite registrar manualmente o tempo e a distância de exercícios que o relógio não detecta automaticamente, como trabalho de pernas com prancha ou nado lateral, garantindo que o esforço total seja contabilizado."},
+  {q:"O que faz o Race Predictor (Previsor de Corrida) do Garmin?",opts:["Estima tempos de chegada para 5K, 10K, meia e maratona com base no VO2 Máximo atual do usuário","Calcula a velocidade mínima necessária para bater um recorde pessoal com base no histórico","Usa o GPS e a frequência cardíaca para estimar o tempo restante de qualquer corrida em andamento","Prevê o risco de lesão com base na carga de treino e sugere redução de intensidade preventiva"],correct:0,fb:["Acertou! É o tipo de dado que faz o cliente olhar pro relógio e pensar 'minha meta de maratona está mais perto'.","Bater recorde exige mais do que matemática de velocidade — o Race Predictor não trabalha com histórico assim 😭","Tempo restante da atividade existe, mas não é o Race Predictor — ele olha pro futuro, não pro momento.","Previsão de lesão seria o recurso mais temido por quem prefere treinar na raça 😭"],exp:"O Race Predictor usa o VO2 Máximo estimado para calcular tempos de chegada previstos em distâncias padrão (5K, 10K, meia maratona e maratona). Fica disponível após o relógio ter dados suficientes de corrida para estimar o condicionamento atual."}
+];
+
+let currentQTEC=0,scoreTEC=0,answeredTEC=false,wrongTEC=[];
+function initQuizTEC(){currentQTEC=0;scoreTEC=0;answeredTEC=false;wrongTEC=[];renderTEC();}
+function renderTEC(){
+  const q=quizDataTEC[currentQTEC];
+  const bar=document.getElementById('quizBarTEC');
+  if(bar) bar.style.width=(currentQTEC/quizDataTEC.length*100)+'%';
+  const content=document.getElementById('quizContentTEC');
+  if(!content) return;
+  content.innerHTML=`<div class="quiz-q-num">Pergunta ${currentQTEC+1} de ${quizDataTEC.length}</div><div class="quiz-q">${q.q}</div><div class="quiz-options">${q.opts.map((o,i)=>`<button class="quiz-opt" onclick="answerTEC(${i})">${o}</button>`).join('')}</div><div class="quiz-feedback" id="quizFeedbackTEC"></div><div class="quiz-nav"><button class="quiz-btn" id="nextBtnTEC" onclick="nextTEC()" disabled>${currentQTEC<quizDataTEC.length-1?'Próxima →':'Ver Resultado'}</button></div>`;
+  answeredTEC=false;
+}
+function answerTEC(i){
+  if(answeredTEC) return; answeredTEC=true;
+  const q=quizDataTEC[currentQTEC];
+  document.querySelectorAll('#quizContentTEC .quiz-opt').forEach(b=>b.classList.add('disabled'));
+  const opts=document.querySelectorAll('#quizContentTEC .quiz-opt');
+  const fb=document.getElementById('quizFeedbackTEC');
+  const funny=q.fb?q.fb[i]:'';
+  if(i===q.correct){
+    opts[i].classList.add('correct');
+    fb.className='quiz-feedback show ok';
+    fb.innerHTML='✅ '+funny+'<br><small style="opacity:0.85;font-style:italic;">'+q.exp+'</small>';
+    scoreTEC++;
+  } else {
+    opts[i].classList.add('wrong');
+    opts[q.correct].classList.add('correct');
+    fb.className='quiz-feedback show fail';
+    fb.innerHTML='❌ '+funny+'<br><small style="opacity:0.85;font-style:italic;">'+q.exp+'</small>';
+    wrongTEC.push('Q'+(currentQTEC+1)+' — '+q.q);
+  }
+  document.getElementById('nextBtnTEC').disabled=false;
+}
+function nextTEC(){
+  if(currentQTEC<quizDataTEC.length-1){currentQTEC++;renderTEC();}
+  else showResultTEC();
+}
+function showResultTEC(){
+  const pct=Math.round(scoreTEC/quizDataTEC.length*100);
+  const pass=pct>=70;
+  const bar=document.getElementById('quizBarTEC');
+  if(bar) bar.style.width='100%';
+  const content=document.getElementById('quizContentTEC');
+  if(!content) return;
+  if(pass){
+    content.innerHTML=`<div class="quiz-result"><div class="quiz-result-emoji">🏆</div><div class="quiz-result-title" style="color:var(--acc);">Aprovado!</div><div class="quiz-result-score">Você acertou <strong>${scoreTEC} de ${quizDataTEC.length}</strong> questões — <strong>${pct}%</strong></div><div id="registerFormTEC" style="margin-top:16px;"><input type="text" class="pwd-input" id="nameTEC" placeholder="Seu nome completo" style="margin-bottom:10px;"><button class="quiz-btn" onclick="sendResultTEC()">Registrar Conclusão ✓</button></div><div id="regSuccessTEC" style="display:none;color:var(--acc);font-weight:700;margin-top:12px;">✅ Resultado registrado com sucesso!</div><div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><button class="quiz-btn" style="background:var(--text2);" onclick="openPanel('quizzes')">← Quizzes</button></div></div>`;
+  } else {
+    content.innerHTML=`<div class="quiz-result"><div class="quiz-result-emoji">😅</div><div class="quiz-result-title" style="color:var(--warn);">Não atingiu 70%</div><div class="quiz-result-score">Você acertou <strong>${scoreTEC} de ${quizDataTEC.length}</strong> questões — <strong>${pct}%</strong></div><div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><button class="quiz-btn" onclick="initQuizTEC()">↺ Tentar Novamente</button><button class="quiz-btn" style="background:var(--text2);" onclick="openPanel('quizzes')">← Quizzes</button></div></div>`;
+  }
+}
+async function sendResultTEC(){
+  const name=document.getElementById('nameTEC').value.trim();
+  if(!name){alert('Digite seu nome.');return;}
+  const pct=Math.round(scoreTEC/quizDataTEC.length*100);
+  const btn=document.querySelector('#registerFormTEC .quiz-btn');
+  if(!btn) return;
+  btn.textContent='Enviando...';btn.disabled=true;
+  const now=new Date();
+  const data=now.toLocaleDateString('pt-BR');
+  const hora=now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  const status=pct>=70?'✅ APROVADO':'❌ Não atingiu 70%';
+  const erradas=wrongTEC.length>0?'\n\n❌ Questões erradas:\n'+wrongTEC.map(q=>'• '+q).join('\n'):'\n\n✅ Nenhuma questão errada!';
+  const message=`👤 Colaborador: ${name}\n📚 Módulo: Quiz Técnico Garmin\n🎯 Nota: ${pct}%\n✅ Acertos: ${scoreTEC} de ${quizDataTEC.length}\n📅 Data: ${data}\n⏰ Hora: ${hora}\n📊 Status: ${status}${erradas}`;
+  try{
+    await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{nome:name,modulo:'Quiz Técnico Garmin',nota:pct+'%',acertos:scoreTEC+' de '+quizDataTEC.length,data,hora,status,message});
+    const form=document.getElementById('registerFormTEC');if(form)form.style.display='none';
+    const success=document.getElementById('regSuccessTEC');if(success)success.style.display='block';
+  }catch(err){btn.textContent='Registrar Conclusão ✓';btn.disabled=false;alert('Erro ao enviar. Verifique sua conexão.');}
+}
+
 // Additional init hooks
 const _origOpenPanel = openPanel;
 openPanel = function(id) {
@@ -2213,6 +2269,7 @@ openPanel = function(id) {
   if(id === 'quiz-ipx') initQuizIPX();
   if(id === 'quiz-atendimento') initQuizAT();
   if(id === 'quiz-instinct3') initQuizI3();
+  if(id === 'quiz-tecnico') initQuizTEC();
 };
 
 // ── SERVICE WORKER ────────────────────────────────────────────
@@ -2242,7 +2299,7 @@ if('serviceWorker' in navigator){
             <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#0066cc;margin-bottom:2px;">Resistência à Água</div>
             <div class="card-title" style="margin-bottom:4px;">Quiz IPX</div>
             <p style="font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:8px;">IPX, ATM, limites de uso e como orientar o cliente corretamente. Situações reais de venda.</p>
-            <div><span class="tag blue">18 questões</span> <span class="tag green">Mínimo 70%</span></div>
+            <div><span class="tag blue">10 questões</span> <span class="tag green">Mínimo 70%</span></div>
           </div>
           <div style="font-size:20px;color:#0066cc;font-weight:700;flex-shrink:0;">→</div>
         </div>
@@ -2254,7 +2311,7 @@ if('serviceWorker' in navigator){
             <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#cc5500;margin-bottom:2px;">Script de Venda</div>
             <div class="card-title" style="margin-bottom:4px;">Quiz Atendimento</div>
             <p style="font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:8px;">Situações reais de loja, objeções, fechamento e finalização com pulseiras e fones Shokz.</p>
-            <div><span class="tag blue">18 questões</span> <span class="tag green">Mínimo 70%</span></div>
+            <div><span class="tag blue">10 questões</span> <span class="tag green">Mínimo 70%</span></div>
           </div>
           <div style="font-size:20px;color:#cc5500;font-weight:700;flex-shrink:0;">→</div>
         </div>
@@ -2263,12 +2320,24 @@ if('serviceWorker' in navigator){
         <div style="display:flex;align-items:center;gap:14px;">
           <div style="font-size:36px;">⌚</div>
           <div style="flex:1;">
-            <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:2px;">Quiz Técnico</div>
+            <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:2px;">Funcionalidades do Produto</div>
             <div class="card-title" style="margin-bottom:4px;">Quiz Instinct 3</div>
-            <p style="font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:8px;">Body Battery, PacePro, VO2 Máximo, Status de Treino e mais. Domine o produto tecnicamente.</p>
+            <p style="font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:8px;">Botões, Solar, Pesca, Jumpmaster, Stealth Mode, Sensores ABC, Storm Alert e Expedition Mode.</p>
             <div><span class="tag blue">10 questões</span> <span class="tag green">Mínimo 70%</span></div>
           </div>
           <div style="font-size:20px;color:var(--g);font-weight:700;flex-shrink:0;">→</div>
+        </div>
+      </div>
+      <div class="card" style="border-left:4px solid #8855cc;cursor:pointer;" onclick="openPanel('quiz-tecnico')">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="font-size:36px;">🧠</div>
+          <div style="flex:1;">
+            <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#8855cc;margin-bottom:2px;">Métricas & Performance</div>
+            <div class="card-title" style="margin-bottom:4px;">Quiz Técnico Garmin</div>
+            <p style="font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:8px;">Body Battery, VO2 Máximo, PacePro, Status de Treino, natação e Race Predictor.</p>
+            <div><span class="tag blue">10 questões</span> <span class="tag green">Mínimo 70%</span></div>
+          </div>
+          <div style="font-size:20px;color:#8855cc;font-weight:700;flex-shrink:0;">→</div>
         </div>
       </div>
     </div>
@@ -2287,7 +2356,7 @@ if('serviceWorker' in navigator){
     <div class="quiz-wrap" id="quizWrapIPX">
       <div class="quiz-header">
         <div class="quiz-title">💧 Quiz IPX — Resistência à Água</div>
-        <div class="quiz-sub">18 perguntas · Mínimo 70% para aprovação · Resultado enviado por email</div>
+        <div class="quiz-sub">10 perguntas · Mínimo 70% para aprovação · Resultado enviado por email</div>
         <div class="quiz-progress"><div class="quiz-progress-bar" id="quizBarIPX" style="width:0%"></div></div>
       </div>
       <div id="quizContentIPX"></div>
@@ -2307,7 +2376,7 @@ if('serviceWorker' in navigator){
     <div class="quiz-wrap" id="quizWrapAT">
       <div class="quiz-header">
         <div class="quiz-title">🎭 Quiz Atendimento</div>
-        <div class="quiz-sub">18 perguntas · Mínimo 70% para aprovação · Resultado enviado por email</div>
+        <div class="quiz-sub">10 perguntas · Mínimo 70% para aprovação · Resultado enviado por email</div>
         <div class="quiz-progress"><div class="quiz-progress-bar" id="quizBarAT" style="width:0%"></div></div>
       </div>
       <div id="quizContentAT"></div>
@@ -2315,22 +2384,42 @@ if('serviceWorker' in navigator){
   </div>
 </div>
 
-<!-- QUIZ NÍVEL TÉCNICO PANEL -->
+<!-- QUIZ INSTINCT 3 PANEL -->
 <div class="panel" id="panel-quiz-instinct3">
   <div class="panel-header"><button class="back-btn" onclick="openPanel('quizzes')">← Quizzes</button><div class="panel-title">⌚ Quiz <span>Instinct 3</span></div></div>
   <div class="panel-body">
     <div class="universe-hero" style="background:linear-gradient(135deg,#0a1a0a,#003300);">
-      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:0.7;margin-bottom:4px;">Quiz Técnico · by Proparts</div>
-      <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:28px;letter-spacing:2px;margin-bottom:8px;">DOMÍNIO TÉCNICO - NÍVEL FÁCIL</div>
-      <p style="font-size:14px;opacity:0.85;line-height:1.6;">Body Battery, PacePro, VO2 Máximo, Status de Treino e mais. 10 questões práticas.</p>
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:0.7;margin-bottom:4px;">Funcionalidades do Produto · by Proparts</div>
+      <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:28px;letter-spacing:2px;margin-bottom:8px;">INSTINCT 3 — DOMÍNIO TÉCNICO</div>
+      <p style="font-size:14px;opacity:0.85;line-height:1.6;">Botões, Solar, Pesca, Jumpmaster, Stealth Mode, Sensores ABC, Storm Alert e mais. 10 questões.</p>
     </div>
     <div class="quiz-wrap" id="quizWrapI3">
       <div class="quiz-header">
-        <div class="quiz-title">⌚ Quiz Técnico</div>
+        <div class="quiz-title">⌚ Quiz Instinct 3 — Funcionalidades</div>
         <div class="quiz-sub">10 perguntas · Mínimo 70% para aprovação · Resultado enviado por email</div>
         <div class="quiz-progress"><div class="quiz-progress-bar" id="quizBarI3" style="width:0%"></div></div>
       </div>
       <div id="quizContentI3"></div>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ TÉCNICO GARMIN PANEL -->
+<div class="panel" id="panel-quiz-tecnico">
+  <div class="panel-header"><button class="back-btn" onclick="openPanel('quizzes')">← Quizzes</button><div class="panel-title">🧠 Quiz <span>Técnico</span></div></div>
+  <div class="panel-body">
+    <div class="universe-hero" style="background:linear-gradient(135deg,#1a0a2e,#3d1a66);">
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:0.7;margin-bottom:4px;">Métricas & Performance · by Proparts</div>
+      <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:28px;letter-spacing:2px;margin-bottom:8px;">QUIZ TÉCNICO GARMIN</div>
+      <p style="font-size:14px;opacity:0.85;line-height:1.6;">Body Battery, VO2 Máximo, PacePro, Status de Treino, natação e Race Predictor. 10 questões.</p>
+    </div>
+    <div class="quiz-wrap" id="quizWrapTEC">
+      <div class="quiz-header">
+        <div class="quiz-title">🧠 Quiz Técnico Garmin — Métricas & Performance</div>
+        <div class="quiz-sub">10 perguntas · Mínimo 70% para aprovação · Resultado enviado por email</div>
+        <div class="quiz-progress"><div class="quiz-progress-bar" id="quizBarTEC" style="width:0%"></div></div>
+      </div>
+      <div id="quizContentTEC"></div>
     </div>
   </div>
 </div>
