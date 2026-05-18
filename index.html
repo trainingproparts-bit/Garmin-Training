@@ -577,7 +577,7 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
     <div class="menu-section-label">Formação & Gamificação</div>
     <div class="menu-grid">
       <div class="menu-card priority" onclick="openPanel('formacao')"><div class="menu-badge new">NOVO</div><span class="menu-icon">🎓</span><div class="menu-name">Formação</div><div class="menu-desc">Trilha de módulos — estude e seja certificado</div></div>
-      <div class="menu-card priority" onclick="openPanel('novidades')"><div class="menu-badge new">NOVO</div><span class="menu-icon">⚡</span><div class="menu-name">Novidades</div><div class="menu-desc">Forerunner 70 e 170 — os lançamentos 2025</div></div>
+      <div class="menu-card priority" onclick="openPanel('novidades')"><div class="menu-badge new">NOVO</div><span class="menu-icon">⚡</span><div class="menu-name">Novidades</div><div class="menu-desc">Forerunner 70 e 170 — os lançamentos 2026</div></div>
       <div class="menu-card" onclick="openPanel('quizzes')"><span class="menu-icon">📝</span><div class="menu-name">Quizzes</div><div class="menu-desc">Avaliações técnicas — IPX, Atendimento, Instinct 3</div></div>
       <div class="menu-card" onclick="openPanel('certificacao')"><span class="menu-icon">🏅</span><div class="menu-name">Certificação</div><div class="menu-desc">Sua trilha: Explorador → Triatleta</div></div>
       <div class="menu-card" onclick="openPanel('ranking')"><span class="menu-icon">🏆</span><div class="menu-name">Ranking</div><div class="menu-desc">Pódio da equipe e pontuação</div></div>
@@ -1596,10 +1596,10 @@ renderProfiles(profiles);
 
 // ── PRODUTOS ──────────────────────────────────────────────────
 const prods = [
-  {name:'Forerunner 70',s:'Forerunner',cat:'forerunner',lvl:1,para:'Corredor Iniciante / Casual',dest:'NOVO 2025. GPS + cardíaco óptico + Garmin Pay. Design compacto e leve. Até 11 dias de bateria.'},
+  {name:'Forerunner 70',s:'Forerunner',cat:'forerunner',lvl:1,para:'Corredor Iniciante / Casual',dest:'NOVO 2026. GPS + cardíaco óptico + Garmin Pay. Design compacto e leve. Até 11 dias de bateria.'},
   {name:'Forerunner 55',s:'Forerunner',cat:'forerunner',lvl:1,para:'Corredor Iniciante',dest:'GPS + cardíaco óptico. Porta de entrada para quem começa a correr.'},
   {name:'Forerunner 165',s:'Forerunner',cat:'forerunner',lvl:2,para:'Corredor Iniciante / Dedicado',dest:'AMOLED + planos de treino adaptativos + treino de força. Ótimo custo-benefício com tela premium.'},
-  {name:'Forerunner 170',s:'Forerunner',cat:'forerunner',lvl:2,para:'Corredor Iniciante / Dedicado',dest:'NOVO 2025. AMOLED + Elevate Gen 5. Compacto (menor que o 165). Relatório noturno, despertador inteligente, registro de estilo de vida. Mais perfis de atividade. Sem multibanda. Sem triathlon (multiesporte a partir do 265).'},
+  {name:'Forerunner 170',s:'Forerunner',cat:'forerunner',lvl:2,para:'Corredor Iniciante / Dedicado',dest:'NOVO 2026. AMOLED + Elevate Gen 5. Compacto (menor que o 165). Relatório noturno, despertador inteligente, registro de estilo de vida. Mais perfis de atividade. Sem multibanda. Sem triathlon (multiesporte a partir do 265).'},
   {name:'Forerunner 265',s:'Forerunner',cat:'forerunner',lvl:3,para:'Corredor Dedicado',dest:'AMOLED + GPS multibanda + Training Readiness. Melhor da faixa intermediária.'},
   {name:'Forerunner 570',s:'Forerunner',cat:'forerunner',lvl:3,para:'Corredor Dedicado / Elite',dest:'Lançamento 2025. AMOLED + GPS SatIQ + Elevate Gen 5. Treino intervalado preciso.'},
   {name:'Forerunner 955',s:'Forerunner',cat:'forerunner',lvl:4,para:'Atleta de Elite / Triatleta',dest:'30h GPS + mapas topográficos + solar. Referência triatleta.'},
@@ -2331,7 +2331,7 @@ function revealModuleQuiz(wrapId, initFn) {
 
 // ── QUIZ MÓDULO 3 DATA ─────────────────────────────────────────
 const quizData3 = [
-  {q:'Qual Forerunner é a opção mais compacta e leve para quem está começando a correr em 2026?',opts:['Forerunner 55','Forerunner 165','Forerunner 70','Forerunner 265'],correct:2,exp:'O Forerunner 70 é o lançamento 2025 mais compacto da linha, com GPS, HR óptico, Garmin Pay e até 11 dias de bateria. Ideal para iniciantes e como presente.'},
+  {q:'Qual Forerunner é a opção mais compacta e leve para quem está começando a correr em 2026?',opts:['Forerunner 55','Forerunner 165','Forerunner 70','Forerunner 265'],correct:2,exp:'O Forerunner 70 é o lançamento 2026 mais compacto da linha, com GPS, HR óptico, Garmin Pay e até 11 dias de bateria. Ideal para iniciantes e como presente.'},
   {q:'O Forerunner 170 se diferencia do FR165 principalmente por qual conjunto de recursos?',opts:['GPS multibanda SatIQ e maior autonomia de bateria','Design mais compacto, Elevate Gen 5, relatório noturno, despertador inteligente e mais perfis de atividade','Cristal de safira, armazenamento de 32GB e modo triathlon','Alto-falante integrado e modos de multiesporte avançados'],correct:1,exp:'O FR170 (2025) é mais compacto que o FR165, traz sensor Elevate Gen 5, relatório noturno, despertador inteligente, registro de estilo de vida e mais perfis de atividade. Não tem GPS multibanda nem modo triathlon — para isso o FR265 em diante.'},
   {q:'Para um corredor de alta performance que precisa de pelo menos 10h de bateria + de GPS com mapas, qual linha indicar?',opts:['Instinct 3 — Certificação militar e bateria de 26 dias','Forerunner 965 ou 970 — linha triatleta com GPS de longa duração','Fenix 8 — tela AMOLED e alto-falante','Edge 1050 — GPS no guidão com tela 3.5"'],correct:1,exp:'O FR965 e FR970 são a referência da linha triatleta: mapas topográficos, multiesporte completo. O FR970 é o topo com cristal de safira.'},
   {q:'Qual é o principal diferencial do Enduro 3 em relação ao Fenix 8?',opts:['Tela AMOLED com maior resolução','Resistência a mergulho técnico com nitrox','Bateria de 70h+ em GPS contínuo para ultramaratonistas','Alto-falante e microfone integrados'],correct:2,exp:'O Enduro 3 é especializado em endurance extremo — sua bateria de 70h+ em GPS contínuo é projetada para ultramaratonistas e expedições de múltiplos dias.'},
@@ -2561,7 +2561,7 @@ if('serviceWorker' in navigator){
   <div class="panel-header"><button class="back-btn" onclick="goHome()">← Início</button><div class="panel-title">⚡ <span>Novidades</span> 2026</div></div>
   <div class="panel-body">
     <div class="universe-hero" style="background:linear-gradient(135deg,#0a0a1a,#1a0a2e);">
-      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:0.7;margin-bottom:4px;">Lançamentos · Forerunner 2025 · by Proparts</div>
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:0.7;margin-bottom:4px;">Lançamentos · Forerunner 2026 · by Proparts</div>
       <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:28px;letter-spacing:2px;margin-bottom:8px;">NOVIDADES DA LINHA</div>
       <p style="font-size:14px;opacity:0.85;line-height:1.6;">Toque no card para ver a comparação com o modelo anterior. Conheça o que mudou e como apresentar para o cliente.</p>
     </div>
