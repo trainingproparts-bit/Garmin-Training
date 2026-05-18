@@ -1026,7 +1026,7 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
         <div class="card" style="margin-bottom:0;border-top:3px solid var(--gold);">
           <div class="card-label">Família 1040/1050 — Premium</div>
           <div class="card-title">Edge 1040 & 1050</div>
-          <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:10px;">Tela de 3.5" — a maior da linha. O <strong>1040</strong> tem opção solar (+bateria). O <strong>1050</strong> (2025) tem tela 1000 nits, speaker, Garmin Pay e hazard alerts. Para quem quer o máximo.</p>
+          <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:10px;">Tela de 3.5" — a maior da linha. O <strong>1040</strong> tem opção solar (+bateria). O <strong>1050</strong> (2025) tem tela 1000 nits, microfone, Garmin Pay e alertas de perigo. Para quem quer o máximo.</p>
           <div><span class="tag gold">Tela 3.5"</span><span class="tag gold">Garmin Pay (1050)</span><span class="tag gold">Solar (1040)</span></div>
         </div>
         <div class="card" style="margin-bottom:0;border-left:4px solid var(--acc);">
@@ -1624,7 +1624,7 @@ const prods = [
   {name:'Edge 840',s:'Edge',cat:'edge',lvl:3,para:'Ciclista Dedicado',dest:'Touchscreen + botões + GPS multibanda + ClimbPro. Ideal para MTB e estrada.'},
   {name:'Edge 850',s:'Edge',cat:'edge',lvl:3,para:'Ciclista Dedicado / Avançado',dest:'2025. Tela 1000 nits + speaker + bike bell. Versão compacta do 1050.'},
   {name:'Edge 1040',s:'Edge',cat:'edge',lvl:4,para:'Ciclista Avançado',dest:'Tela 3.5" + mapas + solar disponível. Bateria 35h+ GPS.'},
-  {name:'Edge 1050',s:'Edge',cat:'edge',lvl:5,para:'Ciclista Elite',dest:'Tela 3.5" 1000 nits + Garmin Pay + bike bell + hazard alerts.'},
+  {name:'Edge 1050',s:'Edge',cat:'edge',lvl:5,para:'Ciclista Elite',dest:'Tela 3.5" 1000 nits + Garmin Pay + buzina + alerta de perigo.'},
   {name:'GPSMAP 65',s:'GPSMAP',cat:'gps',lvl:3,para:'Trilheiro / Aventureiro',dest:'GPS portátil colorido + multibanda. Botões físicos. Carregamento USB.'},
   {name:'GPSMAP 67',s:'GPSMAP',cat:'gps',lvl:4,para:'Aventureiro / Expedição',dest:'Tela 3" + TopoActive Brasil + altímetro + bússola + USB-C. O mais completo.'},
   {name:'GPSMAP 79',s:'GPSMAP',cat:'gps',lvl:3,para:'Pescador / Náutico',dest:'GPS portátil flutuante para uso náutico. Mapas BlueChart.'},
@@ -2336,7 +2336,7 @@ const quizData3 = [
   {q:'Para um corredor de alta performance que precisa de pelo menos 10h de bateria + de GPS com mapas, qual linha indicar?',opts:['Instinct 3 — Certificação militar e bateria de 26 dias','Forerunner 965 ou 970 — linha triatleta com GPS de longa duração','Fenix 8 — tela AMOLED e alto-falante','Edge 1050 — GPS no guidão com tela 3.5"'],correct:1,exp:'O FR965 e FR970 são a referência da linha triatleta: mapas topográficos, multiesporte completo. O FR970 é o topo com cristal de safira.'},
   {q:'Qual é o principal diferencial do Enduro 3 em relação ao Fenix 8?',opts:['Tela AMOLED com maior resolução','Resistência a mergulho técnico com nitrox','Bateria de 70h+ em GPS contínuo para ultramaratonistas','Alto-falante e microfone integrados'],correct:2,exp:'O Enduro 3 é especializado em endurance extremo — sua bateria de 70h+ em GPS contínuo é projetada para ultramaratonistas e expedições de múltiplos dias.'},
   {q:'Para um aventureiro que quer robustez e bateria de até 26 dias com GPS, qual modelo indicar?',opts:['Forerunner 570','Instinct 3','Venu 4','Edge 850'],correct:1,exp:'O Instinct 3 tem certificação MIL-STD-810, bateria de até 26 dias, sensores ABC (altímetro, barômetro, bússola) e é o custo-benefício outdoor da Garmin.'},
-  {q:'Qual ciclocomputador Edge é indicado para o ciclista que quer a maior tela, Garmin Pay e os recursos mais avançados?',opts:['Edge 540','Edge 840','Edge 850','Edge 1050'],correct:3,exp:'O Edge 1050 tem tela 3.5" de 1000 nits, Garmin Pay, bike bell e hazard alerts — é o topo absoluto da linha Edge, indicado para ciclistas de alto nível.'},
+  {q:'Qual ciclocomputador Edge é indicado para o ciclista que quer a maior tela, Garmin Pay e os recursos mais avançados?',opts:['Edge 540','Edge 840','Edge 850','Edge 1050'],correct:3,exp:'O Edge 1050 tem tela 3.5" de 1000 nits, Garmin Pay, buzina e alerta de perigo — é o topo absoluto da linha Edge, indicado para ciclistas de alto nível.'},
   {q:'Qual linha Garmin é indicada para uma mulher que valoriza design elegante e monitoramento de saúde feminina?',opts:['Forerunner 55','Instinct E','Lily 2 ou Venu 4','Edge 540'],correct:2,exp:'A linha Lily 2 (design joia, a menor da Garmin) e a Venu 4 (AMOLED premium + saúde feminina completa) são as escolhas para o perfil mulher lifestyle.'},
   {q:'Um cliente quer um relógio Garmin para academia e dia a dia, com 80+ modos esportivos e músicas offline. Qual indicar?',opts:['Forerunner 55','Vivoactive 6','Instinct 3','Fenix 8'],correct:1,exp:'O Vivoactive 6 tem 80+ modos esportivos, músicas offline e é versátil para academia e uso diário — perfil lifestyle e fitness casual.'},
   {q:'Qual é a diferença principal entre o Edge 540 e o Edge 550?',opts:['O 550 tem GPS multibanda, o 540 não','O 540 é touchscreen, o 550 tem apenas botões físicos','O 550 adiciona tela de 1000 nits, alto-falante e Cycling Coach','O 550 tem bateria de 50h, o 540 fica em 20h'],correct:2,exp:'Ambos têm GPS multibanda e são compactos, mas o Edge 550 (2025) adiciona tela de alta resolução, speaker e o Garmin Cycling Coach — o 540 é o modelo anterior mais básico.'},
@@ -2805,7 +2805,7 @@ if('serviceWorker' in navigator){
         <div class="linha-model-row" style="border-color:#1565c0;">
           <div class="linha-model-name">Edge 1050</div>
           <div class="linha-model-level"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></div>
-          <div class="linha-model-desc">Tela 3.5" 1000 nits + Garmin Pay + bike bell + hazard alerts. Top absoluto para ciclismo.</div>
+          <div class="linha-model-desc">Tela 3.5" 1000 nits + Garmin Pay + buzina e alerta de perigo. Top absoluto para ciclismo.</div>
           <div class="linha-model-tag">Ciclista Elite</div>
         </div>
       </div>
