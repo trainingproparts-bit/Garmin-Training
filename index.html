@@ -404,6 +404,49 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
 .pwd-cancel-btn:hover{border-color:var(--text3);color:var(--text);}
 @media(max-width:700px){.special-quiz-grid{grid-template-columns:1fr;}}
 
+/* QUIZ REVEAL SEPARATOR */
+.quiz-reveal-sep{margin:32px 0 0;border-top:2px dashed var(--border);padding-top:24px;text-align:center;}
+.quiz-reveal-btn{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--g),var(--g2));color:#fff;border:none;border-radius:var(--r);padding:14px 28px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:16px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;box-shadow:var(--sh2);}
+.quiz-reveal-btn:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(227,16,32,0.3);}
+.quiz-reveal-hint{font-size:12px;color:var(--text3);margin-top:8px;}
+
+/* FLIP CARDS */
+.flip-cards-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:8px;}
+@media(max-width:700px){.flip-cards-grid{grid-template-columns:1fr;}}
+.flip-card{perspective:1000px;cursor:pointer;height:400px;}
+.flip-card-inner{position:relative;width:100%;height:100%;transition:transform 0.65s;transform-style:preserve-3d;}
+.flip-card.flipped .flip-card-inner{transform:rotateY(180deg);}
+.flip-card-front,.flip-card-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:var(--r);padding:24px;display:flex;flex-direction:column;overflow:hidden;}
+.flip-card-back{transform:rotateY(180deg);}
+.flip-card-tap-hint{font-size:11px;letter-spacing:1px;text-transform:uppercase;opacity:0.6;margin-top:auto;padding-top:12px;text-align:center;}
+.flip-badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-bottom:10px;}
+.flip-model{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:26px;letter-spacing:2px;margin-bottom:4px;}
+.flip-tag{font-size:11px;opacity:0.7;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;}
+.flip-features{list-style:none;display:flex;flex-direction:column;gap:7px;flex:1;}
+.flip-features li{font-size:13px;display:flex;align-items:flex-start;gap:8px;line-height:1.4;}
+.flip-features li::before{content:'✓';font-weight:700;flex-shrink:0;margin-top:1px;}
+.flip-vs-title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;opacity:0.8;}
+.flip-compare{display:flex;flex-direction:column;gap:8px;flex:1;}
+.flip-compare-row{font-size:12.5px;display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.flip-compare-row .old{color:rgba(255,255,255,0.5);font-size:12px;}
+.flip-compare-row .new{color:#fff;font-weight:600;font-size:12px;}
+.flip-compare-label{font-size:10px;letter-spacing:1px;text-transform:uppercase;opacity:0.5;margin-bottom:2px;}
+
+/* MÓDULO 3 STYLES */
+.linha-section{margin-bottom:24px;}
+.linha-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.linha-icon{font-size:28px;}
+.linha-name{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:20px;letter-spacing:1px;text-transform:uppercase;}
+.linha-sub{font-size:12px;color:var(--text3);}
+.linha-models{display:flex;flex-direction:column;gap:8px;}
+.linha-model-row{background:#fff;border-radius:var(--r2);padding:12px 14px;border-left:3px solid var(--g);display:flex;align-items:center;gap:12px;}
+.linha-model-name{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:15px;min-width:120px;}
+.linha-model-level{display:flex;gap:3px;}
+.linha-model-level span{width:8px;height:8px;border-radius:50%;background:var(--border);}
+.linha-model-level span.on{background:var(--g);}
+.linha-model-desc{font-size:12.5px;color:var(--text2);flex:1;line-height:1.4;}
+.linha-model-tag{font-size:11px;color:var(--text3);white-space:nowrap;}
+
 /* RESPONSIVE */
 @media(max-width:700px){
   .grid2,.grid3{grid-template-columns:1fr;}
@@ -534,6 +577,7 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
     <div class="menu-section-label">Formação & Gamificação</div>
     <div class="menu-grid">
       <div class="menu-card priority" onclick="openPanel('formacao')"><div class="menu-badge new">NOVO</div><span class="menu-icon">🎓</span><div class="menu-name">Formação</div><div class="menu-desc">Trilha de módulos — estude e seja certificado</div></div>
+      <div class="menu-card priority" onclick="openPanel('novidades')"><div class="menu-badge new">NOVO</div><span class="menu-icon">⚡</span><div class="menu-name">Novidades</div><div class="menu-desc">Forerunner 70 e 170 — os lançamentos 2025</div></div>
       <div class="menu-card" onclick="openPanel('quizzes')"><span class="menu-icon">📝</span><div class="menu-name">Quizzes</div><div class="menu-desc">Avaliações técnicas — IPX, Atendimento, Instinct 3</div></div>
       <div class="menu-card" onclick="openPanel('certificacao')"><span class="menu-icon">🏅</span><div class="menu-name">Certificação</div><div class="menu-desc">Sua trilha: Explorador → Triatleta</div></div>
       <div class="menu-card" onclick="openPanel('ranking')"><span class="menu-icon">🏆</span><div class="menu-name">Ranking</div><div class="menu-desc">Pódio da equipe e pontuação</div></div>
@@ -1119,15 +1163,16 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
         <div style="font-size:20px;color:var(--acc);font-weight:700;flex-shrink:0;">→</div>
       </div>
     </div>
-    <div class="card" style="border-left:4px solid var(--border);margin-bottom:14px;opacity:0.5;">
+    <div class="card" style="border-left:4px solid #7c3aed;margin-bottom:14px;cursor:pointer;" onclick="openPanel('produtos-modulo')">
       <div style="display:flex;align-items:center;gap:14px;">
         <div style="font-size:36px;">⌚</div>
         <div style="flex:1;">
-          <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:2px;">Módulo 3 — Em breve</div>
+          <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#7c3aed;margin-bottom:2px;">Módulo 3</div>
           <div class="card-title" style="margin-bottom:4px;">Linha de Produtos</div>
-          <p style="font-size:13px;color:var(--text3);line-height:1.5;">Forerunner, Fenix, Instinct, Edge e mais — diferenciais técnicos de cada linha.</p>
+          <p style="font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:8px;">Forerunner, Fenix, Instinct, Edge e mais — diferenciais técnicos de cada linha.</p>
+          <div><span class="tag blue">10 questões</span> <span class="tag green">+40 pts aprovado</span> <span class="tag gold">+10 pts nota máxima</span></div>
         </div>
-        <div style="font-size:20px;">🔒</div>
+        <div style="font-size:20px;color:#7c3aed;font-weight:700;flex-shrink:0;">→</div>
       </div>
     </div>
     <div class="card" style="border-left:4px solid var(--border);margin-bottom:14px;opacity:0.5;">
@@ -1173,7 +1218,11 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
     <div class="tech-card"><div class="tech-icon">🔋</div><div><div class="tech-name">Body Battery™</div><div class="tech-desc">"Imagine um indicador de bateria do seu corpo de 0-100. Sobe com sono bom, cai com estresse e exercício. Você aprende quando treinar forte e quando descansar."</div></div></div>
     <div class="tech-card"><div class="tech-icon">😴</div><div><div class="tech-name">Monitoramento de Sono</div><div class="tech-desc">"Ele registra cada fase do seu sono — leve, profundo, REM — e te dá uma pontuação pela manhã. Para quem quer melhorar a qualidade de vida, isso vale mais do que qualquer métrica de treino."</div></div></div>
     <div class="tech-card"><div class="tech-icon">💳</div><div><div class="tech-name">Garmin Pay</div><div class="tech-desc">"Você pode pagar no café depois do treino sem tirar o celular do bolso — só com o relógio. Funciona nos principais bancos brasileiros."</div></div></div>
-    <div class="quiz-wrap" id="quizWrap">
+    <div class="quiz-reveal-sep">
+      <button class="quiz-reveal-btn" onclick="revealModuleQuiz('quizWrap','initQuiz')">✅ Li o conteúdo — Iniciar Quiz</button>
+      <div class="quiz-reveal-hint">Leia todo o módulo antes de responder. O resultado é enviado para a liderança.</div>
+    </div>
+    <div class="quiz-wrap" id="quizWrap" style="display:none;margin-top:16px;">
       <div class="quiz-header">
         <div class="quiz-title">🎯 Flash Quiz — Módulo 1</div>
         <div class="quiz-sub">10 perguntas · Mínimo 70% para aprovação · Seu resultado será registrado</div>
@@ -1308,7 +1357,11 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
     </div>
     <div class="tip">💡 <strong>Regra de ouro:</strong> O cliente sempre revela o perfil dele. Ouça o vocabulário que ele usa — "pace", "Ironman", "trilha", "par", "braçada" — e você já sabe qual linha indicar antes mesmo de perguntar.</div>
 
-    <div class="quiz-wrap" id="quizWrap2" style="margin-top:24px;">
+    <div class="quiz-reveal-sep">
+      <button class="quiz-reveal-btn" onclick="revealModuleQuiz('quizWrap2','initQuiz2')">✅ Li o conteúdo — Iniciar Quiz</button>
+      <div class="quiz-reveal-hint">Leia todo o módulo antes de responder. O resultado é enviado para a liderança.</div>
+    </div>
+    <div class="quiz-wrap" id="quizWrap2" style="display:none;margin-top:16px;">
       <div class="quiz-header">
         <div class="quiz-title">🎯 Flash Quiz — Módulo 2</div>
         <div class="quiz-sub">18 perguntas · Mínimo 70% para aprovação · Seu resultado será registrado</div>
@@ -1385,8 +1438,9 @@ function openPanel(id) {
   if (panel) {
     panel.classList.add('active');
     window.scrollTo(0, 0);
-    if (id === 'universo') initQuiz();
-    if (id === 'perfis-modulo') initQuiz2();
+    if (id === 'universo') { const w=document.getElementById('quizWrap'); if(w) w.style.display='none'; }
+    if (id === 'perfis-modulo') { const w=document.getElementById('quizWrap2'); if(w) w.style.display='none'; }
+    if (id === 'produtos-modulo') { const w=document.getElementById('quizWrap3'); if(w) w.style.display='none'; }
   } else {
     goHome();
   }
@@ -1542,9 +1596,11 @@ renderProfiles(profiles);
 
 // ── PRODUTOS ──────────────────────────────────────────────────
 const prods = [
+  {name:'Forerunner 70',s:'Forerunner',cat:'forerunner',lvl:1,para:'Corredor Iniciante / Casual',dest:'NOVO 2025. GPS + cardíaco óptico + Garmin Pay. Design compacto e leve. Até 11 dias de bateria.'},
   {name:'Forerunner 55',s:'Forerunner',cat:'forerunner',lvl:1,para:'Corredor Iniciante',dest:'GPS + cardíaco óptico. Porta de entrada para quem começa a correr.'},
   {name:'Forerunner 165',s:'Forerunner',cat:'forerunner',lvl:2,para:'Corredor Iniciante / Dedicado',dest:'AMOLED + planos de treino adaptativos + treino de força. Ótimo custo-benefício com tela premium.'},
-  {name:'Forerunner 265',s:'Forerunner',cat:'forerunner',lvl:3,para:'Corredor Dedicado',dest:'AMOLED + mapas + GPS multibanda. Melhor da faixa intermediária.'},
+  {name:'Forerunner 170',s:'Forerunner',cat:'forerunner',lvl:2,para:'Corredor Iniciante / Dedicado',dest:'NOVO 2025. AMOLED + Elevate Gen 5. Compacto (menor que o 165). Relatório noturno, despertador inteligente, registro de estilo de vida. Mais perfis de atividade. Sem multibanda. Sem triathlon (multiesporte a partir do 265).'},
+  {name:'Forerunner 265',s:'Forerunner',cat:'forerunner',lvl:3,para:'Corredor Dedicado',dest:'AMOLED + GPS multibanda + Training Readiness. Melhor da faixa intermediária.'},
   {name:'Forerunner 570',s:'Forerunner',cat:'forerunner',lvl:3,para:'Corredor Dedicado / Elite',dest:'Lançamento 2025. AMOLED + GPS SatIQ + Elevate Gen 5. Treino intervalado preciso.'},
   {name:'Forerunner 955',s:'Forerunner',cat:'forerunner',lvl:4,para:'Atleta de Elite / Triatleta',dest:'30h GPS + mapas topográficos + solar. Referência triatleta.'},
   {name:'Forerunner 965',s:'Forerunner',cat:'forerunner',lvl:4,para:'Atleta de Elite / Triatleta',dest:'AMOLED + titânio + mapas + 31h GPS. Top de corrida com tela premium.'},
@@ -2262,6 +2318,82 @@ async function sendResultTEC(){
   }catch(err){btn.textContent='Registrar Conclusão ✓';btn.disabled=false;alert('Erro ao enviar. Verifique sua conexão.');}
 }
 
+// ── QUIZ REVEAL ───────────────────────────────────────────────
+function revealModuleQuiz(wrapId, initFn) {
+  const wrap = document.getElementById(wrapId);
+  if (!wrap) return;
+  wrap.style.display = 'block';
+  if (initFn === 'initQuiz') initQuiz();
+  else if (initFn === 'initQuiz2') initQuiz2();
+  else if (initFn === 'initQuiz3') initQuiz3();
+  wrap.scrollIntoView({behavior: 'smooth', block: 'start'});
+}
+
+// ── QUIZ MÓDULO 3 DATA ─────────────────────────────────────────
+const quizData3 = [
+  {q:'Qual Forerunner é a opção mais compacta e leve para quem está começando a correr em 2025?',opts:['Forerunner 55','Forerunner 165','Forerunner 70','Forerunner 265'],correct:2,exp:'O Forerunner 70 é o lançamento 2025 mais compacto da linha, com GPS, HR óptico, Garmin Pay e até 11 dias de bateria. Ideal para iniciantes e como presente.'},
+  {q:'O Forerunner 170 se diferencia do FR165 principalmente por qual conjunto de recursos?',opts:['GPS multibanda SatIQ e maior autonomia de bateria','Design mais compacto, Elevate Gen 5, relatório noturno, despertador inteligente e mais perfis de atividade','Cristal de safira, armazenamento de 32GB e modo triathlon','Alto-falante integrado e modos de multiesporte avançados'],correct:1,exp:'O FR170 (2025) é mais compacto que o FR165, traz sensor Elevate Gen 5, relatório noturno, despertador inteligente, registro de estilo de vida e mais perfis de atividade. Não tem GPS multibanda nem modo triathlon — para isso o FR265 em diante.'},
+  {q:'Para um triatleta que compete em Ironman e precisa de 30h+ de GPS com mapas, qual linha indicar?',opts:['Instinct 3 — MIL-STD-810 e bateria de 26 dias','Forerunner 955 ou 965 — linha triatleta com GPS de longa duração','Fenix 8 — tela AMOLED e alto-falante','Edge 1050 — GPS no guidão com tela 3.5"'],correct:1,exp:'O FR955 e FR965 são a referência da linha triatleta: 30-31h de GPS, mapas topográficos, multiesporte completo. O FR970 é o topo absoluto com cristal de safira.'},
+  {q:'Qual é o principal diferencial do Enduro 3 em relação ao Fenix 8?',opts:['Tela AMOLED com maior resolução','Resistência a mergulho técnico com nitrox','Bateria de 70h+ em GPS contínuo para ultramaratonistas','Alto-falante e microfone integrados'],correct:2,exp:'O Enduro 3 é especializado em endurance extremo — sua bateria de 70h+ em GPS contínuo é projetada para ultramaratonistas e expedições de múltiplos dias.'},
+  {q:'Para um aventureiro que quer robustez MIL-STD-810 e bateria de até 26 dias com GPS, qual modelo indicar?',opts:['Forerunner 570','Instinct 3','Venu 4','Edge 850'],correct:1,exp:'O Instinct 3 tem certificação MIL-STD-810, bateria de até 26 dias, sensores ABC (altímetro, barômetro, bússola) e é o custo-benefício outdoor da Garmin.'},
+  {q:'Qual ciclocomputador Edge é indicado para o ciclista que quer a maior tela, Garmin Pay e os recursos mais avançados?',opts:['Edge 540','Edge 840','Edge 850','Edge 1050'],correct:3,exp:'O Edge 1050 tem tela 3.5" de 1000 nits, Garmin Pay, bike bell e hazard alerts — é o topo absoluto da linha Edge, indicado para ciclistas de alto nível.'},
+  {q:'Qual linha Garmin é indicada para uma mulher que valoriza design elegante e monitoramento de saúde feminina?',opts:['Forerunner 55','Instinct E','Lily 2 ou Venu 4','Edge 540'],correct:2,exp:'A linha Lily 2 (design joia, a menor da Garmin) e a Venu 4 (AMOLED premium + saúde feminina completa) são as escolhas para o perfil mulher lifestyle.'},
+  {q:'Um cliente quer um relógio Garmin para academia e dia a dia, com 80+ modos esportivos e músicas offline. Qual indicar?',opts:['Forerunner 55','Vivoactive 6','Instinct 3','Fenix 8'],correct:1,exp:'O Vivoactive 6 tem 80+ modos esportivos, músicas offline e é versátil para academia e uso diário — perfil lifestyle e fitness casual.'},
+  {q:'Qual é a diferença principal entre o Edge 540 e o Edge 550?',opts:['O 550 tem GPS multibanda, o 540 não','O 540 é touchscreen, o 550 tem apenas botões físicos','O 550 adiciona tela de 1000 nits, alto-falante e Cycling Coach','O 550 tem bateria de 50h, o 540 fica em 20h'],correct:2,exp:'Ambos têm GPS multibanda e são compactos, mas o Edge 550 (2025) adiciona tela de 1000 nits, speaker e o Cycling Coach — o 540 é o modelo anterior mais básico.'},
+  {q:'Qual relógio Garmin tem alto-falante, microfone, modo mergulho e mapas completos — sendo considerado o multiesporte definitivo?',opts:['Forerunner 970','Instinct 3 Solar Tactical','Fenix 8','Enduro 3'],correct:2,exp:'O Fenix 8 é o multiesporte definitivo da Garmin: alto-falante, microfone, modo mergulho certificado, mapas topográficos completos e suporte a todas as atividades.'},
+];
+
+let currentQ3=0,score3=0,answered3=false,wrongAnswers3=[];
+function initQuiz3(){currentQ3=0;score3=0;answered3=false;wrongAnswers3=[];renderQ3();}
+function renderQ3(){
+  const q=quizData3[currentQ3];
+  const bar=document.getElementById('quizBar3');
+  if(bar) bar.style.width=(currentQ3/quizData3.length*100)+'%';
+  const content=document.getElementById('quizContent3');
+  if(!content) return;
+  content.innerHTML=`<div class="quiz-q-num">Pergunta ${currentQ3+1} de ${quizData3.length}</div><div class="quiz-q">${q.q}</div><div class="quiz-options">${q.opts.map((o,i)=>`<button class="quiz-opt" onclick="answerQ3(${i})">${o}</button>`).join('')}</div><div class="quiz-feedback" id="quizFeedback3"></div><div class="quiz-nav"><button class="quiz-btn" id="nextBtn3" onclick="nextQ3()" disabled>${currentQ3<quizData3.length-1?'Próxima →':'Ver Resultado'}</button></div>`;
+  answered3=false;
+}
+function answerQ3(i){
+  if(answered3) return; answered3=true;
+  const q=quizData3[currentQ3];
+  document.querySelectorAll('#quizContent3 .quiz-opt').forEach(b=>b.classList.add('disabled'));
+  const opts=document.querySelectorAll('#quizContent3 .quiz-opt');
+  const fb=document.getElementById('quizFeedback3');
+  if(i===q.correct){opts[i].classList.add('correct');fb.className='quiz-feedback show ok';fb.textContent='✅ Correto! '+q.exp;score3++;}
+  else{opts[i].classList.add('wrong');opts[q.correct].classList.add('correct');fb.className='quiz-feedback show fail';fb.textContent='❌ Incorreto. '+q.exp;wrongAnswers3.push('Q'+(currentQ3+1)+' — '+q.q);}
+  document.getElementById('nextBtn3').disabled=false;
+}
+function nextQ3(){currentQ3++;if(currentQ3<quizData3.length)renderQ3();else showResult3();}
+function showResult3(){
+  const pct=Math.round(score3/quizData3.length*100);
+  const passed=pct>=70;
+  const bar=document.getElementById('quizBar3');
+  if(bar) bar.style.width='100%';
+  const content=document.getElementById('quizContent3');
+  if(!content) return;
+  content.innerHTML=`<div class="quiz-result"><div class="quiz-result-emoji">${passed?'🎉':'📚'}</div><div class="quiz-result-title" style="color:${passed?'var(--acc)':'var(--warn)'};">${passed?'Parabéns! Aprovado!':'Continue estudando!'}</div><div class="quiz-result-score">Você acertou <strong>${score3}</strong> de ${quizData3.length} questões — <strong>${pct}%</strong></div>${passed?`<div class="register-form" id="registerForm3"><label class="register-label">📝 Registre sua conclusão — informe seu nome completo</label><input type="text" class="register-input" id="regName3" placeholder="Ex: Samara Pereira" maxlength="60" onkeydown="if(event.key==='Enter') registerResult3(${pct})"><button class="register-btn" onclick="registerResult3(${pct})">Registrar Conclusão ✓</button><div class="register-success" id="regSuccess3">✅ Registrado com sucesso!</div></div>`:''}<div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">${!passed?'<button class="quiz-btn" style="background:var(--text2);" onclick="initQuiz3()">↺ Tentar Novamente</button>':''}<button class="quiz-btn" onclick="openPanel(\'formacao\')">← Formação</button></div></div>`;
+}
+async function registerResult3(pct){
+  const nameInput=document.getElementById('regName3');
+  const name=nameInput?nameInput.value.trim():'';
+  if(!name){if(nameInput)nameInput.style.borderColor='var(--warn)';return;}
+  const btn=document.querySelector('#registerForm3 .register-btn');
+  if(!btn) return;
+  btn.textContent='Enviando...';btn.disabled=true;
+  const now=new Date();
+  const data=now.toLocaleDateString('pt-BR');
+  const hora=now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  const status=pct>=70?'✅ APROVADO':'❌ Não atingiu 70%';
+  const erradas=wrongAnswers3.length>0?'\n\n❌ Questões erradas:\n'+wrongAnswers3.map(q=>'• '+q).join('\n'):'\n\n✅ Nenhuma questão errada!';
+  const message=`👤 Colaborador: ${name}\n📚 Módulo: Módulo 3 — Linha de Produtos\n🎯 Nota: ${pct}%\n✅ Acertos: ${score3} de ${quizData3.length}\n📅 Data: ${data}\n⏰ Hora: ${hora}\n📊 Status: ${status}${erradas}`;
+  try{
+    await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{nome:name,modulo:'Módulo 3 — Linha de Produtos',nota:pct+'%',acertos:score3+' de '+quizData3.length,data,hora,status,message});
+    const form=document.getElementById('registerForm3');if(form)form.style.display='none';
+    const success=document.getElementById('regSuccess3');if(success)success.style.display='block';
+  }catch(err){btn.textContent='Registrar Conclusão ✓';btn.disabled=false;alert('Erro ao enviar. Verifique sua conexão.');}
+}
+
 // Additional init hooks
 const _origOpenPanel = openPanel;
 openPanel = function(id) {
@@ -2420,6 +2552,305 @@ if('serviceWorker' in navigator){
         <div class="quiz-progress"><div class="quiz-progress-bar" id="quizBarTEC" style="width:0%"></div></div>
       </div>
       <div id="quizContentTEC"></div>
+    </div>
+  </div>
+</div>
+
+<!-- NOVIDADES PANEL -->
+<div class="panel" id="panel-novidades">
+  <div class="panel-header"><button class="back-btn" onclick="goHome()">← Início</button><div class="panel-title">⚡ <span>Novidades</span> 2026</div></div>
+  <div class="panel-body">
+    <div class="universe-hero" style="background:linear-gradient(135deg,#0a0a1a,#1a0a2e);">
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:0.7;margin-bottom:4px;">Lançamentos · Forerunner 2025 · by Proparts</div>
+      <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:28px;letter-spacing:2px;margin-bottom:8px;">NOVIDADES DA LINHA</div>
+      <p style="font-size:14px;opacity:0.85;line-height:1.6;">Toque no card para ver a comparação com o modelo anterior. Conheça o que mudou e como apresentar para o cliente.</p>
+    </div>
+    <div class="flip-cards-grid">
+
+      <!-- FR70 FLIP CARD -->
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-inner">
+          <div class="flip-card-front" style="background:linear-gradient(135deg,#0a1628,#1a3a5c);color:#fff;">
+            <span class="flip-badge" style="background:var(--g);color:#fff;">NOVO 2026</span>
+            <div class="flip-model">Forerunner 70</div>
+            <div class="flip-tag">Entrada Compacta · GPS Running</div>
+            <ul class="flip-features">
+              <li>GPS com suporte multissistema (GNSS)</li>
+              <li>Sensor cardíaco óptico integrado</li>
+              <li>Até 11 dias de bateria (smartwatch)</li>
+              <li>Garmin Pay — pagamento pelo relógio</li>
+              <li>Body Battery + monitoramento de sono</li>
+              <li>Design leve e compacto no pulso</li>
+              <li>Indicado: iniciante, presente, casual</li>
+            </ul>
+            <div class="flip-card-tap-hint">👆 toque para comparar com o FR55</div>
+          </div>
+          <div class="flip-card-back" style="background:linear-gradient(135deg,#1a1028,#2d1a4a);color:#fff;">
+            <div class="flip-vs-title">⚡ FR70 vs Forerunner 55</div>
+            <div class="flip-compare">
+              <div class="flip-compare-row">
+                <div><div class="flip-compare-label">FR55</div><div class="old">Sem Garmin Pay</div></div>
+                <div><div class="flip-compare-label">FR70</div><div class="new">✓ Garmin Pay incluído</div></div>
+              </div>
+              <div class="flip-compare-row">
+                <div><div class="flip-compare-label">FR55</div><div class="old">~10 dias bateria</div></div>
+                <div><div class="flip-compare-label">FR70</div><div class="new">✓ Até 11 dias</div></div>
+              </div>
+              <div class="flip-compare-row">
+                <div><div class="flip-compare-label">FR55</div><div class="old">Design padrão</div></div>
+                <div><div class="flip-compare-label">FR70</div><div class="new">✓ Mais leve e compacto</div></div>
+              </div>
+              <div class="flip-compare-row">
+                <div><div class="flip-compare-label">FR55</div><div class="old">Sensor HR Gen 3</div></div>
+                <div><div class="flip-compare-label">FR70</div><div class="new">✓ Sensor HR atualizado</div></div>
+              </div>
+              <div style="margin-top:12px;padding:10px;background:rgba(255,255,255,0.08);border-radius:8px;font-size:12px;line-height:1.5;">
+                💬 <strong>Como vender:</strong> "O FR70 é o companheiro perfeito pra quem está começando — GPS, frequência cardíaca, até 11 dias de bateria e ainda tem Garmin Pay. Tudo que precisa, no tamanho certo."
+              </div>
+            </div>
+            <div class="flip-card-tap-hint">👆 toque para voltar</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FR170 FLIP CARD -->
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-inner">
+          <div class="flip-card-front" style="background:linear-gradient(135deg,#0a1a0a,#1a3a1a);color:#fff;">
+            <span class="flip-badge" style="background:var(--acc);color:#fff;">NOVO 2026</span>
+            <div class="flip-model">Forerunner 170</div>
+            <div class="flip-tag">AMOLED · Compacto · Recursos Avançados</div>
+            <ul class="flip-features">
+              <li>Tela AMOLED + design menor que o FR165</li>
+              <li>Sensor Elevate Gen 5 (mais preciso)</li>
+              <li>Relatório noturno + despertador inteligente</li>
+              <li>Registro de estilo de vida no relógio</li>
+              <li>App de calculadora nativa integrada</li>
+              <li>Mais perfis de atividade que o FR165</li>
+              <li>⚠️ Sem GPS multibanda · Sem triathlon</li>
+            </ul>
+            <div class="flip-card-tap-hint">👆 toque para comparar com o FR165</div>
+          </div>
+          <div class="flip-card-back" style="background:linear-gradient(135deg,#0a1a12,#1a3a28);color:#fff;">
+            <div class="flip-vs-title">⚡ FR170 vs Forerunner 165</div>
+            <div class="flip-compare">
+              <div class="flip-compare-row">
+                <div><div class="flip-compare-label">FR165</div><div class="old">Elevate Gen 4</div></div>
+                <div><div class="flip-compare-label">FR170</div><div class="new">✓ Elevate Gen 5</div></div>
+              </div>
+              <div class="flip-compare-row">
+                <div><div class="flip-compare-label">FR165</div><div class="old">Tamanho maior</div></div>
+                <div><div class="flip-compare-label">FR170</div><div class="new">✓ Design mais compacto</div></div>
+              </div>
+              <div class="flip-compare-row">
+                <div><div class="flip-compare-label">FR165</div><div class="old">Sem relatório noturno</div></div>
+                <div><div class="flip-compare-label">FR170</div><div class="new">✓ Relatório noturno</div></div>
+              </div>
+              <div class="flip-compare-row">
+                <div><div class="flip-compare-label">FR165</div><div class="old">Sem despertador inteligente</div></div>
+                <div><div class="flip-compare-label">FR170</div><div class="new">✓ Despertador inteligente</div></div>
+              </div>
+              <div class="flip-compare-row">
+                <div><div class="flip-compare-label">FR165</div><div class="old">Menos perfis de atividade</div></div>
+                <div><div class="flip-compare-label">FR170</div><div class="new">✓ Mais perfis incluídos</div></div>
+              </div>
+              <div style="margin-top:10px;padding:10px;background:rgba(255,255,255,0.08);border-radius:8px;font-size:12px;line-height:1.5;">
+                💬 <strong>Como vender:</strong> "O FR170 é menor, tem sensor de FC melhorado e recursos de software mais novos como relatório noturno e despertador inteligente. Se quer multiesporte ou GPS multibanda, o 265 é o próximo passo."
+              </div>
+            </div>
+            <div class="flip-card-tap-hint">👆 toque para voltar</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tip" style="margin-top:20px;">💡 <strong>Quando indicar o FR70?</strong> Iniciante, presente, cliente que nunca usou GPS e quer começar simples. <strong>Quando indicar o FR170?</strong> Corredor que quer algo mais compacto que o FR165, com recursos de software mais recentes (relatório noturno, despertador inteligente) e mais perfis de atividade — mas que não precisa de GPS multibanda nem multiesporte. Para multiesporte ou GPS multibanda, o FR265 em diante.</div>
+  </div>
+</div>
+
+<!-- MÓDULO 3 — LINHA DE PRODUTOS -->
+<div class="panel" id="panel-produtos-modulo">
+  <div class="panel-header"><button class="back-btn" onclick="openPanel('formacao')">← Formação</button><div class="panel-title">⌚ Linha de <span>Produtos</span></div></div>
+  <div class="panel-body">
+    <div class="universe-hero" style="background:linear-gradient(135deg,#1a0a2e,#2d1a4a);">
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:0.7;margin-bottom:4px;">Módulo 3 — Explorador · by Proparts</div>
+      <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:28px;letter-spacing:2px;margin-bottom:8px;">CONHEÇA CADA LINHA</div>
+      <p style="font-size:14px;opacity:0.85;line-height:1.6;">Dominar o portfólio é saber indicar o produto certo sem hesitar. Conheça cada linha, seus modelos e para quem cada um serve.</p>
+    </div>
+
+    <div class="linha-section">
+      <div class="linha-header">
+        <div class="linha-icon">🏃</div>
+        <div><div class="linha-name">Linha Forerunner</div><div class="linha-sub">Corrida, triathlon e fitness — do iniciante ao elite</div></div>
+      </div>
+      <div class="linha-models">
+        <div class="linha-model-row" style="border-color:#0066cc;">
+          <div class="linha-model-name">Forerunner 70</div>
+          <div class="linha-model-level"><span class="on"></span><span></span><span></span><span></span><span></span></div>
+          <div class="linha-model-desc">NOVO. GPS + HR + Garmin Pay. Compacto, até 11 dias. Porta de entrada com estilo.</div>
+          <div class="linha-model-tag">Iniciante</div>
+        </div>
+        <div class="linha-model-row">
+          <div class="linha-model-name">Forerunner 55</div>
+          <div class="linha-model-level"><span class="on"></span><span></span><span></span><span></span><span></span></div>
+          <div class="linha-model-desc">GPS + HR óptico. Clássico da entrada. Planos de treino, Body Battery, Sleep.</div>
+          <div class="linha-model-tag">Iniciante</div>
+        </div>
+        <div class="linha-model-row">
+          <div class="linha-model-name">Forerunner 165</div>
+          <div class="linha-model-level"><span class="on"></span><span class="on"></span><span></span><span></span><span></span></div>
+          <div class="linha-model-desc">AMOLED + planos adaptativos + treino de força. Custo-benefício com tela premium.</div>
+          <div class="linha-model-tag">Iniciante/Dedicado</div>
+        </div>
+        <div class="linha-model-row" style="border-color:#0066cc;">
+          <div class="linha-model-name">Forerunner 170</div>
+          <div class="linha-model-level"><span class="on"></span><span class="on"></span><span></span><span></span><span></span></div>
+          <div class="linha-model-desc">NOVO. AMOLED + Elevate Gen 5. Mais compacto que o 165. Relatório noturno, despertador inteligente, registro de estilo de vida, calculadora. Mais perfis de atividade. Sem multibanda. Sem triathlon.</div>
+          <div class="linha-model-tag">Iniciante/Dedicado</div>
+        </div>
+        <div class="linha-model-row">
+          <div class="linha-model-name">Forerunner 265</div>
+          <div class="linha-model-level"><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></div>
+          <div class="linha-model-desc">AMOLED + GPS multibanda + Training Readiness. Melhor intermediário.</div>
+          <div class="linha-model-tag">Dedicado</div>
+        </div>
+        <div class="linha-model-row">
+          <div class="linha-model-name">Forerunner 570</div>
+          <div class="linha-model-level"><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></div>
+          <div class="linha-model-desc">2025. AMOLED + GPS SatIQ + Elevate Gen 5. Treino intervalado de alta precisão.</div>
+          <div class="linha-model-tag">Dedicado/Elite</div>
+        </div>
+        <div class="linha-model-row">
+          <div class="linha-model-name">Forerunner 955</div>
+          <div class="linha-model-level"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div>
+          <div class="linha-model-desc">30h GPS + mapas topográficos + solar opcional. Referência triatleta custo-benefício.</div>
+          <div class="linha-model-tag">Elite/Triatleta</div>
+        </div>
+        <div class="linha-model-row">
+          <div class="linha-model-name">Forerunner 965</div>
+          <div class="linha-model-level"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div>
+          <div class="linha-model-desc">AMOLED + titânio + mapas + 31h GPS. Top de corrida com tela premium.</div>
+          <div class="linha-model-tag">Elite/Triatleta</div>
+        </div>
+        <div class="linha-model-row">
+          <div class="linha-model-name">Forerunner 970</div>
+          <div class="linha-model-level"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></div>
+          <div class="linha-model-desc">Cristal safira + lanterna LED + 32GB armazenamento. Top absoluto da linha.</div>
+          <div class="linha-model-tag">Elite Máximo</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="linha-section">
+      <div class="linha-header">
+        <div class="linha-icon">🏔️</div>
+        <div><div class="linha-name">Linha Fenix & Enduro</div><div class="linha-sub">Outdoor premium — trilha, expedição, multiesporte</div></div>
+      </div>
+      <div class="linha-models">
+        <div class="linha-model-row" style="border-color:#F0A500;">
+          <div class="linha-model-name">Fenix 8</div>
+          <div class="linha-model-level"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></div>
+          <div class="linha-model-desc">O multiesporte definitivo. Alto-falante, microfone, mergulho, corrida, trilha. Mapas completos.</div>
+          <div class="linha-model-tag">Elite Premium</div>
+        </div>
+        <div class="linha-model-row" style="border-color:#F0A500;">
+          <div class="linha-model-name">Enduro 3</div>
+          <div class="linha-model-level"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></div>
+          <div class="linha-model-desc">Bateria 70h+ GPS contínuo. Para ultramaratonistas e expedições de múltiplos dias.</div>
+          <div class="linha-model-tag">Ultra / Expedição</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="linha-section">
+      <div class="linha-header">
+        <div class="linha-icon">🪖</div>
+        <div><div class="linha-name">Linha Instinct</div><div class="linha-sub">Robustez MIL-STD-810 — aventureiros e táticos</div></div>
+      </div>
+      <div class="linha-models">
+        <div class="linha-model-row" style="border-color:#2e7d32;">
+          <div class="linha-model-name">Instinct E</div>
+          <div class="linha-model-level"><span class="on"></span><span class="on"></span><span></span><span></span><span></span></div>
+          <div class="linha-model-desc">Entrada da linha Instinct. Robustez MIL-STD-810 com preço mais acessível.</div>
+          <div class="linha-model-tag">Aventureiro Iniciante</div>
+        </div>
+        <div class="linha-model-row" style="border-color:#2e7d32;">
+          <div class="linha-model-name">Instinct 3</div>
+          <div class="linha-model-level"><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></div>
+          <div class="linha-model-desc">MIL-STD-810. Até 26 dias de bateria. Solar disponível. Sensores ABC. AMOLED ou MIP.</div>
+          <div class="linha-model-tag">Aventureiro / Corredor</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="linha-section">
+      <div class="linha-header">
+        <div class="linha-icon">🚴</div>
+        <div><div class="linha-name">Linha Edge</div><div class="linha-sub">Ciclocomputadores — GPS dedicado para guidão</div></div>
+      </div>
+      <div class="linha-models">
+        <div class="linha-model-row" style="border-color:#1565c0;">
+          <div class="linha-model-name">Edge 540/550</div>
+          <div class="linha-model-level"><span class="on"></span><span class="on"></span><span></span><span></span><span></span></div>
+          <div class="linha-model-desc">Compacto e preciso. GPS multibanda + bateria 26h. O 550 adiciona tela 1000 nits e Cycling Coach.</div>
+          <div class="linha-model-tag">Ciclista Intermediário</div>
+        </div>
+        <div class="linha-model-row" style="border-color:#1565c0;">
+          <div class="linha-model-name">Edge 840/850</div>
+          <div class="linha-model-level"><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></div>
+          <div class="linha-model-desc">Touch + botões físicos. ClimbPro + GPS multibanda. O 850 tem 1000 nits, speaker e bike bell.</div>
+          <div class="linha-model-tag">Ciclista Dedicado</div>
+        </div>
+        <div class="linha-model-row" style="border-color:#1565c0;">
+          <div class="linha-model-name">Edge 1050</div>
+          <div class="linha-model-level"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></div>
+          <div class="linha-model-desc">Tela 3.5" 1000 nits + Garmin Pay + bike bell + hazard alerts. Top absoluto para ciclismo.</div>
+          <div class="linha-model-tag">Ciclista Elite</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="linha-section">
+      <div class="linha-header">
+        <div class="linha-icon">💎</div>
+        <div><div class="linha-name">Linha Lifestyle</div><div class="linha-sub">Design, bem-estar e saúde no dia a dia</div></div>
+      </div>
+      <div class="linha-models">
+        <div class="linha-model-row" style="border-color:#c2185b;">
+          <div class="linha-model-name">Lily 2 / Active</div>
+          <div class="linha-model-level"><span class="on"></span><span class="on"></span><span></span><span></span><span></span></div>
+          <div class="linha-model-desc">Menor Garmin. Design joia. O Active adiciona GPS integrado. Para mulher lifestyle.</div>
+          <div class="linha-model-tag">Mulher Lifestyle</div>
+        </div>
+        <div class="linha-model-row" style="border-color:#c2185b;">
+          <div class="linha-model-name">Venu 4 / X1</div>
+          <div class="linha-model-level"><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></div>
+          <div class="linha-model-desc">AMOLED premium + saúde feminina completa. Até 9 dias de bateria. O X1 tem design quadrado.</div>
+          <div class="linha-model-tag">Lifestyle Premium</div>
+        </div>
+        <div class="linha-model-row" style="border-color:#c2185b;">
+          <div class="linha-model-name">Vivoactive 6</div>
+          <div class="linha-model-level"><span class="on"></span><span class="on"></span><span></span><span></span><span></span></div>
+          <div class="linha-model-desc">80+ modos esportivos + músicas offline. Versátil para academia e dia a dia.</div>
+          <div class="linha-model-tag">Academia / Lifestyle</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip" style="margin-bottom:24px;">💡 <strong>Regra de indicação rápida:</strong> Corre → Forerunner. Trilha/expedição → Fenix ou Instinct. Bike → Edge. Design/lifestyle → Venu ou Lily. Triathlon top → FR965 ou FR970.</div>
+
+    <div class="quiz-reveal-sep">
+      <button class="quiz-reveal-btn" onclick="revealModuleQuiz('quizWrap3','initQuiz3')">✅ Li o conteúdo — Iniciar Quiz</button>
+      <div class="quiz-reveal-hint">Leia todo o módulo antes de responder. O resultado é enviado para a liderança.</div>
+    </div>
+    <div class="quiz-wrap" id="quizWrap3" style="display:none;margin-top:16px;">
+      <div class="quiz-header">
+        <div class="quiz-title">🎯 Flash Quiz — Módulo 3</div>
+        <div class="quiz-sub">10 perguntas · Mínimo 70% para aprovação · Seu resultado será registrado</div>
+        <div class="quiz-progress"><div class="quiz-progress-bar" id="quizBar3" style="width:0%"></div></div>
+      </div>
+      <div id="quizContent3"></div>
     </div>
   </div>
 </div>
