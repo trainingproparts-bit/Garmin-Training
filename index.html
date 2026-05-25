@@ -567,6 +567,8 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
       <div class="menu-card" onclick="openPanel('gpsdemao')"><div class="menu-badge new">ESPECIAL</div><span class="menu-icon">🗺️</span><div class="menu-name">GPS de Mão</div><div class="menu-desc">GPSMAP, eTrex — linha completa portátil</div></div>
       <div class="menu-card" onclick="openPanel('nautico')"><span class="menu-icon">⚓</span><div class="menu-name">Náutico</div><div class="menu-desc">Striker e ECHOMAP — pesca e navegação</div></div>
       <div class="menu-card" onclick="openPanel('edge-ciclismo')"><div class="menu-badge new">NOVO</div><span class="menu-icon">🚴</span><div class="menu-name">Edge</div><div class="menu-desc">540, 550, 840, 850, 1040, 1050 — funcionalidades avançadas</div></div>
+      <div class="menu-card" onclick="openPanel('blaze-equine')"><div class="menu-badge new">ESPECIAL</div><span class="menu-icon">🐴</span><div class="menu-name">Blaze Equine</div><div class="menu-desc">Sensor de saúde para cavalos — frequência cardíaca, passada e temperatura</div></div>
+      <div class="menu-card" onclick="openPanel('marq-gen2')"><div class="menu-badge new">LUXO</div><span class="menu-icon">👑</span><div class="menu-name">MARQ (Gen 2)</div><div class="menu-desc">Commander, Athlete, Golfer Carbon — a linha de relógios de luxo da Garmin</div></div>
     </div>
 
     <div class="menu-section-label">Apoio & Referência</div>
@@ -1605,7 +1607,7 @@ const prods = [
   {name:'Forerunner 955',s:'Forerunner',cat:'forerunner',lvl:4,para:'Atleta de Elite / Triatleta',dest:'30h GPS + mapas topográficos + solar. Referência triatleta.'},
   {name:'Forerunner 965',s:'Forerunner',cat:'forerunner',lvl:4,para:'Atleta de Elite / Triatleta',dest:'AMOLED + titânio + mapas + 31h GPS. Top de corrida com tela premium.'},
   {name:'Forerunner 970',s:'Forerunner',cat:'forerunner',lvl:5,para:'Atleta de Elite',dest:'Cristal safira + lanterna LED + 32GB. Top absoluto da linha Forerunner.'},
-  {name:'Fenix E',s:'Fenix',cat:'outdoor',lvl:3,para:'Atleta / Aventureiro intermediário',dest:'Entrada da linha Fenix. AMOLED + GPS multibanda + mapas. Design robusto sem alto-falante/mic.'},
+  {name:'Fenix E',s:'Fenix',cat:'outdoor',lvl:3,para:'Atleta / Aventureiro intermediário',dest:'Entrada da linha Fenix. AMOLED + GPS padrão + mapas TopoActive. Robusto, sem alto-falante/mic e sem GPS multibanda.'},
   {name:'MARQ Commander Gen 2',s:'MARQ',cat:'luxo',lvl:5,para:'Executivo / Atleta premium',dest:'Luxo artesanal. Titânio + safira + couro italiano. Estética tática, GPS multibanda, mapas completos.'},
   {name:'MARQ Athlete Gen 2',s:'MARQ',cat:'luxo',lvl:5,para:'Atleta premium / Executivo esportivo',dest:'Luxo para corrida e triathlon. Titânio + safira. GPS multibanda e métricas avançadas com acabamento de alto nível.'},
   {name:'MARQ Golfer Carbon Gen 2',s:'MARQ',cat:'luxo',lvl:5,para:'Golfista premium',dest:'Único relógio de golfe no nível de luxo real. Fibra de carbono + safira + 42.000 campos mapeados.'},
@@ -2668,99 +2670,177 @@ if('serviceWorker' in navigator){
       </div>
 
 
-      <!-- BLAZE EQUINE FLIP CARD -->
-      <div class="flip-card" onclick="this.classList.toggle('flipped')" style="height:430px;">
-        <div class="flip-card-inner" style="height:430px;">
-          <div class="flip-card-front" style="background:linear-gradient(135deg,#0d0a00,#1a1400,#2a1e06);color:#fff;border:1px solid rgba(139,90,43,0.3);">
-            <span class="flip-badge" style="background:linear-gradient(90deg,#7B4F1E,#A0682A);color:#fff;">🐴 EQUESTRE · NOVO 2025</span>
-            <div class="flip-model" style="font-size:21px;">Blaze Equine Wellness</div>
-            <div class="flip-tag" style="color:#C8A96A;">Sensor de saúde para cavalos — fixado na cauda</div>
-            <ul class="flip-features">
-              <li>Monitor óptico de frequência cardíaca para equídeos</li>
-              <li>Passada, andamento, velocidade e distância em tempo real</li>
-              <li>Temperatura de pele — detecta variações por atividade ou doença</li>
-              <li>Protetor de cauda em neoprene resistente e lavável</li>
-              <li>Sensor removível e recarregável — até 25h de bateria</li>
-              <li>App dedicado + integração com smartwatch Garmin</li>
-              <li>Perfis para múltiplos cavalos no mesmo sensor</li>
-            </ul>
-            <div class="flip-card-tap-hint">👆 toque para ver como apresentar</div>
-          </div>
-          <div class="flip-card-back" style="background:linear-gradient(135deg,#100c00,#201600,#2e2008);color:#fff;border:1px solid rgba(139,90,43,0.3);">
-            <div class="flip-vs-title" style="color:#C8A96A;">🐴 Blaze — Para quem e como abordar</div>
-            <div class="flip-compare">
-              <div class="flip-compare-row">
-                <div><div class="flip-compare-label">O que monitora</div><div class="new">FC, passada, andamento, temperatura de pele, distância</div></div>
-              </div>
-              <div class="flip-compare-row">
-                <div><div class="flip-compare-label">Modos de uso</div><div class="new">Treino ao ar livre, treino indoor, recuperação, transporte</div></div>
-              </div>
-              <div class="flip-compare-row">
-                <div><div class="flip-compare-label">Bateria</div><div class="new">✓ Até 25 horas de uso contínuo</div></div>
-              </div>
-              <div class="flip-compare-row">
-                <div><div class="flip-compare-label">Visualização</div><div class="new">App Blaze no celular + app Connect IQ no relógio Garmin</div></div>
-              </div>
-              <div style="margin-top:10px;padding:10px;background:rgba(200,169,106,0.1);border-radius:8px;font-size:12px;line-height:1.5;border:1px solid rgba(200,169,106,0.2);">
-                💬 <strong>Como apresentar:</strong> "É um sensor que fica fixado na cauda do cavalo e mede frequência cardíaca, passada e temperatura de pele em tempo real. O treinador ou o dono acompanha tudo no celular ou no próprio relógio Garmin. Serve tanto pra treino quanto pra monitorar o cavalo durante transporte ou recuperação."
-              </div>
-              <div style="margin-top:8px;padding:8px;background:rgba(200,169,106,0.07);border-radius:8px;font-size:11px;line-height:1.5;border:1px solid rgba(200,169,106,0.15);">
-                🎯 <strong>Para quem indicar:</strong> Cavaleiros, treinadores e proprietários que querem acompanhar a saúde e o desempenho do cavalo com dados precisos — seja no treinamento, na competição ou na rotina do haras.
-              </div>
-            </div>
-            <div class="flip-card-tap-hint">👆 toque para voltar</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- MARQ GEN 2 FLIP CARD -->
-      <div class="flip-card" onclick="this.classList.toggle('flipped')" style="height:460px;">
-        <div class="flip-card-inner" style="height:460px;">
-          <div class="flip-card-front" style="background:linear-gradient(135deg,#0a0800,#1a1400,#2a200a);color:#fff;border:1px solid rgba(201,168,76,0.3);">
-            <span class="flip-badge" style="background:linear-gradient(90deg,#C9A84C,#E8C96A);color:#000;font-weight:700;">LINHA DE LUXO</span>
-            <div class="flip-model" style="font-size:22px;">MARQ (Gen 2)</div>
-            <div class="flip-tag" style="color:#C9A84C;">Commander · Athlete · Golfer Carbon</div>
-            <ul class="flip-features">
-              <li>Caixa em titânio ou fibra de carbono</li>
-              <li>Vidro cristal de safira em todas as versões</li>
-              <li>GPS multibanda — precisão máxima</li>
-              <li>Mapas TopoActive com relevo completo</li>
-              <li>Pulseiras premium (couro italiano, silicone de alta qualidade)</li>
-              <li>Feito à mão nos EUA — fabricação artesanal</li>
-              <li>Edições temáticas: tático, esportivo, golfe</li>
-            </ul>
-            <div class="flip-card-tap-hint">👆 toque para ver como apresentar</div>
-          </div>
-          <div class="flip-card-back" style="background:linear-gradient(135deg,#0f0c00,#1f1a00,#2f2600);color:#fff;border:1px solid rgba(201,168,76,0.3);">
-            <div class="flip-vs-title" style="color:#C9A84C;">👑 MARQ Gen 2 — Por que é luxo?</div>
-            <div class="flip-compare">
-              <div class="flip-compare-row">
-                <div><div class="flip-compare-label">Material</div><div class="new">Titânio / fibra de carbono — não é aço, não é alumínio</div></div>
-              </div>
-              <div class="flip-compare-row">
-                <div><div class="flip-compare-label">Vidro</div><div class="new">Cristal de safira — o mesmo das marcas de luxo tradicionais</div></div>
-              </div>
-              <div class="flip-compare-row">
-                <div><div class="flip-compare-label">Produção</div><div class="new">Fabricação artesanal nos EUA — não é linha de produção em massa</div></div>
-              </div>
-              <div class="flip-compare-row">
-                <div><div class="flip-compare-label">Versões</div><div class="new">Commander (tático), Athlete (esporte), Golfer Carbon (golfe)</div></div>
-              </div>
-              <div style="margin-top:10px;padding:10px;background:rgba(201,168,76,0.1);border-radius:8px;font-size:12px;line-height:1.5;border:1px solid rgba(201,168,76,0.2);">
-                💬 <strong>Como apresentar:</strong> "O MARQ é diferente de tudo que a Garmin faz. Não é só o modelo mais caro — é feito de outro jeito, com outros materiais. Titânio, safira, montado à mão. O cliente que usa MARQ sabe que tem tecnologia de ponta num relógio que parece caro porque de fato é, e por um motivo real."
-              </div>
-              <div style="margin-top:8px;padding:8px;background:rgba(201,168,76,0.07);border-radius:8px;font-size:11px;line-height:1.5;border:1px solid rgba(201,168,76,0.15);">
-                🎯 <strong>Para quem indicar:</strong> Executivo atleta, golfista que valoriza equipamento premium, cliente que usa relógio de luxo mas quer saúde e esporte junto. Não é pra quem quer só um bom Garmin — é pra quem quer o melhor relógio esportivo do mundo.
-              </div>
-            </div>
-            <div class="flip-card-tap-hint">👆 toque para voltar</div>
-          </div>
-        </div>
-      </div>
-
     </div>
 
-    <div class="tip" style="margin-top:20px;">💡 <strong>Quando indicar o FR70?</strong> Iniciante, presente, cliente que nunca usou GPS e quer começar simples. <strong>Quando indicar o FR170?</strong> Corredor que quer algo mais compacto que o FR165, com recursos de software mais recentes (relatório noturno, despertador inteligente) e mais perfis de atividade — mas que não precisa de GPS multibanda nem multiesporte. Para multiesporte ou GPS multibanda, o FR265 em diante. <strong>Quando indicar o MARQ?</strong> Cliente que valoriza acabamento premium, usa relógio de luxo, é executivo ou atleta de alto nível — e quer tecnologia Garmin completa numa peça feita à mão.</div>
+    <div class="tip" style="margin-top:20px;">💡 <strong>Quando indicar o FR70?</strong> Iniciante, presente, cliente que nunca usou GPS e quer começar simples. <strong>Quando indicar o FR170?</strong> Corredor que quer algo mais compacto que o FR165, com recursos de software mais recentes (relatório noturno, despertador inteligente) e mais perfis de atividade — mas que não precisa de GPS multibanda nem multiesporte. Para multiesporte ou GPS multibanda, o FR265 em diante.</div>
+  </div>
+</div>
+
+<!-- BLAZE EQUINE -->
+<div class="panel" id="panel-blaze-equine">
+  <div class="panel-header"><button class="back-btn" onclick="goHome()">← Início</button><div class="panel-title">Blaze <span>Equine Wellness</span></div></div>
+  <div class="panel-body">
+    <div class="gps-hero" style="background:linear-gradient(135deg,#1a1000,#2e1e06,#3a2810);">
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:0.7;margin-bottom:4px;color:#C8A96A;">Linha Equestre · Sensor de Saúde Animal</div>
+      <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:26px;letter-spacing:2px;margin-bottom:6px;">BLAZE EQUINE WELLNESS</div>
+      <p style="font-size:14px;opacity:0.85;line-height:1.6;">O primeiro sistema da Garmin dedicado ao monitoramento de saúde e desempenho de cavalos. Fixado na cauda, o sensor acompanha o animal em treinos, competições e no dia a dia do haras — e o cavaleiro vê tudo no celular ou no próprio relógio Garmin.</p>
+    </div>
+
+    <div class="card-label" style="margin-bottom:14px;">O que o sensor monitora</div>
+    <div class="tbl-wrap" style="margin-bottom:24px;">
+      <table>
+        <thead><tr><th>Métrica</th><th>Como funciona</th><th>Para que serve</th></tr></thead>
+        <tbody>
+          <tr><td><div class="prod-name">Frequência Cardíaca</div></td><td>Sensor óptico contínuo</td><td>Avalia esforço, recuperação e condicionamento do animal</td></tr>
+          <tr><td><div class="prod-name">Passada & Andamento</div></td><td>Acelerômetro + GPS</td><td>Detecta assimetrias, irregularidades e evolução no treinamento</td></tr>
+          <tr><td><div class="prod-name">Velocidade & Distância</div></td><td>GPS integrado</td><td>Registro preciso de cada sessão de treino</td></tr>
+          <tr><td><div class="prod-name">Temperatura de Pele</div></td><td>Sensor de temperatura</td><td>Sinaliza variações que podem indicar febre ou sobrecarga</td></tr>
+          <tr><td><div class="prod-name">Tempo de Atividade</div></td><td>Detecção automática</td><td>Histórico de carga de trabalho e descanso</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card-label" style="margin-bottom:14px;">Especificações técnicas</div>
+    <div class="grid2" style="margin-bottom:20px;">
+      <div class="card" style="margin-bottom:0;">
+        <div class="card-title">📦 Hardware</div>
+        <ul class="bul">
+          <li>Sensor removível em housing resistente</li>
+          <li>Protetor de cauda em neoprene — lavável e ajustável</li>
+          <li>Bateria recarregável: até <strong>25 horas</strong> de uso contínuo</li>
+          <li>Resistente à água e à sujeira — uso a campo</li>
+          <li>Compatível com múltiplos cavalos no mesmo sensor</li>
+        </ul>
+      </div>
+      <div class="card" style="margin-bottom:0;">
+        <div class="card-title">📱 Conectividade & App</div>
+        <ul class="bul">
+          <li>App dedicado Blaze — iOS e Android</li>
+          <li>Integração com Garmin Connect</li>
+          <li>Visualização dos dados no smartwatch Garmin via Connect IQ</li>
+          <li>Histórico e relatórios de sessão no app</li>
+          <li>Sincronização automática via Bluetooth</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card-label" style="margin-bottom:14px;">Modos de uso</div>
+    <div class="grid2" style="margin-bottom:20px;">
+      <div class="card" style="margin-bottom:0;border-top:3px solid #A0682A;">
+        <div class="card-title">🏇 Treino e Competição</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;">Monitoramento em tempo real durante sessões de adestramento, salto, enduro, corrida e hipismo. O treinador acompanha a FC e a passada enquanto o cavaleiro monta — sem interferir no animal.</p>
+      </div>
+      <div class="card" style="margin-bottom:0;border-top:3px solid #A0682A;">
+        <div class="card-title">🚚 Transporte & Repouso</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;">Sensor ativo durante o transporte do animal detecta estresse cardíaco e agitação. No repouso, monitora FC e temperatura para sinalizar mudanças que possam indicar problema de saúde.</p>
+      </div>
+    </div>
+
+    <div class="grid2" style="margin-bottom:20px;">
+      <div class="card" style="margin-bottom:0;">
+        <div class="card-title">🎯 Para quem indicar</div>
+        <ul class="bul">
+          <li>Treinadores de cavalos de esporte e competição</li>
+          <li>Proprietários de haras que acompanham saúde dos animais</li>
+          <li>Cavaleiros de enduro — onde controle de FC é fundamental</li>
+          <li>Veterinários e profissionais de reabilitação equina</li>
+          <li>Clientes que já usam relógio Garmin e têm cavalos</li>
+        </ul>
+      </div>
+      <div class="card" style="margin-bottom:0;">
+        <div class="card-title">💬 Como apresentar</div>
+        <ul class="bul">
+          <li>"É um sensor que fica na cauda do cavalo e mede frequência cardíaca, passada e temperatura em tempo real"</li>
+          <li>"O treinador vê tudo no celular ou no relógio Garmin — durante a montaria mesmo"</li>
+          <li>"Serve pra treino, competição e até pra monitorar o animal durante transporte"</li>
+          <li>"Detecta variações de temperatura que podem indicar febre antes de virar problema"</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tip">💡 <strong>Conexão com o ecossistema Garmin:</strong> O cavaleiro que já usa um Fenix, Forerunner ou Epix pode ver os dados do cavalo direto no pulso via Connect IQ — sem tirar o olho da pista. É um argumento forte para clientes que já têm relógio Garmin e têm cavalos.</div>
+  </div>
+</div>
+
+<!-- MARQ GEN 2 -->
+<div class="panel" id="panel-marq-gen2">
+  <div class="panel-header"><button class="back-btn" onclick="goHome()">← Início</button><div class="panel-title">MARQ <span>Gen 2 — Linha de Luxo</span></div></div>
+  <div class="panel-body">
+    <div class="gps-hero" style="background:linear-gradient(135deg,#0f0c00,#1f1800,#2e2408);border-bottom:1px solid rgba(201,168,76,0.3);">
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:0.7;margin-bottom:4px;color:#C9A84C;">Linha de Luxo · Fabricação Artesanal · EUA</div>
+      <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:26px;letter-spacing:2px;margin-bottom:6px;">MARQ (Gen 2)</div>
+      <p style="font-size:14px;opacity:0.85;line-height:1.6;">Não é o Fenix mais caro. O MARQ é uma categoria à parte — fabricado à mão nos EUA com materiais que não aparecem em nenhum outro relógio Garmin. Titânio, cristal de safira e tecnologia de ponta dentro de uma peça que compete visualmente com relógios de luxo tradicionais.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;">
+        <span class="tag" style="background:rgba(201,168,76,0.2);color:#C9A84C;border:1px solid rgba(201,168,76,0.4);">Titânio</span>
+        <span class="tag" style="background:rgba(201,168,76,0.2);color:#C9A84C;border:1px solid rgba(201,168,76,0.4);">Cristal de Safira</span>
+        <span class="tag" style="background:rgba(201,168,76,0.2);color:#C9A84C;border:1px solid rgba(201,168,76,0.4);">Feito à Mão nos EUA</span>
+        <span class="tag" style="background:rgba(201,168,76,0.2);color:#C9A84C;border:1px solid rgba(201,168,76,0.4);">GPS Multibanda</span>
+        <span class="tag" style="background:rgba(201,168,76,0.2);color:#C9A84C;border:1px solid rgba(201,168,76,0.4);">Mapas TopoActive</span>
+      </div>
+    </div>
+
+    <div class="card-label" style="margin-bottom:14px;margin-top:20px;">Por que é considerado luxo de verdade?</div>
+    <div class="tbl-wrap" style="margin-bottom:24px;">
+      <table>
+        <thead><tr><th>Elemento</th><th>MARQ Gen 2</th><th>Outros Garmin premium</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Caixa</strong></td><td><span class="tag green">Titânio grau 5 / fibra de carbono</span></td><td>Aço inox ou alumínio reforçado</td></tr>
+          <tr><td><strong>Vidro</strong></td><td><span class="tag green">Cristal de safira</span></td><td>Gorilla Glass ou vidro temperado</td></tr>
+          <tr><td><strong>Fabricação</strong></td><td><span class="tag green">Montagem artesanal nos EUA</span></td><td>Produção em linha industrial</td></tr>
+          <tr><td><strong>Pulseira</strong></td><td><span class="tag green">Couro italiano / silicone premium / nylon premium</span></td><td>Silicone ou borracha padrão</td></tr>
+          <tr><td><strong>GPS</strong></td><td><span class="tag green">Multibanda — precisão máxima</span></td><td>Varia por modelo</td></tr>
+          <tr><td><strong>Mapas</strong></td><td><span class="tag green">TopoActive + mapas de trilha completos</span></td><td>Varia por modelo</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card-label" style="margin-bottom:14px;">As três versões</div>
+    <div class="grid3" style="margin-bottom:24px;">
+      <div class="card" style="margin-bottom:0;border-top:3px solid #C9A84C;">
+        <div class="card-label" style="color:#C9A84C;">Tático</div>
+        <div class="card-title">MARQ Commander</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:10px;">Titânio com pulseira em couro italiano. Estética sóbria e militar. GPS multibanda, mapas completos, modo tático, navegação avançada. Para o executivo ou militar que quer presença e tecnologia no mesmo pulso.</p>
+        <div class="tag" style="background:rgba(201,168,76,0.15);color:#C9A84C;border:1px solid rgba(201,168,76,0.3);">Titânio · Couro Italiano</div>
+      </div>
+      <div class="card" style="margin-bottom:0;border-top:3px solid #C9A84C;">
+        <div class="card-label" style="color:#C9A84C;">Esportivo</div>
+        <div class="card-title">MARQ Athlete</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:10px;">Focado em corrida e triathlon de alto nível. Titânio com acabamento sport premium. GPS multibanda, Training Readiness, métricas avançadas. Para o atleta que não abre mão de visual sofisticado mesmo no treino.</p>
+        <div class="tag" style="background:rgba(201,168,76,0.15);color:#C9A84C;border:1px solid rgba(201,168,76,0.3);">Titânio · Sport Premium</div>
+      </div>
+      <div class="card" style="margin-bottom:0;border-top:3px solid #C9A84C;">
+        <div class="card-label" style="color:#C9A84C;">Golfe</div>
+        <div class="card-title">MARQ Golfer Carbon</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:10px;">Caixa em fibra de carbono — mais leve que titânio. GPS com mais de 42.000 campos mapeados, modo caddie digital, distâncias automáticas, estatísticas de jogo. O único relógio de golfe que é de luxo de verdade.</p>
+        <div class="tag" style="background:rgba(201,168,76,0.15);color:#C9A84C;border:1px solid rgba(201,168,76,0.3);">Fibra de Carbono · Golfe</div>
+      </div>
+    </div>
+
+    <div class="card-label" style="margin-bottom:14px;">Como vender</div>
+    <div class="grid2" style="margin-bottom:20px;">
+      <div class="card" style="margin-bottom:0;">
+        <div class="card-title">🎯 Perfil do cliente MARQ</div>
+        <ul class="bul">
+          <li>Usa ou usou relógio de luxo — sabe reconhecer qualidade de material</li>
+          <li>Atleta de alto nível que quer o melhor equipamento disponível</li>
+          <li>Executivo que pratica esporte e quer o mesmo relógio nas duas situações</li>
+          <li>Golfista que valoriza o equipamento tanto quanto o jogo</li>
+          <li>Presentear alguém que já tem tudo — algo diferente e com significado</li>
+        </ul>
+      </div>
+      <div class="card" style="margin-bottom:0;">
+        <div class="card-title">💬 Como abordar naturalmente</div>
+        <ul class="bul">
+          <li>"O MARQ é fabricado à mão nos EUA — não é o mesmo processo dos outros Garmin"</li>
+          <li>"A caixa é titânio grau 5, o vidro é safira. Os mesmos materiais de relógio de luxo, com a tecnologia da Garmin dentro"</li>
+          <li>"Quem tem MARQ não precisa trocar de relógio entre a reunião e o treino"</li>
+          <li>Para o Golfer: "Mais de 42 mil campos mapeados — e a caixa é fibra de carbono, mais leve que titânio"</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tip" style="border-left:3px solid #C9A84C;">💡 <strong>Argumento principal:</strong> A diferença entre o MARQ e um Fenix topo de linha não é só preço — é categoria de produto. O Fenix é o melhor relógio esportivo. O MARQ é um relógio de luxo com tecnologia esportiva. São coisas diferentes, para clientes diferentes.</div>
+    <div class="tip" style="border-left:3px solid #C9A84C;">💡 <strong>Golfer Carbon:</strong> Fibra de carbono é mais leve que titânio e mais rara como material de relógio. Para o golfista, destaque que o relógio não atrapalha o swing por ser tão leve — e que os mapas de campo são os mais completos do mercado.</div>
   </div>
 </div>
 
@@ -2846,7 +2926,7 @@ if('serviceWorker' in navigator){
         <div class="linha-model-row" style="border-color:#F0A500;">
           <div class="linha-model-name">Fenix E</div>
           <div class="linha-model-level"><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></div>
-          <div class="linha-model-desc">NOVO. Entrada da linha Fenix. Tela AMOLED + GPS multibanda + mapas TopoActive. Design robusto, sem alto-falante/mic. Porta de entrada para quem quer Fenix com orçamento menor.</div>
+          <div class="linha-model-desc">NOVO. Entrada da linha Fenix. Tela AMOLED + GPS padrão + mapas TopoActive. Design robusto, sem alto-falante/mic e sem GPS multibanda. Porta de entrada para quem quer Fenix com orçamento menor.</div>
           <div class="linha-model-tag" style="background:#F0A500;color:#000;">Novo · Entrada Fenix</div>
         </div>
         <div class="linha-model-row">
