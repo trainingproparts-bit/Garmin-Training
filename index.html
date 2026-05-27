@@ -461,6 +461,357 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
   .bs-grid{grid-template-columns:1fr;}
   .bs-title{font-size:26px;}
 }
+
+/* ─── DUELO DE ESPECIFICAÇÕES — GAME ─────────────────────────── */
+/* cores dos times */
+:root {
+  --e3:#E31020;
+  --ie:#0066cc;
+}
+
+/* tela de abertura do game */
+.game-abertura {
+  background:#0a0a0a; border-radius:var(--r);
+  padding:32px 20px; text-align:center;
+  margin-bottom:20px; position:relative; overflow:hidden;
+}
+.game-abertura::before {
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(ellipse 60% 50% at 30% 50%, rgba(227,16,32,0.18) 0%, transparent 70%),
+             radial-gradient(ellipse 60% 50% at 70% 50%, rgba(0,102,204,0.18) 0%, transparent 70%);
+  pointer-events:none;
+}
+.game-abertura-inner { position:relative; z-index:1; }
+.gab-eyebrow {
+  font-size:10px; letter-spacing:4px; text-transform:uppercase;
+  color:rgba(255,255,255,0.35); margin-bottom:16px;
+}
+.gab-titulo {
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:800; font-style:italic;
+  font-size:clamp(36px,8vw,68px);
+  color:#fff; letter-spacing:3px; text-transform:uppercase;
+  line-height:1; margin-bottom:6px;
+}
+.gab-titulo .red { color:var(--e3); }
+.gab-titulo .blue { color:#4d9ef7; }
+.gab-titulo .vs-sep { color:rgba(255,255,255,0.2); font-size:0.5em; margin:0 8px; vertical-align:middle; }
+.gab-sub {
+  font-size:13px; color:rgba(255,255,255,0.45);
+  letter-spacing:1px; margin-bottom:28px; line-height:1.5;
+}
+.gab-cards {
+  display:flex; gap:16px; margin-bottom:28px;
+  flex-wrap:wrap; justify-content:center;
+}
+.gab-card {
+  background:#161616; border-radius:var(--r);
+  padding:20px 24px; text-align:center;
+  width:160px; border:2px solid transparent;
+}
+.gab-card.red-card { border-color:rgba(227,16,32,0.4); }
+.gab-card.blue-card { border-color:rgba(0,102,204,0.4); }
+.gab-card-emoji { font-size:36px; margin-bottom:8px; display:block; }
+.gab-card-nome {
+  font-family:'Rajdhani',sans-serif; font-weight:700;
+  font-size:16px; letter-spacing:2px; text-transform:uppercase; color:#fff;
+}
+.gab-card-tag {
+  font-size:10px; color:rgba(255,255,255,0.4); margin-top:2px;
+  letter-spacing:1px; text-transform:uppercase;
+}
+.gab-vs-badge {
+  display:flex; align-items:center; justify-content:center;
+  width:44px; height:44px; background:#1a1a1a; border-radius:50%;
+  font-family:'Rajdhani',sans-serif; font-weight:800; font-size:14px;
+  color:rgba(255,255,255,0.3); letter-spacing:1px; align-self:center; flex-shrink:0;
+}
+.gab-rules {
+  display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:28px;
+}
+.gab-rule {
+  display:flex; align-items:center; gap:6px;
+  font-size:11px; color:rgba(255,255,255,0.45);
+  background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1);
+  border-radius:6px; padding:5px 12px;
+}
+.btn-iniciar-game {
+  display:inline-flex; align-items:center; gap:10px;
+  background:var(--g); color:#fff; border:none; border-radius:var(--r);
+  padding:14px 32px; font-family:'Rajdhani',sans-serif;
+  font-weight:700; font-size:16px; letter-spacing:2px; text-transform:uppercase;
+  cursor:pointer; transition:all 0.2s; box-shadow:0 0 32px rgba(227,16,32,0.3);
+}
+.btn-iniciar-game:hover { background:var(--g2); transform:translateY(-2px); box-shadow:0 8px 40px rgba(227,16,32,0.45); }
+
+/* rodadas do game */
+.game-rodada-wrap { max-width:680px; margin:0 auto; }
+
+/* progresso */
+.game-prog-strip {
+  background:var(--white); border:1.5px solid var(--border);
+  border-radius:var(--r); padding:14px 18px; margin-bottom:16px;
+  display:flex; align-items:center; gap:16px;
+}
+.game-prog-label {
+  font-family:'Rajdhani',sans-serif; font-weight:700;
+  font-size:12px; letter-spacing:2px; text-transform:uppercase;
+  color:var(--text3); white-space:nowrap; flex-shrink:0;
+}
+.game-prog-bar-bg {
+  flex:1; height:6px; background:var(--border); border-radius:3px; overflow:hidden;
+}
+.game-prog-bar-fill {
+  height:100%; background:linear-gradient(90deg,var(--e3),var(--warn));
+  border-radius:3px; transition:width 0.5s ease; width:0%;
+}
+.game-prog-score {
+  font-family:'Rajdhani',sans-serif; font-weight:700;
+  font-size:20px; color:var(--g); white-space:nowrap; flex-shrink:0;
+}
+
+/* badge de rodada */
+.game-rodada-badge {
+  text-align:center; margin-bottom:14px;
+}
+.game-rodada-num {
+  display:inline-block; background:#0a0a0a; color:rgba(255,255,255,0.5);
+  font-family:'Rajdhani',sans-serif; font-weight:700; font-size:11px;
+  letter-spacing:3px; text-transform:uppercase;
+  padding:4px 14px; border-radius:20px;
+}
+
+/* confronto */
+.game-confronto {
+  background:#0a0a0a; border-radius:var(--r); border:1px solid #1e1e1e;
+  padding:20px; margin-bottom:14px; position:relative; overflow:hidden;
+}
+.game-confronto::before {
+  content:'VS';
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  font-family:'Barlow Condensed',sans-serif; font-weight:800; font-style:italic;
+  font-size:100px; color:rgba(255,255,255,0.03); pointer-events:none; line-height:1;
+}
+.game-confronto-inner {
+  display:grid; grid-template-columns:1fr auto 1fr; gap:10px;
+  align-items:center; position:relative; z-index:1;
+}
+.game-time { text-align:center; }
+.game-time-emoji { font-size:28px; margin-bottom:4px; display:block; }
+.game-time-nome {
+  font-family:'Rajdhani',sans-serif; font-weight:700;
+  font-size:clamp(12px,3vw,16px); letter-spacing:2px; text-transform:uppercase;
+}
+.game-time-nome.red { color:var(--e3); }
+.game-time-nome.blue { color:#4d9ef7; }
+.game-confronto-vs {
+  font-family:'Barlow Condensed',sans-serif; font-weight:800; font-style:italic;
+  font-size:20px; color:rgba(255,255,255,0.2);
+}
+
+/* categoria */
+.game-categoria {
+  background:#111; border:1px solid #222; border-radius:var(--r2);
+  padding:10px 14px; margin-bottom:16px;
+  display:flex; align-items:center; gap:10px;
+}
+.game-cat-icone { font-size:20px; flex-shrink:0; }
+.game-cat-nome {
+  font-family:'Rajdhani',sans-serif; font-weight:700;
+  font-size:15px; text-transform:uppercase; letter-spacing:1px; color:#fff; flex:1;
+}
+.game-cat-descr { font-size:11px; color:rgba(255,255,255,0.4); margin-top:1px; }
+
+/* pergunta */
+.game-pergunta {
+  background:var(--white); border-radius:var(--r);
+  border:1.5px solid var(--border); padding:18px; margin-bottom:14px;
+}
+.game-perg-label {
+  font-size:9px; font-weight:700; letter-spacing:2px;
+  text-transform:uppercase; color:var(--g); margin-bottom:7px;
+}
+.game-perg-texto { font-size:15px; font-weight:600; color:var(--text); line-height:1.5; }
+
+/* opções */
+.game-opcoes {
+  display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px;
+}
+.game-opcao {
+  background:var(--white); border:2px solid var(--border);
+  border-radius:var(--r); padding:14px 12px;
+  cursor:pointer; transition:all 0.2s; text-align:center;
+}
+.game-opcao:hover { transform:translateY(-2px); box-shadow:var(--sh2); }
+.game-opcao.opt-red { border-color:rgba(227,16,32,0.3); background:linear-gradient(135deg,#fff,#fff8f8); }
+.game-opcao.opt-red:hover { border-color:var(--e3); background:var(--g3); }
+.game-opcao.opt-blue { border-color:rgba(0,102,204,0.3); background:linear-gradient(135deg,#fff,#f0f6ff); }
+.game-opcao.opt-blue:hover { border-color:var(--ie); background:#e8f0ff; }
+.game-opcao.opt-green { border-color:rgba(0,194,168,0.3); background:linear-gradient(135deg,#fff,#f0fdfb); }
+.game-opcao.opt-green:hover { border-color:var(--acc); background:#e6faf7; }
+.game-opcao.opt-orange { border-color:rgba(255,107,53,0.3); background:linear-gradient(135deg,#fff,#fff8f5); }
+.game-opcao.opt-orange:hover { border-color:var(--warn); background:#fff4f0; }
+.game-opcao.estado-certo { background:#e6faf7!important; border-color:var(--acc)!important; animation:gPulse 0.4s ease; }
+.game-opcao.estado-errado { background:#fff4f0!important; border-color:var(--warn)!important; animation:gShake 0.35s ease; }
+.game-opcao.estado-revelado { background:#e6faf7!important; border-color:var(--acc)!important; }
+.game-opcao.bloqueado { cursor:not-allowed; pointer-events:none; }
+@keyframes gPulse { 0%{transform:scale(1)} 50%{transform:scale(1.04)} 100%{transform:scale(1)} }
+@keyframes gShake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
+.game-opcao-icone { font-size:22px; margin-bottom:5px; display:block; }
+.game-opcao-nome {
+  font-family:'Rajdhani',sans-serif; font-weight:700;
+  font-size:13px; letter-spacing:1px; text-transform:uppercase; color:var(--text);
+}
+.game-opcao-nome.red { color:var(--e3); }
+.game-opcao-nome.blue { color:var(--ie); }
+.game-opcao-nome.green { color:#007a6a; }
+.game-opcao-nome.orange { color:#c84a1a; }
+
+/* feedback */
+.game-feedback {
+  border-radius:var(--r); padding:12px 16px; margin-bottom:12px;
+  font-size:13px; line-height:1.6; display:none;
+  animation:gFade 0.3s ease;
+}
+.game-feedback.visivel { display:flex; gap:10px; align-items:flex-start; }
+.game-feedback.fb-certo { background:#e6faf7; border:1px solid var(--acc); color:#007a6a; }
+.game-feedback.fb-errado { background:#fff4f0; border:1px solid var(--warn); color:#c84a1a; }
+.game-fb-icone { font-size:18px; flex-shrink:0; margin-top:2px; }
+@keyframes gFade { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+
+/* reveal comparativo */
+.game-reveal {
+  background:#111; border-radius:var(--r); border:1px solid #1e1e1e;
+  padding:12px 16px; margin-bottom:12px; display:none;
+  animation:gFade 0.3s ease 0.1s both;
+}
+.game-reveal.visivel { display:block; }
+.game-reveal-label {
+  font-size:9px; font-weight:700; letter-spacing:2px;
+  text-transform:uppercase; color:rgba(255,255,255,0.3); margin-bottom:8px;
+}
+.game-reveal-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.game-reveal-item { background:#1a1a1a; border-radius:var(--r2); padding:9px 11px; }
+.game-reveal-nome {
+  font-family:'Rajdhani',sans-serif; font-weight:700;
+  font-size:10px; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:3px;
+}
+.game-reveal-nome.red { color:var(--e3); }
+.game-reveal-nome.blue { color:#4d9ef7; }
+.game-reveal-valor { font-size:12px; color:rgba(255,255,255,0.65); line-height:1.4; }
+.game-reveal-valor strong { color:#fff; }
+
+/* botão próxima */
+.game-btn-proxima {
+  width:100%; background:var(--g); color:#fff; border:none;
+  border-radius:var(--r); padding:13px;
+  font-family:'Rajdhani',sans-serif; font-weight:700;
+  font-size:15px; letter-spacing:2px; text-transform:uppercase;
+  cursor:pointer; transition:background 0.2s; display:none;
+}
+.game-btn-proxima.visivel { display:block; }
+.game-btn-proxima:hover { background:var(--g2); }
+
+/* resultado final */
+.game-resultado {
+  background:var(--white); border:1.5px solid var(--border);
+  border-radius:var(--r); padding:28px 20px; text-align:center;
+  margin-bottom:20px; display:none;
+  animation:gFade 0.4s ease;
+}
+.game-resultado.visivel { display:block; }
+.game-res-trofeu { font-size:64px; margin-bottom:10px; display:block; }
+.game-res-titulo {
+  font-family:'Rajdhani',sans-serif; font-weight:700;
+  font-size:28px; text-transform:uppercase; letter-spacing:2px;
+  color:var(--text); margin-bottom:4px;
+}
+.game-res-sub { font-size:13px; color:var(--text3); margin-bottom:24px; }
+.game-res-nota {
+  background:var(--g3); border:1.5px solid var(--g4);
+  border-radius:var(--r); padding:16px; margin-bottom:20px;
+}
+.game-res-nota-label {
+  font-size:9px; font-weight:700; letter-spacing:2px;
+  text-transform:uppercase; color:var(--g); margin-bottom:4px;
+}
+.game-res-nota-valor {
+  font-family:'Rajdhani',sans-serif; font-weight:700;
+  font-size:36px; color:var(--text); margin-bottom:2px;
+}
+.game-res-nota-nivel { font-size:13px; color:var(--text3); }
+/* placar dos relógios */
+.game-placar {
+  display:grid; grid-template-columns:1fr auto 1fr;
+  border:1.5px solid var(--border); border-radius:var(--r); overflow:hidden; margin-bottom:20px;
+}
+.game-placar-col { padding:18px 12px; text-align:center; }
+.game-placar-col.vermelho { background:linear-gradient(135deg,#fff,var(--g3)); }
+.game-placar-col.azul { background:linear-gradient(135deg,#fff,#e8f0ff); }
+.game-placar-col.centro {
+  background:#0a0a0a; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; padding:12px;
+}
+.game-placar-emoji { font-size:28px; margin-bottom:4px; display:block; }
+.game-placar-nome {
+  font-family:'Rajdhani',sans-serif; font-weight:700;
+  font-size:13px; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:4px;
+}
+.game-placar-nome.red { color:var(--e3); }
+.game-placar-nome.blue { color:var(--ie); }
+.game-placar-num {
+  font-family:'Rajdhani',sans-serif; font-weight:700; font-size:42px; line-height:1;
+}
+.game-placar-num.red { color:var(--e3); }
+.game-placar-num.blue { color:var(--ie); }
+.game-placar-label { font-size:10px; letter-spacing:1px; text-transform:uppercase; color:var(--text3); margin-top:2px; }
+.game-placar-vs {
+  font-family:'Barlow Condensed',sans-serif; font-weight:800; font-style:italic;
+  font-size:16px; color:rgba(255,255,255,0.25);
+}
+/* revisão */
+.game-revisao { display:flex; flex-direction:column; gap:6px; margin-bottom:20px; text-align:left; }
+.game-rev-item {
+  background:var(--white); border:1.5px solid var(--border);
+  border-radius:var(--r2); padding:10px 14px;
+  display:flex; align-items:center; gap:10px;
+}
+.game-rev-item.certo { border-color:var(--acc); }
+.game-rev-num {
+  width:24px; height:24px; border-radius:50%;
+  background:var(--off); border:1.5px solid var(--border);
+  font-family:'Rajdhani',sans-serif; font-weight:700; font-size:11px;
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0; color:var(--text3);
+}
+.game-rev-num.ok { background:#e6faf7; border-color:var(--acc); color:#007a6a; }
+.game-rev-texto { flex:1; font-size:12px; color:var(--text2); line-height:1.4; }
+.game-rev-resp {
+  font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; white-space:nowrap;
+}
+.game-rev-resp.certo { color:var(--acc); }
+.game-rev-resp.errado { color:var(--warn); }
+/* botões finais */
+.game-btn-reiniciar {
+  width:100%; background:var(--g); color:#fff; border:none;
+  border-radius:var(--r); padding:13px; font-family:'Rajdhani',sans-serif;
+  font-weight:700; font-size:15px; letter-spacing:2px; text-transform:uppercase;
+  cursor:pointer; transition:background 0.2s; margin-bottom:8px;
+}
+.game-btn-reiniciar:hover { background:var(--g2); }
+.game-btn-voltar {
+  width:100%; background:transparent; color:var(--text3);
+  border:1.5px solid var(--border); border-radius:var(--r);
+  padding:11px; font-family:'Rajdhani',sans-serif;
+  font-weight:600; font-size:13px; letter-spacing:1px; text-transform:uppercase;
+  cursor:pointer; transition:all 0.2s;
+}
+.game-btn-voltar:hover { border-color:var(--g); color:var(--g); }
+@media(max-width:500px){
+  .game-reveal-grid { grid-template-columns:1fr; }
+  .game-confronto-inner { gap:6px; }
+  .game-time-nome { font-size:11px; }
+}
 </style>
 </head>
 <body>
@@ -580,6 +931,7 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
     <div class="menu-grid">
       <div class="menu-card priority" onclick="openPanel('formacao')"><div class="menu-badge new">NOVO</div><span class="menu-icon">🎓</span><div class="menu-name">Formação</div><div class="menu-desc">Trilha de módulos — estude e seja certificado</div></div>
       <div class="menu-card priority" onclick="openPanel('novidades')"><div class="menu-badge new">NOVO</div><span class="menu-icon">⚡</span><div class="menu-name">Novidades</div><div class="menu-desc">Forerunner 70 e 170 — os lançamentos 2026</div></div>
+      <div class="menu-card priority" onclick="openPanel('games')"><div class="menu-badge new">GAME</div><span class="menu-icon">⚔️</span><div class="menu-name">Games</div><div class="menu-desc">Duelo de Especificações — Instinct 3 vs Instinct E</div></div>
       <div class="menu-card" onclick="openPanel('quizzes')"><span class="menu-icon">📝</span><div class="menu-name">Quizzes</div><div class="menu-desc">Avaliações técnicas — IPX, Atendimento, Instinct 3</div></div>
       <div class="menu-card" onclick="openPanel('certificacao')"><span class="menu-icon">🏅</span><div class="menu-name">Certificação</div><div class="menu-desc">Sua trilha: Explorador → Triatleta</div></div>
       <div class="menu-card" onclick="openPanel('ranking')"><span class="menu-icon">🏆</span><div class="menu-name">Ranking</div><div class="menu-desc">Pódio da equipe e pontuação</div></div>
@@ -2973,6 +3325,407 @@ if('serviceWorker' in navigator){
 
   </div>
 </div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- GAMES — DUELO DE ESPECIFICAÇÕES                                -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="panel" id="panel-games">
+  <div class="panel-header">
+    <button class="back-btn" onclick="goHome()">← Início</button>
+    <div class="panel-title">⚔️ <span>Games</span> — Duelo de Especificações</div>
+  </div>
+  <div class="panel-body">
+
+    <!-- TELA 0 — ABERTURA (visível por padrão) -->
+    <div id="g-abertura">
+      <div class="game-abertura">
+        <div class="game-abertura-inner">
+          <div class="gab-eyebrow">proparts training hub · garmin · duelo de especificações</div>
+          <div class="gab-titulo">
+            <span class="red">INSTINCT 3</span>
+            <span class="vs-sep">vs</span>
+            <span class="blue">INSTINCT E</span>
+          </div>
+          <div class="gab-sub">
+            Você conhece mesmo as diferenças?<br>
+            Teste seus conhecimentos e mostre que sabe indicar o relógio certo.
+          </div>
+          <div class="gab-cards">
+            <div class="gab-card red-card">
+              <span class="gab-card-emoji">⌚</span>
+              <div class="gab-card-nome">Instinct 3</div>
+              <div class="gab-card-tag">AMOLED · Premium</div>
+            </div>
+            <div class="gab-vs-badge">VS</div>
+            <div class="gab-card blue-card">
+              <span class="gab-card-emoji">⌚</span>
+              <div class="gab-card-nome">Instinct E</div>
+              <div class="gab-card-tag">MIP · Econômico</div>
+            </div>
+          </div>
+          <div class="gab-rules">
+            <div class="gab-rule">🎯 10 rodadas</div>
+            <div class="gab-rule">⚡ Qual relógio leva a melhor?</div>
+            <div class="gab-rule">📖 Explicação em cada rodada</div>
+            <div class="gab-rule">🏆 Veja sua nota no final</div>
+          </div>
+          <button class="btn-iniciar-game" onclick="gIniciar()">⚔️ Iniciar Duelo</button>
+        </div>
+      </div>
+      <div class="tip">💡 <strong>Dica:</strong> Use este duelo para fixar as diferenças entre os dois modelos antes de um atendimento. Cada rodada traz uma explicação detalhada independente do acerto.</div>
+    </div>
+
+    <!-- TELA 1 — PARTIDA -->
+    <div id="g-partida" style="display:none;">
+      <div class="game-rodada-wrap">
+
+        <!-- barra de progresso -->
+        <div class="game-prog-strip">
+          <div class="game-prog-label" id="gLabelRodada">Rodada 1/10</div>
+          <div class="game-prog-bar-bg">
+            <div class="game-prog-bar-fill" id="gBarra"></div>
+          </div>
+          <div class="game-prog-score" id="gPontos">0 ✓</div>
+        </div>
+
+        <!-- badge de rodada -->
+        <div class="game-rodada-badge">
+          <span class="game-rodada-num" id="gRodadaNum">RODADA 1</span>
+        </div>
+
+        <!-- confronto visual -->
+        <div class="game-confronto">
+          <div class="game-confronto-inner">
+            <div class="game-time">
+              <span class="game-time-emoji">⌚</span>
+              <div class="game-time-nome red">INSTINCT 3</div>
+            </div>
+            <div class="game-confronto-vs">VS</div>
+            <div class="game-time">
+              <span class="game-time-emoji">⌚</span>
+              <div class="game-time-nome blue">INSTINCT E</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- categoria -->
+        <div class="game-categoria">
+          <span class="game-cat-icone" id="gCatIcone">📡</span>
+          <div>
+            <div class="game-cat-nome" id="gCatNome">Categoria</div>
+            <div class="game-cat-descr" id="gCatDescr">Descrição</div>
+          </div>
+        </div>
+
+        <!-- pergunta -->
+        <div class="game-pergunta">
+          <div class="game-perg-label">⚡ Qual relógio leva a vantagem nesse critério?</div>
+          <div class="game-perg-texto" id="gPergunta">...</div>
+        </div>
+
+        <!-- opções -->
+        <div class="game-opcoes" id="gOpcoes">
+          <button class="game-opcao opt-red" id="gBtnI3" onclick="gResponder('instinct3')">
+            <span class="game-opcao-icone">⌚</span>
+            <span class="game-opcao-nome red">Instinct 3</span>
+          </button>
+          <button class="game-opcao opt-blue" id="gBtnIE" onclick="gResponder('instincte')">
+            <span class="game-opcao-icone">⌚</span>
+            <span class="game-opcao-nome blue">Instinct E</span>
+          </button>
+          <button class="game-opcao opt-green" id="gBtnAmbos" onclick="gResponder('ambos')">
+            <span class="game-opcao-icone">🤝</span>
+            <span class="game-opcao-nome green">Ambos iguais</span>
+          </button>
+          <button class="game-opcao opt-orange" id="gBtnNenhum" onclick="gResponder('nenhum')">
+            <span class="game-opcao-icone">❌</span>
+            <span class="game-opcao-nome orange">Nenhum dos dois</span>
+          </button>
+        </div>
+
+        <!-- feedback -->
+        <div class="game-feedback" id="gFeedback">
+          <span class="game-fb-icone" id="gFbIcone">✅</span>
+          <div id="gFbTexto"></div>
+        </div>
+
+        <!-- reveal -->
+        <div class="game-reveal" id="gReveal">
+          <div class="game-reveal-label">📊 Comparativo desta categoria</div>
+          <div class="game-reveal-grid" id="gRevealGrid"></div>
+        </div>
+
+        <!-- próxima -->
+        <button class="game-btn-proxima" id="gBtnProxima" onclick="gProxima()">
+          Próxima Rodada →
+        </button>
+
+      </div>
+    </div>
+
+    <!-- TELA 2 — RESULTADO -->
+    <div id="g-resultado" style="display:none;">
+      <div class="game-resultado visivel">
+        <span class="game-res-trofeu" id="gResTrofeu">🏆</span>
+        <div class="game-res-titulo" id="gResTitulo">Parabéns!</div>
+        <div class="game-res-sub" id="gResSub">Você completou o Duelo</div>
+
+        <div class="game-res-nota">
+          <div class="game-res-nota-label">⚡ Sua pontuação final</div>
+          <div class="game-res-nota-valor" id="gResNota">0/10</div>
+          <div class="game-res-nota-nivel" id="gResNivel">Especialista Garmin</div>
+        </div>
+
+        <div class="game-placar">
+          <div class="game-placar-col vermelho">
+            <span class="game-placar-emoji">⌚</span>
+            <div class="game-placar-nome red">INSTINCT 3</div>
+            <div class="game-placar-num red" id="gPlacarI3">—</div>
+            <div class="game-placar-label">vezes vencedor</div>
+          </div>
+          <div class="game-placar-col centro">
+            <div class="game-placar-vs">VS</div>
+          </div>
+          <div class="game-placar-col azul">
+            <span class="game-placar-emoji">⌚</span>
+            <div class="game-placar-nome blue">INSTINCT E</div>
+            <div class="game-placar-num blue" id="gPlacarIE">—</div>
+            <div class="game-placar-label">vezes vencedor</div>
+          </div>
+        </div>
+
+        <div style="text-align:left;margin-bottom:14px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:8px;">📋 Revisão por rodada</div>
+          <div class="game-revisao" id="gRevisao"></div>
+        </div>
+
+        <button class="game-btn-reiniciar" onclick="gIniciar()">🔄 Jogar novamente</button>
+        <button class="game-btn-voltar" onclick="gVoltarAbertura()">← Voltar ao início do game</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// GAMES — DUELO DE ESPECIFICAÇÕES
+// ═══════════════════════════════════════════════════════
+
+const G_PERGUNTAS = [
+  {
+    cat:{ icone:'🖥️', nome:'Tipo de Tela', descr:'Tecnologia e qualidade de exibição' },
+    texto:'Qual relógio possui tela AMOLED colorida com suporte ao modo sempre ligado?',
+    gabarito:'instinct3',
+    acerto:'✅ Correto! O Instinct 3 tem tela AMOLED colorida de 1,2" com resolução 390×390 px e modo sempre ligado (Always-on Display). Também possui a função Mudança de Cor Vermelha para uso noturno.',
+    erro:'❌ É o Instinct 3. Ele tem tela AMOLED colorida de 1,2". O Instinct E usa tela monocromática MIP transfletiva, de duas janelas, excelente sob luz solar mas sem cores.',
+    reveal:{ i3:'<strong>AMOLED colorida</strong> · 1,2" · 390×390 px · modo sempre ligado', ie:'<strong>MIP monocromática</strong> · transfletiva · 176×176 px · visível sob sol' }
+  },
+  {
+    cat:{ icone:'🔋', nome:'Autonomia — Expedição GPS', descr:'Duração máxima com GPS ativo em expedição' },
+    texto:'Em modo de expedição com GPS ativo, qual relógio dura mais dias com uma única carga?',
+    gabarito:'instincte',
+    acerto:'✅ Exato! O Instinct E chega a 20 dias em modo expedição GPS, enquanto o Instinct 3 dura até 16 dias. A tela MIP consome muito menos energia nesse modo.',
+    erro:'❌ Neste critério específico o Instinct E leva vantagem: até 20 dias em expedição GPS, contra 16 dias do Instinct 3. A tela MIP consome menos energia que a AMOLED em uso prolongado.',
+    reveal:{ i3:'Expedição GPS: <strong>até 16 dias</strong>', ie:'Expedição GPS: <strong>até 20 dias</strong> ✓ (tela MIP economiza bateria)' }
+  },
+  {
+    cat:{ icone:'📡', nome:'Sistema de GPS', descr:'Precisão e tecnologia de posicionamento' },
+    texto:'Qual relógio possui GPS de banda dupla com tecnologia SatIQ™, que ajusta automaticamente os satélites para equilibrar precisão e economia de bateria?',
+    gabarito:'instinct3',
+    acerto:'✅ Certo! O Instinct 3 tem GPS multibanda com SatIQ™ — seleciona automaticamente entre satélites para maximizar precisão sem drenar a bateria. Ideal em ambientes difíceis como florestas e cidades.',
+    erro:'❌ É o Instinct 3. Ele tem GPS de banda dupla com SatIQ™. O Instinct E possui suporte multi-GNSS básico, sem a tecnologia de seleção automática de banda.',
+    reveal:{ i3:'<strong>GPS multibanda + SatIQ™</strong> · ajuste automático entre satélites', ie:'<strong>Multi-GNSS básico</strong> · sem seleção automática de banda' }
+  },
+  {
+    cat:{ icone:'💡', nome:'Lanterna Integrada', descr:'Iluminação embutida no próprio relógio' },
+    texto:'Qual relógio possui lanterna LED integrada com múltiplas intensidades e opção de luz vermelha para não prejudicar a visão noturna?',
+    gabarito:'instinct3',
+    acerto:'✅ Correto! Apenas o Instinct 3 tem lanterna LED integrada com intensidades variáveis e luz vermelha. O Instinct E não possui esse recurso.',
+    erro:'❌ A lanterna LED é exclusiva do Instinct 3. O Instinct E não tem esse recurso.',
+    reveal:{ i3:'Lanterna LED integrada ✓ · intensidades variáveis · luz vermelha disponível', ie:'Sem lanterna integrada ✗' }
+  },
+  {
+    cat:{ icone:'💤', nome:'Métricas Avançadas de Sono', descr:'Análise detalhada do descanso noturno' },
+    texto:'Qual relógio oferece Pontuação de Sono com insights detalhados sobre a qualidade do descanso?',
+    gabarito:'instinct3',
+    acerto:'✅ Correto! O Instinct 3 traz Pontuação de Sono com insights detalhados. O Instinct E monitora o sono, mas sem as métricas avançadas de pontuação e análise aprofundada.',
+    erro:'❌ A Pontuação de Sono com insights é exclusiva do Instinct 3. O Instinct E registra o sono, mas sem esse nível de análise.',
+    reveal:{ i3:'<strong>Pontuação de Sono + insights</strong> · análise detalhada', ie:'Monitoramento de sono básico · sem pontuação' }
+  },
+  {
+    cat:{ icone:'🏃', nome:'Corrida — Potência e Balanço', descr:'Métricas avançadas de performance na corrida' },
+    texto:'Qual relógio calcula a potência de corrida diretamente no pulso e inclui o balanço do tempo de contato com o solo?',
+    gabarito:'instinct3',
+    acerto:'✅ Correto! O Instinct 3 fornece Potência de Corrida e balanço do tempo de contato com o solo. O Instinct E oferece algumas dinâmicas de corrida, mas não inclui o balanço.',
+    erro:'❌ É o Instinct 3. Ele inclui Potência de Corrida e o balanço do tempo de contato com o solo. O Instinct E tem dinâmicas básicas, mas não chega nesse nível.',
+    reveal:{ i3:'Potência de Corrida ✓ · tempo de contato ✓ · <strong>balanço incluído</strong>', ie:'Dinâmicas de corrida básicas · sem potência · sem balanço' }
+  },
+  {
+    cat:{ icone:'⚙️', nome:'Material da Caixa', descr:'Resistência e acabamento físico do relógio' },
+    texto:'Qual relógio possui bisel reforçado com metal — combinação de polímero e alumínio?',
+    gabarito:'instinct3',
+    acerto:'✅ Isso mesmo! O Instinct 3 tem bisel de polímero reforçado com alumínio. O Instinct E usa apenas polímero reforçado com fibra, sendo mais leve mas sem o metal.',
+    erro:'❌ O bisel com alumínio é do Instinct 3. O Instinct E usa polímero reforçado com fibra — mais leve, porém sem componente metálico.',
+    reveal:{ i3:'Bisel de <strong>polímero + alumínio</strong> · mais robusto', ie:'<strong>Polímero reforçado com fibra</strong> · mais leve (48g vs 53g)' }
+  },
+  {
+    cat:{ icone:'💳', nome:'Pagamentos por Aproximação', descr:'Pagamento pelo pulso sem cartão' },
+    texto:'Qual dos dois modelos possui suporte a pagamentos por aproximação?',
+    gabarito:'instinct3',
+    acerto:'✅ Correto! O Instinct 3 possui pagamentos por aproximação (equivalente ao Garmin Pay). O Instinct E não traz essa funcionalidade.',
+    erro:'❌ O pagamento por aproximação é exclusivo do Instinct 3. O Instinct E não oferece esse recurso.',
+    reveal:{ i3:'Pagamentos por aproximação <strong>disponível</strong> ✓', ie:'Pagamentos por aproximação <strong>não disponível</strong> ✗' }
+  },
+  {
+    cat:{ icone:'⛰️', nome:'Sensores Compartilhados', descr:'Sensores presentes nos dois modelos' },
+    texto:'Altímetro barométrico, bússola eletrônica e termômetro — esses três sensores estão presentes em qual relógio?',
+    gabarito:'ambos',
+    acerto:'✅ Exato! Altímetro barométrico, bússola e termômetro estão presentes nos dois modelos. A diferença é que apenas o Instinct 3 possui giroscópio.',
+    erro:'❌ Esses três sensores estão presentes nos dois relógios! A diferença é o giroscópio, que é exclusivo do Instinct 3.',
+    reveal:{ i3:'Altímetro baro · bússola · termômetro · <strong>giroscópio ✓</strong>', ie:'Altímetro baro · bússola · termômetro · <strong>sem giroscópio</strong>' }
+  },
+  {
+    cat:{ icone:'🔋', nome:'Autonomia em Modo Relógio', descr:'Duração no uso cotidiano como smartwatch' },
+    texto:'Em modo smartwatch convencional, qual dos dois dura mais dias sem precisar carregar?',
+    gabarito:'instinct3',
+    acerto:'✅ Correto! Em modo relógio o Instinct 3 chega a 18 dias, contra 16 dias do Instinct E. No modo Economia, porém, o Instinct E vence com até 40 dias contra 24 do Instinct 3.',
+    erro:'❌ No modo smartwatch convencional o Instinct 3 surpreende: até 18 dias contra 16 do Instinct E. O Instinct E leva vantagem em modo Economia (40 dias) e em Expedição GPS (20 vs 16 dias).',
+    reveal:{ i3:'Smartwatch: <strong>até 18 dias</strong> ✓ · Always-on: até 7 dias · GPS: até 32h', ie:'Smartwatch: <strong>até 16 dias</strong> · Economia: até 40 dias ✓ · Expedição GPS: 20 dias ✓' }
+  }
+];
+
+// Estado do game
+let gRodada = 0, gAcertos = 0, gI3Vit = 0, gIEVit = 0;
+let gHistorico = [], gOrdem = [], gRespondeu = false;
+
+function gEmbaralhar(arr){ const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+
+function gMostrar(tela){
+  ['g-abertura','g-partida','g-resultado'].forEach(id=>{
+    document.getElementById(id).style.display='none';
+  });
+  document.getElementById(tela).style.display='block';
+  window.scrollTo(0,0);
+}
+
+function gIniciar(){
+  gRodada=0; gAcertos=0; gI3Vit=0; gIEVit=0; gHistorico=[];
+  gOrdem = gEmbaralhar([...Array(G_PERGUNTAS.length).keys()]).slice(0,10);
+  gMostrar('g-partida');
+  gCarregar();
+}
+
+function gCarregar(){
+  gRespondeu = false;
+  const p = G_PERGUNTAS[gOrdem[gRodada]];
+  const n = gRodada + 1;
+
+  document.getElementById('gLabelRodada').textContent = `Rodada ${n}/10`;
+  document.getElementById('gBarra').style.width = `${(gRodada/10)*100}%`;
+  document.getElementById('gPontos').textContent = `${gAcertos} ✓`;
+  document.getElementById('gRodadaNum').textContent = `RODADA ${n}`;
+  document.getElementById('gCatIcone').textContent = p.cat.icone;
+  document.getElementById('gCatNome').textContent = p.cat.nome;
+  document.getElementById('gCatDescr').textContent = p.cat.descr;
+  document.getElementById('gPergunta').textContent = p.texto;
+
+  ['gBtnI3','gBtnIE','gBtnAmbos','gBtnNenhum'].forEach(id=>{
+    document.getElementById(id).className = document.getElementById(id).className.replace(/estado-\w+|bloqueado/g,'').trim();
+  });
+
+  const fb = document.getElementById('gFeedback');
+  fb.className = 'game-feedback';
+  const rv = document.getElementById('gReveal');
+  rv.className = 'game-reveal';
+  document.getElementById('gBtnProxima').className = 'game-btn-proxima';
+}
+
+function gResponder(escolha){
+  if(gRespondeu) return;
+  gRespondeu = true;
+
+  const p = G_PERGUNTAS[gOrdem[gRodada]];
+  const acertou = escolha === p.gabarito;
+
+  if(p.gabarito==='instinct3') gI3Vit++;
+  else if(p.gabarito==='instincte') gIEVit++;
+  if(acertou) gAcertos++;
+
+  gHistorico.push({ texto:p.texto, gabarito:p.gabarito, acertou });
+
+  const mapa = { instinct3:'gBtnI3', instincte:'gBtnIE', ambos:'gBtnAmbos', nenhum:'gBtnNenhum' };
+  ['gBtnI3','gBtnIE','gBtnAmbos','gBtnNenhum'].forEach(id=>document.getElementById(id).classList.add('bloqueado'));
+
+  const btnEsc = document.getElementById(mapa[escolha]);
+  const btnCerto = document.getElementById(mapa[p.gabarito]);
+  if(acertou){ btnEsc.classList.add('estado-certo'); }
+  else { btnEsc.classList.add('estado-errado'); btnCerto.classList.add('estado-revelado'); }
+
+  const fb = document.getElementById('gFeedback');
+  document.getElementById('gFbIcone').textContent = acertou ? '✅' : '❌';
+  document.getElementById('gFbTexto').innerHTML = acertou ? p.acerto : p.erro;
+  fb.className = `game-feedback visivel ${acertou?'fb-certo':'fb-errado'}`;
+
+  document.getElementById('gRevealGrid').innerHTML = `
+    <div class="game-reveal-item">
+      <div class="game-reveal-nome red">Instinct 3</div>
+      <div class="game-reveal-valor">${p.reveal.i3}</div>
+    </div>
+    <div class="game-reveal-item">
+      <div class="game-reveal-nome blue">Instinct E</div>
+      <div class="game-reveal-valor">${p.reveal.ie}</div>
+    </div>`;
+  document.getElementById('gReveal').className = 'game-reveal visivel';
+
+  const bp = document.getElementById('gBtnProxima');
+  bp.textContent = gRodada < 9 ? 'Próxima Rodada →' : 'Ver Resultado Final →';
+  bp.className = 'game-btn-proxima visivel';
+
+  document.getElementById('gPontos').textContent = `${gAcertos} ✓`;
+  setTimeout(()=>{ fb.scrollIntoView({behavior:'smooth',block:'nearest'}); }, 100);
+}
+
+function gProxima(){
+  gRodada++;
+  if(gRodada >= 10){ gMostrarResultado(); }
+  else { window.scrollTo({top:0,behavior:'smooth'}); setTimeout(gCarregar, 200); }
+}
+
+function gMostrarResultado(){
+  gMostrar('g-resultado');
+  let trofeu, titulo, sub;
+  if(gAcertos===10){ trofeu='🏆'; titulo='Especialista Garmin!'; sub='Pontuação perfeita — você domina os dois modelos de ponta a ponta.'; }
+  else if(gAcertos>=8){ trofeu='🥇'; titulo='Vendedor Expert!'; sub='Excelente! Você conhece muito bem os dois modelos.'; }
+  else if(gAcertos>=6){ trofeu='🥈'; titulo='Bom desempenho!'; sub='Você está no caminho certo. Revise as rodadas que errou.'; }
+  else if(gAcertos>=4){ trofeu='🥉'; titulo='Em treinamento!'; sub='Revise o comparativo e tente de novo para melhorar.'; }
+  else { trofeu='💪'; titulo='Continue estudando!'; sub='Releia as especificações e desafie-se novamente.'; }
+
+  document.getElementById('gResTrofeu').textContent = trofeu;
+  document.getElementById('gResTitulo').textContent = titulo;
+  document.getElementById('gResSub').textContent = sub;
+  document.getElementById('gResNota').textContent = `${gAcertos}/10`;
+
+  const niveis = ['🔴 Iniciante','🟡 Aprendiz','🟠 Intermediário','🟢 Avançado','🔵 Expert','⭐ Especialista'];
+  document.getElementById('gResNivel').textContent = niveis[Math.min(Math.floor(gAcertos/2),5)];
+  document.getElementById('gPlacarI3').textContent = gI3Vit;
+  document.getElementById('gPlacarIE').textContent = gIEVit;
+
+  const nomes = { instinct3:'Instinct 3', instincte:'Instinct E', ambos:'Ambos iguais', nenhum:'Nenhum dos dois' };
+  document.getElementById('gRevisao').innerHTML = gHistorico.map((h,i)=>`
+    <div class="game-rev-item ${h.acertou?'certo':''}">
+      <div class="game-rev-num ${h.acertou?'ok':''}">${h.acertou?'✓':i+1}</div>
+      <div class="game-rev-texto">${h.texto.substring(0,65)}${h.texto.length>65?'…':''}</div>
+      <div class="game-rev-resp ${h.acertou?'certo':'errado'}">${h.acertou?'✓':'✗'} ${nomes[h.gabarito]}</div>
+    </div>`).join('');
+
+  document.getElementById('gBarra').style.width='100%';
+}
+
+function gVoltarAbertura(){
+  gMostrar('g-abertura');
+}
+</script>
 
 </body>
 </html>
