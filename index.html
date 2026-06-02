@@ -852,14 +852,14 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
         <div class="bs-card-btn">Acessar Portal →</div>
       </div>
 
-      <!-- SHOKZ — BLOQUEADO -->
-      <div class="bs-card locked shokz-card">
-        <div class="bs-card-badge soon">Em breve</div>
+      <!-- SHOKZ — DISPONÍVEL -->
+      <div class="bs-card available shokz-card" onclick="window.location.href='shokz_portal.html'">
+        <div class="bs-card-badge live">✦ Ativo</div>
         <div class="bs-card-stripe"></div>
         <div class="bs-card-logo">🎧</div>
         <div class="bs-card-name">Shokz</div>
-        <div class="bs-card-desc">Fones de condução óssea — linha OpenRun, OpenFit e mais. Portal em construção.</div>
-        <div class="bs-card-lock">🔒 Bloqueado</div>
+        <div class="bs-card-desc">Fones de condução óssea — linha OpenRun, OpenFit e mais.</div>
+        <div class="bs-card-btn">Acessar Portal →</div>
       </div>
     </div>
 
@@ -1529,15 +1529,16 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
         <div style="font-size:20px;color:#7c3aed;font-weight:700;flex-shrink:0;">→</div>
       </div>
     </div>
-    <div class="card" style="border-left:4px solid var(--border);margin-bottom:14px;opacity:0.5;">
+    <div class="card" style="border-left:4px solid var(--warn);margin-bottom:14px;cursor:pointer;" onclick="openPanel('concorrentes-modulo')">
       <div style="display:flex;align-items:center;gap:14px;">
         <div style="font-size:36px;">⚔️</div>
         <div style="flex:1;">
-          <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:2px;">Módulo 4 — Em breve</div>
+          <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--warn);margin-bottom:2px;">Módulo 4</div>
           <div class="card-title" style="margin-bottom:4px;">Concorrentes & Objeções</div>
-          <p style="font-size:13px;color:var(--text3);line-height:1.5;">Apple Watch, Polar, Coros — argumentação técnica e como fechar a venda.</p>
+          <p style="font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:8px;">Apple Watch, Polar, Coros — argumentação técnica, como contornar objeções e fechar a venda.</p>
+          <div><span class="tag blue">12 questões</span> <span class="tag green">+40 pts aprovado</span> <span class="tag gold">+10 pts nota máxima</span></div>
         </div>
-        <div style="font-size:20px;">🔒</div>
+        <div style="font-size:20px;color:var(--warn);font-weight:700;flex-shrink:0;">→</div>
       </div>
     </div>
     <div class="tip">💡 Novos módulos são liberados conforme a trilha evolui. Complete os disponíveis e acumule pontos no ranking! Para os quizzes de avaliação, acesse a aba <strong>Quizzes</strong> no menu principal.</div>
@@ -2684,7 +2685,23 @@ function revealModuleQuiz(wrapId, initFn) {
   if (initFn === 'initQuiz') initQuiz();
   else if (initFn === 'initQuiz2') initQuiz2();
   else if (initFn === 'initQuiz3') initQuiz3();
+  else if (initFn === 'initQuiz4') initQuiz4();
   wrap.scrollIntoView({behavior: 'smooth', block: 'start'});
+}
+
+function m4Toggle(id){
+  const card = document.getElementById(id);
+  if(!card) return;
+  const isOpen = card.classList.contains('open');
+  // fechar todos
+  document.querySelectorAll('.m4-brand-card').forEach(c => c.classList.remove('open'));
+  if(!isOpen) card.classList.add('open');
+}
+
+function m4ObjToggle(id){
+  const obj = document.getElementById(id);
+  if(!obj) return;
+  obj.classList.toggle('open');
 }
 
 // ── QUIZ MÓDULO 3 DATA ─────────────────────────────────────────
@@ -2752,12 +2769,263 @@ async function registerResult3(pct){
   }catch(err){btn.textContent='Registrar Conclusão ✓';btn.disabled=false;alert('Erro ao enviar. Verifique sua conexão.');}
 }
 
+// ── QUIZ MÓDULO 4 — CENÁRIOS DE VENDA ──────────────────────────
+const scenariosM4 = [
+  {
+    // correta posição 0 (A)
+    tag:'🍎 Apple Watch',
+    context:'Um casal entra na loja. O marido quer comprar um relógio pra esposa começar a correr. Ela usa iPhone e fala logo de cara: "Eu tava pensando no Apple Watch, não é mais fácil já que uso iPhone?"',
+    question:'Qual é a melhor forma de conduzir essa conversa?',
+    opts:[
+      'Perguntar quantos dias por semana ela pretende treinar e mostrar, a partir disso, onde o Garmin faz mais sentido pra ela',
+      'Concordar — já que ela usa iPhone, o Apple Watch realmente integra melhor',
+      'Falar direto que o Apple Watch não serve pra esporte e mostrar o Forerunner 265',
+      'Ignorar a comparação e apresentar os modelos disponíveis sem contexto'
+    ],
+    correct:0,
+    why:'A pergunta sobre a rotina dela direciona naturalmente a conversa. Quando o cliente entende que vai correr 3x por semana, carregar o relógio todo dia vira um incômodo real — e aí a bateria do Garmin faz sentido sem você precisar atacar o Apple Watch.',
+    dica:'Perguntas abertas sobre a rotina do cliente valem mais do que qualquer argumento técnico.'
+  },
+  {
+    // correta posição 3 (D)
+    tag:'🍎 Apple Watch — Compatibilidade',
+    context:'Um cliente de uns 30 anos, visual despojado, está olhando os modelos na vitrine. Você chega perto e ele fala: "Só uso iPhone. Não seria melhor o Apple Watch pra sincronizar direto?"',
+    question:'Como você responde sem perder a venda?',
+    opts:[
+      'Concordar que pra quem tem iPhone o Apple Watch é a escolha mais lógica',
+      'Explicar o protocolo Bluetooth e as diferenças técnicas de sincronização',
+      'Dizer que o Apple Watch tem muitas limitações e que ele vai se arrepender',
+      'Mostrar que o Garmin Connect funciona perfeitamente no iPhone — e que a diferença real aparece no treino, na bateria e nos dados'
+    ],
+    correct:3,
+    why:'O cliente está com um argumento de compatibilidade — que é real, mas resolve fácil. A resposta certa valida o ponto (sim, o Garmin funciona com iPhone) e redireciona pro que diferencia de verdade: bateria e análise de treino.',
+    dica:'Nunca deixe um argumento técnico do cliente no ar sem responder. Valide e redirecione.'
+  },
+  {
+    // correta posição 1 (B)
+    tag:'🔵 Polar — Fidelidade',
+    context:'Uma mulher em roupa de corrida entra na loja. Ela fala com segurança: "Usei Polar por 5 anos, quero ver as opções de vocês mas honestamente ainda tô na dúvida."',
+    question:'Qual é a abordagem que constrói confiança e aumenta a chance de venda?',
+    opts:[
+      'Dizer que a Polar ficou pra trás e que ela vai notar a diferença logo de cara',
+      'Reconhecer o histórico dela com a Polar, perguntar o que mais usa no dia a dia e mostrar o que o Garmin acrescenta — sem diminuir o que ela já teve',
+      'Oferecer um desconto direto pra fechar na hora, antes que ela vá embora',
+      'Falar bem da Polar e sugerir que ela volte quando tiver mais decidida'
+    ],
+    correct:1,
+    why:'Quem já usou Polar por 5 anos entende de treino. Atacar a marca anterior cria resistência. O caminho é respeitar o histórico, entender o que ela valoriza e mostrar o que o Garmin acrescenta — FirstBeat, ecossistema, suporte presencial. Ela decide com segurança.',
+    dica:'Atacar a marca que o cliente usou é atacar a escolha que ele mesmo fez. Nunca faça isso.'
+  },
+  {
+    // correta posição 2 (C)
+    tag:'⚡ Coros — Preço',
+    context:'Um jovem está com o celular na mão comparando preços. Ele mostra a tela pra você: "Olha, esse Coros aqui tem as mesmas funcionalidades e custa R$800 a menos. Por que eu pagaria mais no Garmin?"',
+    question:'Como você responde ao argumento de preço sem soar defensivo?',
+    opts:[
+      'Dizer que o Coros tem qualidade inferior e que preço baixo tem um motivo',
+      'Oferecer parcelamento extra pra chegar no mesmo valor e fechar na hora',
+      'Reconhecer a diferença de preço e mostrar o que justifica o investimento: 35 anos de algoritmos, ecossistema completo e suporte presencial aqui na Proparts',
+      'Ignorar a comparação e falar das especificações técnicas do Garmin'
+    ],
+    correct:2,
+    why:'O argumento de preço é legítimo — não dá pra ignorar ou fingir que não existe. A resposta certa reconhece a diferença e apresenta o valor real: algoritmos maduros, suporte local e valor de revenda. O cliente decide com informação completa.',
+    dica:'Nunca ataque o produto mais barato. Mostre o valor do mais caro.'
+  },
+  {
+    // correta posição 0 (A)
+    tag:'⚡ Coros — Trail',
+    context:'Um cliente que parece atleta experiente fala: "Vi um review no YouTube dizendo que o Coros Vertix 3 é melhor que qualquer Garmin pra corrida de montanha. O criador do canal correu 100km com ele."',
+    question:'Como você lida com um argumento baseado em review externo?',
+    opts:[
+      'Validar que o Coros tem bons modelos de trail e mostrar onde o Fenix 8 ou Instinct 3 vão além: certificação MIL-STD-810, altímetro barométrico e bateria de semanas',
+      'Dizer que o criador do canal provavelmente foi patrocinado pela marca',
+      'Concordar com o review e explicar que o Garmin é melhor pra outros esportes',
+      'Falar que YouTube não é fonte confiável e que o cliente não deve se basear nisso'
+    ],
+    correct:0,
+    why:'Desacreditar o review cria atrito — o cliente pesquisou, achou relevante. A abordagem certa é validar o Coros como concorrente sério e mostrar onde o Garmin vai além com dados concretos. Quem conhece o produto vende com confiança, não com ceticismo.',
+    dica:'Atacar a fonte do cliente é atacar o cliente. Use os fatos do produto a seu favor.'
+  },
+  {
+    // correta posição 3 (D)
+    tag:'🌀 Samsung — Android',
+    context:'Um homem com Galaxy S24 na mão está na loja. Ele fala: "Tenho Samsung, então o Galaxy Watch não seria mais lógico? Tudo integra direto."',
+    question:'Como você conduz sem empurrar?',
+    opts:[
+      'Dizer que o Galaxy Watch não presta pra treino e que o Garmin é claramente melhor',
+      'Concordar que pra quem tem Samsung o Galaxy Watch faz mais sentido',
+      'Mostrar direto os modelos mais avançados do Garmin sem perguntar sobre a rotina dele',
+      'Perguntar se ele pratica esporte com frequência — e mostrar que o Garmin Connect funciona perfeitamente no Android, com bateria de dias e análise de treino real'
+    ],
+    correct:3,
+    why:'A pergunta sobre a rotina esportiva qualifica o cliente. Se ele pratica esporte de verdade, a bateria de 1–2 dias do Galaxy Watch vira um problema real. Se ele quer mais smartwatch do que relógio esportivo, talvez o Galaxy Watch seja a escolha certa mesmo — e honestidade aqui gera confiança.',
+    dica:'Qualifique antes de argumentar. A pergunta certa vale mais que o melhor argumento.'
+  },
+  {
+    // correta posição 2 (C)
+    tag:'🛡️ Objeção — Online',
+    context:'Uma mulher de uns 40 anos viu o Forerunner 265 que você mostrou e gostou. Mas na hora H ela pega o celular e fala: "Deixa eu ver o preço na Amazon antes. Às vezes tá bem mais barato."',
+    question:'Qual é a melhor reação nesse momento?',
+    opts:[
+      'Pedir que ela guarde o celular e fale que os preços são os mesmos',
+      'Sugerir que ela compre online mesmo se achar mais barato — e volte se tiver problema',
+      'Deixar ela pesquisar à vontade e reforçar o que a compra presencial inclui: configuração na hora, garantia de 2 anos com assistência técnica aqui mesmo e suporte quando precisar',
+      'Alertar que produtos na Amazon podem não ter garantia oficial no Brasil'
+    ],
+    correct:2,
+    why:'Proibir ou ignorar a pesquisa afasta. A resposta certa reforça o valor tangível da compra presencial sem inventar riscos sobre o online. Suporte presencial, configuração na hora e garantia oficial são argumentos reais — use-os com confiança.',
+    dica:'Nunca crie medo sobre o online sem embasamento. Venda o seu diferencial, não o medo do concorrente.'
+  },
+  {
+    // correta posição 1 (B)
+    tag:'🛡️ Objeção — "Vou pensar"',
+    context:'Você passou 20 minutos com um cliente, mostrou dois modelos, ele gostou do Venu 4. Na hora de fechar ele fala: "Cara, adorei o relógio mas preciso pensar um pouco. Posso voltar amanhã?"',
+    question:'O que você faz nesse momento?',
+    opts:[
+      'Avisar que o estoque é limitado e que o modelo pode não estar disponível amanhã',
+      'Respeitar a decisão, anotar o modelo e passar o WhatsApp — para que ele possa tirar dúvidas antes de voltar',
+      'Deixar ele ir sem falar mais nada para não pressionar',
+      'Oferecer um desconto extra na hora para tentar fechar antes que ele saia'
+    ],
+    correct:1,
+    why:'Pressão artificial — estoque limitado, preço subindo — queima a relação e ainda pode ser mentira. A resposta certa mantém o canal aberto sem forçar. O WhatsApp resolve muita dúvida que o cliente teria sozinho em casa, e aumenta muito a chance de fechar.',
+    dica:'Quem realmente quer compra. Sua função é estar disponível quando ele decidir — não criar urgência falsa.'
+  }
+];
+
+let m4Idx=0, m4Score=0, m4Answered=false, m4Wrong=[];
+
+function initQuiz4(){
+  m4Idx=0; m4Score=0; m4Answered=false; m4Wrong=[];
+  renderM4();
+}
+
+function renderM4(){
+  const s = scenariosM4[m4Idx];
+  const total = scenariosM4.length;
+  const pct = Math.round(m4Idx / total * 100);
+  const bar = document.getElementById('m4QuizBar');
+  if(bar) bar.style.width = pct + '%';
+  const lbl = document.getElementById('m4QuizLabel');
+  if(lbl) lbl.textContent = 'Cenário ' + (m4Idx+1) + ' de ' + total;
+  const sc = document.getElementById('m4QuizScore');
+  if(sc) sc.textContent = m4Score + ' acerto' + (m4Score !== 1 ? 's' : '');
+  const c = document.getElementById('m4QuizContent');
+  if(!c) return;
+  c.innerHTML = `
+    <div class="m4-scenario-badge">📍 ${s.tag}</div>
+    <div class="m4-scenario-box">
+      <div class="m4-scenario-box-label">Situação</div>
+      <div class="m4-scenario-text">${s.context}</div>
+    </div>
+    <div class="m4-scenario-question">${s.question}</div>
+    <div class="m4-scenario-options">
+      ${s.opts.map((o,i) => `<button class="m4-scenario-opt" onclick="answerM4(${i})">${String.fromCharCode(65+i)}) ${o}</button>`).join('')}
+    </div>
+    <div class="m4-feedback" id="m4Fb"></div>
+    <div class="m4-quiz-nav"><button class="m4-quiz-btn" id="m4Next" onclick="nextM4()" disabled>${m4Idx < total-1 ? 'Próximo cenário →' : 'Ver resultado'}</button></div>
+  `;
+  m4Answered = false;
+}
+
+function answerM4(i){
+  if(m4Answered) return;
+  m4Answered = true;
+  const s = scenariosM4[m4Idx];
+  const opts = document.querySelectorAll('#m4QuizContent .m4-scenario-opt');
+  opts.forEach(b => b.classList.add('disabled'));
+  const fb = document.getElementById('m4Fb');
+  if(i === s.correct){
+    opts[i].classList.add('correct');
+    fb.className = 'm4-feedback show ok';
+    fb.innerHTML = '✅ <strong>Boa escolha!</strong> ' + s.why + (s.dica ? `<div class="m4-feedback-dica">💡 ${s.dica}</div>` : '');
+    m4Score++;
+  } else {
+    opts[i].classList.add('wrong');
+    opts[s.correct].classList.add('correct');
+    fb.className = 'm4-feedback show fail';
+    fb.innerHTML = '❌ <strong>Não seria o melhor caminho.</strong> ' + s.why + (s.dica ? `<div class="m4-feedback-dica">💡 ${s.dica}</div>` : '');
+    m4Wrong.push('Cenário ' + (m4Idx+1) + ' — ' + s.tag);
+  }
+  const btn = document.getElementById('m4Next');
+  if(btn) btn.disabled = false;
+  const sc = document.getElementById('m4QuizScore');
+  if(sc) sc.textContent = m4Score + ' acerto' + (m4Score !== 1 ? 's' : '');
+}
+
+function nextM4(){
+  m4Idx++;
+  if(m4Idx < scenariosM4.length) renderM4();
+  else showResultM4();
+}
+
+function showResultM4(){
+  const total = scenariosM4.length;
+  const pct = Math.round(m4Score / total * 100);
+  const passed = pct >= 70;
+  const bar = document.getElementById('m4QuizBar');
+  if(bar) bar.style.width = '100%';
+  const lbl = document.getElementById('m4QuizLabel');
+  if(lbl) lbl.textContent = 'Resultado final';
+  const sc = document.getElementById('m4QuizScore');
+  if(sc) sc.textContent = m4Score + ' de ' + total;
+  const c = document.getElementById('m4QuizContent');
+  if(!c) return;
+  const trophy = pct === 100 ? '🏆' : passed ? '🎉' : '📚';
+  const title = pct === 100 ? 'Perfeito! Nota máxima!' : passed ? 'Aprovado!' : 'Continue praticando';
+  const msg = passed
+    ? 'Você está pronto pra lidar com qualquer comparação na loja.'
+    : 'Revise os cenários que errou e tente de novo — na prática, cada situação vai ficando mais natural.';
+  c.innerHTML = `
+    <div class="m4-result">
+      <span class="m4-result-trophy">${trophy}</span>
+      <div class="m4-result-title" style="color:${passed?'var(--acc)':'var(--warn);'}">${title}</div>
+      <div class="m4-result-score">Você acertou <strong>${m4Score}</strong> de ${total} cenários — <strong>${pct}%</strong></div>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:20px;line-height:1.6;">${msg}</p>
+      ${passed ? `
+        <div class="register-form" id="registerForm4" style="text-align:left;">
+          <label class="register-label">📝 Registre sua conclusão — informe seu nome completo</label>
+          <input type="text" class="register-input" id="regName4" placeholder="Ex: Samara Pereira" maxlength="60" onkeydown="if(event.key==='Enter') registerResult4(${pct})">
+          <button class="register-btn" onclick="registerResult4(${pct})">Registrar Conclusão ✓</button>
+          <div class="register-success" id="regSuccess4">✅ Registrado com sucesso!</div>
+        </div>` : ''}
+      <div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+        ${!passed ? '<button class="m4-quiz-btn" style="background:var(--text2);" onclick="initQuiz4()">↺ Tentar novamente</button>' : ''}
+        <button class="m4-quiz-btn" onclick="openPanel(\'formacao\')">← Formação</button>
+      </div>
+    </div>
+  `;
+}
+
+async function registerResult4(pct){
+  const nameInput = document.getElementById('regName4');
+  const name = nameInput ? nameInput.value.trim() : '';
+  if(!name){ if(nameInput) nameInput.style.borderColor='var(--warn)'; return; }
+  const btn = document.querySelector('#registerForm4 .register-btn');
+  if(!btn) return;
+  btn.textContent = 'Enviando...'; btn.disabled = true;
+  const now = new Date();
+  const data = now.toLocaleDateString('pt-BR');
+  const hora = now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  const status = pct >= 70 ? '✅ APROVADO' : '❌ Não atingiu 70%';
+  const erradas = m4Wrong.length > 0 ? '\n\n❌ Cenários errados:\n' + m4Wrong.map(q=>'• '+q).join('\n') : '\n\n✅ Todos os cenários corretos!';
+  const message = `👤 Colaborador: ${name}\n📚 Módulo: Módulo 4 — Concorrentes & Objeções\n🎯 Nota: ${pct}%\n✅ Acertos: ${m4Score} de ${scenariosM4.length}\n📅 Data: ${data}\n⏰ Hora: ${hora}\n📊 Status: ${status}${erradas}`;
+  try{
+    await emailjs.send(EMAILJS_SERVICE, EMAILJS_TEMPLATE, {nome:name, modulo:'Módulo 4 — Concorrentes & Objeções', nota:pct+'%', acertos:m4Score+' de '+scenariosM4.length, data, hora, status, message});
+    const form = document.getElementById('registerForm4'); if(form) form.style.display='none';
+    const success = document.getElementById('regSuccess4'); if(success) success.style.display='block';
+  } catch(err){
+    btn.textContent='Registrar Conclusão ✓'; btn.disabled=false; alert('Erro ao enviar. Verifique sua conexão.');
+  }
+}
+
 // Additional init hooks
 const _origOpenPanel = openPanel;
 openPanel = function(id) {
   _origOpenPanel(id);
   if(id === 'quiz-ipx') initQuizIPX();
   if(id === 'quiz-atendimento') initQuizAT();
+  if(id === 'concorrentes-modulo') { const w=document.getElementById('quizWrap4'); if(w) w.style.display='none'; }
   if(id === 'quiz-instinct3') initQuizI3();
   if(id === 'quiz-tecnico') initQuizTEC();
 };
@@ -3321,6 +3589,562 @@ if('serviceWorker' in navigator){
           <div class="linha-model-tag" style="background:#C9A84C;color:#000;">Luxo · Golfe</div>
         </div>
       </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- MÓDULO 4 — CONCORRENTES & OBJEÇÕES                             -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<style>
+/* ── MÓDULO 4 ESTILOS PRÓPRIOS ─────────────────────────────────── */
+.m4-hero{
+  background:linear-gradient(135deg,#0d0d0d 0%,#1a1010 50%,#0d1a0d 100%);
+  border-radius:var(--r);padding:28px 24px;margin-bottom:24px;
+  position:relative;overflow:hidden;color:#fff;
+}
+.m4-hero::before{
+  content:'⚔️';position:absolute;right:20px;top:50%;transform:translateY(-50%);
+  font-size:100px;opacity:0.07;
+}
+.m4-hero-eyebrow{font-size:10px;letter-spacing:3px;text-transform:uppercase;opacity:0.45;margin-bottom:8px;}
+.m4-hero-title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:26px;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
+.m4-hero-title span{color:var(--g);}
+.m4-hero-sub{font-size:13px;opacity:0.7;line-height:1.6;max-width:560px;}
+
+/* regra de ouro */
+.m4-regra{display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--border);border-left:4px solid var(--gold);border-radius:var(--r);padding:16px 18px;margin-bottom:24px;}
+.m4-regra-icon{font-size:28px;flex-shrink:0;margin-top:2px;}
+.m4-regra-title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:1px;color:var(--text);margin-bottom:4px;}
+.m4-regra-text{font-size:13px;color:var(--text2);line-height:1.6;}
+
+/* brand cards (accordion) */
+.m4-brand-grid{display:flex;flex-direction:column;gap:12px;margin-bottom:24px;}
+.m4-brand-card{border-radius:var(--r);overflow:hidden;border:1.5px solid var(--border);background:#fff;transition:box-shadow 0.2s;}
+.m4-brand-card.open{box-shadow:0 8px 32px rgba(0,0,0,0.10);}
+.m4-brand-header{display:flex;align-items:center;gap:14px;padding:16px 18px;cursor:pointer;user-select:none;transition:background 0.15s;}
+.m4-brand-header:hover{background:var(--off);}
+.m4-brand-logo{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.m4-brand-info{flex:1;}
+.m4-brand-name{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:17px;text-transform:uppercase;letter-spacing:1px;color:var(--text);margin-bottom:2px;}
+.m4-brand-tagline{font-size:12px;color:var(--text3);}
+.m4-brand-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;}
+.m4-badge{font-size:10px;font-weight:700;letter-spacing:1px;padding:2px 8px;border-radius:20px;text-transform:uppercase;}
+.m4-brand-chevron{font-size:11px;color:var(--text3);transition:transform 0.25s;flex-shrink:0;}
+.m4-brand-card.open .m4-brand-chevron{transform:rotate(180deg);}
+.m4-brand-body{display:none;border-top:1px solid var(--border);}
+.m4-brand-card.open .m4-brand-body{display:block;}
+
+/* seções internas do card */
+.m4-section{padding:18px 18px 0;}
+.m4-section:last-child{padding-bottom:18px;}
+.m4-section-title{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.m4-section-title::before{content:'';display:inline-block;width:12px;height:2px;background:currentColor;border-radius:1px;}
+
+/* público-alvo pills */
+.m4-public-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:0;}
+.m4-public-item{background:var(--off);border-radius:var(--r2);padding:10px 12px;}
+.m4-public-emoji{font-size:18px;margin-bottom:4px;}
+.m4-public-label{font-size:11px;font-weight:600;color:var(--text);margin-bottom:2px;}
+.m4-public-desc{font-size:11px;color:var(--text3);line-height:1.4;}
+
+/* onde vence / perde */
+.m4-vs-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.m4-vs-col{border-radius:var(--r2);padding:12px 14px;}
+.m4-vs-col.wins{background:#e6faf7;border:1px solid #b0ede6;}
+.m4-vs-col.loses{background:#fff4f0;border:1px solid #ffd0bc;}
+.m4-vs-col-title{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;}
+.m4-vs-col.wins .m4-vs-col-title{color:#007a6a;}
+.m4-vs-col.loses .m4-vs-col-title{color:#c84a1a;}
+.m4-vs-list{list-style:none;padding:0;}
+.m4-vs-list li{font-size:12px;color:var(--text);padding:4px 0;border-bottom:1px solid rgba(0,0,0,0.05);line-height:1.4;display:flex;gap:6px;}
+.m4-vs-list li:last-child{border-bottom:none;}
+.m4-vs-col.wins .m4-vs-list li::before{content:'✓';color:#007a6a;font-weight:700;flex-shrink:0;}
+.m4-vs-col.loses .m4-vs-list li::before{content:'✗';color:#c84a1a;font-weight:700;flex-shrink:0;}
+
+/* Divisor interno */
+.m4-divider{height:1px;background:var(--border);margin:0 18px;}
+
+/* objections */
+.m4-obj{border-radius:var(--r2);margin-bottom:8px;overflow:hidden;border:1px solid var(--border);}
+.m4-obj-q{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;cursor:pointer;background:var(--off);transition:background 0.15s;user-select:none;}
+.m4-obj-q:hover{background:#eef0f3;}
+.m4-obj-q-text{font-size:13px;font-weight:500;color:var(--text);flex:1;line-height:1.4;}
+.m4-obj-q-icon{color:var(--warn);font-size:15px;flex-shrink:0;margin-top:1px;}
+.m4-obj-q-chevron{font-size:10px;color:var(--text3);transition:transform 0.2s;flex-shrink:0;margin-top:3px;}
+.m4-obj.open .m4-obj-q-chevron{transform:rotate(180deg);}
+.m4-obj-a{display:none;padding:12px 14px;background:#fff;font-size:13px;color:var(--text2);line-height:1.7;border-top:1px solid var(--border);}
+.m4-obj.open .m4-obj-a{display:block;}
+.m4-obj-a strong{color:var(--acc);}
+
+/* scenario quiz */
+.m4-quiz-wrap{background:#fff;border:2px solid var(--g);border-radius:var(--r);padding:0;margin-top:24px;overflow:hidden;}
+.m4-quiz-header{background:linear-gradient(135deg,#0d0d0d,#1a1010);color:#fff;padding:20px 24px;}
+.m4-quiz-header-title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:20px;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;}
+.m4-quiz-header-sub{font-size:12px;opacity:0.55;letter-spacing:1px;}
+.m4-quiz-progress-wrap{padding:14px 24px 0;background:#fff;}
+.m4-quiz-prog-label{display:flex;justify-content:space-between;font-size:11px;color:var(--text3);font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;}
+.m4-quiz-prog-bar{height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
+.m4-quiz-prog-fill{height:100%;background:linear-gradient(90deg,var(--g),var(--warn));border-radius:3px;transition:width 0.4s;}
+.m4-quiz-body{padding:20px 24px 24px;}
+.m4-scenario-badge{display:inline-flex;align-items:center;gap:6px;background:var(--off);border:1px solid var(--border);border-radius:6px;padding:5px 10px;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:12px;}
+.m4-scenario-box{background:linear-gradient(135deg,#f0f8ff,#e8f4ff);border:1px solid #c5dff5;border-radius:var(--r2);padding:14px 16px;margin-bottom:16px;}
+.m4-scenario-box-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#3a7bc8;margin-bottom:6px;}
+.m4-scenario-text{font-size:14px;color:var(--text);line-height:1.6;font-style:italic;}
+.m4-scenario-question{font-size:15px;font-weight:600;color:var(--text);margin-bottom:16px;line-height:1.5;}
+.m4-scenario-options{display:flex;flex-direction:column;gap:9px;}
+.m4-scenario-opt{background:var(--off);border:1.5px solid var(--border);border-radius:var(--r2);padding:12px 16px;font-size:13px;cursor:pointer;transition:all 0.2s;text-align:left;font-family:'DM Sans',sans-serif;color:var(--text);line-height:1.4;}
+.m4-scenario-opt:hover{border-color:var(--g);background:var(--g3);}
+.m4-scenario-opt.correct{background:#e6faf7;border-color:var(--acc);color:#007a6a;}
+.m4-scenario-opt.wrong{background:#fff4f0;border-color:var(--warn);color:#c84a1a;}
+.m4-scenario-opt.disabled{cursor:not-allowed;pointer-events:none;}
+.m4-feedback{border-radius:var(--r2);padding:13px 15px;margin-top:12px;font-size:13px;line-height:1.6;display:none;}
+.m4-feedback.show{display:block;}
+.m4-feedback.ok{background:#e6faf7;border:1px solid var(--acc);color:#00695c;}
+.m4-feedback.fail{background:#fff4f0;border:1px solid var(--warn);color:#c84a1a;}
+.m4-feedback-dica{margin-top:8px;padding-top:8px;border-top:1px solid rgba(0,0,0,0.08);font-size:12px;color:var(--text2);font-style:italic;}
+.m4-quiz-nav{display:flex;justify-content:flex-end;margin-top:16px;}
+.m4-quiz-btn{background:var(--g);color:#fff;border:none;border-radius:var(--r2);padding:10px 24px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:background 0.2s;}
+.m4-quiz-btn:hover{background:var(--g2);}
+.m4-quiz-btn:disabled{opacity:0.35;cursor:not-allowed;}
+.m4-result{text-align:center;padding:16px 0 8px;}
+.m4-result-trophy{font-size:56px;margin-bottom:12px;display:block;}
+.m4-result-title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:26px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
+.m4-result-score{font-size:15px;color:var(--text2);margin-bottom:20px;}
+.m4-result-score strong{color:var(--g);font-size:20px;}
+@media(max-width:600px){
+  .m4-public-grid{grid-template-columns:1fr;}
+  .m4-vs-grid{grid-template-columns:1fr;}
+}
+</style>
+
+<div class="panel" id="panel-concorrentes-modulo">
+  <div class="panel-header">
+    <button class="back-btn" onclick="openPanel('formacao')">← Formação</button>
+    <div class="panel-title">⚔️ Concorrentes & <span>Objeções</span></div>
+  </div>
+  <div class="panel-body">
+
+    <!-- HERO -->
+    <div class="m4-hero">
+      <div class="m4-hero-eyebrow">Módulo 4 — Explorador · by Proparts</div>
+      <div class="m4-hero-title">Entenda o <span>mercado</span>, vença a comparação</div>
+      <div class="m4-hero-sub">Cada concorrente tem um público real. Saber pra quem cada marca faz sentido — e onde o Garmin vence — é o que separa um atendimento mediano de um que fecha.</div>
+    </div>
+
+    <!-- REGRA DE OURO -->
+    <div class="m4-regra">
+      <div class="m4-regra-icon">🏅</div>
+      <div>
+        <div class="m4-regra-title">A regra antes de tudo</div>
+        <div class="m4-regra-text">Nunca fale mal de concorrente. Quando você ataca outra marca, o cliente pensa: <em>"será que ele tá me enganando?"</em>. Apresente fatos, deixe o cliente concluir. Quem conduz com confiança vende mais — não quem grita mais alto.</div>
+      </div>
+    </div>
+
+    <!-- BRAND CARDS -->
+    <div class="m4-brand-grid">
+
+      <!-- APPLE WATCH -->
+      <div class="m4-brand-card" id="m4-apple">
+        <div class="m4-brand-header" onclick="m4Toggle('m4-apple')">
+          <div class="m4-brand-logo" style="background:#f0f0f0;">🍎</div>
+          <div class="m4-brand-info">
+            <div class="m4-brand-name">Apple Watch</div>
+            <div class="m4-brand-tagline">O mais citado — e o mais mal comparado</div>
+            <div class="m4-brand-badges">
+              <span class="m4-badge" style="background:#fff3e0;color:#e65100;">⚠️ Principal concorrente</span>
+              <span class="m4-badge" style="background:#e8f5e9;color:#2e7d32;">Público: lifestyle + iPhone</span>
+            </div>
+          </div>
+          <div class="m4-brand-chevron">▼</div>
+        </div>
+        <div class="m4-brand-body">
+          <div class="m4-section">
+            <div class="m4-section-title" style="color:var(--text3);">Para quem o Apple Watch faz sentido</div>
+            <div class="m4-public-grid">
+              <div class="m4-public-item">
+                <div class="m4-public-emoji">📱</div>
+                <div class="m4-public-label">Usuário de iPhone</div>
+                <div class="m4-public-desc">Quer extensão do celular no pulso — notificações, Apple Pay, Siri, integração total com o ecossistema Apple.</div>
+              </div>
+              <div class="m4-public-item">
+                <div class="m4-public-emoji">🏙️</div>
+                <div class="m4-public-label">Lifestyle urbano</div>
+                <div class="m4-public-desc">Usa o relógio no dia a dia, não como ferramenta de treino. Esporte é uma caminhada ou corrida casual de vez em quando.</div>
+              </div>
+              <div class="m4-public-item">
+                <div class="m4-public-emoji">💳</div>
+                <div class="m4-public-label">Praticidade acima de tudo</div>
+                <div class="m4-public-desc">Carrega o relógio toda noite sem se incomodar. Não faz atividades longas — bateria curta não é problema real.</div>
+              </div>
+              <div class="m4-public-item">
+                <div class="m4-public-emoji">🎁</div>
+                <div class="m4-public-label">Presente de status</div>
+                <div class="m4-public-desc">Quem quer dar (ou receber) um presente premium, reconhecível e com design moderno — e já usa iPhone.</div>
+              </div>
+            </div>
+          </div>
+          <div class="m4-divider"></div>
+          <div class="m4-section">
+            <div class="m4-section-title" style="color:var(--text3);">Onde cada um leva vantagem</div>
+            <div class="m4-vs-grid">
+              <div class="m4-vs-col wins">
+                <div class="m4-vs-col-title">Garmin vence em</div>
+                <ul class="m4-vs-list">
+                  <li>Bateria: 30h a 70h+ com GPS ativo vs. 6–18h</li>
+                  <li>Dia a dia: 7 a 26 dias vs. 1–2 dias</li>
+                  <li>GPS multibanda — mais preciso em mata e cidade</li>
+                  <li>Funciona com iOS e Android</li>
+                  <li>Análise de treino com FirstBeat (nível profissional)</li>
+                  <li>Resistência: até 100m de profundidade + MIL-STD</li>
+                </ul>
+              </div>
+              <div class="m4-vs-col loses">
+                <div class="m4-vs-col-title">Apple Watch leva em</div>
+                <ul class="m4-vs-list">
+                  <li>Integração total com iPhone e apps Apple</li>
+                  <li>Interface mais intuitiva para não-atletas</li>
+                  <li>Apple Pay amplamente adotado</li>
+                  <li>Design reconhecido como status social</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="m4-divider"></div>
+          <div class="m4-section" style="padding-bottom:18px;">
+            <div class="m4-section-title" style="color:var(--text3);">Objeções mais comuns — toque pra ver como responder</div>
+            <div class="m4-obj" id="m4o-a1">
+              <div class="m4-obj-q" onclick="m4ObjToggle('m4o-a1')">
+                <div class="m4-obj-q-icon">🗣️</div>
+                <div class="m4-obj-q-text">"O Apple Watch faz a mesma coisa."</div>
+                <div class="m4-obj-q-chevron">▼</div>
+              </div>
+              <div class="m4-obj-a">"Pra uso do dia a dia e notificações, sim — os dois funcionam bem. A diferença aparece quando você vai pra atividade física: o Garmin tem bateria de dias com GPS ligado, enquanto o Apple Watch precisa ser carregado todo dia. Quem corre, pedala ou vai pra trilha sente essa diferença logo na primeira semana."<div class="m4-feedback-dica">💡 <strong>Dica:</strong> pergunte antes — "você usa mais pra esporte ou dia a dia?" — aí a resposta fica ainda mais cirúrgica.</div></div>
+            </div>
+            <div class="m4-obj" id="m4o-a2">
+              <div class="m4-obj-q" onclick="m4ObjToggle('m4o-a2')">
+                <div class="m4-obj-q-icon">🗣️</div>
+                <div class="m4-obj-q-text">"O Apple Watch é mais bonito."</div>
+                <div class="m4-obj-q-chevron">▼</div>
+              </div>
+              <div class="m4-obj-a">"O design dele é realmente muito bom. Se o uso for mais social e de dia a dia, pode fazer sentido sim. Mas se você pratica esporte com frequência, o Garmin foi construído pra isso — e olha, tem modelos com tela AMOLED lindos, como o Venu 4 ou o Forerunner 265. Quer ver como fica no pulso?"</div>
+            </div>
+            <div class="m4-obj" id="m4o-a3">
+              <div class="m4-obj-q" onclick="m4ObjToggle('m4o-a3')">
+                <div class="m4-obj-q-icon">🗣️</div>
+                <div class="m4-obj-q-text">"Só uso iPhone, o Apple Watch não integra melhor?"</div>
+                <div class="m4-obj-q-chevron">▼</div>
+              </div>
+              <div class="m4-obj-a">"O Garmin Connect funciona perfeitamente no iPhone — notificações, chamadas, músicas. E ainda conecta com Strava, TrainingPeaks, Spotify e outros apps que você já usa. O que muda é que no treino ele entrega muito mais dados do que o Apple Watch consegue."</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- POLAR -->
+      <div class="m4-brand-card" id="m4-polar">
+        <div class="m4-brand-header" onclick="m4Toggle('m4-polar')">
+          <div class="m4-brand-logo" style="background:#e3f2fd;">🔵</div>
+          <div class="m4-brand-info">
+            <div class="m4-brand-name">Polar</div>
+            <div class="m4-brand-tagline">O rival técnico — tradição em análise de treino</div>
+            <div class="m4-brand-badges">
+              <span class="m4-badge" style="background:#fff3e0;color:#e65100;">⚠️ Concorrente técnico</span>
+              <span class="m4-badge" style="background:#e8f5e9;color:#2e7d32;">Público: atletas com histórico</span>
+            </div>
+          </div>
+          <div class="m4-brand-chevron">▼</div>
+        </div>
+        <div class="m4-brand-body">
+          <div class="m4-section">
+            <div class="m4-section-title" style="color:var(--text3);">Para quem a Polar faz sentido</div>
+            <div class="m4-public-grid">
+              <div class="m4-public-item">
+                <div class="m4-public-emoji">🔬</div>
+                <div class="m4-public-label">Atleta científico</div>
+                <div class="m4-public-desc">Quer análise profunda de FC e zonas de treino. Já usa Polar Flow e está acostumado com o ecossistema da marca.</div>
+              </div>
+              <div class="m4-public-item">
+                <div class="m4-public-emoji">🚴</div>
+                <div class="m4-public-label">Corredor ou ciclista dedicado</div>
+                <div class="m4-public-desc">Foco em corrida e ciclismo com métricas avançadas. Geralmente treina com coach e precisa exportar dados.</div>
+              </div>
+              <div class="m4-public-item">
+                <div class="m4-public-emoji">💙</div>
+                <div class="m4-public-label">Fidelizado à marca</div>
+                <div class="m4-public-desc">Já teve Polar antes, está satisfeito com a análise. Pode estar vindo comparar antes de comprar a próxima versão.</div>
+              </div>
+              <div class="m4-public-item">
+                <div class="m4-public-emoji">🎽</div>
+                <div class="m4-public-label">Usuário do cinto H10</div>
+                <div class="m4-public-desc">Usa o cinto cardíaco Polar H10 — o mais preciso do mercado — e quer um relógio que seja compatível.</div>
+              </div>
+            </div>
+          </div>
+          <div class="m4-divider"></div>
+          <div class="m4-section">
+            <div class="m4-section-title" style="color:var(--text3);">Onde cada um leva vantagem</div>
+            <div class="m4-vs-grid">
+              <div class="m4-vs-col wins">
+                <div class="m4-vs-col-title">Garmin vence em</div>
+                <ul class="m4-vs-list">
+                  <li>Ecossistema Connect IQ — centenas de apps e watch faces</li>
+                  <li>GPS multibanda disponível em modelos intermediários</li>
+                  <li>Variedade: corrida, mergulho, golfe, náutica, aviação</li>
+                  <li>50+ integrações: Strava, Spotify, TrainingPeaks, Garmin Pay</li>
+                  <li>Suporte presencial no Brasil via Proparts</li>
+                  <li>FirstBeat — análise de treino padrão profissional</li>
+                </ul>
+              </div>
+              <div class="m4-vs-col loses">
+                <div class="m4-vs-col-title">Polar leva em</div>
+                <ul class="m4-vs-list">
+                  <li>Cinto H10 — ainda referência em precisão de FC</li>
+                  <li>Polar Flow tem boa visualização de dados históricos</li>
+                  <li>Tradição acadêmica em fisiologia do exercício</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="m4-divider"></div>
+          <div class="m4-section" style="padding-bottom:18px;">
+            <div class="m4-section-title" style="color:var(--text3);">Objeções mais comuns</div>
+            <div class="m4-obj" id="m4o-p1">
+              <div class="m4-obj-q" onclick="m4ObjToggle('m4o-p1')">
+                <div class="m4-obj-q-icon">🗣️</div>
+                <div class="m4-obj-q-text">"Já usei Polar e gostei bastante."</div>
+                <div class="m4-obj-q-chevron">▼</div>
+              </div>
+              <div class="m4-obj-a">"Faz sentido — a Polar tem boa tradição em análise de treino. O Garmin foi muito na mesma direção, com o FirstBeat que é a mesma tecnologia que times profissionais usam. E o ecossistema Connect é muito mais amplo — apps, watch faces, integrações com tudo que você já usa. Quer experimentar um na mão pra comparar?"<div class="m4-feedback-dica">💡 <strong>Dica:</strong> não force a migração. Ouça, reconheça, e mostre. Quem decide é o cliente — sua função é informar bem.</div></div>
+            </div>
+            <div class="m4-obj" id="m4o-p2">
+              <div class="m4-obj-q" onclick="m4ObjToggle('m4o-p2')">
+                <div class="m4-obj-q-icon">🗣️</div>
+                <div class="m4-obj-q-text">"A análise de frequência cardíaca da Polar é melhor."</div>
+                <div class="m4-obj-q-chevron">▼</div>
+              </div>
+              <div class="m4-obj-a">"O cinto H10 deles é muito bom mesmo — continua sendo referência. O Garmin tem cintos de peito compatíveis pra quem quer máxima precisão, e os sensores de pulso Elevate Gen 5 melhoraram bastante. Pra análise completa — zonas, VO2 Max, Training Readiness — o Garmin está no mesmo nível ou acima."</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COROS -->
+      <div class="m4-brand-card" id="m4-coros">
+        <div class="m4-brand-header" onclick="m4Toggle('m4-coros')">
+          <div class="m4-brand-logo" style="background:#e8f5e9;">⚡</div>
+          <div class="m4-brand-info">
+            <div class="m4-brand-name">Coros</div>
+            <div class="m4-brand-tagline">O rival de preço — argumento fácil de contornar</div>
+            <div class="m4-brand-badges">
+              <span class="m4-badge" style="background:#e3f2fd;color:#1565c0;">⚡ Crescendo no Brasil</span>
+              <span class="m4-badge" style="background:#fce4ec;color:#b71c1c;">Gatilho: preço</span>
+            </div>
+          </div>
+          <div class="m4-brand-chevron">▼</div>
+        </div>
+        <div class="m4-brand-body">
+          <div class="m4-section">
+            <div class="m4-section-title" style="color:var(--text3);">Para quem o Coros faz sentido</div>
+            <div class="m4-public-grid">
+              <div class="m4-public-item">
+                <div class="m4-public-emoji">💰</div>
+                <div class="m4-public-label">Sensível a preço</div>
+                <div class="m4-public-desc">Quer funcionalidades avançadas mas tem orçamento limitado. O Coros entrega muito por menos — esse é o argumento principal dele.</div>
+              </div>
+              <div class="m4-public-item">
+                <div class="m4-public-emoji">🏃</div>
+                <div class="m4-public-label">Corredor de rua ou trail</div>
+                <div class="m4-public-desc">Foco em corrida — não precisa de mergulho, golfe ou náutica. Quer GPS preciso e métricas de corrida sem pagar premium.</div>
+              </div>
+              <div class="m4-public-item">
+                <div class="m4-public-emoji">🆕</div>
+                <div class="m4-public-label">Primeiro relógio esportivo</div>
+                <div class="m4-public-desc">Nunca usou GPS, quer começar sem investir muito. O Coros tem interface simples que não assusta quem está começando.</div>
+              </div>
+              <div class="m4-public-item">
+                <div class="m4-public-emoji">📱</div>
+                <div class="m4-public-label">Menos apegado a ecossistema</div>
+                <div class="m4-public-desc">Não liga muito pra apps, watch faces ou integrações. Quer só o básico funcionando bem.</div>
+              </div>
+            </div>
+          </div>
+          <div class="m4-divider"></div>
+          <div class="m4-section">
+            <div class="m4-section-title" style="color:var(--text3);">Onde cada um leva vantagem</div>
+            <div class="m4-vs-grid">
+              <div class="m4-vs-col wins">
+                <div class="m4-vs-col-title">Garmin vence em</div>
+                <ul class="m4-vs-list">
+                  <li>+35 anos de mercado vs. marca fundada em 2012</li>
+                  <li>Ecossistema Connect IQ maduro com 50+ integrações</li>
+                  <li>Variedade: corrida, ciclismo, mergulho, golfe, náutica</li>
+                  <li>FirstBeat — análise de treino profissional</li>
+                  <li>Suporte presencial Proparts — garantia oficial no Brasil</li>
+                  <li>Valor de revenda mais alto no mercado</li>
+                </ul>
+              </div>
+              <div class="m4-vs-col loses">
+                <div class="m4-vs-col-title">Coros leva em</div>
+                <ul class="m4-vs-list">
+                  <li>Preço 30–40% menor em modelos equivalentes</li>
+                  <li>Boa bateria mesmo nos modelos básicos</li>
+                  <li>Interface simples, curva de aprendizado menor</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="m4-divider"></div>
+          <div class="m4-section" style="padding-bottom:18px;">
+            <div class="m4-section-title" style="color:var(--text3);">Objeções mais comuns</div>
+            <div class="m4-obj" id="m4o-c1">
+              <div class="m4-obj-q" onclick="m4ObjToggle('m4o-c1')">
+                <div class="m4-obj-q-icon">🗣️</div>
+                <div class="m4-obj-q-text">"O Coros é muito mais barato."</div>
+                <div class="m4-obj-q-chevron">▼</div>
+              </div>
+              <div class="m4-obj-a">"É verdade que o preço inicial é menor — isso é real. A diferença aparece no longo prazo: a Garmin tem mais de 35 anos de algoritmos de treino, suporte presencial aqui na Proparts e um ecossistema muito mais completo. Além disso, o valor de revenda do Garmin é bem maior. Pra quem vai usar de verdade, o retorno compensa — e temos modelos de entrada que encaixam em vários orçamentos."<div class="m4-feedback-dica">💡 <strong>Dica:</strong> nunca minimize o argumento de preço do cliente. Valide primeiro, depois mostre o valor.</div></div>
+            </div>
+            <div class="m4-obj" id="m4o-c2">
+              <div class="m4-obj-q" onclick="m4ObjToggle('m4o-c2')">
+                <div class="m4-obj-q-icon">🗣️</div>
+                <div class="m4-obj-q-text">"Vi review dizendo que o Coros é melhor pra trilha."</div>
+                <div class="m4-obj-q-chevron">▼</div>
+              </div>
+              <div class="m4-obj-a">"O Coros tem bons modelos de trail, sim — seria desonesto dizer o contrário. O Garmin Instinct 3 e o Fenix 8 foram desenvolvidos com certificação militar MIL-STD-810, altímetro barométrico, bússola e bateria de semanas. São usados por atletas profissionais de montanha no mundo inteiro. Quer que eu mostre as diferenças técnicas de cada um?"</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SAMSUNG -->
+      <div class="m4-brand-card" id="m4-samsung">
+        <div class="m4-brand-header" onclick="m4Toggle('m4-samsung')">
+          <div class="m4-brand-logo" style="background:#e8eaf6;">🌀</div>
+          <div class="m4-brand-info">
+            <div class="m4-brand-name">Samsung Galaxy Watch</div>
+            <div class="m4-brand-tagline">O equivalente Android do Apple Watch</div>
+            <div class="m4-brand-badges">
+              <span class="m4-badge" style="background:#e8eaf6;color:#283593;">Android · Ecosystem play</span>
+              <span class="m4-badge" style="background:#e8f5e9;color:#2e7d32;">Público: usuário Samsung/Android</span>
+            </div>
+          </div>
+          <div class="m4-brand-chevron">▼</div>
+        </div>
+        <div class="m4-brand-body">
+          <div class="m4-section">
+            <div class="m4-section-title" style="color:var(--text3);">Para quem o Galaxy Watch faz sentido</div>
+            <div class="m4-public-grid">
+              <div class="m4-public-item">
+                <div class="m4-public-emoji">📲</div>
+                <div class="m4-public-label">Usuário fiel Samsung</div>
+                <div class="m4-public-desc">Tem Galaxy S, tablet Samsung, usa Samsung Pay. Quer um relógio que integra perfeitamente com tudo isso.</div>
+              </div>
+              <div class="m4-public-item">
+                <div class="m4-public-emoji">🏙️</div>
+                <div class="m4-public-label">Lifestyle e smartwatch</div>
+                <div class="m4-public-desc">Prioriza notificações, pagamentos e apps acima de métricas de treino. Esporte é secundário.</div>
+              </div>
+            </div>
+          </div>
+          <div class="m4-divider"></div>
+          <div class="m4-section">
+            <div class="m4-section-title" style="color:var(--text3);">Onde cada um leva vantagem</div>
+            <div class="m4-vs-grid">
+              <div class="m4-vs-col wins">
+                <div class="m4-vs-col-title">Garmin vence em</div>
+                <ul class="m4-vs-list">
+                  <li>Bateria: dias vs. 1–2 dias do Galaxy Watch</li>
+                  <li>Análise de treino — FirstBeat vs. métricas básicas</li>
+                  <li>GPS preciso — multibanda nos modelos intermediários</li>
+                  <li>Compatível com qualquer Android, não só Samsung</li>
+                  <li>Resistência e durabilidade em ambiente outdoor</li>
+                </ul>
+              </div>
+              <div class="m4-vs-col loses">
+                <div class="m4-vs-col-title">Galaxy Watch leva em</div>
+                <ul class="m4-vs-list">
+                  <li>Integração nativa com Samsung DeX e Galaxy AI</li>
+                  <li>Design mais "smartwatch" — menos esportivo visualmente</li>
+                  <li>Samsung Pay muito bem integrado</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="m4-divider"></div>
+          <div class="m4-section" style="padding-bottom:18px;">
+            <div class="m4-section-title" style="color:var(--text3);">Objeção mais comum</div>
+            <div class="m4-obj" id="m4o-s1">
+              <div class="m4-obj-q" onclick="m4ObjToggle('m4o-s1')">
+                <div class="m4-obj-q-icon">🗣️</div>
+                <div class="m4-obj-q-text">"Tenho Samsung, não seria melhor o Galaxy Watch?"</div>
+                <div class="m4-obj-q-chevron">▼</div>
+              </div>
+              <div class="m4-obj-a">"O Galaxy Watch é ótimo pra quem usa muito smartwatch mesmo — notificações, Samsung Pay, esse tipo de coisa. Pra treino, o Garmin entrega bem mais: bateria de dias, GPS multibanda e análise de performance que o Galaxy Watch não tem. Se você pratica esporte com frequência, vale muito mais. Se for mais pra uso geral do dia a dia, posso ajudar você a decidir com base no que você mais usa."</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /brand grid -->
+
+    <!-- OBJEÇÕES GERAIS -->
+    <div class="card-label" style="margin-bottom:14px;">🛡️ Objeções que aparecem em qualquer venda</div>
+    <div class="card" style="margin-bottom:24px;">
+      <div class="m4-obj" id="m4o-g1">
+        <div class="m4-obj-q" onclick="m4ObjToggle('m4o-g1')">
+          <div class="m4-obj-q-icon">🗣️</div>
+          <div class="m4-obj-q-text">"Tá caro, vou pesquisar online."</div>
+          <div class="m4-obj-q-chevron">▼</div>
+        </div>
+        <div class="m4-obj-a">"Faz sentido comparar — é um investimento. Aqui na Proparts você tem garantia de 2 anos com assistência técnica oficial, pode experimentar agora e sair com o relógio configurado no seu nome. Comprando online, qualquer problema vira um processo muito mais trabalhoso. Esse suporte presencial tem valor real."<div class="m4-feedback-dica">💡 <strong>Dica:</strong> nunca diga que online é golpe ou que o produto pode ser falso. Destaque o valor do que você oferece — não invente risco onde não existe.</div></div>
+      </div>
+      <div class="m4-obj" id="m4o-g2">
+        <div class="m4-obj-q" onclick="m4ObjToggle('m4o-g2')">
+          <div class="m4-obj-q-icon">🗣️</div>
+          <div class="m4-obj-q-text">"Vou pensar e volto depois."</div>
+          <div class="m4-obj-q-chevron">▼</div>
+        </div>
+        <div class="m4-obj-a">"Claro, sem pressa! Só quero garantir que você sai com tudo que precisa pra decidir bem. Posso anotar o modelo que a gente conversou? E se tiver dúvida na hora de comparar especificações, pode me chamar no WhatsApp — respondo rápido."<div class="m4-feedback-dica">💡 O cliente que diz "vou pensar" muitas vezes só precisa de mais segurança. Mantenha o canal aberto.</div></div>
+      </div>
+      <div class="m4-obj" id="m4o-g3">
+        <div class="m4-obj-q" onclick="m4ObjToggle('m4o-g3')">
+          <div class="m4-obj-q-icon">🗣️</div>
+          <div class="m4-obj-q-text">"Não sei se vou usar mesmo."</div>
+          <div class="m4-obj-q-chevron">▼</div>
+        </div>
+        <div class="m4-obj-a">"Essa dúvida é honesta! O que eu ouço bastante de quem comprou é que o relógio acaba motivando mais do que a pessoa imaginava — ver os dados no pulso muda o hábito. Mas pra não errar, me conta um pouco da sua rotina: você pratica alguma atividade hoje? Aí eu consigo indicar o que faz sentido de verdade pro seu estilo de vida."</div>
+      </div>
+      <div class="m4-obj" id="m4o-g4">
+        <div class="m4-obj-q" onclick="m4ObjToggle('m4o-g4')">
+          <div class="m4-obj-q-icon">🗣️</div>
+          <div class="m4-obj-q-text">"Nunca usei smartwatch, acho complicado."</div>
+          <div class="m4-obj-q-chevron">▼</div>
+        </div>
+        <div class="m4-obj-a">"A maioria das pessoas fala exatamente isso antes de usar — e depois fala que é a coisa mais simples que tem. O Garmin Connect é bem intuitivo e a gente configura tudo junto aqui antes de você sair. Se tiver qualquer dúvida depois, é só chamar no WhatsApp que a gente resolve."</div>
+      </div>
+    </div>
+
+    <!-- QUIZ DE CENÁRIOS -->
+    <div class="quiz-reveal-sep">
+      <button class="quiz-reveal-btn" onclick="revealModuleQuiz('quizWrap4','initQuiz4')">✅ Li o conteúdo — Quero testar no cenário real</button>
+      <div class="quiz-reveal-hint">Situações reais de venda. Escolha como você responderia. Mínimo 70% para aprovação.</div>
+    </div>
+
+    <div class="m4-quiz-wrap" id="quizWrap4" style="display:none;margin-top:0;">
+      <div class="m4-quiz-header">
+        <div class="m4-quiz-header-title">🎭 Cenários Reais de Venda — Módulo 4</div>
+        <div class="m4-quiz-header-sub">8 situações · Escolha a melhor resposta · Mínimo 70% para aprovação</div>
+      </div>
+      <div class="m4-quiz-progress-wrap">
+        <div class="m4-quiz-prog-label">
+          <span id="m4QuizLabel">Cenário 1 de 8</span>
+          <span id="m4QuizScore">0 acertos</span>
+        </div>
+        <div class="m4-quiz-prog-bar"><div class="m4-quiz-prog-fill" id="m4QuizBar" style="width:0%"></div></div>
+      </div>
+      <div class="m4-quiz-body" id="m4QuizContent"></div>
     </div>
 
   </div>
