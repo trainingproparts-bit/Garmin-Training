@@ -1,0 +1,1825 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#E31020">
+<title>Proparts Training · Shokz</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&family=Barlow+Condensed:ital,wght@1,700;1,800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --s:#E31020; --s2:#b50e18; --s3:#fdf0f0; --s4:#f5c0c3;
+  --gold:#F0A500; --warn:#FF6B35; --acc:#E31020;
+  --white:#ffffff; --off:#f7f8fa; --border:#e2e6ea; --border2:#c8d0d8;
+  --text:#1a1d21; --text2:#4a5260; --text3:#8a93a0;
+  --r:12px; --r2:8px;
+  --sh:0 2px 12px rgba(227,16,32,0.08); --sh2:0 8px 32px rgba(227,16,32,0.16);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--off);color:var(--text);min-height:100vh;overflow-x:hidden;}
+
+/* HEADER */
+header{background:#0a0a0a;border-bottom:1px solid #1e1e1e;position:sticky;top:0;z-index:300;padding:0 20px;box-shadow:0 4px 24px rgba(0,0,0,0.6);}
+.header-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:10px 0;gap:12px;}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand-wordmark{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-style:italic;font-size:26px;color:#fff;letter-spacing:1px;text-transform:uppercase;line-height:1;}
+.brand-divider{width:1px;height:22px;background:#2a2a2a;}
+.brand-label{font-family:'Rajdhani',sans-serif;font-weight:600;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.35);}
+.brand-label span{color:var(--s);}
+.header-right{display:flex;align-items:center;gap:10px;}
+.header-portal-badge{font-size:10px;color:var(--s);letter-spacing:2px;text-transform:uppercase;font-family:'Rajdhani',sans-serif;font-weight:700;}
+.header-marcas-btn{display:flex;align-items:center;gap:6px;background:transparent;border:1px solid #2a2a2a;color:rgba(255,255,255,0.5);font-family:'Rajdhani',sans-serif;font-weight:600;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:7px 14px;border-radius:6px;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+.header-marcas-btn:hover{border-color:var(--s);color:#fff;background:rgba(227,16,32,0.12);}
+
+/* HOME HERO */
+.home-hero{background:#0a0a0a;color:#fff;padding:36px 20px 32px;position:relative;overflow:hidden;}
+.home-hero::before{content:'';position:absolute;right:-80px;top:-80px;width:320px;height:320px;border-radius:50%;background:rgba(227,16,32,0.10);}
+.home-hero::after{content:'';position:absolute;left:-60px;bottom:-100px;width:260px;height:260px;border-radius:50%;background:rgba(227,16,32,0.06);}
+.hero-inner{max-width:1100px;margin:0 auto;position:relative;z-index:1;text-align:center;}
+.hero-eyebrow{font-size:11px;opacity:0.45;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;font-family:'Rajdhani',sans-serif;}
+.hero-logo{font-size:48px;margin-bottom:10px;}
+.hero-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-style:italic;font-size:36px;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;color:var(--white);}
+.hero-title span{color:var(--s);}
+.hero-sub{font-size:13px;opacity:0.55;letter-spacing:1px;line-height:1.5;}
+.hero-tag{display:inline-block;margin-top:16px;background:rgba(227,16,32,0.15);border:1px solid rgba(227,16,32,0.3);color:var(--s);font-family:'Rajdhani',sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:20px;}
+
+/* CONTENT WRAP */
+.content-wrap{max-width:1100px;margin:0 auto;padding:24px 16px 60px;}
+
+/* SECTION LABEL */
+.section-label{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:14px;margin-top:32px;display:flex;align-items:center;gap:8px;}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.section-label:first-child{margin-top:0;}
+
+/* CARD BASE */
+.card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:14px;}
+.card-label{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--s);margin-bottom:8px;}
+.card-title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:17px;color:var(--text);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;}
+.tip{background:var(--s3);border-left:3px solid var(--s);border-radius:0 var(--r2) var(--r2) 0;padding:12px 14px;margin:10px 0;font-size:13px;color:var(--text);line-height:1.6;}
+.warn-tip{background:#fff4f0;border-left:3px solid var(--warn);border-radius:0 var(--r2) var(--r2) 0;padding:12px 14px;margin:10px 0;font-size:13px;color:var(--text);line-height:1.6;}
+.tag{display:inline-block;background:var(--off);border:1px solid var(--border);border-radius:4px;padding:3px 9px;font-size:11px;color:var(--text2);margin:2px;}
+.tag.teal{background:var(--s3);border-color:var(--s4);color:var(--s2);}
+.tag.orange{background:#fff4f0;border-color:#ffd0bc;color:#c84a1a;}
+.tag.gold{background:#fffbec;border-color:#fce09a;color:#8a6200;}
+.tag.gray{background:#f0f0f0;border-color:#d0d0d0;color:#555;}
+.bul{list-style:none;padding:0;}
+.bul li{font-size:13px;color:var(--text2);padding:4px 0;border-bottom:1px solid var(--off);display:flex;gap:6px;line-height:1.5;}
+.bul li:last-child{border-bottom:none;}
+.bul li::before{content:'▸';color:var(--s);flex-shrink:0;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+/* TABLE */
+.tbl-wrap{overflow-x:auto;border-radius:var(--r);border:1px solid var(--border);margin-bottom:20px;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead th{background:#0a0a0a;color:#fff;font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:11px 14px;text-align:left;white-space:nowrap;}
+thead th:first-child{background:var(--s);}
+tbody tr{border-bottom:1px solid var(--border);transition:background 0.15s;}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:nth-child(even){background:var(--off);}
+tbody tr:hover{background:var(--s3);}
+tbody td{padding:10px 14px;vertical-align:top;font-size:12.5px;}
+.check{color:var(--s);font-weight:700;}
+.cross{color:var(--text3);}
+.partial{color:var(--gold);}
+
+/* MODEL CARDS — lineup visual */
+.lineup-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-bottom:24px;}
+.model-card{background:var(--white);border:2px solid var(--border);border-radius:var(--r);overflow:hidden;transition:all 0.22s;cursor:pointer;}
+.model-card:hover{border-color:var(--s);box-shadow:var(--sh2);transform:translateY(-3px);}
+.model-card.top-pick{border-color:var(--s);}
+.model-card-header{padding:18px 18px 14px;background:linear-gradient(135deg,#0a0a0a,#1a1a1a);position:relative;}
+.model-card-header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--s);}
+.mc-emoji{font-size:32px;margin-bottom:8px;display:block;}
+.mc-name{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:19px;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:3px;}
+.mc-tag{font-size:11px;color:rgba(255,255,255,0.45);letter-spacing:1px;}
+.mc-badge{position:absolute;top:14px;right:14px;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 9px;border-radius:20px;}
+.mc-badge.top{background:var(--s);color:#fff;}
+.mc-badge.entry{background:#333;color:rgba(255,255,255,0.6);}
+.mc-badge.swim{background:#2563eb;color:#fff;}
+.mc-badge.run{background:var(--warn);color:#fff;}
+.mc-badge.wireless{background:var(--gold);color:#000;}
+.model-card-body{padding:14px 18px 18px;}
+.mc-desc{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:12px;}
+.mc-specs{display:flex;flex-direction:column;gap:5px;margin-bottom:12px;}
+.mc-spec{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--text2);}
+.mc-spec-key{font-weight:600;color:var(--text3);min-width:90px;flex-shrink:0;font-size:11px;letter-spacing:0.5px;text-transform:uppercase;padding-top:1px;}
+.mc-spec-val{color:var(--text);line-height:1.4;}
+.mc-tags{display:flex;flex-wrap:wrap;gap:4px;}
+.mc-who{background:var(--s3);border-radius:var(--r2);padding:10px 12px;margin-top:10px;}
+.mc-who-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--s2);margin-bottom:4px;}
+.mc-who-text{font-size:12.5px;color:var(--text2);line-height:1.5;}
+
+/* TECH FEATURE CARDS */
+.tech-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+.tech-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:16px;}
+.tech-card-icon{font-size:24px;margin-bottom:8px;}
+.tech-card-title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:1px;color:var(--text);margin-bottom:4px;}
+.tech-card-desc{font-size:12.5px;color:var(--text2);line-height:1.6;}
+
+/* ACCORDION */
+.acc-item{background:var(--white);border:1px solid var(--border);border-radius:var(--r);margin-bottom:8px;overflow:hidden;}
+.acc-btn{width:100%;background:none;border:none;color:var(--text);padding:15px 18px;text-align:left;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;transition:background 0.15s;gap:12px;}
+.acc-btn:hover{background:var(--off);}
+.acc-icon{font-size:16px;flex-shrink:0;}
+.acc-chevron{color:var(--s);font-size:11px;transition:transform 0.2s;flex-shrink:0;}
+.acc-item.open .acc-chevron{transform:rotate(180deg);}
+.acc-body{display:none;padding:14px 18px 16px;font-size:13px;color:var(--text2);line-height:1.7;border-top:1px solid var(--border);}
+.acc-item.open .acc-body{display:block;}
+
+/* COMPARATIVO TABLE SPECIAL */
+.comp-table-wrap{overflow-x:auto;border-radius:var(--r);border:1px solid var(--border);margin-bottom:20px;}
+.comp-table{width:100%;border-collapse:collapse;font-size:12px;}
+.comp-table th{padding:10px 12px;font-family:'Rajdhani',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;white-space:nowrap;text-align:center;}
+.comp-table th:first-child{text-align:left;background:#0a0a0a;color:#fff;}
+.comp-table thead tr{border-bottom:2px solid var(--border);}
+.comp-table tbody tr{border-bottom:1px solid var(--border);}
+.comp-table tbody tr:last-child{border-bottom:none;}
+.comp-table tbody tr:nth-child(even){background:var(--off);}
+.comp-table tbody tr:hover{background:var(--s3);}
+.comp-table td{padding:9px 12px;vertical-align:middle;text-align:center;}
+.comp-table td:first-child{text-align:left;font-weight:600;color:var(--text);white-space:nowrap;}
+.col-openmove{background:rgba(227,16,32,0.06);}
+.col-openrun{background:rgba(227,16,32,0.08);}
+.col-openrunpro{background:rgba(227,16,32,0.10);}
+.col-openrunpro2{background:rgba(227,16,32,0.12);}
+.col-openfit2{background:rgba(240,165,0,0.06);}
+.col-openswim{background:rgba(37,99,235,0.06);}
+.col-opendots{background:rgba(255,107,53,0.06);}
+th.col-openmove{background:rgba(227,16,32,0.15);color:var(--s2);}
+th.col-openrun{background:rgba(227,16,32,0.20);color:var(--s2);}
+th.col-openrunpro{background:rgba(227,16,32,0.28);color:var(--s2);}
+th.col-openrunpro2{background:rgba(227,16,32,0.36);color:var(--s2);}
+th.col-openfit2{background:rgba(240,165,0,0.18);color:#8a5a00;}
+th.col-openswim{background:rgba(37,99,235,0.18);color:#1e40af;}
+th.col-opendots{background:rgba(255,107,53,0.18);color:#c84a1a;}
+
+/* SALES FLOW */
+.flow-steps{display:flex;flex-direction:column;gap:14px;}
+.flow-step{display:flex;gap:14px;align-items:flex-start;}
+.flow-num{width:30px;height:30px;border-radius:50%;background:var(--s);color:#fff;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.flow-content{}
+.flow-title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:1px;color:var(--text);margin-bottom:6px;}
+.flow-dialog{background:var(--s3);border-left:3px solid var(--s);border-radius:0 var(--r2) var(--r2) 0;padding:11px 14px;font-size:13px;color:var(--text);line-height:1.7;font-style:italic;margin-bottom:6px;}
+.flow-note{font-size:12px;color:var(--text3);line-height:1.5;}
+
+/* DECISION GUIDE */
+.decision-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start;transition:all 0.2s;}
+.decision-card:hover{border-color:var(--s);background:var(--s3);}
+.dc-emoji{font-size:26px;flex-shrink:0;}
+.dc-profile{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--text);margin-bottom:3px;}
+.dc-need{font-size:12px;color:var(--text2);margin-bottom:6px;line-height:1.5;}
+.dc-rec{display:inline-flex;align-items:center;gap:6px;background:var(--s);color:#fff;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:4px;}
+
+/* OBJECTIONS */
+.obj-item{background:var(--white);border:1px solid var(--border);border-radius:var(--r);margin-bottom:8px;overflow:hidden;}
+.obj-q{width:100%;background:none;border:none;padding:14px 18px;text-align:left;cursor:pointer;display:flex;align-items:center;gap:12px;font-family:'DM Sans',sans-serif;font-size:13.5px;font-weight:500;color:var(--text);transition:background 0.15s;}
+.obj-q:hover{background:var(--off);}
+.obj-q-icon{font-size:16px;flex-shrink:0;}
+.obj-chevron{color:var(--s);font-size:11px;transition:transform 0.2s;margin-left:auto;flex-shrink:0;}
+.obj-item.open .obj-chevron{transform:rotate(180deg);}
+.obj-a{display:none;padding:12px 18px 16px;font-size:13px;color:var(--text2);line-height:1.7;border-top:1px solid var(--border);}
+.obj-item.open .obj-a{display:block;}
+
+/* CONDUTOR OSSEO EXPLAINER */
+.bone-explainer{background:linear-gradient(135deg,#0a0a0a,#121c1a);color:#fff;border-radius:var(--r);padding:24px;margin-bottom:20px;position:relative;overflow:hidden;}
+.bone-explainer::before{content:'🦴';position:absolute;right:20px;top:50%;transform:translateY(-50%);font-size:80px;opacity:0.07;}
+.be-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:6px;}
+.be-title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:24px;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;color:#fff;}
+.be-title span{color:var(--s);}
+.be-desc{font-size:14px;line-height:1.7;color:rgba(255,255,255,0.75);max-width:600px;}
+.be-steps{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:20px;}
+.be-step{background:rgba(255,255,255,0.06);border-radius:var(--r2);padding:12px;}
+.be-step-num{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:20px;color:var(--s);margin-bottom:4px;}
+.be-step-text{font-size:11.5px;color:rgba(255,255,255,0.6);line-height:1.5;}
+
+/* IP BADGE */
+.ip-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(227,16,32,0.12);border:1px solid rgba(227,16,32,0.3);color:#b50e18;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;padding:3px 10px;border-radius:20px;}
+.ip-badge.gold{background:rgba(240,165,0,0.15);border-color:rgba(240,165,0,0.35);color:#8a5a00;}
+
+/* NAVIGATION TABS (dentro de panel) */
+.itabs{display:flex;gap:4px;margin-bottom:20px;background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:4px;flex-wrap:wrap;}
+.itab{flex:1;min-width:80px;background:transparent;border:none;padding:8px 12px;font-family:'Rajdhani',sans-serif;font-weight:600;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);cursor:pointer;border-radius:var(--r2);transition:all 0.2s;text-align:center;}
+.itab.active,.itab:hover{background:var(--s);color:#fff;}
+.itab-panel{display:none;}
+.itab-panel.active{display:block;}
+
+/* PANEL system */
+.panel{display:none;}
+.panel.active{display:block;}
+.panel-header{background:var(--white);border-bottom:1px solid var(--border);padding:14px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:65px;z-index:100;}
+.back-btn{background:var(--off);border:1px solid var(--border);border-radius:var(--r2);padding:7px 12px;font-size:13px;font-weight:600;color:var(--text2);cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:6px;}
+.back-btn:hover{background:var(--s3);border-color:var(--s);color:var(--s);}
+.panel-title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:20px;letter-spacing:2px;text-transform:uppercase;color:var(--text);}
+.panel-title span{color:var(--s);}
+.panel-body{max-width:1100px;margin:0 auto;padding:20px 16px 60px;}
+
+/* HOME MENU GRID */
+.menu-wrap{max-width:1100px;margin:0 auto;padding:0 16px 32px;}
+.menu-section-label{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:12px;margin-top:8px;display:flex;align-items:center;gap:8px;}
+.menu-section-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.menu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
+.menu-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:18px 16px;cursor:pointer;transition:all 0.2s;text-align:center;position:relative;overflow:hidden;}
+.menu-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--s);transform:scaleX(0);transition:transform 0.2s;transform-origin:left;}
+.menu-card:hover{border-color:var(--s);box-shadow:var(--sh2);transform:translateY(-2px);}
+.menu-card:hover::before{transform:scaleX(1);}
+.menu-icon{font-size:28px;margin-bottom:8px;display:block;}
+.menu-name{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;letter-spacing:1px;text-transform:uppercase;color:var(--text);margin-bottom:2px;}
+.menu-desc{font-size:11px;color:var(--text3);line-height:1.4;}
+
+@media(max-width:640px){
+  .menu-grid{grid-template-columns:repeat(2,1fr);}
+  .grid2{grid-template-columns:1fr;}
+  .tech-grid{grid-template-columns:1fr;}
+  .be-steps{grid-template-columns:1fr;}
+  .lineup-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <span class="brand-wordmark">PROPARTS</span>
+      <div class="brand-divider"></div>
+      <div class="brand-label">Training <span>Hub</span></div>
+    </div>
+    <div class="header-right">
+      <span class="header-portal-badge">SHOKZ</span>
+      <button class="header-marcas-btn" onclick="voltarHub()">← Marcas</button>
+    </div>
+  </div>
+</header>
+
+<!-- HOME -->
+<div id="home" style="display:none;">
+
+  <!-- HERO -->
+  <div class="home-hero">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">proparts training hub · portal shokz</div>
+      <div class="hero-logo">🎧</div>
+      <div class="hero-title">SHOKZ <span>Training</span></div>
+      <div class="hero-sub">Condução Óssea · Equipe Interna · Ferramentas de Venda & Formação</div>
+      <div class="hero-tag">🦴 Open-Ear · A melhor trilha sonora para quem não para</div>
+    </div>
+  </div>
+
+  <!-- MENU -->
+  <div class="menu-wrap" style="margin-top:24px;">
+
+    <div class="menu-section-label">Ferramentas de Venda</div>
+    <div class="menu-grid">
+      <div class="menu-card" onclick="openPanel('modelos')"><span class="menu-icon">🎧</span><div class="menu-name">Modelos</div><div class="menu-desc">Catálogo completo com diferenciais de cada produto</div></div>
+      <div class="menu-card" onclick="openPanel('comparativo')"><span class="menu-icon">⚖️</span><div class="menu-name">Comparativo</div><div class="menu-desc">Tabela lado a lado de todos os modelos</div></div>
+      <div class="menu-card" onclick="openPanel('perfis')"><span class="menu-icon">👤</span><div class="menu-name">Para quem vender</div><div class="menu-desc">Perfis de cliente e qual modelo indicar</div></div>
+      <div class="menu-card" onclick="openPanel('tecnologia')"><span class="menu-icon">🦴</span><div class="menu-name">Condução Óssea</div><div class="menu-desc">Como funciona — explique com confiança</div></div>
+      <div class="menu-card" onclick="openPanel('scripts')"><span class="menu-icon">📋</span><div class="menu-name">Scripts & Objeções</div><div class="menu-desc">Como atender e responder dúvidas comuns</div></div>
+      <div class="menu-card" onclick="openPanel('faq')"><span class="menu-icon">❓</span><div class="menu-name">FAQ</div><div class="menu-desc">Dúvidas frequentes dos clientes</div></div>
+      <div class="menu-card" onclick="openPanel('app')"><span class="menu-icon">📲</span><div class="menu-name">App Shokz</div><div class="menu-desc">Funcionalidades do aplicativo oficial</div></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- PANEL: MODELOS                                      -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="panel" id="panel-modelos">
+  <div class="panel-header">
+    <button class="back-btn" onclick="goHome()">← Início</button>
+    <div class="panel-title">Modelos <span>Shokz</span></div>
+  </div>
+  <div class="panel-body">
+
+    <div class="tip">💡 Todos os Shokz usam condução óssea e deixam os ouvidos completamente abertos — essa é a proposta central da marca. A diferença entre modelos está em <strong>nível de performance, conectividade e uso específico.</strong></div>
+
+    <div class="section-label" style="margin-top:20px;">Linha OpenRun — Para Esporte</div>
+
+    <div class="lineup-grid">
+
+      <!-- OPENMOVE -->
+      <div class="model-card">
+        <div class="model-card-header">
+          <div class="mc-badge entry">Entrada</div>
+          <span class="mc-emoji">🎧</span>
+          <div class="mc-name">OpenMove</div>
+          <div class="mc-tag">A porta de entrada da marca</div>
+        </div>
+        <div class="model-card-body">
+          <div class="mc-desc">O modelo mais acessível da Shokz. Ideal para quem quer experimentar condução óssea pela primeira vez sem gastar muito. Conexão Bluetooth estável e leve o suficiente para ser esquecido no ouvido.</div>
+          <div class="mc-specs">
+            <div class="mc-spec"><span class="mc-spec-key">Bateria</span><span class="mc-spec-val">6 horas</span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Peso</span><span class="mc-spec-val">29g</span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Resistência</span><span class="mc-spec-val"><span class="ip-badge">IP55</span></span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Conexão</span><span class="mc-spec-val">Bluetooth 5.1</span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Carga</span><span class="mc-spec-val">Magnética</span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Microfone</span><span class="mc-spec-val">Sim (chamadas)</span></div>
+          </div>
+          <div class="mc-tags">
+            <span class="tag teal">Corrida leve</span>
+            <span class="tag teal">Primeiro Shokz</span>
+            <span class="tag gray">Caminhada</span>
+          </div>
+          <div class="mc-who">
+            <div class="mc-who-label">Para quem</div>
+            <div class="mc-who-text">Iniciante em condução óssea, uso casual e corrida de baixa intensidade. Quer descobrir a tecnologia com o menor custo.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OPENRUN / OPENRUN AIR -->
+      <div class="model-card">
+        <div class="model-card-header">
+          <div class="mc-badge run">Sport</div>
+          <span class="mc-emoji">🏃</span>
+          <div class="mc-name">OpenRun <span style="opacity:0.5;font-size:14px;">/</span> OpenRun Air</div>
+          <div class="mc-tag">O mais vendido da linha esportiva</div>
+        </div>
+        <div class="model-card-body">
+          <div class="mc-desc">O modelo com melhor custo-benefício da Shokz. Carga rápida e resistência IP67 — à prova d'água para corrida na chuva. Existe em duas versões com specs idênticas: <strong>OpenRun</strong> (carregamento magnético) e <strong>OpenRun Air</strong> (USB-C).</div>
+          <div class="mc-specs">
+            <div class="mc-spec"><span class="mc-spec-key">Bateria</span><span class="mc-spec-val">8 horas</span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Peso</span><span class="mc-spec-val">26g</span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Resistência</span><span class="mc-spec-val"><span class="ip-badge">IP67</span></span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Conexão</span><span class="mc-spec-val">Bluetooth 5.1</span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Carga rápida</span><span class="mc-spec-val">10 min = 1,5h uso</span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Carregamento</span><span class="mc-spec-val">Magnético <em>(OpenRun)</em> · USB-C <em>(Air)</em></span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Microfone</span><span class="mc-spec-val">Sim</span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Tamanhos</span><span class="mc-spec-val">Standard · Mini</span></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+            <div style="background:var(--off);border:1px solid var(--border);border-radius:var(--r2);padding:9px 11px;">
+              <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:3px;">OpenRun</div>
+              <div style="font-size:12px;color:var(--text2);">🔌 Cabo magnético proprietário</div>
+            </div>
+            <div style="background:rgba(227,16,32,0.05);border:1px solid rgba(227,16,32,0.2);border-radius:var(--r2);padding:9px 11px;">
+              <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--s);margin-bottom:3px;">OpenRun Air</div>
+              <div style="font-size:12px;color:var(--text2);">⚡ USB-C — carrega com qualquer cabo</div>
+            </div>
+          </div>
+          <div class="mc-tags">
+            <span class="tag teal">Corrida</span>
+            <span class="tag teal">Ciclismo</span>
+            <span class="tag teal">IP67</span>
+            <span class="tag gray">Carga rápida</span>
+          </div>
+          <div class="mc-who">
+            <div class="mc-who-label">Para quem</div>
+            <div class="mc-who-text">Corredor frequente, ciclista ou atleta que quer o básico bem-feito com IP67 e carga rápida. Prefere USB-C? Vai de Air. Não se importa? OpenRun custa menos.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OPENRUN PRO -->
+      <div class="model-card top-pick">
+        <div class="model-card-header">
+          <div class="mc-badge top">⭐ Top Pick</div>
+          <span class="mc-emoji">🏅</span>
+          <div class="mc-name">OpenRun Pro</div>
+          <div class="mc-tag">O melhor da linha de corrida</div>
+        </div>
+        <div class="model-card-body">
+          <div class="mc-desc">O modelo mais completo da linha esportiva clássica. Bass Booster integrado para graves mais ricos sem fone no ouvido — som surpreendentemente bom. Dupla conexão simultânea (multipoint).</div>
+          <div class="mc-specs">
+            <div class="mc-spec"><span class="mc-spec-key">Bateria</span><span class="mc-spec-val">10 horas</span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Peso</span><span class="mc-spec-val">29g</span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Resistência</span><span class="mc-spec-val"><span class="ip-badge">IP55</span></span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Bass Booster</span><span class="mc-spec-val">✓ Graves aprimorados</span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Multipoint</span><span class="mc-spec-val">2 dispositivos simultâneos</span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Carga rápida</span><span class="mc-spec-val">5 min = 1,5h uso</span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Dolby Audio</span><span class="mc-spec-val">✓ via app Shokz</span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Tamanhos</span><span class="mc-spec-val">Standard · Mini</span></div>
+          </div>
+          <div class="warn-tip" style="margin-top:8px;margin-bottom:0;">⚠️ <strong>Mini sem app:</strong> o OpenRun Pro Mini tem hardware idêntico, mas <strong>não é compatível com o app Shokz</strong> — Dolby Audio, EQ e funções de software ficam indisponíveis. Essa limitação é exclusiva do Pro — no Pro 2 Mini não existe.</div>
+          <div class="mc-tags">
+            <span class="tag teal">Bass Booster</span>
+            <span class="tag teal">Multipoint</span>
+            <span class="tag teal">10h bateria</span>
+            <span class="tag gold">Dolby Audio</span>
+          </div>
+          <div class="mc-who">
+            <div class="mc-who-label">Para quem</div>
+            <div class="mc-who-text">Atleta que valoriza qualidade de áudio com condução óssea. Quem usa fone para trabalho E treino (multipoint). Melhor performance sonora da linha.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OPENRUN PRO 2 -->
+      <div class="model-card top-pick">
+        <div class="model-card-header">
+          <div class="mc-badge top">🆕 Novo</div>
+          <span class="mc-emoji">🚀</span>
+          <div class="mc-name">OpenRun Pro 2</div>
+          <div class="mc-tag">A evolução do Pro — mais som, mais bateria</div>
+        </div>
+        <div class="model-card-body">
+          <div class="mc-desc">A versão mais avançada da linha OpenRun. Novo atuador de 8ª geração com até 30% mais precisão sonora e tecnologia DualPitch™ — dois canais de vibração independentes para um som mais completo. Microfone direcional com redução de ruído aprimorada.</div>
+          <div class="mc-specs">
+            <div class="mc-spec"><span class="mc-spec-key">Bateria</span><span class="mc-spec-val">12 horas</span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Peso</span><span class="mc-spec-val">30g</span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Resistência</span><span class="mc-spec-val"><span class="ip-badge">IP55</span></span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Atuador</span><span class="mc-spec-val">8ª geração (+30% precisão)</span></div>
+            <div class="mc-spec"><span class="mc-spec-key">DualPitch™</span><span class="mc-spec-val">✓ Exclusivo Pro 2</span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Microfone</span><span class="mc-spec-val">Direcional c/ redução de ruído</span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Multipoint</span><span class="mc-spec-val">2 dispositivos simultâneos</span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Dolby Audio</span><span class="mc-spec-val">✓ via app Shokz</span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Carregamento</span><span class="mc-spec-val">USB-C</span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Tamanhos</span><span class="mc-spec-val">Standard · Mini</span></div>
+          </div>
+          <div class="tip" style="margin-top:8px;margin-bottom:0;">✅ <strong>Mini sem limitação:</strong> ao contrário do OpenRun Pro, o Pro 2 Mini <strong>mantém compatibilidade total com o app Shokz</strong> — Dolby Audio, EQ e todas as funções disponíveis nos dois tamanhos.</div>
+          <div class="mc-tags">
+            <span class="tag teal">8ª geração</span>
+            <span class="tag teal">DualPitch™</span>
+            <span class="tag teal">12h bateria</span>
+            <span class="tag teal">USB-C</span>
+            <span class="tag gold">Dolby Audio</span>
+          </div>
+          <div class="mc-who">
+            <div class="mc-who-label">Para quem</div>
+            <div class="mc-who-text">Atleta exigente que quer o máximo da tecnologia Shokz. Quem faz muitas chamadas durante atividades — microfone é diferencial claro vs. Pro original. Mini sem nenhuma limitação de software.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="section-label">Outros Modelos — Usos Específicos</div>
+
+    <div class="lineup-grid">
+
+      <!-- OPENFIT 2+ -->
+      <div class="model-card">
+        <div class="model-card-header">
+          <div class="mc-badge wireless">Sem fio traseiro</div>
+          <span class="mc-emoji">✨</span>
+          <div class="mc-name">OpenFit 2+</div>
+          <div class="mc-tag">Design open-ear sem arco traseiro</div>
+        </div>
+        <div class="model-card-body">
+          <div class="mc-desc">Não usa o arco traseiro característico da Shokz — fica preso só na orelha, como um fone convencional, mas com a filosofia open-ear. <strong>Não é condução óssea</strong>, usa driver de ar direcional. Para quem quer discrição e mais graves.</div>
+          <div class="warn-tip" style="margin-bottom:0;margin-top:4px;">🔊 <strong>Driver de ar direcional:</strong> em vez de vibrar o osso, um pequeno alto-falante projeta o som <em>em direção ao ouvido</em> sem entrar no canal. O ouvido continua aberto, mas o som chega pelo ar — por isso tem mais graves que a condução óssea, porém vaza um pouco mais para os lados.</div>
+          <div class="mc-specs">
+            <div class="mc-spec"><span class="mc-spec-key">Bateria</span><span class="mc-spec-val">7h (28h com case)</span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Peso</span><span class="mc-spec-val">8,3g por unidade</span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Resistência</span><span class="mc-spec-val"><span class="ip-badge">IP54</span></span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Tecnologia</span><span class="mc-spec-val">Driver de ar direcional</span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Case de carga</span><span class="mc-spec-val">Sim (21h extras)</span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Dolby Audio</span><span class="mc-spec-val">✓ via app Shokz</span></div>
+          </div>
+          <div class="mc-tags">
+            <span class="tag gold">Não é cond. óssea</span>
+            <span class="tag teal">Open-ear</span>
+            <span class="tag gray">Com case</span>
+            <span class="tag gold">Dolby Audio</span>
+          </div>
+          <div class="mc-who">
+            <div class="mc-who-label">Para quem</div>
+            <div class="mc-who-text">Quem quer open-ear mas não gosta do arco traseiro. Uso misto: treino + trabalho + dia a dia. Mais discrição visual.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OPENSWIM PRO -->
+      <div class="model-card">
+        <div class="model-card-header">
+          <div class="mc-badge swim">Natação</div>
+          <span class="mc-emoji">🏊</span>
+          <div class="mc-name">OpenSwim Pro</div>
+          <div class="mc-tag">O único para natação — sem Bluetooth</div>
+        </div>
+        <div class="model-card-body">
+          <div class="mc-desc">Desenvolvido especificamente para natação. <strong>Não tem Bluetooth</strong> — a música é armazenada internamente (32GB). IP68 suportando mergulho até 2 metros. Único fone para ouvir música dentro d'água. Disponível em um único tamanho.</div>
+          <div class="mc-specs">
+            <div class="mc-spec"><span class="mc-spec-key">Bateria</span><span class="mc-spec-val">9 horas</span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Resistência</span><span class="mc-spec-val"><span class="ip-badge" style="background:rgba(37,99,235,0.12);border-color:rgba(37,99,235,0.3);color:#1d4ed8;">IP68 · 2m</span></span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Conexão</span><span class="mc-spec-val">Sem Bluetooth — memória interna</span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Memória</span><span class="mc-spec-val">32GB</span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Tamanhos</span><span class="mc-spec-val">Único tamanho</span></div>
+          </div>
+          <div class="mc-tags">
+            <span class="tag" style="background:#eff6ff;border-color:#bfdbfe;color:#1d4ed8;">IP68</span>
+            <span class="tag" style="background:#eff6ff;border-color:#bfdbfe;color:#1d4ed8;">Natação</span>
+            <span class="tag orange">Sem Bluetooth</span>
+          </div>
+
+          <div style="background:#f0f4ff;border:1px solid #c7d7fd;border-radius:var(--r2);padding:13px 14px;margin-top:10px;">
+            <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#1d4ed8;margin-bottom:8px;">📥 Como colocar músicas</div>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <div style="display:flex;gap:8px;font-size:12.5px;color:var(--text2);line-height:1.5;"><span style="color:#1d4ed8;font-weight:700;flex-shrink:0;">1.</span>Conecte o OpenSwim Pro no computador via cabo USB (incluído na caixa)</div>
+              <div style="display:flex;gap:8px;font-size:12.5px;color:var(--text2);line-height:1.5;"><span style="color:#1d4ed8;font-weight:700;flex-shrink:0;">2.</span>O dispositivo aparece como pen drive no Windows (Explorador) ou Mac (Finder)</div>
+              <div style="display:flex;gap:8px;font-size:12.5px;color:var(--text2);line-height:1.5;"><span style="color:#1d4ed8;font-weight:700;flex-shrink:0;">3.</span>Arraste os arquivos MP3 direto para a pasta do dispositivo — sem software adicional</div>
+              <div style="display:flex;gap:8px;font-size:12.5px;color:var(--text2);line-height:1.5;"><span style="color:#1d4ed8;font-weight:700;flex-shrink:0;">4.</span>Ejete com segurança e pronto — as músicas já estão disponíveis no fone</div>
+            </div>
+            <div style="margin-top:8px;font-size:12px;color:#1d4ed8;line-height:1.5;">⚠️ Só funciona com arquivos MP3. Não é compatível com streaming direto (Spotify, Deezer) — as músicas precisam estar baixadas no computador antes.</div>
+          </div>
+
+          <div class="mc-who" style="margin-top:10px;">
+            <div class="mc-who-label">Para quem</div>
+            <div class="mc-who-text">Nadador que quer música na piscina ou mar. É o único produto do mercado que resolve isso com condução óssea.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OPENDOTS -->
+      <div class="model-card">
+        <div class="model-card-header">
+          <div class="mc-badge" style="background:var(--warn);color:#fff;">Lifestyle</div>
+          <span class="mc-emoji">💼</span>
+          <div class="mc-name">OpenDots</div>
+          <div class="mc-tag">Condução óssea em formato intra</div>
+        </div>
+        <div class="model-card-body">
+          <div class="mc-desc">O modelo mais discreto da Shokz — visual de fone intra-auricular, mas com os transdutores de condução óssea posicionados fora do canal auditivo. Perfeito para reuniões, escritório e uso casual.</div>
+          <div class="mc-specs">
+            <div class="mc-spec"><span class="mc-spec-key">Bateria</span><span class="mc-spec-val">8h (32h com case)</span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Resistência</span><span class="mc-spec-val"><span class="ip-badge">IP54</span></span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Design</span><span class="mc-spec-val">Mini TWS — sem arco</span></div>
+            <div class="mc-spec"><span class="mc-spec-key">Case de carga</span><span class="mc-spec-val">Sim</span></div>
+          </div>
+          <div class="mc-tags">
+            <span class="tag teal">Discreto</span>
+            <span class="tag teal">TWS</span>
+            <span class="tag gray">Trabalho</span>
+            <span class="tag gray">Lifestyle</span>
+          </div>
+          <div class="mc-who">
+            <div class="mc-who-label">Para quem</div>
+            <div class="mc-who-text">Quem quer condução óssea em um formato mais discreto para uso no escritório, reuniões ou dia a dia urbano.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="section-label">Tamanhos — Standard vs Mini</div>
+
+    <div class="tip">💡 OpenRun, OpenRun Pro e OpenRun Pro 2 existem em dois tamanhos: <strong>Standard</strong> e <strong>Mini</strong> (haste 2 cm mais curta). Hardware idêntico nos dois — a única exceção é o <strong>OpenRun Pro Mini</strong>, que não suporta o app Shokz.</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;">
+      <div style="background:var(--white);border:2px solid var(--border);border-radius:var(--r);overflow:hidden;">
+        <div style="background:#0a0a0a;padding:14px 18px;text-align:center;">
+          <div style="font-size:32px;margin-bottom:4px;">📏</div>
+          <div style="font-family:'Rajdhani',sans-serif;font-weight:800;font-size:18px;letter-spacing:2px;text-transform:uppercase;color:#fff;">Standard</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px;">Arco padrão</div>
+        </div>
+        <div style="padding:14px 16px;">
+          <ul class="bul">
+            <li>Haste traseira no comprimento original</li>
+            <li>Para cabeças maiores ou quem prefere ajuste mais folgado</li>
+            <li>Compatível com o app em todos os modelos</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="background:var(--white);border:2px solid rgba(227,16,32,0.25);border-radius:var(--r);overflow:hidden;">
+        <div style="background:linear-gradient(135deg,#0a0a0a,#1a0505);padding:14px 18px;text-align:center;">
+          <div style="font-size:32px;margin-bottom:4px;">✂️</div>
+          <div style="font-family:'Rajdhani',sans-serif;font-weight:800;font-size:18px;letter-spacing:2px;text-transform:uppercase;color:#fff;">Mini</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px;">Haste 2 cm mais curta</div>
+        </div>
+        <div style="padding:14px 16px;">
+          <ul class="bul">
+            <li>Haste 2 cm mais curta — encaixa em cabeças menores</li>
+            <li>Costuma ser o tamanho mais indicado para a maioria</li>
+            <li>Hardware 100% idêntico ao Standard</li>
+            <li><strong>OpenRun Pro Mini:</strong> não suporta o app Shokz</li>
+            <li><strong>OpenRun Mini e Pro 2 Mini:</strong> sem nenhuma limitação</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;margin-bottom:16px;">
+      <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:1px;color:var(--text);margin-bottom:14px;">Como descobrir o tamanho certo no atendimento</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;gap:12px;align-items:flex-start;padding:10px 12px;background:var(--off);border-radius:var(--r2);">
+          <span style="font-size:20px;flex-shrink:0;">1️⃣</span>
+          <div>
+            <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;">Peça para o cliente experimentar o Mini primeiro</div>
+            <div style="font-size:12.5px;color:var(--text2);line-height:1.5;">O Mini costuma encaixar melhor na maioria das pessoas. O arco deve ficar firme atrás da cabeça sem apertar — se não se mover com uma chacoalhada leve, o tamanho está certo.</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;padding:10px 12px;background:var(--off);border-radius:var(--r2);">
+          <span style="font-size:20px;flex-shrink:0;">2️⃣</span>
+          <div>
+            <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;">Sinais de que o Mini ficou pequeno demais</div>
+            <div style="font-size:12.5px;color:var(--text2);line-height:1.5;">O arco aperta com força nas têmporas, causa desconforto ou deixa marcas. O cliente sente pressão logo nos primeiros minutos de uso.</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;padding:10px 12px;background:var(--off);border-radius:var(--r2);">
+          <span style="font-size:20px;flex-shrink:0;">3️⃣</span>
+          <div>
+            <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;">Nesse caso, passe pro Standard — mas atenção no Pro</div>
+            <div style="font-size:12.5px;color:var(--text2);line-height:1.5;">Se o cliente precisar do Standard no <strong>OpenRun Pro</strong>, não há problema — o Standard tem suporte completo ao app. A limitação existe só no Pro Mini, não no Standard.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:#fff4f0;border:1.5px solid rgba(227,16,32,0.3);border-radius:var(--r);padding:14px 18px;margin-bottom:4px;">
+      <div style="font-size:12px;font-weight:700;color:var(--s);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">⚠️ Atenção — OpenRun Pro Mini</div>
+      <div style="font-size:13px;color:var(--text2);line-height:1.7;">O <strong>OpenRun Pro Mini</strong> é o único modelo onde o tamanho impacta as funcionalidades: não suporta o app Shokz — sem Dolby Audio, sem EQ, sem monitor de bateria. Se o cliente quer as funções do app e precisa do Mini, indique o <strong>Pro 2 Mini</strong>, que não tem essa limitação.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- PANEL: COMPARATIVO                                  -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="panel" id="panel-comparativo">
+  <div class="panel-header">
+    <button class="back-btn" onclick="goHome()">← Início</button>
+    <div class="panel-title">Comparativo <span>Completo</span></div>
+  </div>
+  <div class="panel-body">
+
+    <div class="tip">💡 Use esta tabela para comparar rapidamente qualquer dúvida durante o atendimento. Foque nas colunas do modelo que você está cotando.</div>
+
+    <div class="section-label">Especificações Gerais</div>
+    <div class="comp-table-wrap">
+      <table class="comp-table">
+        <thead>
+          <tr>
+            <th>Especificação</th>
+            <th class="col-openmove">OpenMove</th>
+            <th class="col-openrun">OpenRun<br><span style="font-weight:400;opacity:0.6;font-size:10px;">/ OpenRun Air</span></th>
+            <th class="col-openrunpro">OpenRun Pro</th>
+            <th class="col-openrunpro2">OpenRun Pro 2</th>
+            <th class="col-openfit2">OpenFit 2+</th>
+            <th class="col-openswim">OpenSwim Pro</th>
+            <th class="col-opendots">OpenDots</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Tecnologia</td>
+            <td class="col-openmove">Cond. óssea</td>
+            <td class="col-openrun">Cond. óssea</td>
+            <td class="col-openrunpro">Cond. óssea</td>
+            <td class="col-openrunpro2">Cond. óssea</td>
+            <td class="col-openfit2"><strong>Driver de ar</strong></td>
+            <td class="col-openswim">Cond. óssea</td>
+            <td class="col-opendots">Cond. óssea</td>
+          </tr>
+          <tr>
+            <td>Design</td>
+            <td class="col-openmove">Arco traseiro</td>
+            <td class="col-openrun">Arco traseiro</td>
+            <td class="col-openrunpro">Arco traseiro</td>
+            <td class="col-openrunpro2">Arco traseiro</td>
+            <td class="col-openfit2">TWS (na orelha)</td>
+            <td class="col-openswim">Arco traseiro</td>
+            <td class="col-opendots">TWS mini</td>
+          </tr>
+          <tr>
+            <td>Bateria</td>
+            <td class="col-openmove">6h</td>
+            <td class="col-openrun">8h</td>
+            <td class="col-openrunpro">10h</td>
+            <td class="col-openrunpro2"><strong>12h</strong></td>
+            <td class="col-openfit2">7h (28h c/ case)</td>
+            <td class="col-openswim">9h</td>
+            <td class="col-opendots">8h (32h c/ case)</td>
+          </tr>
+          <tr>
+            <td>Resistência</td>
+            <td class="col-openmove">IP55</td>
+            <td class="col-openrun"><strong>IP67</strong></td>
+            <td class="col-openrunpro">IP55</td>
+            <td class="col-openrunpro2">IP55</td>
+            <td class="col-openfit2">IP54</td>
+            <td class="col-openswim"><strong>IP68 (2m)</strong></td>
+            <td class="col-opendots">IP54</td>
+          </tr>
+          <tr>
+            <td>Bluetooth</td>
+            <td class="col-openmove">BT 5.1</td>
+            <td class="col-openrun">BT 5.1</td>
+            <td class="col-openrunpro">BT 5.1</td>
+            <td class="col-openrunpro2">BT 5.3</td>
+            <td class="col-openfit2">BT 5.2</td>
+            <td class="col-openswim"><strong class="cross">Sem BT</strong></td>
+            <td class="col-opendots">BT 5.3</td>
+          </tr>
+          <tr>
+            <td>Carregamento</td>
+            <td class="col-openmove">Magnético</td>
+            <td class="col-openrun">Magnético <em style="font-size:11px;color:var(--text3);">(Air: USB-C)</em></td>
+            <td class="col-openrunpro">Magnético</td>
+            <td class="col-openrunpro2"><strong>USB-C</strong></td>
+            <td class="col-openfit2">USB-C (case)</td>
+            <td class="col-openswim">USB-C</td>
+            <td class="col-opendots">USB-C (case)</td>
+          </tr>
+          <tr>
+            <td>Peso</td>
+            <td class="col-openmove">29g</td>
+            <td class="col-openrun"><strong>26g</strong></td>
+            <td class="col-openrunpro">29g</td>
+            <td class="col-openrunpro2">30g</td>
+            <td class="col-openfit2">8,3g/unid.</td>
+            <td class="col-openswim">—</td>
+            <td class="col-opendots">—</td>
+          </tr>
+          <tr>
+            <td>Carga rápida</td>
+            <td class="col-openmove"><span class="cross">—</span></td>
+            <td class="col-openrun"><span class="check">✓ 10min=1,5h</span></td>
+            <td class="col-openrunpro"><span class="check">✓ 5min=1,5h</span></td>
+            <td class="col-openrunpro2"><span class="check">✓</span></td>
+            <td class="col-openfit2"><span class="cross">—</span></td>
+            <td class="col-openswim"><span class="cross">—</span></td>
+            <td class="col-opendots"><span class="cross">—</span></td>
+          </tr>
+          <tr>
+            <td>Bass Booster</td>
+            <td class="col-openmove"><span class="cross">—</span></td>
+            <td class="col-openrun"><span class="cross">—</span></td>
+            <td class="col-openrunpro"><span class="check">✓</span></td>
+            <td class="col-openrunpro2"><span class="check">✓ Evolução</span></td>
+            <td class="col-openfit2"><span class="cross">—</span></td>
+            <td class="col-openswim"><span class="cross">—</span></td>
+            <td class="col-opendots"><span class="cross">—</span></td>
+          </tr>
+          <tr>
+            <td>DualPitch™</td>
+            <td class="col-openmove"><span class="cross">—</span></td>
+            <td class="col-openrun"><span class="cross">—</span></td>
+            <td class="col-openrunpro"><span class="cross">—</span></td>
+            <td class="col-openrunpro2"><span class="check">✓ Exclusivo</span></td>
+            <td class="col-openfit2"><span class="cross">—</span></td>
+            <td class="col-openswim"><span class="cross">—</span></td>
+            <td class="col-opendots"><span class="cross">—</span></td>
+          </tr>
+          <tr>
+            <td>Multipoint (2 dispositivos)</td>
+            <td class="col-openmove"><span class="cross">—</span></td>
+            <td class="col-openrun"><span class="cross">—</span></td>
+            <td class="col-openrunpro"><span class="check">✓</span></td>
+            <td class="col-openrunpro2"><span class="check">✓</span></td>
+            <td class="col-openfit2"><span class="check">✓</span></td>
+            <td class="col-openswim"><span class="cross">—</span></td>
+            <td class="col-opendots"><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Memória interna</td>
+            <td class="col-openmove"><span class="cross">—</span></td>
+            <td class="col-openrun"><span class="cross">—</span></td>
+            <td class="col-openrunpro"><span class="cross">—</span></td>
+            <td class="col-openrunpro2"><span class="cross">—</span></td>
+            <td class="col-openfit2"><span class="cross">—</span></td>
+            <td class="col-openswim"><span class="check">✓ 32GB</span></td>
+            <td class="col-opendots"><span class="cross">—</span></td>
+          </tr>
+          <tr>
+            <td>Dolby Audio</td>
+            <td class="col-openmove"><span class="cross">—</span></td>
+            <td class="col-openrun"><span class="cross">—</span></td>
+            <td class="col-openrunpro"><span class="check" style="color:#b58900;">✓ via app</span></td>
+            <td class="col-openrunpro2"><span class="check" style="color:#b58900;">✓ via app</span></td>
+            <td class="col-openfit2"><span class="check" style="color:#b58900;">✓ via app</span></td>
+            <td class="col-openswim"><span class="cross">—</span></td>
+            <td class="col-opendots"><span class="cross">—</span></td>
+          </tr>
+          <tr>
+            <td>Microfone</td>
+            <td class="col-openmove"><span class="check">✓</span></td>
+            <td class="col-openrun"><span class="check">✓</span></td>
+            <td class="col-openrunpro"><span class="check">✓</span></td>
+            <td class="col-openrunpro2"><span class="check">✓ Direcional</span></td>
+            <td class="col-openfit2"><span class="check">✓</span></td>
+            <td class="col-openswim"><span class="cross">—</span></td>
+            <td class="col-opendots"><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Posicionamento</td>
+            <td class="col-openmove">Entrada</td>
+            <td class="col-openrun">Esporte Mid</td>
+            <td class="col-openrunpro">Esporte Premium</td>
+            <td class="col-openrunpro2">Top de linha</td>
+            <td class="col-openfit2">Casual/Híbrido</td>
+            <td class="col-openswim">Natação</td>
+            <td class="col-opendots">Lifestyle/Work</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section-label">Leitura Rápida — O que cada modelo tem de único</div>
+    <div class="grid2">
+      <div class="card" style="margin-bottom:0;">
+        <div class="card-label">OpenRun</div>
+        <div class="card-title">O único com IP67</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;">Resistência máxima à água entre os modelos com Bluetooth. Chuva, suor intenso e lavagem. Para o atleta que não quer preocupação com clima.</p>
+      </div>
+      <div class="card" style="margin-bottom:0;">
+        <div class="card-label">OpenRun Pro / Pro 2</div>
+        <div class="card-title">Os únicos com Bass Booster</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;">Tecnologia exclusiva que amplifica graves sem colocar nada no ouvido. O Pro 2 é a versão evoluída com maior precisão sonora e microfone direcional.</p>
+      </div>
+      <div class="card" style="margin-bottom:0;">
+        <div class="card-label">OpenSwim</div>
+        <div class="card-title">O único para dentro d'água</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;">IP68 a 2 metros de profundidade com memória interna. Nenhum outro fone da linha funciona na piscina. Músicas por drag & drop, sem streaming.</p>
+      </div>
+      <div class="card" style="margin-bottom:0;">
+        <div class="card-label">OpenFit 2+ e OpenDots</div>
+        <div class="card-title">Sem arco traseiro</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;">Para quem não quer o design característico. OpenFit 2+ usa driver de ar (mais graves). OpenDots usa condução óssea em formato miniaturizado.</p>
+      </div>
+    </div>
+
+    <div class="section-label">⚔️ Duelo — OpenRun Pro vs Pro 2</div>
+
+    <div id="duel-game">
+
+      <div style="background:linear-gradient(135deg,#0a0a0a,#1a0000);border-radius:var(--r);padding:20px 22px 18px;margin-bottom:16px;text-align:center;position:relative;overflow:hidden;">
+        <div style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(227,16,32,0.03) 40px,rgba(227,16,32,0.03) 80px);"></div>
+        <div style="position:relative;z-index:1;">
+          <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.35);font-family:'Rajdhani',sans-serif;margin-bottom:6px;">mini game de treinamento</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-style:italic;font-size:28px;letter-spacing:2px;color:#fff;margin-bottom:6px;">DUELO <span style="color:var(--s);">DE MODELOS</span></div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.6);line-height:1.6;">O cliente pergunta sobre uma característica. Você responde qual modelo leva vantagem.<br>Cada acerto = 1 ponto. Veja quanto você sabe!</div>
+          <div style="margin-top:14px;display:flex;justify-content:center;gap:20px;align-items:center;">
+            <div style="text-align:center;">
+              <div style="font-family:'Rajdhani',sans-serif;font-weight:800;font-size:22px;color:#fff;">OpenRun Pro</div>
+              <div style="font-size:11px;color:rgba(255,255,255,0.4);">o clássico</div>
+            </div>
+            <div style="font-size:28px;">⚔️</div>
+            <div style="text-align:center;">
+              <div style="font-family:'Rajdhani',sans-serif;font-weight:800;font-size:22px;color:var(--s);">OpenRun Pro 2</div>
+              <div style="font-size:11px;color:rgba(255,255,255,0.4);">a evolução</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCOREBOARD -->
+      <div style="display:flex;gap:10px;margin-bottom:16px;">
+        <div style="flex:1;background:var(--white);border:1px solid var(--border);border-radius:var(--r2);padding:12px;text-align:center;">
+          <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);font-family:'Rajdhani',sans-serif;margin-bottom:4px;">Acertos</div>
+          <div id="score-correct" style="font-family:'Rajdhani',sans-serif;font-weight:800;font-size:28px;color:var(--s);">0</div>
+        </div>
+        <div style="flex:1;background:var(--white);border:1px solid var(--border);border-radius:var(--r2);padding:12px;text-align:center;">
+          <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);font-family:'Rajdhani',sans-serif;margin-bottom:4px;">Erros</div>
+          <div id="score-wrong" style="font-family:'Rajdhani',sans-serif;font-weight:800;font-size:28px;color:#cc0000;">0</div>
+        </div>
+        <div style="flex:1;background:var(--white);border:1px solid var(--border);border-radius:var(--r2);padding:12px;text-align:center;">
+          <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);font-family:'Rajdhani',sans-serif;margin-bottom:4px;">Pergunta</div>
+          <div id="score-progress" style="font-family:'Rajdhani',sans-serif;font-weight:800;font-size:28px;color:var(--text);">1/8</div>
+        </div>
+      </div>
+
+      <!-- QUESTION CARD -->
+      <div id="duel-card" style="background:var(--white);border:2px solid var(--border);border-radius:var(--r);padding:22px;margin-bottom:12px;min-height:120px;transition:border-color 0.3s;">
+        <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);font-family:'Rajdhani',sans-serif;margin-bottom:8px;" id="duel-category">CATEGORIA</div>
+        <div id="duel-question" style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:19px;color:var(--text);line-height:1.4;margin-bottom:0;">Carregando...</div>
+      </div>
+
+      <!-- ANSWER BUTTONS -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px;" id="duel-btns">
+        <button onclick="duelAnswer('pro')" style="background:var(--white);border:2px solid var(--border);border-radius:var(--r2);padding:14px 10px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;color:var(--text);cursor:pointer;transition:all 0.2s;">OpenRun Pro</button>
+        <button onclick="duelAnswer('igual')" style="background:var(--white);border:2px solid var(--border);border-radius:var(--r2);padding:14px 10px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;color:var(--text);cursor:pointer;transition:all 0.2s;">Iguais</button>
+        <button onclick="duelAnswer('pro2')" style="background:var(--white);border:2px solid rgba(227,16,32,0.3);border-radius:var(--r2);padding:14px 10px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;color:var(--s);cursor:pointer;transition:all 0.2s;">OpenRun Pro 2</button>
+      </div>
+
+      <!-- FEEDBACK -->
+      <div id="duel-feedback" style="display:none;border-radius:var(--r2);padding:14px 16px;margin-bottom:12px;font-size:13px;line-height:1.6;"></div>
+
+      <!-- NEXT -->
+      <div style="text-align:center;">
+        <button id="duel-next" onclick="duelNext()" style="display:none;background:var(--s);color:#fff;border:none;border-radius:var(--r2);padding:12px 28px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:13px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;">Próxima →</button>
+      </div>
+
+      <!-- RESULT SCREEN -->
+      <div id="duel-result" style="display:none;background:linear-gradient(135deg,#0a0a0a,#1a0000);border-radius:var(--r);padding:28px;text-align:center;color:#fff;">
+        <div style="font-size:48px;margin-bottom:12px;" id="result-emoji">🏆</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-style:italic;font-size:28px;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;" id="result-title">Resultado</div>
+        <div style="font-size:14px;color:rgba(255,255,255,0.65);margin-bottom:18px;" id="result-msg">—</div>
+        <div style="display:inline-flex;gap:24px;background:rgba(255,255,255,0.07);border-radius:var(--r2);padding:14px 24px;margin-bottom:20px;">
+          <div><div style="font-family:'Rajdhani',sans-serif;font-weight:800;font-size:32px;color:var(--s);" id="result-score">0</div><div style="font-size:11px;color:rgba(255,255,255,0.4);">acertos</div></div>
+          <div style="width:1px;background:rgba(255,255,255,0.1);"></div>
+          <div><div style="font-family:'Rajdhani',sans-serif;font-weight:800;font-size:32px;color:#fff;" id="result-total">8</div><div style="font-size:11px;color:rgba(255,255,255,0.4);">perguntas</div></div>
+        </div>
+        <br>
+        <button onclick="duelRestart()" style="background:var(--s);color:#fff;border:none;border-radius:var(--r2);padding:12px 28px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:13px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;">Jogar de novo ↺</button>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- PANEL: PERFIS / PARA QUEM VENDER                   -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="panel" id="panel-perfis">
+  <div class="panel-header">
+    <button class="back-btn" onclick="goHome()">← Início</button>
+    <div class="panel-title">Para Quem <span>Vender</span></div>
+  </div>
+  <div class="panel-body">
+
+    <div class="tip">💡 A pergunta-chave para qualquer cliente Shokz é: <strong>"Você vai usar mais para esporte, trabalho ou natação?"</strong> Isso já direciona 80% da venda.</div>
+
+    <div class="section-label">Guia de Indicação por Perfil</div>
+
+    <div class="decision-card">
+      <div class="dc-emoji">🏃</div>
+      <div>
+        <div class="dc-profile">Corredor / Ciclista frequente</div>
+        <div class="dc-need">Treina ao ar livre, precisa ouvir o ambiente. Suor e chuva são realidade. Quer longa duração e praticidade.</div>
+        <div><span class="dc-rec">→ OpenRun ou OpenRun Pro 2</span></div>
+      </div>
+    </div>
+
+    <div class="decision-card">
+      <div class="dc-emoji">🎵</div>
+      <div>
+        <div class="dc-profile">Atleta exigente com qualidade de som</div>
+        <div class="dc-need">Usa condução óssea mas sente falta de graves. Quer a melhor experiência sonora possível sem tampar os ouvidos.</div>
+        <div><span class="dc-rec">→ OpenRun Pro ou OpenRun Pro 2</span></div>
+      </div>
+    </div>
+
+    <div class="decision-card">
+      <div class="dc-emoji">🏊</div>
+      <div>
+        <div class="dc-profile">Nadador</div>
+        <div class="dc-need">Quer música dentro da piscina. Qualquer outro fone não funciona submerso. Não se importa em não ter Bluetooth (carrega as músicas antes).</div>
+        <div><span class="dc-rec">→ OpenSwim (único para natação)</span></div>
+      </div>
+    </div>
+
+    <div class="decision-card">
+      <div class="dc-emoji">💼</div>
+      <div>
+        <div class="dc-profile">Profissional / Trabalho híbrido</div>
+        <div class="dc-need">Passa horas em reuniões, quer conforto para usar o dia todo. Usa celular e computador alternadamente. Quer discreto.</div>
+        <div><span class="dc-rec">→ OpenDots ou OpenFit 2+</span></div>
+      </div>
+    </div>
+
+    <div class="decision-card">
+      <div class="dc-emoji">🆕</div>
+      <div>
+        <div class="dc-profile">Primeiro contato com condução óssea</div>
+        <div class="dc-need">Quer experimentar a tecnologia. Tem dúvida se vai gostar. Quer o menor investimento inicial.</div>
+        <div><span class="dc-rec">→ OpenMove (porta de entrada)</span></div>
+      </div>
+    </div>
+
+    <div class="decision-card">
+      <div class="dc-emoji">🎽</div>
+      <div>
+        <div class="dc-profile">Triatleta / Atleta multiesporte</div>
+        <div class="dc-need">Corre, pedala e nada. Quer cobrir todas as modalidades. Pode precisar de dois modelos.</div>
+        <div><span class="dc-rec">→ OpenRun Pro 2 (corrida/bike) + OpenSwim (natação)</span></div>
+      </div>
+    </div>
+
+    <div class="section-label">Sinais que o Cliente Dá</div>
+    <div class="card">
+      <div class="card-title">O que ouvir e como reagir</div>
+      <ul class="bul" style="margin-top:8px;">
+        <li><strong>"Não consigo usar fone convencional correndo"</strong> — condução óssea é exatamente a solução. Pergunte sobre a intensidade do treino.</li>
+        <li><strong>"Preciso ficar atento ao ambiente"</strong> (ciclista, corredor de rua, mãe/pai com filho) — argumento de segurança: ouvidos livres.</li>
+        <li><strong>"Meu fone enche d'água/quebra de suor"</strong> — OpenRun IP67 é a resposta direta.</li>
+        <li><strong>"Nado e não acho nada pra ouvir música"</strong> — pergunte se já ouviu falar do OpenSwim. Esse cliente compra na hora.</li>
+        <li><strong>"Uso fone o dia todo no trabalho, cansa o ouvido"</strong> — condução óssea não pressiona o canal auditivo. OpenDots ou OpenFit 2+.</li>
+        <li><strong>"Tenho perda auditiva leve"</strong> — condução óssea pode ser boa opção. Recomendar consultar médico, mas a tecnologia é indicada nesses casos.</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- PANEL: TECNOLOGIA DE CONDUÇÃO ÓSSEA                -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="panel" id="panel-tecnologia">
+  <div class="panel-header">
+    <button class="back-btn" onclick="goHome()">← Início</button>
+    <div class="panel-title">Condução <span>Óssea</span></div>
+  </div>
+  <div class="panel-body">
+
+    <div class="bone-explainer">
+      <div class="be-label">tecnologia shokz</div>
+      <div class="be-title">Como a <span>Condução Óssea</span> funciona</div>
+      <div class="be-desc">O som não passa pelo ar até o ouvido como em fones convencionais. Em vez disso, vibrações são enviadas diretamente pelos ossos do crânio até a cóclea, contornando o canal auditivo completamente.</div>
+      <div class="be-steps">
+        <div class="be-step">
+          <div class="be-step-num">1</div>
+          <div class="be-step-text">O transdutor gera vibrações na maçã do rosto (próximo à têmpora)</div>
+        </div>
+        <div class="be-step">
+          <div class="be-step-num">2</div>
+          <div class="be-step-text">As vibrações se propagam pelos ossos do crânio</div>
+        </div>
+        <div class="be-step">
+          <div class="be-step-num">3</div>
+          <div class="be-step-text">A cóclea recebe o som diretamente, sem precisar do canal auditivo</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">O que é Open-Ear</div>
+
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:20px;">
+      <div style="background:linear-gradient(135deg,#1a0000,#2a0505);padding:20px 22px 18px;position:relative;overflow:hidden;">
+        <div style="position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:72px;opacity:0.08;">👂</div>
+        <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:5px;font-family:'Rajdhani',sans-serif;">conceito central da marca</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-style:italic;font-size:26px;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:6px;">O que significa <span style="color:var(--s);">Open-Ear?</span></div>
+        <div style="font-size:13.5px;line-height:1.7;color:rgba(255,255,255,0.72);max-width:600px;">Open-ear é uma filosofia de uso: <strong style="color:#fff;">o ouvido fica completamente aberto e desobstruído</strong> enquanto você ouve música. Nada entra no canal auditivo — nem silicone, nem espuma, nem driver de ar.</div>
+      </div>
+      <div style="padding:18px 22px 20px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:18px;">
+          <div style="background:var(--off);border-radius:var(--r2);padding:14px;text-align:center;border:1px solid var(--border);">
+            <div style="font-size:26px;margin-bottom:6px;">🎧</div>
+            <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--text);margin-bottom:4px;">Fone intra</div>
+            <div style="font-size:11.5px;color:var(--text3);line-height:1.5;">Sela o canal auditivo. Você ouve só a música — isola o mundo externo.</div>
+          </div>
+          <div style="background:var(--off);border-radius:var(--r2);padding:14px;text-align:center;border:1px solid var(--border);">
+            <div style="font-size:26px;margin-bottom:6px;">🎵</div>
+            <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--text);margin-bottom:4px;">Fone over-ear</div>
+            <div style="font-size:11.5px;color:var(--text3);line-height:1.5;">Cobre a orelha. Bloqueia ruído externo. Pesado e quente para esporte.</div>
+          </div>
+          <div style="background:rgba(227,16,32,0.06);border-radius:var(--r2);padding:14px;text-align:center;border:1.5px solid rgba(227,16,32,0.25);">
+            <div style="font-size:26px;margin-bottom:6px;">✅</div>
+            <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--s);margin-bottom:4px;">Open-ear Shokz</div>
+            <div style="font-size:11.5px;color:var(--text2);line-height:1.5;">Ouvido 100% aberto. Você ouve a música <em>e</em> o ambiente ao mesmo tempo.</div>
+          </div>
+        </div>
+
+        <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:10px;">Por que isso importa na prática</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;gap:12px;align-items:flex-start;padding:10px 12px;background:var(--off);border-radius:var(--r2);border:1px solid var(--border);">
+            <span style="font-size:18px;flex-shrink:0;">🚗</span>
+            <div>
+              <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;">Segurança no trânsito</div>
+              <div style="font-size:12.5px;color:var(--text2);line-height:1.5;">Corredor e ciclista ouvem buzina, carro se aproximando, pessoa chamando. Com fone intra com cancelamento de ruído, isso é impossível — e perigoso.</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;padding:10px 12px;background:var(--off);border-radius:var(--r2);border:1px solid var(--border);">
+            <span style="font-size:18px;flex-shrink:0;">🏋️</span>
+            <div>
+              <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;">Consciência espacial no treino</div>
+              <div style="font-size:12.5px;color:var(--text2);line-height:1.5;">Na academia, na trilha ou na rua — você ouve o instrutor, o parceiro de treino, o sinal sonoro do GPS, sem precisar tirar o fone.</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;padding:10px 12px;background:var(--off);border-radius:var(--r2);border:1px solid var(--border);">
+            <span style="font-size:18px;flex-shrink:0;">😌</span>
+            <div>
+              <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;">Conforto para uso longo</div>
+              <div style="font-size:12.5px;color:var(--text2);line-height:1.5;">Sem pressão no canal auditivo, sem abafamento, sem calor. O fone some na orelha depois de alguns minutos. Quem usa no trabalho o dia todo sente muito essa diferença.</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;padding:10px 12px;background:var(--off);border-radius:var(--r2);border:1px solid var(--border);">
+            <span style="font-size:18px;flex-shrink:0;">🦻</span>
+            <div>
+              <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;">Saúde auditiva a longo prazo</div>
+              <div style="font-size:12.5px;color:var(--text2);line-height:1.5;">Fones intra em volume alto por horas podem prejudicar a audição. Open-ear distribui o som de forma mais suave e não cria pressão direta no tímpano.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tip" style="margin-top:14px;margin-bottom:0;">💬 <strong>Como explicar em 10 segundos:</strong> "Open-ear significa que seus ouvidos ficam completamente abertos — você ouve a música e o mundo ao mesmo tempo. É o oposto de fone com cancelamento de ruído."</div>
+      </div>
+    </div>
+
+    <div class="section-label">Driver de Ar Direcional — OpenFit 2+</div>
+
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:20px;">
+      <div style="background:linear-gradient(135deg,#1a0000,#2a0505);padding:18px 22px 16px;position:relative;overflow:hidden;">
+        <div style="position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:72px;opacity:0.08;">🔊</div>
+        <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:5px;font-family:'Rajdhani',sans-serif;">exclusivo no openfit 2+</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-style:italic;font-size:24px;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:6px;">Driver de Ar <span style="color:var(--s);">Direcional</span></div>
+        <div style="font-size:13px;line-height:1.7;color:rgba(255,255,255,0.72);">Uma tecnologia diferente da condução óssea — mas com o mesmo resultado: <strong style="color:#fff;">ouvido aberto, som na sua cabeça.</strong></div>
+      </div>
+      <div style="padding:18px 22px 20px;">
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+          <div style="border:1.5px solid var(--border);border-radius:var(--r2);padding:14px;">
+            <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:8px;">Condução Óssea (OpenRun etc.)</div>
+            <ul class="bul">
+              <li>Vibra o osso da maçã do rosto</li>
+              <li>O som chega à cóclea pelos ossos</li>
+              <li>Não depende do ar para transmitir</li>
+              <li>Funciona até debaixo d'água</li>
+              <li>Graves mais sutis naturalmente</li>
+            </ul>
+          </div>
+          <div style="border:1.5px solid rgba(227,16,32,0.3);border-radius:var(--r2);padding:14px;background:rgba(227,16,32,0.04);">
+            <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--s);margin-bottom:8px;">Driver de Ar Direcional (OpenFit 2+)</div>
+            <ul class="bul">
+              <li>Pequeno alto-falante na cápsula do fone</li>
+              <li>Projeta o som <em>em direção</em> ao canal auditivo</li>
+              <li>O ouvido continua aberto — o som chega pelo ar</li>
+              <li>Não funciona submerso</li>
+              <li>Graves mais ricos que condução óssea</li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:10px;">A analogia que funciona</div>
+        <div style="background:var(--off);border-radius:var(--r2);padding:14px 16px;border:1px solid var(--border);font-size:13px;color:var(--text2);line-height:1.7;">
+          Imagine uma caixinha de som pequeníssima posicionada bem na entrada do seu ouvido, apontada para dentro — mas sem tocar nele. O som sai da caixinha, percorre aquele centímetro de ar até o seu tímpano e você ouve normalmente. Como o ouvido não está tampado, o som ambiente também entra. Isso é driver de ar direcional.
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;">
+          <div style="background:rgba(227,16,32,0.06);border-radius:var(--r2);padding:12px 14px;border:1px solid rgba(227,16,32,0.15);">
+            <div style="font-size:12px;font-weight:700;color:var(--s);margin-bottom:4px;">✓ Vantagens vs. condução óssea</div>
+            <div style="font-size:12px;color:var(--text2);line-height:1.6;">Mais graves. Mais volume. Visual mais discreto (sem arco). Mais parecido com fone convencional na aparência.</div>
+          </div>
+          <div style="background:var(--off);border-radius:var(--r2);padding:12px 14px;border:1px solid var(--border);">
+            <div style="font-size:12px;font-weight:700;color:var(--text3);margin-bottom:4px;">✗ Limitações vs. condução óssea</div>
+            <div style="font-size:12px;color:var(--text2);line-height:1.6;">Vaza mais som para os lados em volume alto. Não funciona dentro d'água. Menos resistente ao suor intenso (IP54 vs IP67).</div>
+          </div>
+        </div>
+
+        <div class="tip" style="margin-top:14px;margin-bottom:0;">💬 <strong>Como explicar em 10 segundos:</strong> "O OpenFit 2+ não é condução óssea — ele tem um minifalante que aponta pro seu ouvido sem entrar nele. O resultado é parecido: ouvido livre, mas com mais graves. É pra quem quer o visual de fone normal mas sem tampar o ouvido."</div>
+      </div>
+    </div>
+
+    <div class="section-label">Dolby Audio — OpenRun Pro e Pro 2</div>
+
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:20px;">
+      <div style="background:linear-gradient(135deg,#0a0505,#1a0808);padding:18px 22px 16px;position:relative;overflow:hidden;">
+        <div style="position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:64px;opacity:0.08;">🎚️</div>
+        <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:5px;font-family:'Rajdhani',sans-serif;">exclusivo openrun pro e pro 2</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-style:italic;font-size:24px;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:6px;display:flex;align-items:center;gap:10px;">Dolby Audio <span style="background:#b58900;color:#fff;font-size:11px;padding:3px 10px;border-radius:4px;letter-spacing:1px;font-style:normal;">CERTIFICADO</span></div>
+        <div style="font-size:13px;line-height:1.7;color:rgba(255,255,255,0.72);">Certificação de áudio da Dolby — a mesma tecnologia usada em cinemas, TVs premium e estúdios de gravação — aplicada a condução óssea.</div>
+      </div>
+      <div style="padding:18px 22px 20px;">
+
+        <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:10px;">O que o Dolby Audio faz na prática</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">
+          <div style="display:flex;gap:12px;align-items:flex-start;padding:10px 12px;background:var(--off);border-radius:var(--r2);border:1px solid var(--border);">
+            <span style="font-size:18px;flex-shrink:0;">🎛️</span>
+            <div>
+              <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;">Equalização certificada Dolby</div>
+              <div style="font-size:12.5px;color:var(--text2);line-height:1.5;">O perfil de som é calibrado seguindo os padrões Dolby — melhor balanceamento entre graves, médios e agudos, compensando as características naturais da condução óssea.</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;padding:10px 12px;background:var(--off);border-radius:var(--r2);border:1px solid var(--border);">
+            <span style="font-size:18px;flex-shrink:0;">📱</span>
+            <div>
+              <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;">Ativado pelo app Shokz</div>
+              <div style="font-size:12.5px;color:var(--text2);line-height:1.5;">O Dolby Audio fica disponível como modo de som dentro do app oficial Shokz (iOS e Android). O cliente ativa, desativa e compara em tempo real — a diferença é perceptível especialmente em músicas com muita camada sonora.</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;padding:10px 12px;background:var(--off);border-radius:var(--r2);border:1px solid var(--border);">
+            <span style="font-size:18px;flex-shrink:0;">🏃</span>
+            <div>
+              <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;">Diferença real no esporte</div>
+              <div style="font-size:12.5px;color:var(--text2);line-height:1.5;">Músicas de treino ficam com mais presença e energia. Podcasts ficam mais nítidos e inteligíveis. O Dolby otimiza para cada tipo de conteúdo — música, voz, vídeo.</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+          <div style="background:#fffbec;border:1px solid #fce09a;border-radius:var(--r2);padding:12px 14px;text-align:center;">
+            <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8a6200;margin-bottom:4px;">Sem Dolby</div>
+            <div style="font-size:12px;color:var(--text2);line-height:1.5;">Som plano, graves mais fracos — perfil padrão da condução óssea</div>
+          </div>
+          <div style="background:#fffbec;border:1.5px solid #b58900;border-radius:var(--r2);padding:12px 14px;text-align:center;">
+            <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8a6200;margin-bottom:4px;">Com Dolby ✓</div>
+            <div style="font-size:12px;color:var(--text2);line-height:1.5;">Som espacial, graves mais presentes, voz mais clara — experiência notavelmente melhor</div>
+          </div>
+        </div>
+
+        <div style="background:rgba(181,137,0,0.08);border-left:3px solid #b58900;border-radius:0 var(--r2) var(--r2) 0;padding:12px 14px;">
+          <div style="font-size:12px;font-weight:700;color:#8a6200;margin-bottom:3px;">⚠️ Só Pro e Pro 2 têm essa certificação</div>
+          <div style="font-size:12.5px;color:var(--text2);line-height:1.6;">OpenMove, OpenRun, OpenSwim e OpenDots <strong>não têm</strong> Dolby Audio. É um diferencial exclusivo da linha Pro — use isso no argumento de venda quando o cliente hesitar entre o OpenRun e o OpenRun Pro.</div>
+        </div>
+
+        <div class="tip" style="margin-top:14px;margin-bottom:0;">💬 <strong>Como explicar em 10 segundos:</strong> "Os modelos Pro têm certificação Dolby Audio — a mesma tecnologia de cinema, configurada pelo app no celular. Você ativa e a diferença de qualidade de som é imediata. OpenRun básico não tem isso."</div>
+      </div>
+    </div>
+
+    <div class="section-label">DualPitch™ — Exclusivo OpenRun Pro 2</div>
+
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:20px;">
+      <div style="background:linear-gradient(135deg,#0a0505,#1a0808);padding:18px 22px 16px;position:relative;overflow:hidden;">
+        <div style="position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:64px;opacity:0.08;">🎼</div>
+        <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:5px;font-family:'Rajdhani',sans-serif;">exclusivo openrun pro 2</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-style:italic;font-size:24px;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:6px;">DualPitch<span style="color:var(--s);">™</span></div>
+        <div style="font-size:13px;line-height:1.7;color:rgba(255,255,255,0.72);">Dois canais de vibração independentes, trabalhando ao mesmo tempo. A condução óssea de qualquer outro modelo Shokz usa <strong style="color:#fff;">um único atuador</strong> — o Pro 2 usa <strong style="color:#fff;">dois</strong>.</div>
+      </div>
+      <div style="padding:18px 22px 20px;">
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+          <div style="border:1.5px solid var(--border);border-radius:var(--r2);padding:14px;">
+            <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:8px;">Sem DualPitch (outros modelos)</div>
+            <ul class="bul">
+              <li>Um único atuador gera todas as frequências</li>
+              <li>Agudos e graves competem no mesmo transdutor</li>
+              <li>Som mais plano, menos separação entre faixas</li>
+            </ul>
+          </div>
+          <div style="border:1.5px solid rgba(227,16,32,0.3);border-radius:var(--r2);padding:14px;background:rgba(227,16,32,0.04);">
+            <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--s);margin-bottom:8px;">Com DualPitch™ (Pro 2)</div>
+            <ul class="bul">
+              <li>Dois atuadores independentes no mesmo fone</li>
+              <li>Um cuida dos agudos e médios, outro dos graves</li>
+              <li>Som mais rico, mais separação, mais detalhado</li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:10px;">A analogia que funciona</div>
+        <div style="background:var(--off);border-radius:var(--r2);padding:14px 16px;border:1px solid var(--border);font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:14px;">
+          Imagine uma caixa de som com woofer (grave) e tweeter (agudo) separados, contra uma caixa com um único alto-falante fazendo tudo. O resultado de ter dois drivers dedicados é um som notavelmente mais detalhado — a mesma lógica do DualPitch, aplicada à condução óssea.
+        </div>
+
+        <div class="tip" style="margin-bottom:0;">💬 <strong>Como explicar em 10 segundos:</strong> "O Pro 2 tem dois transdutores de vibração — um pra cada faixa de som. É como ter woofer e tweeter numa caixa de som. Nos outros modelos é tudo num único transdutor. Por isso o som do Pro 2 é notavelmente mais detalhado."</div>
+      </div>
+    </div>
+
+    <div class="section-label">Vantagens para explicar ao cliente</div>
+    <div class="tech-grid">
+      <div class="tech-card">
+        <div class="tech-card-icon">👂</div>
+        <div class="tech-card-title">Ouvidos completamente livres</div>
+        <div class="tech-card-desc">O canal auditivo fica aberto. O cliente ouve música E o ambiente ao mesmo tempo. Essencial para segurança em corrida e ciclismo de rua.</div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-icon">🏃</div>
+        <div class="tech-card-title">Conforto para uso prolongado</div>
+        <div class="tech-card-desc">Não pressiona o ouvido nem provoca aquele calor e desconforto de fones internos. Pode usar horas sem cansaço no canal auditivo.</div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-icon">💧</div>
+        <div class="tech-card-title">Ideal para suor intenso</div>
+        <div class="tech-card-desc">Como não entra no ouvido, suor não é problema. Fones internos molham o canal auditivo — com Shokz esse problema não existe.</div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-icon">🎯</div>
+        <div class="tech-card-title">Não interfere com aparelhos auditivos</div>
+        <div class="tech-card-desc">Quem usa aparelho auditivo pode usar Shokz simultaneamente — os dois funcionam por vias diferentes.</div>
+      </div>
+    </div>
+
+    <div class="section-label">Como o cliente vai reagir — e como responder</div>
+    <div class="acc-item" id="acc-t1">
+      <button class="acc-btn" onclick="toggleAcc(this)">
+        <span class="acc-icon">🎵</span>
+        <span>"O som é pior que fone convencional?"</span>
+        <span class="acc-chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        A condução óssea tem um perfil sonoro diferente — médios e agudos são muito bons, graves são mais sutis nos modelos básicos. Nos modelos com Bass Booster (OpenRun Pro e Pro 2), a diferença diminui bastante. Para esporte, a qualidade é mais que suficiente e o benefício de ouvir o ambiente compensa amplamente. O cliente não vai usar Shokz para monitorar produção musical — vai usar para correr e pedalar com segurança.
+      </div>
+    </div>
+    <div class="acc-item" id="acc-t2">
+      <button class="acc-btn" onclick="toggleAcc(this)">
+        <span class="acc-icon">🔊</span>
+        <span>"Escuta do lado de fora, vai incomodar as pessoas?"</span>
+        <span class="acc-chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        Em volume normal, as vibrações são imperceptíveis para quem está ao lado. Em volume muito alto, pode vazar um pouco — como qualquer fone. Para uso em escritório ou transporte público, o volume moderado não incomoda. Se for usar em treino ao ar livre, não tem problema nenhum.
+      </div>
+    </div>
+    <div class="acc-item" id="acc-t3">
+      <button class="acc-btn" onclick="toggleAcc(this)">
+        <span class="acc-icon">🦺</span>
+        <span>"É seguro usar correndo na rua?"</span>
+        <span class="acc-chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        Esse é o principal diferencial de segurança. Com os ouvidos abertos, o corredor ouve carro, buzina, bicicleta e qualquer ruído ao redor normalmente. Isso é impossível com fone intra-auricular com cancelamento de ruído. Especialistas em segurança no trânsito recomendam exatamente esse tipo de uso para atletas em vias públicas.
+      </div>
+    </div>
+    <div class="acc-item" id="acc-t4">
+      <button class="acc-btn" onclick="toggleAcc(this)">
+        <span class="acc-icon">🩺</span>
+        <span>"Posso usar com perda auditiva leve?"</span>
+        <span class="acc-chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        A condução óssea é usada na medicina há décadas (aparelhos BAHA — Bone Anchored Hearing Aid). Para perda auditiva condutiva leve, o Shokz pode ser uma boa opção pois contorna o canal auditivo. Sempre oriente o cliente a consultar um fonoaudiólogo ou otorrinolaringologista antes de usar como substituto a qualquer tratamento. O Shokz não é dispositivo médico.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- PANEL: SCRIPTS & OBJEÇÕES                           -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="panel" id="panel-scripts">
+  <div class="panel-header">
+    <button class="back-btn" onclick="goHome()">← Início</button>
+    <div class="panel-title">Scripts & <span>Objeções</span></div>
+  </div>
+  <div class="panel-body">
+
+    <div class="card" style="background:linear-gradient(135deg,#0a0a0a,#121c1a);color:#fff;border-color:transparent;">
+      <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:4px;">regra de ouro shokz</div>
+      <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:16px;letter-spacing:1px;text-transform:uppercase;color:var(--s);margin-bottom:8px;">Venda a liberdade — não o produto</div>
+      <p style="font-size:13.5px;line-height:1.7;color:rgba(255,255,255,0.75);">O cliente não quer comprar "condução óssea". Ele quer treinar com segurança, ouvir música na piscina ou trabalhar confortavelmente o dia todo. <strong style="color:#fff;">Conecte a tecnologia ao problema que ele já tem.</strong></p>
+    </div>
+
+    <div class="section-label">Script de Atendimento</div>
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="flow-num">1</div>
+        <div class="flow-content">
+          <div class="flow-title">Identificar o uso principal</div>
+          <div class="flow-dialog">"Você vai usar mais para esporte, trabalho ou natação? E em que tipo de ambiente — ao ar livre, academia, escritório?"</div>
+          <div class="flow-note">Essa pergunta resolve 80% da indicação do modelo. Não pule essa etapa.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">2</div>
+        <div class="flow-content">
+          <div class="flow-title">Conectar o problema real</div>
+          <div class="flow-dialog">"Hoje você usa fone convencional correndo? Como é a experiência — fica caindo, incomoda, você perde a consciência do ambiente ao redor?"</div>
+          <div class="flow-note">Faça o cliente verbalizar o problema. A solução fica muito mais clara quando vem dele mesmo.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">3</div>
+        <div class="flow-content">
+          <div class="flow-title">Explicar a tecnologia em 30 segundos</div>
+          <div class="flow-dialog">"O Shokz funciona diferente — ele não entra no ouvido. O som vai pelos ossos direto até o seu ouvido interno, e seus ouvidos ficam completamente livres. Você ouve a música E o ambiente ao mesmo tempo."</div>
+          <div class="flow-note">Não entre em detalhes técnicos. Essa explicação simples já gera o "wow".</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">4</div>
+        <div class="flow-content">
+          <div class="flow-title">Direcionar para o modelo certo</div>
+          <div class="flow-dialog">"Para o seu caso, o <strong>[modelo]</strong> é o que faz mais sentido porque [razão específica]. Você quer experimentar na mão agora para sentir como fica?"</div>
+          <div class="flow-note">Sempre ofereça o produto para experimentar. A sensação da primeira vez com condução óssea costuma fechar a venda.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">Objeções Frequentes</div>
+
+    <div class="obj-item" id="obj1">
+      <button class="obj-q" onclick="toggleObj('obj1')">
+        <span class="obj-q-icon">🗣️</span>
+        <span>"Nunca ouvi falar de condução óssea. Funciona mesmo?"</span>
+        <span class="obj-chevron">▼</span>
+      </button>
+      <div class="obj-a">
+        "A condução óssea é usada em aparelhos auditivos médicos há décadas — a Shokz pegou essa tecnologia e adaptou para uso esportivo. Mais de 20 milhões de atletas usam no mundo. Quer colocar um segundo para sentir como é? A primeira experiência já convence melhor que qualquer explicação."
+      </div>
+    </div>
+
+    <div class="obj-item" id="obj2">
+      <button class="obj-q" onclick="toggleObj('obj2')">
+        <span class="obj-q-icon">🗣️</span>
+        <span>"O som deve ser péssimo sem entrar no ouvido..."</span>
+        <span class="obj-chevron">▼</span>
+      </button>
+      <div class="obj-a">
+        "Essa é a expectativa de todo mundo — e a surpresa quando coloca. Para uso esportivo, o som é muito bom. Não é para ouvir no estúdio de gravação, é para correr, pedalar e se manter motivado. No OpenRun Pro tem ainda o Bass Booster que melhora bastante os graves. Coloca aí e me diz o que acha."
+      </div>
+    </div>
+
+    <div class="obj-item" id="obj3">
+      <button class="obj-q" onclick="toggleObj('obj3')">
+        <span class="obj-q-icon">🗣️</span>
+        <span>"É muito caro para um fone."</span>
+        <span class="obj-chevron">▼</span>
+      </button>
+      <div class="obj-a">
+        "Faz sentido comparar o preço. Mas o Shokz não é um fone comum — é o único do mercado que deixa seus ouvidos livres durante o esporte. Se comparar com outros fones esportivos premium que ficam caindo ou entram no canal do ouvido, o preço fica muito próximo. E aqui você tem garantia oficial com a Proparts, assistência técnica real se precisar."
+      </div>
+    </div>
+
+    <div class="obj-item" id="obj4">
+      <button class="obj-q" onclick="toggleObj('obj4')">
+        <span class="obj-q-icon">🗣️</span>
+        <span>"Vou pesquisar online antes."</span>
+        <span class="obj-chevron">▼</span>
+      </button>
+      <div class="obj-a">
+        "Claro, faz sentido. Só quero garantir que você sai com tudo que precisa para decidir bem. Posso anotar o modelo que a gente conversou? E o principal diferencial de comprar aqui: você experimenta antes de decidir — algo impossível de fazer online. Se quiser testar agora, a gente faz isso."
+        <div style="margin-top:8px;font-size:12px;color:var(--text3);">💡 Oferecer o test drive é o maior argumento contra pesquisa online.</div>
+      </div>
+    </div>
+
+    <div class="obj-item" id="obj5">
+      <button class="obj-q" onclick="toggleObj('obj5')">
+        <span class="obj-q-icon">🗣️</span>
+        <span>"Prefiro fone com cancelamento de ruído."</span>
+        <span class="obj-chevron">▼</span>
+      </button>
+      <div class="obj-a">
+        "Para uns contextos o cancelamento de ruído faz sentido — viagem de avião, metrô. Para esporte ao ar livre, ele é perigoso: você não ouve carros, ciclistas, pessoas chamando. O Shokz resolve exatamente o oposto — você ouve tudo ao redor e a música ao mesmo tempo. Qual o cenário principal de uso?"
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- PANEL: FAQ                                         -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="panel" id="panel-faq">
+  <div class="panel-header">
+    <button class="back-btn" onclick="goHome()">← Início</button>
+    <div class="panel-title">Dúvidas <span>Frequentes</span></div>
+  </div>
+  <div class="panel-body">
+
+    <div class="acc-item" id="faq1">
+      <button class="acc-btn" onclick="toggleAcc(this)"><span class="acc-icon">💧</span><span>O Shokz aguenta chuva durante a corrida?</span><span class="acc-chevron">▼</span></button>
+      <div class="acc-body">Depende do modelo. O <strong>OpenRun tem IP67</strong> — suporta imersão até 1 metro por 30 min, então chuva não é problema. Os outros modelos com IP55 suportam jatos d'água e suor intenso mas não imersão. Só o OpenSwim (IP68) foi desenvolvido para uso submerso em natação.</div>
+    </div>
+
+    <div class="acc-item" id="faq2">
+      <button class="acc-btn" onclick="toggleAcc(this)"><span class="acc-icon">🏊</span><span>Posso usar o OpenSwim na academia aquática e na piscina aberta?</span><span class="acc-chevron">▼</span></button>
+      <div class="acc-body">Sim. O OpenSwim funciona em piscinas de academia, piscinas ao ar livre e mar (água salgada). A certificação IP68 é para 2 metros de profundidade. Em mergulho profundo ou salto com impacto de altura, pode haver pressão além da especificação.</div>
+    </div>
+
+    <div class="acc-item" id="faq3">
+      <button class="acc-btn" onclick="toggleAcc(this)"><span class="acc-icon">📱</span><span>Como transfiro músicas para o OpenSwim?</span><span class="acc-chevron">▼</span></button>
+      <div class="acc-body">O OpenSwim não tem Bluetooth. A transferência é feita pelo computador via cabo USB (incluído na caixa). O dispositivo aparece como pen drive — basta arrastar os arquivos MP3 para a pasta. Funciona com Windows e Mac. Não é compatível com streaming direto (Spotify, Deezer) sem download prévio.</div>
+    </div>
+
+    <div class="acc-item" id="faq4">
+      <button class="acc-btn" onclick="toggleAcc(this)"><span class="acc-icon">🔋</span><span>Como funciona a carga magnética?</span><span class="acc-chevron">▼</span></button>
+      <div class="acc-body">Os modelos de arco (OpenMove, OpenRun, OpenRun Pro, OpenRun Pro 2, OpenSwim) usam carregador magnético proprietário Shokz. Não é USB-C, o cabo é específico. O cliente precisa do cabo original ou de um cabo de reposição Shokz. Vale avisá-lo sobre isso para não ter surpresa.</div>
+    </div>
+
+    <div class="acc-item" id="faq5">
+      <button class="acc-btn" onclick="toggleAcc(this)"><span class="acc-icon">📶</span><span>O que é multipoint (dupla conexão)?</span><span class="acc-chevron">▼</span></button>
+      <div class="acc-body">Multipoint significa que o fone conecta em dois dispositivos ao mesmo tempo — por exemplo, celular e computador. Quando a chamada chega no celular, ele automaticamente comuta para lá. Disponível no OpenRun Pro, OpenRun Pro 2, OpenFit 2+ e OpenDots. Muito útil para quem usa em home office e treino.</div>
+    </div>
+
+    <div class="acc-item" id="faq6">
+      <button class="acc-btn" onclick="toggleAcc(this)"><span class="acc-icon">🦻</span><span>Posso usar se tiver problema de ouvido / zumbido?</span><span class="acc-chevron">▼</span></button>
+      <div class="acc-body">A condução óssea não passa pelo canal auditivo, então em muitos casos é mais confortável para quem tem zumbido ou sensibilidade auditiva. Para perda auditiva condutiva leve, pode ser benéfico. Recomende sempre consultar um especialista (otorrinolaringologista ou fonoaudiólogo) antes de tomar qualquer decisão baseada em saúde auditiva.</div>
+    </div>
+
+    <div class="acc-item" id="faq7">
+      <button class="acc-btn" onclick="toggleAcc(this)"><span class="acc-icon">🎧</span><span>Qual a diferença do OpenFit 2+ para os outros modelos?</span><span class="acc-chevron">▼</span></button>
+      <div class="acc-body">O OpenFit 2+ é o único modelo que <strong>não usa condução óssea</strong> — ele usa um driver de ar direcional. Isso significa mais graves e mais volume. O design é TWS (sem arco traseiro), parecido com um AirPod mas sem tampar o ouvido. É open-ear mas por tecnologia diferente. Para quem prioriza discrição visual e mais qualidade sonora na linha Shokz.</div>
+    </div>
+
+    <div class="acc-item" id="faq8">
+      <button class="acc-btn" onclick="toggleAcc(this)"><span class="acc-icon">🎽</span><span>O arco traseiro incomoda com capacete ou boné?</span><span class="acc-chevron">▼</span></button>
+      <div class="acc-body">Em geral não. O arco traseiro passa abaixo do capacete ou boné sem interferir. Ciclistas e triatletas usam normalmente com capacete de ciclismo. Para capacetes de moto com ajuste muito justo, pode ser necessário testar antes. Os modelos TWS (OpenFit 2+ e OpenDots) eliminam completamente essa questão.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- PANEL: APP SHOKZ                                   -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="panel" id="panel-app">
+  <div class="panel-header">
+    <button class="back-btn" onclick="goHome()">← Início</button>
+    <div class="panel-title">App <span>Shokz</span></div>
+  </div>
+  <div class="panel-body">
+
+    <div style="background:linear-gradient(135deg,#0a0a0a,#1a0000);border-radius:var(--r);padding:22px;margin-bottom:20px;display:flex;gap:18px;align-items:center;flex-wrap:wrap;">
+      <div style="font-size:56px;flex-shrink:0;">📲</div>
+      <div>
+        <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.35);font-family:'Rajdhani',sans-serif;margin-bottom:4px;">aplicativo oficial</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-style:italic;font-size:26px;letter-spacing:2px;color:#fff;margin-bottom:6px;">Shokz <span style="color:var(--s);">App</span></div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.65);line-height:1.6;max-width:520px;">Disponível gratuitamente para iOS e Android. Conecta via Bluetooth e desbloqueia funcionalidades extras — especialmente nos modelos <strong style="color:#fff;">OpenRun Pro, Pro 2, OpenFit 2+ e OpenDots.</strong></div>
+        <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+          <span style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);font-size:11px;padding:4px 12px;border-radius:4px;font-family:'Rajdhani',sans-serif;font-weight:600;letter-spacing:1px;">iOS</span>
+          <span style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);font-size:11px;padding:4px 12px;border-radius:4px;font-family:'Rajdhani',sans-serif;font-weight:600;letter-spacing:1px;">Android</span>
+          <span style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);font-size:11px;padding:4px 12px;border-radius:4px;font-family:'Rajdhani',sans-serif;font-weight:600;letter-spacing:1px;">Gratuito</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip">💡 O app é um argumento de venda — mostra que os modelos Pro vão além do hardware. Vale mencionar especialmente quando o cliente está decidindo entre OpenRun e OpenRun Pro.</div>
+
+    <div class="section-label">Funcionalidades principais</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
+
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;">
+        <div style="font-size:24px;margin-bottom:8px;">🎚️</div>
+        <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:1px;color:var(--text);margin-bottom:4px;">Dolby Audio</div>
+        <div style="font-size:12.5px;color:var(--text2);line-height:1.6;margin-bottom:8px;">Ativa/desativa a certificação Dolby e ajusta o perfil de equalização em tempo real. Três modos: Música, Voz e Vídeo — cada um otimizado para o tipo de conteúdo.</div>
+        <span style="font-size:10px;background:#fffbec;border:1px solid #fce09a;color:#8a6200;padding:3px 8px;border-radius:4px;font-weight:600;letter-spacing:1px;text-transform:uppercase;">Pro · Pro 2</span>
+      </div>
+
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;">
+        <div style="font-size:24px;margin-bottom:8px;">🎛️</div>
+        <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:1px;color:var(--text);margin-bottom:4px;">Equalizador</div>
+        <div style="font-size:12.5px;color:var(--text2);line-height:1.6;margin-bottom:8px;">EQ customizável com bandas ajustáveis. O cliente pode criar seu perfil de som ideal — mais graves para treino intenso, mais médios para podcasts, etc.</div>
+        <span style="font-size:10px;background:rgba(227,16,32,0.08);border:1px solid rgba(227,16,32,0.2);color:var(--s);padding:3px 8px;border-radius:4px;font-weight:600;letter-spacing:1px;text-transform:uppercase;">Pro · Pro 2 · OpenFit 2+ · OpenDots</span>
+      </div>
+
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;">
+        <div style="font-size:24px;margin-bottom:8px;">🔋</div>
+        <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:1px;color:var(--text);margin-bottom:4px;">Monitor de bateria</div>
+        <div style="font-size:12.5px;color:var(--text2);line-height:1.6;margin-bottom:8px;">Exibe a porcentagem exata de bateria em tempo real — mais preciso do que o indicador sonoro do próprio fone. Útil para planejar longas atividades.</div>
+        <span style="font-size:10px;background:var(--off);border:1px solid var(--border);color:var(--text3);padding:3px 8px;border-radius:4px;font-weight:600;letter-spacing:1px;text-transform:uppercase;">Todos os modelos compatíveis</span>
+      </div>
+
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;">
+        <div style="font-size:24px;margin-bottom:8px;">🔕</div>
+        <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:1px;color:var(--text);margin-bottom:4px;">Modo Descanso de Ouvido</div>
+        <div style="font-size:12.5px;color:var(--text2);line-height:1.6;margin-bottom:8px;">Lembra o usuário de fazer pausas no uso contínuo. Recurso de saúde auditiva — mostra que a Shokz se preocupa com o bem-estar, não apenas performance.</div>
+        <span style="font-size:10px;background:var(--off);border:1px solid var(--border);color:var(--text3);padding:3px 8px;border-radius:4px;font-weight:600;letter-spacing:1px;text-transform:uppercase;">Pro · Pro 2 · OpenFit 2+</span>
+      </div>
+
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;">
+        <div style="font-size:24px;margin-bottom:8px;">🔊</div>
+        <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:1px;color:var(--text);margin-bottom:4px;">Controle de volume via app</div>
+        <div style="font-size:12.5px;color:var(--text2);line-height:1.6;margin-bottom:8px;">Ajuste fino de volume pelo app — mais granular do que os botões físicos do fone. Útil para quem usa em ambientes onde o controle preciso importa.</div>
+        <span style="font-size:10px;background:rgba(227,16,32,0.08);border:1px solid rgba(227,16,32,0.2);color:var(--s);padding:3px 8px;border-radius:4px;font-weight:600;letter-spacing:1px;text-transform:uppercase;">Pro · Pro 2 · OpenFit 2+ · OpenDots</span>
+      </div>
+
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;">
+        <div style="font-size:24px;margin-bottom:8px;">🔄</div>
+        <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:1px;color:var(--text);margin-bottom:4px;">Atualização de firmware</div>
+        <div style="font-size:12.5px;color:var(--text2);line-height:1.6;margin-bottom:8px;">O app notifica e instala atualizações de firmware automaticamente. A Shokz melhora funcionalidades e corrige bugs via OTA — o fone fica melhor com o tempo.</div>
+        <span style="font-size:10px;background:var(--off);border:1px solid var(--border);color:var(--text3);padding:3px 8px;border-radius:4px;font-weight:600;letter-spacing:1px;text-transform:uppercase;">Todos os modelos compatíveis</span>
+      </div>
+
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;">
+        <div style="font-size:24px;margin-bottom:8px;">📍</div>
+        <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:1px;color:var(--text);margin-bottom:4px;">Localizar fone</div>
+        <div style="font-size:12.5px;color:var(--text2);line-height:1.6;margin-bottom:8px;">Emite um sinal sonoro no fone para facilitar localização quando estiver perdido dentro de casa ou na bolsa. Funciona enquanto o fone estiver dentro do alcance Bluetooth.</div>
+        <span style="font-size:10px;background:rgba(227,16,32,0.08);border:1px solid rgba(227,16,32,0.2);color:var(--s);padding:3px 8px;border-radius:4px;font-weight:600;letter-spacing:1px;text-transform:uppercase;">OpenFit 2+ · OpenDots</span>
+      </div>
+
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;">
+        <div style="font-size:24px;margin-bottom:8px;">⚙️</div>
+        <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:1px;color:var(--text);margin-bottom:4px;">Personalização de botões</div>
+        <div style="font-size:12.5px;color:var(--text2);line-height:1.6;margin-bottom:8px;">Reconfigura as ações dos botões físicos — por exemplo, definir toque duplo como ativar assistente de voz em vez de pular música. Personalizável por modelo.</div>
+        <span style="font-size:10px;background:rgba(227,16,32,0.08);border:1px solid rgba(227,16,32,0.2);color:var(--s);padding:3px 8px;border-radius:4px;font-weight:600;letter-spacing:1px;text-transform:uppercase;">Pro 2 · OpenFit 2+ · OpenDots</span>
+      </div>
+
+    </div>
+
+    <div class="section-label">Compatibilidade por modelo</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Funcionalidade</th>
+            <th>OpenRun Pro<br><span style="font-weight:400;opacity:0.6;font-size:10px;">Standard</span></th>
+            <th>OpenRun Pro<br><span style="font-weight:400;opacity:0.6;font-size:10px;">Mini ⚠️</span></th>
+            <th>OpenRun Pro 2<br><span style="font-weight:400;opacity:0.6;font-size:10px;">Standard</span></th>
+            <th>OpenRun Pro 2<br><span style="font-weight:400;opacity:0.6;font-size:10px;">Mini ✓</span></th>
+            <th>OpenFit 2+</th>
+            <th>OpenDots</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Dolby Audio</td><td><span class="check">✓</span></td><td><span class="cross">—</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="cross">—</span></td></tr>
+          <tr><td>Equalizador</td><td><span class="check">✓</span></td><td><span class="cross">—</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+          <tr><td>Monitor de bateria</td><td><span class="check">✓</span></td><td><span class="cross">—</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+          <tr><td>Modo descanso</td><td><span class="check">✓</span></td><td><span class="cross">—</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="cross">—</span></td></tr>
+          <tr><td>Atualização firmware</td><td><span class="check">✓</span></td><td><span class="cross">—</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+          <tr><td>Localizar fone</td><td><span class="cross">—</span></td><td><span class="cross">—</span></td><td><span class="cross">—</span></td><td><span class="cross">—</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+          <tr><td>Personalizar botões</td><td><span class="cross">—</span></td><td><span class="cross">—</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="warn-tip">⚠️ <strong>Única exceção — OpenRun Pro Mini:</strong> é o único modelo onde o tamanho impacta as funções. O Pro Mini não é compatível com o app Shokz — sem Dolby, sem EQ, sem monitor de bateria. Todos os outros modelos, incluindo o <strong>Pro 2 Mini</strong>, têm suporte completo ao app.</div>
+
+    <div class="section-label">Como usar no atendimento</div>
+    <div class="card">
+      <div class="card-title">O app como argumento de upsell</div>
+      <ul class="bul" style="margin-top:8px;">
+        <li>Quando o cliente hesita entre <strong>OpenRun e OpenRun Pro</strong>: "O Pro ainda vem com o app que tem Dolby Audio e equalizador — você personaliza o som pro seu treino. O básico não tem isso."</li>
+        <li>Quando o cliente quer saber se "vai precisar do app": "Não precisa pra ouvir música — mas com o app você desbloqueia o Dolby e personaliza os botões. Vale instalar na hora."</li>
+        <li>Para clientes de tecnologia: "Firmware update automático via app — a Shokz continua melhorando o produto depois da compra. Não é fone que compra e esquece."</li>
+        <li>Para quem perde coisas: "O OpenFit 2+ e OpenDots têm localizar fone pelo app — igual AirPods. Útil pra quem vive perdendo no sofá."</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ── NAVEGAÇÃO ──────────────────────────────────────────
+function openPanel(id) {
+  document.getElementById('home').style.display = 'none';
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  const panel = document.getElementById('panel-' + id);
+  if (panel) {
+    panel.classList.add('active');
+    window.scrollTo(0, 0);
+  } else {
+    goHome();
+  }
+}
+
+function goHome() {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('home').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+
+function voltarHub() {
+  // Tenta fechar/voltar — se for popup fecha, se for redirect volta para o hub
+  if (window.opener && !window.opener.closed) {
+    window.close();
+  } else if (document.referrer && document.referrer.includes('.html')) {
+    window.location.href = document.referrer;
+  } else {
+    // fallback: tenta voltar no histórico
+    window.history.back();
+  }
+}
+
+// ── ACCORDION GENÉRICO ─────────────────────────────────
+function toggleAcc(btn) {
+  btn.closest('.acc-item').classList.toggle('open');
+}
+
+// ── OBJEÇÕES ───────────────────────────────────────────
+function toggleObj(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+
+// ── INIT ───────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('home').style.display = 'block';
+  duelInit();
+});
+
+// ── DUELO GAME ─────────────────────────────────────────
+const duelQuestions = [
+  {
+    category: '🔋 Bateria',
+    question: 'Qual modelo tem mais horas de bateria?',
+    answer: 'pro2',
+    explanation: 'O Pro 2 tem <strong>12 horas</strong> de bateria, contra <strong>10 horas</strong> do Pro original. +20% de autonomia — diferença real em treinos longos e ultramaratonas.'
+  },
+  {
+    category: '🎤 Microfone',
+    question: 'Você está correndo e recebe uma ligação. Qual modelo capta sua voz melhor, filtrando o barulho do vento?',
+    answer: 'pro2',
+    explanation: 'O Pro 2 tem um <strong>microfone direcional</strong> aprimorado, desenvolvido especificamente para captar a voz e filtrar ruído de vento e ambiente ao redor. O Pro original tem microfone funcional, mas não tem essa tecnologia direcional — a diferença aparece principalmente em chamadas ao ar livre.'
+  },
+  {
+    category: '🦴 Transdutor',
+    question: 'Qual modelo usa o atuador de condução óssea de 8ª geração?',
+    answer: 'pro2',
+    explanation: 'O Pro 2 usa o <strong>atuador de 8ª geração</strong> da Shokz, com até 30% mais precisão sonora. O Pro original usa a geração anterior — já excelente, mas o Pro 2 é notavelmente mais claro e detalhado.'
+  },
+  {
+    category: '💧 Resistência',
+    question: 'Qual a classificação de resistência à água dos dois modelos?',
+    answer: 'igual',
+    explanation: 'Ambos têm <strong>IP55</strong> — proteção contra jatos d\'água de qualquer direção e suor intenso. Suficiente para corrida na chuva. Nenhum dos dois suporta imersão (para isso existe o OpenRun com IP67).'
+  },
+  {
+    category: '📱 Conectividade',
+    question: 'Qual modelo usa Bluetooth 5.3?',
+    answer: 'pro2',
+    explanation: 'O Pro 2 usa <strong>Bluetooth 5.3</strong> contra o 5.1 do Pro original. Conexão mais estável, menor latência e melhor gerenciamento de energia. Na prática: menos dropouts durante o treino.'
+  },
+  {
+    category: '⚡ Carga rápida',
+    question: 'Os dois têm carga rápida?',
+    answer: 'igual',
+    explanation: 'Sim, ambos têm <strong>carga rápida</strong>. O Pro original: 5 min = 1,5h de uso. O Pro 2 mantém especificação similar. Ambos usam carregador magnético proprietário Shokz — não é USB-C.'
+  },
+  {
+    category: '🎵 Bass Booster',
+    question: 'Qual modelo tem o Bass Booster para graves aprimorados?',
+    answer: 'igual',
+    explanation: 'Os dois têm <strong>Bass Booster</strong>. Essa tecnologia de graves aprimorados existe desde o Pro original e foi mantida (e melhorada com o novo atuador) no Pro 2. É um diferencial dos dois vs. OpenRun e OpenMove.'
+  },
+  {
+    category: '⚖️ Peso',
+    question: 'Qual modelo é mais leve?',
+    answer: 'pro',
+    explanation: 'O Pro original pesa <strong>29g</strong>, enquanto o Pro 2 pesa <strong>30g</strong>. Diferença de 1 grama — praticamente imperceptível no uso. Não é um critério real de decisão entre os dois.'
+  }
+];
+
+let duelCurrent = 0;
+let duelCorrect = 0;
+let duelWrong = 0;
+let duelAnswered = false;
+let duelOrder = [];
+
+function duelShuffle(arr) {
+  return [...arr].sort(() => Math.random() - 0.5);
+}
+
+function duelInit() {
+  duelCurrent = 0;
+  duelCorrect = 0;
+  duelWrong = 0;
+  duelAnswered = false;
+  duelOrder = duelShuffle(duelQuestions);
+  duelRender();
+}
+
+function duelRender() {
+  const q = duelOrder[duelCurrent];
+  document.getElementById('duel-category').textContent = q.category;
+  document.getElementById('duel-question').textContent = q.question;
+  document.getElementById('score-correct').textContent = duelCorrect;
+  document.getElementById('score-wrong').textContent = duelWrong;
+  document.getElementById('score-progress').textContent = (duelCurrent + 1) + '/' + duelOrder.length;
+  document.getElementById('duel-card').style.borderColor = 'var(--border)';
+  document.getElementById('duel-feedback').style.display = 'none';
+  document.getElementById('duel-next').style.display = 'none';
+  document.getElementById('duel-result').style.display = 'none';
+  document.getElementById('duel-btns').style.display = 'grid';
+  // reset button styles
+  document.querySelectorAll('#duel-btns button').forEach(b => {
+    b.style.opacity = '1';
+    b.style.transform = 'none';
+  });
+  duelAnswered = false;
+}
+
+function duelAnswer(choice) {
+  if (duelAnswered) return;
+  duelAnswered = true;
+  const q = duelOrder[duelCurrent];
+  const correct = choice === q.answer;
+  if (correct) duelCorrect++; else duelWrong++;
+
+  // visual feedback on card
+  document.getElementById('duel-card').style.borderColor = correct ? '#16a34a' : '#cc0000';
+
+  // dim wrong buttons, highlight correct
+  const labels = { pro: 0, igual: 1, pro2: 2 };
+  document.querySelectorAll('#duel-btns button').forEach((b, i) => {
+    b.style.opacity = '0.35';
+  });
+  const correctIdx = labels[q.answer];
+  const choiceIdx = labels[choice];
+  const btns = document.querySelectorAll('#duel-btns button');
+  btns[correctIdx].style.opacity = '1';
+  btns[correctIdx].style.background = 'rgba(22,163,74,0.12)';
+  btns[correctIdx].style.borderColor = '#16a34a';
+  btns[correctIdx].style.color = '#15803d';
+  if (!correct) {
+    btns[choiceIdx].style.opacity = '0.7';
+    btns[choiceIdx].style.background = 'rgba(204,0,0,0.08)';
+    btns[choiceIdx].style.borderColor = '#cc0000';
+    btns[choiceIdx].style.color = '#cc0000';
+  }
+
+  // feedback block
+  const fb = document.getElementById('duel-feedback');
+  fb.style.display = 'block';
+  fb.style.background = correct ? 'rgba(22,163,74,0.08)' : 'rgba(204,0,0,0.06)';
+  fb.style.border = '1px solid ' + (correct ? 'rgba(22,163,74,0.3)' : 'rgba(204,0,0,0.2)');
+  fb.innerHTML = (correct ? '<strong style="color:#16a34a">✓ Correto!</strong> ' : '<strong style="color:#cc0000">✗ Errou.</strong> ') + q.explanation;
+
+  document.getElementById('score-correct').textContent = duelCorrect;
+  document.getElementById('score-wrong').textContent = duelWrong;
+  document.getElementById('duel-next').style.display = 'inline-block';
+  document.getElementById('duel-next').textContent = duelCurrent + 1 < duelOrder.length ? 'Próxima →' : 'Ver resultado →';
+}
+
+function duelNext() {
+  duelCurrent++;
+  if (duelCurrent >= duelOrder.length) {
+    duelShowResult();
+  } else {
+    duelRender();
+  }
+}
+
+function duelShowResult() {
+  document.getElementById('duel-btns').style.display = 'none';
+  document.getElementById('duel-card').style.display = 'none';
+  document.getElementById('duel-feedback').style.display = 'none';
+  document.getElementById('duel-next').style.display = 'none';
+  document.getElementById('duel-result').style.display = 'block';
+
+  const total = duelOrder.length;
+  const pct = duelCorrect / total;
+  let emoji, title, msg;
+  if (pct === 1)      { emoji = '🏆'; title = 'Expert Shokz!'; msg = 'Acertou tudo. Você domina a linha Pro — pode vender de olhos fechados.'; }
+  else if (pct >= 0.75) { emoji = '💪'; title = 'Muito bom!'; msg = 'Quase lá. Revise os erros e você estará pronto para qualquer dúvida do cliente.'; }
+  else if (pct >= 0.5)  { emoji = '📚'; title = 'Bom começo.'; msg = 'Metade no caminho certo. Vale reler as specs do Pro 2 — especialmente bateria, microfone e Bluetooth.'; }
+  else                  { emoji = '🔄'; title = 'Hora de revisar!'; msg = 'Sem pressão — releia o comparativo e tente de novo. O Pro vs Pro 2 é uma dúvida muito comum dos clientes.'; }
+
+  document.getElementById('result-emoji').textContent = emoji;
+  document.getElementById('result-title').textContent = title;
+  document.getElementById('result-msg').textContent = msg;
+  document.getElementById('result-score').textContent = duelCorrect;
+  document.getElementById('result-total').textContent = total;
+}
+
+function duelRestart() {
+  document.getElementById('duel-card').style.display = 'block';
+  duelInit();
+}
+</script>
+</body>
+</html>
