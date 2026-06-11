@@ -932,7 +932,7 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
     <div class="menu-grid">
       <div class="menu-card priority" onclick="openPanel('formacao')"><div class="menu-badge new">NOVO</div><span class="menu-icon">🎓</span><div class="menu-name">Formação</div><div class="menu-desc">Trilha de módulos — estude e seja certificado</div></div>
       <div class="menu-card priority" onclick="openPanel('novidades')"><div class="menu-badge new">NOVO</div><span class="menu-icon">⚡</span><div class="menu-name">Novidades</div><div class="menu-desc">Forerunner 70 e 170 — os lançamentos 2026</div></div>
-      <div class="menu-card priority" onclick="openPanel('games')"><div class="menu-badge new">GAME</div><span class="menu-icon">⚔️</span><div class="menu-name">Games</div><div class="menu-desc">Duelo de Especificações — Instinct 3 vs Instinct E</div></div>
+      <div class="menu-card priority" onclick="openPanel('games')"><div class="menu-badge new">GAME</div><span class="menu-icon">⚔️</span><div class="menu-name">Games</div><div class="menu-desc">Duelo de Especificações — Instinct 3 vs E · MARQ Carbon</div></div>
       <div class="menu-card" onclick="openPanel('quizzes')"><span class="menu-icon">📝</span><div class="menu-name">Quizzes</div><div class="menu-desc">Avaliações técnicas — IPX, Atendimento, Instinct 3</div></div>
       <div class="menu-card" onclick="openPanel('certificacao')"><span class="menu-icon">🏅</span><div class="menu-name">Certificação</div><div class="menu-desc">Sua trilha: Explorador → Triatleta</div></div>
       <div class="menu-card" onclick="openPanel('ranking')"><span class="menu-icon">🏆</span><div class="menu-name">Ranking</div><div class="menu-desc">Pódio da equipe e pontuação</div></div>
@@ -1797,6 +1797,12 @@ function openPanel(id) {
     if (id === 'universo') { const w=document.getElementById('quizWrap'); if(w) w.style.display='none'; }
     if (id === 'perfis-modulo') { const w=document.getElementById('quizWrap2'); if(w) w.style.display='none'; }
     if (id === 'produtos-modulo') { const w=document.getElementById('quizWrap3'); if(w) w.style.display='none'; }
+    if (id === 'games') {
+      ['g-abertura','g-partida','g-resultado','mg-abertura','mg-partida','mg-resultado'].forEach(tid=>{
+        const el=document.getElementById(tid); if(el) el.style.display='none';
+      });
+      const sel=document.getElementById('g-seletor'); if(sel) sel.style.display='block';
+    }
   } else {
     goHome();
   }
@@ -4154,6 +4160,186 @@ if('serviceWorker' in navigator){
 <!-- ═══════════════════════════════════════════════════════════════ -->
 <!-- GAMES — DUELO DE ESPECIFICAÇÕES                                -->
 <!-- ═══════════════════════════════════════════════════════════════ -->
+<style>
+/* ── SELETOR DE GAME ──────────────────────────────────────────── */
+.game-selector { margin-bottom:0; }
+.game-sel-titulo {
+  font-family:'Rajdhani',sans-serif; font-weight:700; font-size:11px;
+  letter-spacing:3px; text-transform:uppercase; color:var(--text3);
+  margin-bottom:16px; text-align:center;
+}
+.game-sel-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:8px; }
+.game-sel-card {
+  background:#0a0a0a; border-radius:var(--r);
+  border:2px solid #222; padding:22px 16px;
+  cursor:pointer; text-align:center; transition:all 0.25s;
+  position:relative; overflow:hidden;
+}
+.game-sel-card::after {
+  content:''; position:absolute; bottom:0; left:0; right:0; height:3px;
+  background:var(--g); transform:scaleX(0); transition:transform 0.2s; transform-origin:left;
+}
+.game-sel-card:hover { border-color:var(--g); transform:translateY(-3px); box-shadow:0 12px 32px rgba(227,16,32,0.2); }
+.game-sel-card:hover::after { transform:scaleX(1); }
+.game-sel-emoji { font-size:32px; margin-bottom:10px; display:block; }
+.game-sel-nome {
+  font-family:'Rajdhani',sans-serif; font-weight:700; font-size:15px;
+  letter-spacing:2px; text-transform:uppercase; color:#fff; margin-bottom:4px;
+}
+.game-sel-desc { font-size:11px; color:rgba(255,255,255,0.35); line-height:1.4; }
+.game-sel-badge {
+  display:inline-block; margin-top:10px; background:var(--g); color:#fff;
+  font-family:'Rajdhani',sans-serif; font-weight:700; font-size:10px;
+  letter-spacing:1.5px; text-transform:uppercase; padding:3px 10px; border-radius:20px;
+}
+@media(max-width:500px){ .game-sel-grid { grid-template-columns:1fr; } }
+
+/* ── GAME MARQ — CORES DOS TRÊS MODELOS ──────────────────────── */
+:root {
+  --marq-g:#1a7a1a;   /* Golfer — verde campo */
+  --marq-a:#1a4a8a;   /* Athlete — azul performance */
+  --marq-c:#6a2a6a;   /* Commander — roxo tático */
+}
+/* abertura MARQ */
+.marq-abertura {
+  background:#0a0a0a; border-radius:var(--r);
+  padding:32px 20px; text-align:center;
+  margin-bottom:20px; position:relative; overflow:hidden;
+}
+.marq-abertura::before {
+  content:''; position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse 40% 60% at 20% 50%, rgba(26,122,26,0.2) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 50% 50%, rgba(106,42,106,0.15) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 80% 50%, rgba(26,74,138,0.2) 0%, transparent 70%);
+  pointer-events:none;
+}
+.marq-abertura-inner { position:relative; z-index:1; }
+.marq-gab-eyebrow {
+  font-size:10px; letter-spacing:4px; text-transform:uppercase;
+  color:rgba(255,255,255,0.35); margin-bottom:16px;
+}
+.marq-gab-titulo {
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:800; font-style:italic;
+  font-size:clamp(28px,6vw,54px);
+  color:#fff; letter-spacing:2px; text-transform:uppercase;
+  line-height:1.1; margin-bottom:6px;
+}
+.marq-gab-titulo .verde { color:#4db84d; }
+.marq-gab-titulo .azul  { color:#5a9de0; }
+.marq-gab-titulo .roxo  { color:#c47fc4; }
+.marq-gab-titulo .sep   { color:rgba(255,255,255,0.15); font-size:0.4em; margin:0 6px; vertical-align:middle; }
+.marq-gab-sub {
+  font-size:13px; color:rgba(255,255,255,0.45);
+  letter-spacing:1px; margin-bottom:28px; line-height:1.5;
+}
+.marq-gab-cards {
+  display:flex; gap:12px; margin-bottom:28px;
+  flex-wrap:wrap; justify-content:center;
+}
+.marq-gab-card {
+  background:#161616; border-radius:var(--r);
+  padding:18px 16px; text-align:center;
+  width:140px; border:2px solid transparent; flex-shrink:0;
+}
+.marq-gab-card.verde-card { border-color:rgba(26,122,26,0.5); }
+.marq-gab-card.azul-card  { border-color:rgba(26,74,138,0.5); }
+.marq-gab-card.roxo-card  { border-color:rgba(106,42,106,0.5); }
+.marq-gab-card-emoji { font-size:30px; margin-bottom:8px; display:block; }
+.marq-gab-card-nome {
+  font-family:'Rajdhani',sans-serif; font-weight:700;
+  font-size:13px; letter-spacing:1.5px; text-transform:uppercase; color:#fff;
+  margin-bottom:2px;
+}
+.marq-gab-card-tag {
+  font-size:10px; color:rgba(255,255,255,0.35); margin-top:2px;
+  letter-spacing:1px; text-transform:uppercase;
+}
+.marq-gab-rules {
+  display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:28px;
+}
+.marq-gab-rule {
+  display:flex; align-items:center; gap:6px;
+  font-size:11px; color:rgba(255,255,255,0.45);
+  background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1);
+  border-radius:6px; padding:5px 12px;
+}
+
+/* opcoes MARQ — 4 botões */
+.marq-opcoes {
+  display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px;
+}
+.marq-opcao {
+  background:var(--white); border:2px solid var(--border);
+  border-radius:var(--r); padding:14px 12px;
+  cursor:pointer; transition:all 0.2s; text-align:center;
+}
+.marq-opcao:hover { transform:translateY(-2px); box-shadow:var(--sh2); }
+.marq-opcao.opt-verde { border-color:rgba(26,122,26,0.3); background:linear-gradient(135deg,#fff,#f0faf0); }
+.marq-opcao.opt-verde:hover { border-color:var(--marq-g); background:#e0f7e0; }
+.marq-opcao.opt-azul  { border-color:rgba(26,74,138,0.3); background:linear-gradient(135deg,#fff,#f0f4ff); }
+.marq-opcao.opt-azul:hover  { border-color:var(--marq-a); background:#e0eaff; }
+.marq-opcao.opt-roxo  { border-color:rgba(106,42,106,0.3); background:linear-gradient(135deg,#fff,#fbf0fb); }
+.marq-opcao.opt-roxo:hover  { border-color:var(--marq-c); background:#f5e0f5; }
+.marq-opcao.opt-todos { border-color:rgba(0,194,168,0.3); background:linear-gradient(135deg,#fff,#f0fdfb); }
+.marq-opcao.opt-todos:hover { border-color:var(--acc); background:#e6faf7; }
+.marq-opcao.estado-certo    { background:#e6faf7!important; border-color:var(--acc)!important; animation:gPulse 0.4s ease; }
+.marq-opcao.estado-errado   { background:#fff4f0!important; border-color:var(--warn)!important; animation:gShake 0.35s ease; }
+.marq-opcao.estado-revelado { background:#e6faf7!important; border-color:var(--acc)!important; }
+.marq-opcao.bloqueado { cursor:not-allowed; pointer-events:none; }
+.marq-opcao-icone { font-size:22px; margin-bottom:5px; display:block; }
+.marq-opcao-nome {
+  font-family:'Rajdhani',sans-serif; font-weight:700;
+  font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--text);
+}
+.marq-opcao-nome.verde { color:var(--marq-g); }
+.marq-opcao-nome.azul  { color:var(--marq-a); }
+.marq-opcao-nome.roxo  { color:var(--marq-c); }
+.marq-opcao-nome.todos { color:#007a6a; }
+
+/* reveal MARQ — 3 colunas */
+.marq-reveal-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:7px; }
+.marq-reveal-nome.verde { color:#4db84d; }
+.marq-reveal-nome.azul  { color:#5a9de0; }
+.marq-reveal-nome.roxo  { color:#c47fc4; }
+
+/* placar MARQ — 3 colunas */
+.marq-placar {
+  display:grid; grid-template-columns:1fr auto 1fr auto 1fr;
+  border:1.5px solid var(--border); border-radius:var(--r); overflow:hidden; margin-bottom:20px;
+}
+.marq-placar-col { padding:16px 10px; text-align:center; }
+.marq-placar-col.col-verde { background:linear-gradient(135deg,#fff,#f0faf0); }
+.marq-placar-col.col-azul  { background:linear-gradient(135deg,#fff,#f0f4ff); }
+.marq-placar-col.col-roxo  { background:linear-gradient(135deg,#fff,#fbf0fb); }
+.marq-placar-col.col-sep   { background:#0a0a0a; display:flex; align-items:center; justify-content:center; padding:8px; }
+.marq-placar-emoji { font-size:24px; margin-bottom:4px; display:block; }
+.marq-placar-nome {
+  font-family:'Rajdhani',sans-serif; font-weight:700;
+  font-size:10px; letter-spacing:1px; text-transform:uppercase; margin-bottom:4px;
+}
+.marq-placar-nome.verde { color:var(--marq-g); }
+.marq-placar-nome.azul  { color:var(--marq-a); }
+.marq-placar-nome.roxo  { color:var(--marq-c); }
+.marq-placar-num {
+  font-family:'Rajdhani',sans-serif; font-weight:700; font-size:36px; line-height:1;
+}
+.marq-placar-num.verde { color:var(--marq-g); }
+.marq-placar-num.azul  { color:var(--marq-a); }
+.marq-placar-num.roxo  { color:var(--marq-c); }
+.marq-placar-label { font-size:9px; letter-spacing:1px; text-transform:uppercase; color:var(--text3); margin-top:2px; }
+.marq-placar-vs {
+  font-family:'Barlow Condensed',sans-serif; font-weight:800; font-style:italic;
+  font-size:13px; color:rgba(255,255,255,0.2);
+}
+@media(max-width:500px){
+  .marq-reveal-grid { grid-template-columns:1fr; }
+  .marq-placar { grid-template-columns:1fr; }
+  .marq-placar-col.col-sep { display:none; }
+}
+</style>
+
 <div class="panel" id="panel-games">
   <div class="panel-header">
     <button class="back-btn" onclick="goHome()">← Início</button>
@@ -4161,8 +4347,33 @@ if('serviceWorker' in navigator){
   </div>
   <div class="panel-body">
 
+    <!-- SELETOR DE GAME -->
+    <div id="g-seletor" class="game-selector">
+      <div class="marq-abertura" style="margin-bottom:20px;">
+        <div class="marq-abertura-inner">
+          <div class="marq-gab-eyebrow">proparts training hub · garmin · escolha seu duelo</div>
+          <div class="marq-gab-titulo" style="font-size:clamp(22px,5vw,40px);margin-bottom:20px;">Qual duelo você quer jogar?</div>
+          <div class="game-sel-grid">
+            <div class="game-sel-card" onclick="gSelecionarGame('instinct')">
+              <span class="game-sel-emoji">⌚</span>
+              <div class="game-sel-nome">Instinct 3 vs Instinct E</div>
+              <div class="game-sel-desc">Tela, bateria, sensores e funções — saiba indicar o modelo certo</div>
+              <span class="game-sel-badge">10 rodadas</span>
+            </div>
+            <div class="game-sel-card" onclick="gSelecionarGame('marq')">
+              <span class="game-sel-emoji">👑</span>
+              <div class="game-sel-nome">MARQ Carbon — Trio de Luxo</div>
+              <div class="game-sel-desc">Golfer, Athlete ou Commander — qual modelo tem cada funcionalidade?</div>
+              <span class="game-sel-badge">10 rodadas</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════ GAME 1 — INSTINCT ══════════════════ -->
     <!-- TELA 0 — ABERTURA (visível por padrão) -->
-    <div id="g-abertura">
+    <div id="g-abertura" style="display:none;">
       <div class="game-abertura">
         <div class="game-abertura-inner">
           <div class="gab-eyebrow">proparts training hub · garmin · duelo de especificações</div>
@@ -4326,6 +4537,187 @@ if('serviceWorker' in navigator){
 
         <button class="game-btn-reiniciar" onclick="gIniciar()">🔄 Jogar novamente</button>
         <button class="game-btn-voltar" onclick="gVoltarAbertura()">← Voltar ao início do game</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════ GAME 2 — MARQ CARBON ══════════════════ -->
+
+    <!-- TELA 0 — ABERTURA MARQ -->
+    <div id="mg-abertura" style="display:none;">
+      <div class="marq-abertura">
+        <div class="marq-abertura-inner">
+          <div class="marq-gab-eyebrow">proparts training hub · garmin · duelo de especificações</div>
+          <div class="marq-gab-titulo">
+            <span class="verde">MARQ Golfer</span>
+            <span class="sep">·</span>
+            <span class="azul">MARQ Athlete</span>
+            <span class="sep">·</span>
+            <span class="roxo">MARQ Commander</span>
+          </div>
+          <div class="marq-gab-sub">
+            Você sabe o que é exclusivo de cada modelo?<br>
+            Prove que domina o trio de luxo Carbon Edition.
+          </div>
+          <div class="marq-gab-cards">
+            <div class="marq-gab-card verde-card">
+              <span class="marq-gab-card-emoji">⛳</span>
+              <div class="marq-gab-card-nome">MARQ Golfer</div>
+              <div class="marq-gab-card-tag">Golfe · Luxo</div>
+            </div>
+            <div class="marq-gab-card azul-card">
+              <span class="marq-gab-card-emoji">🏃</span>
+              <div class="marq-gab-card-nome">MARQ Athlete</div>
+              <div class="marq-gab-card-tag">Esporte · Luxo</div>
+            </div>
+            <div class="marq-gab-card roxo-card">
+              <span class="marq-gab-card-emoji">🎖️</span>
+              <div class="marq-gab-card-nome">MARQ Commander</div>
+              <div class="marq-gab-card-tag">Tático · Luxo</div>
+            </div>
+          </div>
+          <div class="marq-gab-rules">
+            <div class="marq-gab-rule">🎯 10 rodadas</div>
+            <div class="marq-gab-rule">👑 Golfer, Athlete, Commander ou Todos?</div>
+            <div class="marq-gab-rule">📖 Explicação em cada rodada</div>
+            <div class="marq-gab-rule">🏆 Veja sua nota no final</div>
+          </div>
+          <button class="btn-iniciar-game" onclick="mgIniciar()">👑 Iniciar Duelo MARQ</button>
+        </div>
+      </div>
+      <div class="tip">💡 <strong>Dica:</strong> Os três modelos compartilham a mesma base de hardware. O desafio é saber o que é <strong>exclusivo de cada um</strong> — exatamente onde o atendimento faz diferença.</div>
+    </div>
+
+    <!-- TELA 1 — PARTIDA MARQ -->
+    <div id="mg-partida" style="display:none;">
+      <div class="game-rodada-wrap">
+
+        <div class="game-prog-strip">
+          <div class="game-prog-label" id="mgLabelRodada">Rodada 1/10</div>
+          <div class="game-prog-bar-bg">
+            <div class="game-prog-bar-fill" id="mgBarra" style="background:linear-gradient(90deg,var(--marq-g),var(--marq-c));"></div>
+          </div>
+          <div class="game-prog-score" id="mgPontos">0 ✓</div>
+        </div>
+
+        <div class="game-rodada-badge">
+          <span class="game-rodada-num" id="mgRodadaNum">RODADA 1</span>
+        </div>
+
+        <div class="game-confronto">
+          <div class="game-confronto-inner" style="grid-template-columns:1fr auto 1fr auto 1fr;">
+            <div class="game-time">
+              <span class="game-time-emoji">⛳</span>
+              <div class="game-time-nome" style="color:#4db84d;">MARQ Golfer</div>
+            </div>
+            <div class="game-confronto-vs">·</div>
+            <div class="game-time">
+              <span class="game-time-emoji">🏃</span>
+              <div class="game-time-nome" style="color:#5a9de0;">MARQ Athlete</div>
+            </div>
+            <div class="game-confronto-vs">·</div>
+            <div class="game-time">
+              <span class="game-time-emoji">🎖️</span>
+              <div class="game-time-nome" style="color:#c47fc4;">MARQ Commander</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="game-categoria">
+          <span class="game-cat-icone" id="mgCatIcone">📡</span>
+          <div>
+            <div class="game-cat-nome" id="mgCatNome">Categoria</div>
+            <div class="game-cat-descr" id="mgCatDescr">Descrição</div>
+          </div>
+        </div>
+
+        <div class="game-pergunta">
+          <div class="game-perg-label">👑 Qual modelo tem essa característica?</div>
+          <div class="game-perg-texto" id="mgPergunta">...</div>
+        </div>
+
+        <div class="marq-opcoes" id="mgOpcoes">
+          <button class="marq-opcao opt-verde" id="mgBtnGolfer" onclick="mgResponder('golfer')">
+            <span class="marq-opcao-icone">⛳</span>
+            <span class="marq-opcao-nome verde">MARQ Golfer</span>
+          </button>
+          <button class="marq-opcao opt-azul" id="mgBtnAthlete" onclick="mgResponder('athlete')">
+            <span class="marq-opcao-icone">🏃</span>
+            <span class="marq-opcao-nome azul">MARQ Athlete</span>
+          </button>
+          <button class="marq-opcao opt-roxo" id="mgBtnCommander" onclick="mgResponder('commander')">
+            <span class="marq-opcao-icone">🎖️</span>
+            <span class="marq-opcao-nome roxo">MARQ Commander</span>
+          </button>
+          <button class="marq-opcao opt-todos" id="mgBtnTodos" onclick="mgResponder('todos')">
+            <span class="marq-opcao-icone">🤝</span>
+            <span class="marq-opcao-nome todos">Todos iguais</span>
+          </button>
+        </div>
+
+        <div class="game-feedback" id="mgFeedback">
+          <span class="game-fb-icone" id="mgFbIcone">✅</span>
+          <div id="mgFbTexto"></div>
+        </div>
+
+        <div class="game-reveal" id="mgReveal">
+          <div class="game-reveal-label">📊 Comparativo dos três modelos</div>
+          <div class="marq-reveal-grid" id="mgRevealGrid"></div>
+        </div>
+
+        <button class="game-btn-proxima" id="mgBtnProxima" onclick="mgProxima()">
+          Próxima Rodada →
+        </button>
+
+      </div>
+    </div>
+
+    <!-- TELA 2 — RESULTADO MARQ -->
+    <div id="mg-resultado" style="display:none;">
+      <div class="game-resultado visivel">
+        <span class="game-res-trofeu" id="mgResTrofeu">🏆</span>
+        <div class="game-res-titulo" id="mgResTitulo">Parabéns!</div>
+        <div class="game-res-sub" id="mgResSub">Você completou o Duelo MARQ Carbon</div>
+
+        <div class="game-res-nota">
+          <div class="game-res-nota-label">👑 Sua pontuação final</div>
+          <div class="game-res-nota-valor" id="mgResNota">0/10</div>
+          <div class="game-res-nota-nivel" id="mgResNivel">Especialista MARQ</div>
+        </div>
+
+        <div class="marq-placar">
+          <div class="marq-placar-col col-verde">
+            <span class="marq-placar-emoji">⛳</span>
+            <div class="marq-placar-nome verde">MARQ GOLFER</div>
+            <div class="marq-placar-num verde" id="mgPlacarG">—</div>
+            <div class="marq-placar-label">perguntas exclusivas</div>
+          </div>
+          <div class="marq-placar-col col-sep">
+            <div class="marq-placar-vs">·</div>
+          </div>
+          <div class="marq-placar-col col-azul">
+            <span class="marq-placar-emoji">🏃</span>
+            <div class="marq-placar-nome azul">MARQ ATHLETE</div>
+            <div class="marq-placar-num azul" id="mgPlacarA">—</div>
+            <div class="marq-placar-label">perguntas exclusivas</div>
+          </div>
+          <div class="marq-placar-col col-sep">
+            <div class="marq-placar-vs">·</div>
+          </div>
+          <div class="marq-placar-col col-roxo">
+            <span class="marq-placar-emoji">🎖️</span>
+            <div class="marq-placar-nome roxo">MARQ COMMANDER</div>
+            <div class="marq-placar-num roxo" id="mgPlacarC">—</div>
+            <div class="marq-placar-label">perguntas exclusivas</div>
+          </div>
+        </div>
+
+        <div style="text-align:left;margin-bottom:14px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:8px;">📋 Revisão por rodada</div>
+          <div class="game-revisao" id="mgRevisao"></div>
+        </div>
+
+        <button class="game-btn-reiniciar" onclick="mgIniciar()">🔄 Jogar novamente</button>
+        <button class="game-btn-voltar" onclick="mgVoltarAbertura()">← Voltar ao início do game</button>
       </div>
     </div>
 
@@ -4548,7 +4940,349 @@ function gMostrarResultado(){
 }
 
 function gVoltarAbertura(){
-  gMostrar('g-abertura');
+  gMostrarTela('g-abertura');
+}
+
+// ═══════════════════════════════════════════════════════
+// SELETOR DE GAME
+// ═══════════════════════════════════════════════════════
+function gSelecionarGame(qual){
+  document.getElementById('g-seletor').style.display = 'none';
+  if(qual === 'instinct'){
+    document.getElementById('g-abertura').style.display = 'block';
+    window.scrollTo(0,0);
+  } else {
+    document.getElementById('mg-abertura').style.display = 'block';
+    window.scrollTo(0,0);
+  }
+}
+
+function gMostrarTela(tela){
+  ['g-seletor','g-abertura','g-partida','g-resultado','mg-abertura','mg-partida','mg-resultado'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.style.display = 'none';
+  });
+  document.getElementById(tela).style.display = 'block';
+  window.scrollTo(0,0);
+}
+
+// Sobrescreve gMostrar para o game Instinct usar gMostrarTela
+function gMostrar(tela){
+  gMostrarTela(tela);
+}
+
+// ═══════════════════════════════════════════════════════
+// GAME 2 — MARQ CARBON
+// ═══════════════════════════════════════════════════════
+const MG_PERGUNTAS = [
+  {
+    cat:{ icone:'⛳', nome:'Conteúdo da Caixa — Sensores de Taco', descr:'Acessório incluído no box' },
+    texto:'Qual modelo vem com 3 sensores Approach CT10 de rastreamento de tacos incluídos na caixa?',
+    gabarito:'golfer',
+    acerto:'✅ Correto! O MARQ Golfer é o único que inclui 3 sensores Approach CT10 na caixa. Eles rastreiam qual taco foi usado em cada tacada e ajudam a montar estatísticas de distância por taco.',
+    erro:'❌ É o MARQ Golfer. Ele é o único que vem com 3 sensores Approach CT10 na caixa — uma ferramenta exclusiva para análise de jogo no campo.',
+    reveal:{
+      golfer:'<strong>3 sensores CT10 incluídos</strong> ✓ · rastreamento de taco por tacada',
+      athlete:'Sem sensores CT10 · foco em corrida e treino',
+      commander:'Sem sensores CT10 · foco em uso tático'
+    }
+  },
+  {
+    cat:{ icone:'❤️', nome:'Conteúdo da Caixa — Cinta Cardíaca', descr:'Acessório incluído no box' },
+    texto:'Qual modelo vem com a cinta cardíaca HRM-Pro Plus incluída na caixa?',
+    gabarito:'athlete',
+    acerto:'✅ Correto! O MARQ Athlete é o único que inclui a cinta HRM-Pro Plus na caixa — a mais completa da linha Garmin, com métricas de dinâmica de corrida e dados de esteira.',
+    erro:'❌ É o MARQ Athlete. Ele vem com a cinta HRM-Pro Plus incluída — a mais completa da linha, com dinâmicas avançadas de corrida.',
+    reveal:{
+      golfer:'Sem cinta cardíaca incluída · foco em golfe',
+      athlete:'<strong>HRM-Pro Plus incluída</strong> ✓ · cinta de alta performance',
+      commander:'Sem cinta cardíaca incluída · foco tático'
+    }
+  },
+  {
+    cat:{ icone:'⌚', nome:'Bezel Temático', descr:'Marcações gravadas no aro do relógio' },
+    texto:'Qual modelo possui marcações dos buracos 1 a 18 gravadas no bezel?',
+    gabarito:'golfer',
+    acerto:'✅ Correto! O bezel do MARQ Golfer traz as marcações dos buracos 1 a 18 — detalhes que reforçam a identidade do modelo com quem vive no campo.',
+    erro:'❌ É o MARQ Golfer. O bezel dele traz a numeração dos buracos 1 a 18, refletindo a identidade do modelo para o golfista.',
+    reveal:{
+      golfer:'<strong>Marcações dos buracos 1–18</strong> · bezel temático de golfe ✓',
+      athlete:'Marcações de VO₂ máx e tempo de recuperação · bezel esportivo',
+      commander:'Marcações UTC · bezel de navegação tática'
+    }
+  },
+  {
+    cat:{ icone:'⌚', nome:'Bezel Temático', descr:'Marcações gravadas no aro do relógio' },
+    texto:'Qual modelo possui marcações de VO₂ máx e tempo de recuperação gravadas no bezel?',
+    gabarito:'athlete',
+    acerto:'✅ Correto! O MARQ Athlete tem um bezel focado em performance esportiva — com referências de VO₂ máx e tempo de recuperação, ideal para atletas de alto rendimento.',
+    erro:'❌ É o MARQ Athlete. O bezel dele traz indicadores de VO₂ máx e tempo de recuperação, reforçando o caráter esportivo do modelo.',
+    reveal:{
+      golfer:'Marcações dos buracos 1–18 · bezel de golfe',
+      athlete:'<strong>Marcações de VO₂ máx e recuperação</strong> · bezel esportivo ✓',
+      commander:'Marcações UTC · bezel de navegação tática'
+    }
+  },
+  {
+    cat:{ icone:'🎖️', nome:'Funcionalidade Tática — Modo Stealth', descr:'Recursos para uso militar e segurança' },
+    texto:'Qual modelo possui Modo Stealth (desativa GPS e transmissão de dados), compatibilidade com óculos de visão noturna e Kill Switch?',
+    gabarito:'commander',
+    acerto:'✅ Correto! Essas três funcionalidades são exclusivas do MARQ Commander — pensadas para operações táticas onde a discrição e a segurança de dados são críticas.',
+    erro:'❌ São exclusividades do MARQ Commander: Modo Stealth, compatibilidade com visão noturna e Kill Switch. Recursos desenvolvidos para operações táticas.',
+    reveal:{
+      golfer:'Sem funcionalidades táticas · foco em campo de golfe',
+      athlete:'Sem funcionalidades táticas · foco em performance esportiva',
+      commander:'<strong>Modo Stealth · Kill Switch · visão noturna</strong> ✓ · uso tático'
+    }
+  },
+  {
+    cat:{ icone:'🎯', nome:'Calculadora Balística', descr:'Ferramenta para tiro de longa distância' },
+    texto:'Qual modelo inclui o Applied Ballistics Ultralite pré-instalado — calculadora balística para tiro de longa distância?',
+    gabarito:'commander',
+    acerto:'✅ Correto! O MARQ Commander inclui o Applied Ballistics Ultralite, uma ferramenta de altíssima precisão para atiradores de longa distância, com correções de vento, altitude e balística.',
+    erro:'❌ É o MARQ Commander. O Applied Ballistics Ultralite é uma ferramenta exclusiva dele — voltada para atiradores de longa distância com cálculos avançados de trajetória.',
+    reveal:{
+      golfer:'Sem calculadora balística · voltado para golfe',
+      athlete:'Sem calculadora balística · voltado para esporte',
+      commander:'<strong>Applied Ballistics Ultralite incluído</strong> ✓ · tiro de longa distância'
+    }
+  },
+  {
+    cat:{ icone:'🪂', nome:'Modo Paraquedismo', descr:'Ferramenta para salto de paraquedas' },
+    texto:'Qual modelo possui o Modo Jumpmaster, que calcula o ponto ideal de saída para saltos de paraquedas?',
+    gabarito:'commander',
+    acerto:'✅ Correto! O Modo Jumpmaster é exclusivo do MARQ Commander. Ele calcula a posição de saída para saltos de paraquedas com base em vento, altitude e ponto de pouso desejado.',
+    erro:'❌ É o MARQ Commander. O Modo Jumpmaster — cálculo de ponto de saída para saltos — é uma funcionalidade tática exclusiva desse modelo.',
+    reveal:{
+      golfer:'Sem Modo Jumpmaster · uso civil, campo de golfe',
+      athlete:'Sem Modo Jumpmaster · uso esportivo convencional',
+      commander:'<strong>Modo Jumpmaster incluído</strong> ✓ · salto de paraquedas tático'
+    }
+  },
+  {
+    cat:{ icone:'🏌️', nome:'Caddie Digital', descr:'Ferramenta de apoio no jogo de golfe' },
+    texto:'Qual modelo inclui o Caddie Virtual com gráfico de dispersão de tacadas e sugestão automática de taco?',
+    gabarito:'golfer',
+    acerto:'✅ Correto! O MARQ Golfer tem o Caddie Virtual — que analisa o histórico de tacadas do jogador e sugere qual taco usar em cada situação, exibindo um gráfico de dispersão personalizado.',
+    erro:'❌ É o MARQ Golfer. O Caddie Virtual com gráfico de dispersão e sugestão de taco é uma funcionalidade exclusiva do modelo voltado para o golfe.',
+    reveal:{
+      golfer:'<strong>Caddie Virtual + gráfico de dispersão</strong> ✓ · sugestão de taco por situação',
+      athlete:'Sem Caddie Virtual · foco em análise de treino esportivo',
+      commander:'Sem Caddie Virtual · foco em navegação e uso tático'
+    }
+  },
+  {
+    cat:{ icone:'🗺️', nome:'Mapas Pré-carregados', descr:'Tipo de mapa disponível sem baixar nada' },
+    texto:'Mapas TopoActive com trilhas de corrida, ciclismo e caminhadas pré-carregados — em quais modelos esse recurso está disponível?',
+    gabarito:'todos',
+    acerto:'✅ Correto! Os três modelos Carbon Edition têm mapas TopoActive pré-carregados. A diferença é que o MARQ Golfer também inclui mapas CourseView de mais de 42.000 campos de golfe.',
+    erro:'❌ Os mapas TopoActive estão nos três modelos. Todos vêm com trilhas de corrida, ciclismo e caminhadas. O MARQ Golfer ainda acrescenta os mapas CourseView de campos de golfe.',
+    reveal:{
+      golfer:'TopoActive ✓ + <strong>CourseView (+42.000 campos de golfe)</strong>',
+      athlete:'<strong>TopoActive incluído</strong> ✓ · trilhas e rotas outdoor',
+      commander:'<strong>TopoActive incluído</strong> ✓ · trilhas e rotas outdoor'
+    }
+  },
+  {
+    cat:{ icone:'🧭', nome:'Grade de Coordenadas Dupla', descr:'Sistema de navegação tática avançada' },
+    texto:'Qual modelo suporta exibição simultânea de coordenadas em formato UTM e MGRS (grade militar)?',
+    gabarito:'commander',
+    acerto:'✅ Correto! O MARQ Commander suporta o formato duplo UTM/MGRS, padrão de navegação utilizado por forças militares e operadores táticos em todo o mundo.',
+    erro:'❌ É o MARQ Commander. Ele suporta coordenadas em formato duplo UTM/MGRS — o padrão de navegação tática das forças militares.',
+    reveal:{
+      golfer:'Coordenadas padrão GPS · sem MGRS',
+      athlete:'Coordenadas padrão GPS · sem MGRS',
+      commander:'<strong>UTM + MGRS simultâneo</strong> ✓ · navegação tática de precisão'
+    }
+  },
+  {
+    cat:{ icone:'💎', nome:'Base de Hardware', descr:'Especificações compartilhadas pelos três' },
+    texto:'Tela AMOLED com lente de safira, caixa de 46mm em Fused Carbon Fiber e bateria de até 16 dias — em qual modelo?',
+    gabarito:'todos',
+    acerto:'✅ Correto! Essas especificações são a base de hardware compartilhada pelos três Carbon Edition. O que diferencia cada modelo são as funcionalidades e acessórios incluídos.',
+    erro:'❌ Essas são as especificações base dos três modelos. AMOLED safira, 46mm, Fused Carbon Fiber e até 16 dias de bateria são comuns ao Golfer, Athlete e Commander.',
+    reveal:{
+      golfer:'AMOLED safira · 46mm · Carbon Fiber · <strong>16 dias ✓</strong>',
+      athlete:'AMOLED safira · 46mm · Carbon Fiber · <strong>16 dias ✓</strong>',
+      commander:'AMOLED safira · 46mm · Carbon Fiber · <strong>16 dias ✓</strong>'
+    }
+  },
+  {
+    cat:{ icone:'🧶', nome:'Pulseira Original', descr:'Material da pulseira que acompanha o relógio' },
+    texto:'Qual modelo vem com pulseira híbrida de couro FKM perfurado com reforço em borracha?',
+    gabarito:'golfer',
+    acerto:'✅ Correto! O MARQ Golfer vem com pulseira híbrida de couro FKM perfurado — elegante para o ambiente do clube, mas resistente o suficiente para o campo.',
+    erro:'❌ É o MARQ Golfer. A pulseira híbrida de couro FKM perfurado é característica desse modelo — pensada para o ambiente do clube de golfe.',
+    reveal:{
+      golfer:'<strong>Couro FKM perfurado + borracha</strong> ✓ · estilo country club',
+      athlete:'Borracha/silicone de alta performance · focada em treino',
+      commander:'Nylon Jacquard-weave · estilo tático'
+    }
+  },
+  {
+    cat:{ icone:'🧶', nome:'Pulseira Original', descr:'Material da pulseira que acompanha o relógio' },
+    texto:'Qual modelo vem com pulseira de nylon Jacquard-weave como pulseira original?',
+    gabarito:'commander',
+    acerto:'✅ Correto! O MARQ Commander vem com pulseira de nylon Jacquard-weave — resistente, discreta e de visual tático, coerente com o perfil do modelo.',
+    erro:'❌ É o MARQ Commander. A pulseira de nylon Jacquard-weave é característica desse modelo — textura tática, durável e funcional.',
+    reveal:{
+      golfer:'Couro FKM perfurado + borracha · estilo country club',
+      athlete:'Borracha/silicone de alta performance · focada em treino',
+      commander:'<strong>Nylon Jacquard-weave</strong> ✓ · visual e função táticos'
+    }
+  },
+  {
+    cat:{ icone:'🏃', nome:'Análise de Corrida', descr:'Métricas avançadas de performance na corrida' },
+    texto:'Qual modelo inclui análise avançada de dinâmica de corrida com dados de cadência, oscilação vertical e comprimento de passada?',
+    gabarito:'athlete',
+    acerto:'✅ Correto! O MARQ Athlete é o modelo voltado para atletas de alto rendimento e traz a análise mais completa de dinâmica de corrida — especialmente em conjunto com a cinta HRM-Pro Plus incluída.',
+    erro:'❌ É o MARQ Athlete. Ele é focado em esporte de alto nível e traz a análise mais completa de dinâmica de corrida da linha MARQ, com cadência, oscilação, comprimento de passada e mais.',
+    reveal:{
+      golfer:'Métricas básicas de corrida · foco principal em golfe',
+      athlete:'<strong>Dinâmica de corrida avançada</strong> ✓ · cadência · oscilação · passada · potência',
+      commander:'Métricas básicas de atividade · foco principal tático'
+    }
+  },
+  {
+    cat:{ icone:'⌚', nome:'Bezel Temático', descr:'Marcações gravadas no aro do relógio' },
+    texto:'Qual modelo possui marcações UTC gravadas no bezel para navegação e operações internacionais?',
+    gabarito:'commander',
+    acerto:'✅ Correto! O MARQ Commander tem marcações UTC no bezel — essenciais para coordenação em operações que envolvem múltiplos fusos horários, como missões militares ou expedições internacionais.',
+    erro:'❌ É o MARQ Commander. As marcações UTC no bezel são exclusivas desse modelo — uma referência de tempo universal para quem opera em múltiplos fusos.',
+    reveal:{
+      golfer:'Marcações dos buracos 1–18 · bezel de golfe',
+      athlete:'Marcações de VO₂ máx e tempo de recuperação · bezel esportivo',
+      commander:'<strong>Marcações UTC</strong> ✓ · navegação e operações internacionais'
+    }
+  }
+];
+
+// Estado do game MARQ
+let mgRodada=0, mgAcertos=0, mgGVit=0, mgAVit=0, mgCVit=0;
+let mgHistorico=[], mgOrdem=[], mgRespondeu=false;
+
+function mgEmbaralhar(arr){ const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+
+function mgIniciar(){
+  mgRodada=0; mgAcertos=0; mgGVit=0; mgAVit=0; mgCVit=0; mgHistorico=[];
+  mgOrdem = mgEmbaralhar([...Array(MG_PERGUNTAS.length).keys()]).slice(0,10);
+  gMostrarTela('mg-partida');
+  mgCarregar();
+}
+
+function mgCarregar(){
+  mgRespondeu=false;
+  const p = MG_PERGUNTAS[mgOrdem[mgRodada]];
+  const n = mgRodada+1;
+
+  document.getElementById('mgLabelRodada').textContent = `Rodada ${n}/10`;
+  document.getElementById('mgBarra').style.width = `${(mgRodada/10)*100}%`;
+  document.getElementById('mgPontos').textContent = `${mgAcertos} ✓`;
+  document.getElementById('mgRodadaNum').textContent = `RODADA ${n}`;
+  document.getElementById('mgCatIcone').textContent = p.cat.icone;
+  document.getElementById('mgCatNome').textContent = p.cat.nome;
+  document.getElementById('mgCatDescr').textContent = p.cat.descr;
+  document.getElementById('mgPergunta').textContent = p.texto;
+
+  ['mgBtnGolfer','mgBtnAthlete','mgBtnCommander','mgBtnTodos'].forEach(id=>{
+    document.getElementById(id).className = document.getElementById(id).className.replace(/estado-\w+|bloqueado/g,'').trim();
+  });
+
+  const fb = document.getElementById('mgFeedback');
+  fb.className = 'game-feedback';
+  document.getElementById('mgReveal').className = 'game-reveal';
+  document.getElementById('mgBtnProxima').className = 'game-btn-proxima';
+}
+
+function mgResponder(escolha){
+  if(mgRespondeu) return;
+  mgRespondeu=true;
+
+  const p = MG_PERGUNTAS[mgOrdem[mgRodada]];
+  const acertou = escolha === p.gabarito;
+
+  if(p.gabarito==='golfer') mgGVit++;
+  else if(p.gabarito==='athlete') mgAVit++;
+  else if(p.gabarito==='commander') mgCVit++;
+  if(acertou) mgAcertos++;
+
+  mgHistorico.push({ texto:p.texto, gabarito:p.gabarito, acertou });
+
+  const mapa = { golfer:'mgBtnGolfer', athlete:'mgBtnAthlete', commander:'mgBtnCommander', todos:'mgBtnTodos' };
+  ['mgBtnGolfer','mgBtnAthlete','mgBtnCommander','mgBtnTodos'].forEach(id=>document.getElementById(id).classList.add('bloqueado'));
+
+  const btnEsc = document.getElementById(mapa[escolha]);
+  const btnCerto = document.getElementById(mapa[p.gabarito]);
+  if(acertou){ btnEsc.classList.add('estado-certo'); }
+  else { btnEsc.classList.add('estado-errado'); btnCerto.classList.add('estado-revelado'); }
+
+  const fb = document.getElementById('mgFeedback');
+  document.getElementById('mgFbIcone').textContent = acertou ? '✅' : '❌';
+  document.getElementById('mgFbTexto').innerHTML = acertou ? p.acerto : p.erro;
+  fb.className = `game-feedback visivel ${acertou?'fb-certo':'fb-errado'}`;
+
+  document.getElementById('mgRevealGrid').innerHTML = `
+    <div class="game-reveal-item">
+      <div class="game-reveal-nome marq-reveal-nome verde">MARQ Golfer</div>
+      <div class="game-reveal-valor">${p.reveal.golfer}</div>
+    </div>
+    <div class="game-reveal-item">
+      <div class="game-reveal-nome marq-reveal-nome azul">MARQ Athlete</div>
+      <div class="game-reveal-valor">${p.reveal.athlete}</div>
+    </div>
+    <div class="game-reveal-item">
+      <div class="game-reveal-nome marq-reveal-nome roxo">MARQ Commander</div>
+      <div class="game-reveal-valor">${p.reveal.commander}</div>
+    </div>`;
+  document.getElementById('mgReveal').className = 'game-reveal visivel';
+
+  const bp = document.getElementById('mgBtnProxima');
+  bp.textContent = mgRodada < 9 ? 'Próxima Rodada →' : 'Ver Resultado Final →';
+  bp.className = 'game-btn-proxima visivel';
+
+  document.getElementById('mgPontos').textContent = `${mgAcertos} ✓`;
+  setTimeout(()=>{ fb.scrollIntoView({behavior:'smooth',block:'nearest'}); }, 100);
+}
+
+function mgProxima(){
+  mgRodada++;
+  if(mgRodada >= 10){ mgMostrarResultado(); }
+  else { window.scrollTo({top:0,behavior:'smooth'}); setTimeout(mgCarregar, 200); }
+}
+
+function mgMostrarResultado(){
+  gMostrarTela('mg-resultado');
+  let trofeu, titulo, sub;
+  if(mgAcertos===10){ trofeu='👑'; titulo='Especialista MARQ!'; sub='Pontuação perfeita — você domina o trio Carbon Edition de ponta a ponta.'; }
+  else if(mgAcertos>=8){ trofeu='🥇'; titulo='Expert MARQ!'; sub='Excelente! Você conhece muito bem os três modelos.'; }
+  else if(mgAcertos>=6){ trofeu='🥈'; titulo='Bom desempenho!'; sub='Você está no caminho certo. Revise as rodadas que errou.'; }
+  else if(mgAcertos>=4){ trofeu='🥉'; titulo='Em treinamento!'; sub='Revise as diferenças entre os modelos e tente de novo.'; }
+  else { trofeu='💪'; titulo='Continue estudando!'; sub='Cada modelo tem uma identidade única — releia e desafie-se novamente.'; }
+
+  document.getElementById('mgResTrofeu').textContent = trofeu;
+  document.getElementById('mgResTitulo').textContent = titulo;
+  document.getElementById('mgResSub').textContent = sub;
+  document.getElementById('mgResNota').textContent = `${mgAcertos}/10`;
+
+  const niveis = ['🔴 Iniciante','🟡 Aprendiz','🟠 Intermediário','🟢 Avançado','🔵 Expert MARQ','👑 Especialista MARQ'];
+  document.getElementById('mgResNivel').textContent = niveis[Math.min(Math.floor(mgAcertos/2),5)];
+  document.getElementById('mgPlacarG').textContent = mgGVit;
+  document.getElementById('mgPlacarA').textContent = mgAVit;
+  document.getElementById('mgPlacarC').textContent = mgCVit;
+
+  const nomes = { golfer:'MARQ Golfer', athlete:'MARQ Athlete', commander:'MARQ Commander', todos:'Todos iguais' };
+  document.getElementById('mgRevisao').innerHTML = mgHistorico.map((h,i)=>`
+    <div class="game-rev-item ${h.acertou?'certo':''}">
+      <div class="game-rev-num ${h.acertou?'ok':''}">${h.acertou?'✓':i+1}</div>
+      <div class="game-rev-texto">${h.texto.substring(0,65)}${h.texto.length>65?'…':''}</div>
+      <div class="game-rev-resp ${h.acertou?'certo':'errado'}">${h.acertou?'✓':'✗'} ${nomes[h.gabarito]}</div>
+    </div>`).join('');
+
+  document.getElementById('mgBarra').style.width='100%';
+}
+
+function mgVoltarAbertura(){
+  gMostrarTela('mg-abertura');
 }
 </script>
 
