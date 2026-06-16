@@ -284,6 +284,8 @@ tbody td{padding:10px 14px;vertical-align:top;}
 
 /* QUIZ */
 .quiz-wrap{background:var(--white);border:2px solid var(--g);border-radius:var(--r);padding:24px;margin-top:24px;}
+.cfi.flipped{transform:rotateY(180deg);}
+@media(max-width:600px){#caseFlipGrid{grid-template-columns:1fr!important;}}
 .quiz-header{margin-bottom:20px;}
 .quiz-title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:22px;text-transform:uppercase;letter-spacing:1px;color:var(--text);margin-bottom:4px;}
 .quiz-sub{font-size:13px;color:var(--text3);}
@@ -885,18 +887,24 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
   <div class="dashboard-wrap">
     <div class="dashboard-card">
       <div class="dash-section" style="padding-left:0">
-        <div class="dash-label">🏆 Top 3 — Ranking da Equipe</div>
-        <div class="rank-mini" id="rankMini"></div>
-        <div class="dash-link" onclick="openPanel('ranking')">Ver ranking completo →</div>
+        <div class="dash-label">⚔️ Álbum da Equipe</div>
+        <div id="rankMini" style="margin:8px 0;">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <span style="font-size:11px;background:rgba(212,88,10,0.12);border:1px solid rgba(212,88,10,0.3);color:#e8793a;padding:3px 10px;border-radius:20px;font-family:'Rajdhani',sans-serif;font-weight:600;letter-spacing:1px;text-transform:uppercase;">🟠 7 Morumbi</span>
+            <span style="font-size:11px;background:rgba(26,106,219,0.12);border:1px solid rgba(26,106,219,0.3);color:#5a9aea;padding:3px 10px;border-radius:20px;font-family:'Rajdhani',sans-serif;font-weight:600;letter-spacing:1px;text-transform:uppercase;">🔵 4 Moema</span>
+          </div>
+          <div style="font-size:12px;color:var(--text3);margin-top:6px;">Veja o álbum dos campeões! <strong style="color:var(--text);">⚔️</strong></div>
+        </div>
+        <div class="dash-link" onclick="openPanel('ranking')">Ver álbum completo →</div>
       </div>
       <div class="dash-divider"></div>
       <div class="dash-section" style="padding-right:0">
         <div class="dash-label">🎯 Próxima Missão</div>
         <div class="cert-mini">
-          <div class="cert-mini-level">Explorador · Nível 1</div>
-          <div class="cert-mini-name">🧭 Universo Garmin</div>
-          <div class="cert-mini-module">Módulo 1 — Aprenda a história, tecnologias e posicionamento da marca</div>
-          <button class="cert-mini-btn" onclick="openPanel('formacao')">Estudar Agora →</button>
+          <div class="cert-mini-level">Corredor · Nível 2</div>
+          <div class="cert-mini-name">📱 Garmin Connect</div>
+          <div class="cert-mini-module">Módulo 1 — App, métricas, música, Garmin Pay e estudo de caso</div>
+          <button class="cert-mini-btn" onclick="openPanel('corredor-connect')">Estudar Agora →</button>
         </div>
       </div>
     </div>
@@ -935,7 +943,7 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
       <div class="menu-card priority" onclick="openPanel('games')"><div class="menu-badge new">GAME</div><span class="menu-icon">⚔️</span><div class="menu-name">Games</div><div class="menu-desc">Duelo de Especificações — Instinct 3 vs E · MARQ Carbon</div></div>
       <div class="menu-card" onclick="openPanel('quizzes')"><span class="menu-icon">📝</span><div class="menu-name">Quizzes</div><div class="menu-desc">Avaliações técnicas — IPX, Atendimento, Instinct 3</div></div>
       <div class="menu-card" onclick="openPanel('certificacao')"><span class="menu-icon">🏅</span><div class="menu-name">Certificação</div><div class="menu-desc">Sua trilha: Explorador → Triatleta</div></div>
-      <div class="menu-card" onclick="openPanel('ranking')"><span class="menu-icon">🏆</span><div class="menu-name">Ranking</div><div class="menu-desc">Pódio da equipe e pontuação</div></div>
+      <div class="menu-card" onclick="openPanel('ranking')"><span class="menu-icon">⚔️</span><div class="menu-name">Álbum</div><div class="menu-desc">Figurinhas da equipe</div></div>
     </div>
 
   </div>
@@ -1492,7 +1500,7 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
     <div class="universe-hero" style="background:linear-gradient(135deg,#0a0a0a,#1a1a2e);">
       <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:0.7;margin-bottom:4px;">Explorador · Nível 1 — by Proparts</div>
       <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:28px;letter-spacing:2px;margin-bottom:8px;">SUA TRILHA DE ESTUDOS</div>
-      <p style="font-size:14px;opacity:0.85;line-height:1.6;">Conclua os módulos em ordem, acerte o quiz com 70%+ e registre sua conclusão. Cada módulo vale pontos no ranking.</p>
+      <p style="font-size:14px;opacity:0.85;line-height:1.6;">Conclua os módulos em ordem, acerte o quiz com 70%+ e registre sua conclusão. Cada certificação evolui sua classe no álbum da equipe.</p>
     </div>
     <div class="card" style="border-left:4px solid var(--g);margin-bottom:14px;cursor:pointer;" onclick="openPanel('universo')">
       <div style="display:flex;align-items:center;gap:14px;">
@@ -1542,7 +1550,327 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
         <div style="font-size:20px;color:var(--warn);font-weight:700;flex-shrink:0;">→</div>
       </div>
     </div>
-    <div class="tip">💡 Novos módulos são liberados conforme a trilha evolui. Complete os disponíveis e acumule pontos no ranking! Para os quizzes de avaliação, acesse a aba <strong>Quizzes</strong> no menu principal.</div>
+    <div class="tip">💡 Novos módulos são liberados conforme a trilha evolui. Complete os disponíveis e evolua sua classe no álbum! Para os quizzes de avaliação, acesse a aba <strong>Quizzes</strong> no menu principal.</div>
+
+    <div style="margin-top:24px;border-top:2px dashed var(--border);padding-top:20px;">
+      <div style="font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#4a90e2;margin-bottom:14px;display:flex;align-items:center;gap:8px;">🏃 Corredor · Nível 2 <span style="flex:1;height:1px;background:var(--border);display:block;"></span></div>
+      <div class="card" style="border-left:4px solid #4a90e2;margin-bottom:14px;cursor:pointer;" onclick="openPanel('corredor-connect')">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="font-size:36px;">📱</div>
+          <div style="flex:1;">
+            <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#4a90e2;margin-bottom:2px;">Módulo 1 — Corredor</div>
+            <div class="card-title" style="margin-bottom:4px;">Garmin Connect</div>
+            <p style="font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:8px;">Visão geral do app, métricas de saúde e treino, armazenamento de música, Garmin Pay e estudo de caso com 4 perfis reais.</p>
+            <div><span class="tag blue">12 questões</span> <span class="tag green">+40 pts aprovado</span> <span class="tag gold">+10 pts nota máxima</span></div>
+          </div>
+          <div style="font-size:20px;color:#4a90e2;font-weight:700;flex-shrink:0;">→</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CORREDOR · MÓDULO 1 — GARMIN CONNECT -->
+<div class="panel" id="panel-corredor-connect">
+  <div class="panel-header"><button class="back-btn" onclick="openPanel('formacao')">← Formação</button><div class="panel-title">📱 Garmin <span>Connect</span></div></div>
+  <div class="panel-body">
+
+    <div class="universe-hero" style="background:linear-gradient(135deg,#0a0f1a,#1a2a4a);">
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:0.7;margin-bottom:4px;">Módulo 1 — Corredor · by Proparts</div>
+      <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:28px;letter-spacing:2px;margin-bottom:8px;">GARMIN CONNECT</div>
+      <p style="font-size:14px;opacity:0.85;line-height:1.6;">O app que dá vida ao relógio. Entenda o que ele monitora e como cada dado vira argumento de venda.</p>
+    </div>
+
+    <!-- ── O QUE É ── -->
+    <div class="card-label" style="margin-top:20px;margin-bottom:14px;">📱 O que é o Garmin Connect</div>
+    <div class="card" style="border-left:4px solid #4a90e2;margin-bottom:14px;">
+      <div class="card-title">A central de tudo</div>
+      <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:14px;">O Garmin Connect é o app que transforma os dados do relógio em informação útil. Sem ele, o relógio ainda funciona no pulso — mas você perde o histórico, os gráficos e toda a inteligência por trás das métricas. É ali que os números fazem sentido.</p>
+      <div class="grid2" style="gap:10px;">
+        <div style="background:var(--off);border-radius:var(--r2);padding:14px;">
+          <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:8px;">O relógio faz</div>
+          <ul class="bul">
+            <li>Coleta dados durante o dia e o treino</li>
+            <li>Registra atividades, sono e batimentos</li>
+            <li>Calcula métricas em tempo real no pulso</li>
+          </ul>
+        </div>
+        <div style="background:var(--off);border-radius:var(--r2);padding:14px;">
+          <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#4a90e2;margin-bottom:8px;">O app faz</div>
+          <ul class="bul">
+            <li>Mostra o histórico e as tendências ao longo do tempo</li>
+            <li>Traduz os números em análises e recomendações</li>
+            <li>Sincroniza com Strava, Apple Health, MyFitnessPal e outros</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tip" style="margin-top:14px;">💡 <strong>Na venda:</strong> "Você não precisa fazer nada — só usar o relógio. Quando chegar em casa, abre o app e já tem tudo registrado: treino, sono, batimentos, estresse do dia. É um diário de saúde que se escreve sozinho."</div>
+    </div>
+
+    <!-- ── MÉTRICAS ── -->
+    <div class="card-label" style="margin-bottom:14px;">📊 O que você consegue visualizar</div>
+    <div class="warn-tip" style="margin-bottom:16px;">📌 As métricas variam conforme o modelo do relógio — quanto mais completo, mais o app exibe. Isso entra naturalmente como argumento de upsell.</div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin-bottom:20px;">
+
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:16px;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--g);"></div>
+        <div style="font-size:26px;margin-bottom:8px;">❤️</div>
+        <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text);margin-bottom:4px;">Batimento Cardíaco</div>
+        <p style="font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:8px;">FC em repouso, durante o treino e ao longo do dia. Alerta quando os valores saem do padrão habitual do usuário.</p>
+        <div style="font-size:11.5px;color:var(--g2);background:var(--g3);border-radius:var(--r2);padding:6px 8px;line-height:1.4;border-left:2px solid var(--g);">"Ele monitora seu coração o dia todo. Se a FC de repouso subir sem motivo, pode ser sinal de que o corpo está sobrecarregado."</div>
+      </div>
+
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:16px;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--acc);"></div>
+        <div style="font-size:26px;margin-bottom:8px;">🔋</div>
+        <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text);margin-bottom:4px;">Body Battery</div>
+        <p style="font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:8px;">Indicador de 0 a 100 — sobe com sono de qualidade, cai com estresse e exercício intenso. Mostra o nível de energia disponível no momento.</p>
+        <div style="font-size:11.5px;color:var(--g2);background:var(--g3);border-radius:var(--r2);padding:6px 8px;line-height:1.4;border-left:2px solid var(--g);">"É a bateria do seu corpo. Você para de adivinhar quando treinar forte e quando descansar."</div>
+      </div>
+
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:16px;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#4a90e2;"></div>
+        <div style="font-size:26px;margin-bottom:8px;">🧘</div>
+        <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text);margin-bottom:4px;">Estresse</div>
+        <p style="font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:8px;">Calculado pela variabilidade da FC ao longo do dia. Mostra em gráfico os momentos de maior tensão — mesmo quando o usuário não percebe.</p>
+        <div style="font-size:11.5px;color:var(--g2);background:var(--g3);border-radius:var(--r2);padding:6px 8px;line-height:1.4;border-left:2px solid var(--g);">"Útil pra quem tem rotina pesada e quer entender o quanto isso cobra do corpo fisicamente."</div>
+      </div>
+
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:16px;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--warn);"></div>
+        <div style="font-size:26px;margin-bottom:8px;">⚡</div>
+        <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text);margin-bottom:4px;">HRV Status</div>
+        <p style="font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:8px;">Variabilidade cardíaca medida durante o sono. Indica se o sistema nervoso autônomo está em equilíbrio — a métrica mais honesta de recuperação.</p>
+        <div style="font-size:11.5px;color:var(--g2);background:var(--g3);border-radius:var(--r2);padding:6px 8px;line-height:1.4;border-left:2px solid var(--g);">"Atletas de alto nível acompanham isso semanalmente. Agora qualquer pessoa tem acesso ao mesmo dado."</div>
+      </div>
+
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:16px;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--gold);"></div>
+        <div style="font-size:26px;margin-bottom:8px;">😴</div>
+        <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text);margin-bottom:4px;">Sleep Score</div>
+        <p style="font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:8px;">Pontuação baseada nas fases do sono (leve, profundo, REM), duração, SpO2 noturno e frequência respiratória. Aparece toda manhã no app.</p>
+        <div style="font-size:11.5px;color:var(--g2);background:var(--g3);border-radius:var(--r2);padding:6px 8px;line-height:1.4;border-left:2px solid var(--g);">"De manhã você já sabe se dormiu bem — com número, não com achismo."</div>
+      </div>
+
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:16px;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#9b59b6;"></div>
+        <div style="font-size:26px;margin-bottom:8px;">📈</div>
+        <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text);margin-bottom:4px;">Status de Treinamento</div>
+        <p style="font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:8px;">Cruza a carga recente de treinos com a evolução do VO2 Máx e classifica o estado do atleta: produtivo, descansado, sobrecarregado etc.</p>
+        <div style="font-size:11.5px;color:var(--g2);background:var(--g3);border-radius:var(--r2);padding:6px 8px;line-height:1.4;border-left:2px solid var(--g);">"Avisa quando você está treinando além da conta — antes de virar lesão."</div>
+      </div>
+
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:16px;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#27ae60;"></div>
+        <div style="font-size:26px;margin-bottom:8px;">👣</div>
+        <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text);margin-bottom:4px;">Passos</div>
+        <p style="font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:8px;">Contagem diária com meta configurável. O histórico semanal e mensal mostra a consistência — e o relógio avisa quando você fica parado por muito tempo.</p>
+        <div style="font-size:11.5px;color:var(--g2);background:var(--g3);border-radius:var(--r2);padding:6px 8px;line-height:1.4;border-left:2px solid var(--g);">"Para quem quer começar a se mover, a meta de passos é o primeiro gatilho real de mudança."</div>
+      </div>
+
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:16px;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--g);"></div>
+        <div style="font-size:26px;margin-bottom:8px;">🔥</div>
+        <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text);margin-bottom:4px;">Calorias</div>
+        <p style="font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:8px;">Gasto calórico dividido em repouso (BMR) e ativo. Integra com o MyFitnessPal para fechar o ciclo de alimentação e gasto energético.</p>
+        <div style="font-size:11.5px;color:var(--g2);background:var(--g3);border-radius:var(--r2);padding:6px 8px;line-height:1.4;border-left:2px solid var(--g);">"O Garmin mede o que você gasta, o MyFitnessPal mede o que você come. Tudo integrado."</div>
+      </div>
+
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:16px;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--acc);"></div>
+        <div style="font-size:26px;margin-bottom:8px;">⏱️</div>
+        <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text);margin-bottom:4px;">Minutos de Intensidade</div>
+        <p style="font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:8px;">Meta semanal baseada na recomendação da OMS — 150 minutos de atividade moderada ou 75 de atividade vigorosa por semana.</p>
+        <div style="font-size:11.5px;color:var(--g2);background:var(--g3);border-radius:var(--r2);padding:6px 8px;line-height:1.4;border-left:2px solid var(--g);">"A OMS tem uma meta de atividade semanal. O relógio conta isso por você e mostra se você está chegando lá."</div>
+      </div>
+
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:16px;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#4a90e2;"></div>
+        <div style="font-size:26px;margin-bottom:8px;">🩸</div>
+        <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text);margin-bottom:4px;">SpO2 — Oximetria</div>
+        <p style="font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:8px;">Saturação de oxigênio no sangue durante o sono. Disponível em modelos com sensor Pulse Ox. Pode indicar queda de saturação noturna.</p>
+        <div style="font-size:11.5px;color:var(--g2);background:var(--g3);border-radius:var(--r2);padding:6px 8px;line-height:1.4;border-left:2px solid var(--g);">"Para quem tem suspeita de apneia ou vive em altitude, essa leitura noturna pode ser bem reveladora."</div>
+      </div>
+
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:16px;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#9b59b6;"></div>
+        <div style="font-size:26px;margin-bottom:8px;">🌸</div>
+        <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text);margin-bottom:4px;">Ciclo Menstrual</div>
+        <p style="font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:8px;">Registro e previsão do ciclo com correlação real entre as fases e métricas como HRV, sono e Body Battery.</p>
+        <div style="font-size:11.5px;color:var(--g2);background:var(--g3);border-radius:var(--r2);padding:6px 8px;line-height:1.4;border-left:2px solid var(--g);">"Não é só um calendário — mostra como o corpo responde de forma diferente em cada fase do ciclo."</div>
+      </div>
+
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:16px;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--gold);"></div>
+        <div style="font-size:26px;margin-bottom:8px;">💧</div>
+        <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text);margin-bottom:4px;">Hidratação</div>
+        <p style="font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:8px;">Registro manual de consumo de água com lembretes configuráveis no relógio. Simples de usar, direto no pulso.</p>
+        <div style="font-size:11.5px;color:var(--g2);background:var(--g3);border-radius:var(--r2);padding:6px 8px;line-height:1.4;border-left:2px solid var(--g);">"Quem esquece de beber água ao longo do dia vai sentir diferença logo na primeira semana."</div>
+      </div>
+
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:16px;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--warn);"></div>
+        <div style="font-size:26px;margin-bottom:8px;">📅</div>
+        <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text);margin-bottom:4px;">Monitoramento de Hábitos</div>
+        <p style="font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:8px;">Metas pessoais de sono, hidratação e movimento com calendário visual de consistência mês a mês.</p>
+        <div style="font-size:11.5px;color:var(--g2);background:var(--g3);border-radius:var(--r2);padding:6px 8px;line-height:1.4;border-left:2px solid var(--g);">"O calendário visual mostra quais dias você cumpriu a meta. Motivador do jeito certo — sem pressão, com consistência."</div>
+      </div>
+
+    </div>
+
+    <!-- ── MÚSICA ── -->
+    <div class="card-label" style="margin-bottom:14px;">🎵 Armazenamento de Música</div>
+    <div class="card" style="margin-bottom:14px;">
+      <div class="card-title">Treinar sem celular, sem abrir mão da música</div>
+      <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:12px;">Em modelos com armazenamento interno — FR265, FR570, FR955, FR965, FR970, Fenix 8, Venu 4 e outros — é possível baixar playlists direto para o relógio e ouvir conectado a um fone Bluetooth. O celular fica em casa.</p>
+      <div class="tip">💡 <strong>Na venda:</strong> "Você corre sem o celular, sem peso no bolso — e ainda ouve suas músicas. A playlist fica salva no próprio relógio."</div>
+      <div class="warn-tip">⚠️ Música no relógio exige fone Bluetooth separado. Se o cliente não tem um, é uma venda natural de acessório complementar.</div>
+    </div>
+    <div class="app-row">
+      <div class="app-icon" style="background:#1DB954;">🎧</div>
+      <div><div class="card-title" style="margin-bottom:2px;">Spotify</div><div class="card-label">Requer assinatura Premium</div><p style="font-size:13px;color:var(--text2);line-height:1.5;">Sincroniza playlists via app. Ficam disponíveis offline no relógio — sem internet durante o treino.</p></div>
+    </div>
+    <div class="app-row">
+      <div class="app-icon" style="background:#c8020a;">🎵</div>
+      <div><div class="card-title" style="margin-bottom:2px;">Deezer</div><div class="card-label">Via Connect IQ · Requer assinatura ativa</div><p style="font-size:13px;color:var(--text2);line-height:1.5;">Alternativa para quem já usa Deezer no dia a dia.</p></div>
+    </div>
+    <div class="app-row">
+      <div class="app-icon" style="background:#FF9900;">📦</div>
+      <div><div class="card-title" style="margin-bottom:2px;">Amazon Music</div><div class="card-label">Disponível em modelos selecionados</div><p style="font-size:13px;color:var(--text2);line-height:1.5;">Compatível com Prime Music e Unlimited. Para quem já é cliente Amazon.</p></div>
+    </div>
+    <div class="app-row">
+      <div class="app-icon" style="background:#4a90e2;">🎼</div>
+      <div><div class="card-title" style="margin-bottom:2px;">Arquivos pessoais (MP3)</div><div class="card-label">FR970 e Fenix 8 — até 32 GB</div><p style="font-size:13px;color:var(--text2);line-height:1.5;">Transferência direta via computador, sem depender de streaming.</p></div>
+    </div>
+
+    <!-- ── GARMIN PAY ── -->
+    <div class="card-label" style="margin-top:20px;margin-bottom:14px;">💳 Garmin Pay</div>
+    <div class="card" style="border-left:4px solid var(--gold);margin-bottom:20px;">
+      <div class="card-title">Pagar com o relógio</div>
+      <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:12px;">Usa NFC para pagamento por aproximação direto no pulso. O cliente cadastra o cartão no Garmin Connect, define um PIN de 4 dígitos no relógio e pronto — basta aproximar à maquininha.</p>
+      <div class="tip">💡 <strong>Na venda:</strong> "Quem vai correr ou pedalar não quer sair com carteira. Com o Garmin Pay, dá pra pagar o café só com o relógio no pulso."</div>
+      <div class="warn-tip" style="margin-bottom:0;">⚠️ Bancos compatíveis no Brasil: <strong>BTG, Banco do Brasil e Santander</strong>. Confirme com o cliente antes de usar esse argumento. Nem todos os modelos têm NFC — verifique antes de incluir na apresentação.</div>
+    </div>
+
+    <!-- ── ESTUDO DE CASO ── -->
+    <div class="card-label" style="margin-bottom:14px;">🧪 Estudo de Caso — Escolha seu Perfil</div>
+    <div class="card" style="margin-bottom:14px;">
+      <div class="card-title">Como funciona</div>
+      <p style="font-size:13px;color:var(--text2);line-height:1.7;">Escolha um dos 4 perfis abaixo, vire o card e siga o passo a passo no Garmin Connect. O objetivo é sair daqui sabendo ligar <strong>recurso → benefício real</strong> — não só saber que a função existe, mas por que ela faz diferença pra aquele cliente.</p>
+    </div>
+    <div class="tip" style="margin-bottom:20px;">📌 Se der, faça com um colega: um lê os passos, o outro navega no app de verdade.</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;" id="caseFlipGrid">
+
+      <!-- ANA -->
+      <div style="perspective:1000px;cursor:pointer;height:430px;" onclick="this.querySelector('.cfi').classList.toggle('flipped')">
+        <div class="cfi" style="position:relative;width:100%;height:100%;transition:transform 0.65s;transform-style:preserve-3d;">
+          <div style="position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:var(--r);padding:22px;display:flex;flex-direction:column;background:linear-gradient(135deg,#1a0a2e,#2d1a4a);color:#fff;border:1.5px solid rgba(155,89,182,0.35);overflow:hidden;">
+            <span style="font-size:42px;margin-bottom:10px;display:block;">👩‍💻</span>
+            <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:22px;text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;">Ana</div>
+            <div style="font-size:11px;opacity:0.6;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;">34 anos · Home office · SP</div>
+            <div style="font-size:12.5px;opacity:0.85;line-height:1.6;flex:1;">Mãe de dois filhos, trabalha em casa o dia todo. Percebeu que fica sentada demais e quer começar a se mover — sem pressão, sem metas absurdas. Nunca praticou esporte com regularidade.</div>
+            <div style="margin-top:10px;"><span style="display:inline-block;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,0.13);border:1px solid rgba(255,255,255,0.18);margin:2px;">Body Battery</span><span style="display:inline-block;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,0.13);border:1px solid rgba(255,255,255,0.18);margin:2px;">Passos</span><span style="display:inline-block;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,0.13);border:1px solid rgba(255,255,255,0.18);margin:2px;">Estresse</span><span style="display:inline-block;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,0.13);border:1px solid rgba(255,255,255,0.18);margin:2px;">Sono</span></div>
+            <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;opacity:0.4;margin-top:auto;padding-top:10px;text-align:center;">👆 toque para ver o passo a passo</div>
+          </div>
+          <div style="position:absolute;width:100%;height:100%;backface-visibility:hidden;transform:rotateY(180deg);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;background:linear-gradient(135deg,#150823,#251540);color:#fff;border:1.5px solid rgba(155,89,182,0.35);overflow:hidden;">
+            <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;opacity:0.6;margin-bottom:10px;">📋 Passo a passo — Ana</div>
+            <div style="display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.07);"><div style="min-width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">1</div><div style="font-size:12px;line-height:1.5;opacity:0.88;">Abra o app e mostre o <strong>Body Battery</strong> — o número representa a energia disponível agora.</div></div>
+            <div style="display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.07);"><div style="min-width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">2</div><div style="font-size:12px;line-height:1.5;opacity:0.88;">Abra o <strong>gráfico de estresse do dia</strong>. Identifique um pico e ligue ao ritmo de trabalho dela: reuniões, prazo, e-mails.</div></div>
+            <div style="display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.07);"><div style="min-width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">3</div><div style="font-size:12px;line-height:1.5;opacity:0.88;">Configure a <strong>meta de passos</strong> para 6.000 — realista para começar. Mostre o alerta de sedentarismo no relógio.</div></div>
+            <div style="display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.07);"><div style="min-width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">4</div><div style="font-size:12px;line-height:1.5;opacity:0.88;">Abra o <strong>Sleep Score</strong>. Mostre que dormir 8h mal resulta em Body Battery baixo no dia seguinte.</div></div>
+            <div style="display:flex;gap:10px;align-items:flex-start;padding:7px 0;"><div style="min-width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">5</div><div style="font-size:12px;line-height:1.5;opacity:0.88;">Acesse <strong>Monitoramento de Hábitos</strong> e mostre o calendário visual de consistência do mês.</div></div>
+            <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;opacity:0.4;margin-top:auto;padding-top:10px;text-align:center;">👆 toque para voltar</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RAFAEL -->
+      <div style="perspective:1000px;cursor:pointer;height:430px;" onclick="this.querySelector('.cfi').classList.toggle('flipped')">
+        <div class="cfi" style="position:relative;width:100%;height:100%;transition:transform 0.65s;transform-style:preserve-3d;">
+          <div style="position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:var(--r);padding:22px;display:flex;flex-direction:column;background:linear-gradient(135deg,#0a1a0a,#1a3a1a);color:#fff;border:1.5px solid rgba(39,174,96,0.35);overflow:hidden;">
+            <span style="font-size:42px;margin-bottom:10px;display:block;">🏋️</span>
+            <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:22px;text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;">Rafael</div>
+            <div style="font-size:11px;opacity:0.6;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;">28 anos · Academia 4x/semana · SP</div>
+            <div style="font-size:12.5px;opacity:0.85;line-height:1.6;flex:1;">Malha com frequência e quer evoluir para a corrida de rua. Entende de treino mas nunca usou dados avançados. Quer treinar melhor, não só mais.</div>
+            <div style="margin-top:10px;"><span style="display:inline-block;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,0.13);border:1px solid rgba(255,255,255,0.18);margin:2px;">Min. Intensidade</span><span style="display:inline-block;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,0.13);border:1px solid rgba(255,255,255,0.18);margin:2px;">HRV Status</span><span style="display:inline-block;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,0.13);border:1px solid rgba(255,255,255,0.18);margin:2px;">Status Treino</span></div>
+            <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;opacity:0.4;margin-top:auto;padding-top:10px;text-align:center;">👆 toque para ver o passo a passo</div>
+          </div>
+          <div style="position:absolute;width:100%;height:100%;backface-visibility:hidden;transform:rotateY(180deg);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;background:linear-gradient(135deg,#081408,#152815);color:#fff;border:1.5px solid rgba(39,174,96,0.35);overflow:hidden;">
+            <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;opacity:0.6;margin-bottom:10px;">📋 Passo a passo — Rafael</div>
+            <div style="display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.07);"><div style="min-width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">1</div><div style="font-size:12px;line-height:1.5;opacity:0.88;">Abra uma <strong>atividade registrada</strong> e mostre o gráfico de FC por zona ao longo do treino.</div></div>
+            <div style="display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.07);"><div style="min-width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">2</div><div style="font-size:12px;line-height:1.5;opacity:0.88;">Acesse <strong>Minutos de Intensidade</strong> e compare com a meta semanal da OMS — 150 minutos.</div></div>
+            <div style="display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.07);"><div style="min-width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">3</div><div style="font-size:12px;line-height:1.5;opacity:0.88;">Vá ao <strong>Status de Treinamento</strong> e explique cada classificação: produtivo, descansado, sobrecarregado.</div></div>
+            <div style="display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.07);"><div style="min-width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">4</div><div style="font-size:12px;line-height:1.5;opacity:0.88;">Acesse o <strong>HRV Status</strong> semanal — variabilidade alta = recuperação boa; baixa = corpo pedindo pausa.</div></div>
+            <div style="display:flex;gap:10px;align-items:flex-start;padding:7px 0;"><div style="min-width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">5</div><div style="font-size:12px;line-height:1.5;opacity:0.88;">Mostre o <strong>gasto calórico</strong> e sugira integração com MyFitnessPal para fechar o ciclo de nutrição.</div></div>
+            <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;opacity:0.4;margin-top:auto;padding-top:10px;text-align:center;">👆 toque para voltar</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CLAUDIA -->
+      <div style="perspective:1000px;cursor:pointer;height:430px;" onclick="this.querySelector('.cfi').classList.toggle('flipped')">
+        <div class="cfi" style="position:relative;width:100%;height:100%;transition:transform 0.65s;transform-style:preserve-3d;">
+          <div style="position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:var(--r);padding:22px;display:flex;flex-direction:column;background:linear-gradient(135deg,#1a0a0a,#3a1a0a);color:#fff;border:1.5px solid rgba(227,16,32,0.35);overflow:hidden;">
+            <span style="font-size:42px;margin-bottom:10px;display:block;">👩‍💼</span>
+            <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:22px;text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;">Cláudia</div>
+            <div style="font-size:11px;opacity:0.6;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;">42 anos · Executiva · Viaja muito</div>
+            <div style="font-size:12.5px;opacity:0.85;line-height:1.6;flex:1;">Agenda lotada, viagens frequentes, pouco tempo para descansar. Quer saber se está se recuperando entre compromissos. Aprecia praticidade — quer pagar o café pós-treino sem carteira e correr no hotel sem celular.</div>
+            <div style="margin-top:10px;"><span style="display:inline-block;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,0.13);border:1px solid rgba(255,255,255,0.18);margin:2px;">Body Battery</span><span style="display:inline-block;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,0.13);border:1px solid rgba(255,255,255,0.18);margin:2px;">Garmin Pay</span><span style="display:inline-block;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,0.13);border:1px solid rgba(255,255,255,0.18);margin:2px;">Música</span></div>
+            <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;opacity:0.4;margin-top:auto;padding-top:10px;text-align:center;">👆 toque para ver o passo a passo</div>
+          </div>
+          <div style="position:absolute;width:100%;height:100%;backface-visibility:hidden;transform:rotateY(180deg);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;background:linear-gradient(135deg,#140808,#2a1408);color:#fff;border:1.5px solid rgba(227,16,32,0.35);overflow:hidden;">
+            <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;opacity:0.6;margin-bottom:10px;">📋 Passo a passo — Cláudia</div>
+            <div style="display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.07);"><div style="min-width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">1</div><div style="font-size:12px;line-height:1.5;opacity:0.88;">Abra o <strong>Sleep Score</strong> de uma noite de viagem — compare com uma noite em casa e veja o impacto no Body Battery.</div></div>
+            <div style="display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.07);"><div style="min-width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">2</div><div style="font-size:12px;line-height:1.5;opacity:0.88;">Compare o <strong>Body Battery</strong> de um dia tranquilo com um dia de reuniões — mostre quando a queda de energia acontece.</div></div>
+            <div style="display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.07);"><div style="min-width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">3</div><div style="font-size:12px;line-height:1.5;opacity:0.88;">Abra o <strong>gráfico de estresse</strong> e identifique o horário de pico — ligue ao momento de mais compromissos.</div></div>
+            <div style="display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.07);"><div style="min-width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">4</div><div style="font-size:12px;line-height:1.5;opacity:0.88;">Acesse <strong>Garmin Pay</strong> no app — mostre o cadastro do cartão e o PIN. Simule: café pós-treino, só o relógio.</div></div>
+            <div style="display:flex;gap:10px;align-items:flex-start;padding:7px 0;"><div style="min-width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">5</div><div style="font-size:12px;line-height:1.5;opacity:0.88;">Mostre como sincronizar uma <strong>playlist do Spotify</strong> para correr no hotel sem celular, sem internet.</div></div>
+            <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;opacity:0.4;margin-top:auto;padding-top:10px;text-align:center;">👆 toque para voltar</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BRUNO -->
+      <div style="perspective:1000px;cursor:pointer;height:430px;" onclick="this.querySelector('.cfi').classList.toggle('flipped')">
+        <div class="cfi" style="position:relative;width:100%;height:100%;transition:transform 0.65s;transform-style:preserve-3d;">
+          <div style="position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:var(--r);padding:22px;display:flex;flex-direction:column;background:linear-gradient(135deg,#0a1628,#1a3a5c);color:#fff;border:1.5px solid rgba(74,144,226,0.35);overflow:hidden;">
+            <span style="font-size:42px;margin-bottom:10px;display:block;">👨‍🦳</span>
+            <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:22px;text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;">Bruno</div>
+            <div style="font-size:11px;opacity:0.6;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;">55 anos · Aposentado · SP</div>
+            <div style="font-size:12.5px;opacity:0.85;line-height:1.6;flex:1;">Aposentou há 6 meses. O médico pediu atividade física leve para controlar a pressão. Nunca praticou esporte, tem resistência à tecnologia mas foi convencido pelo filho. Quer algo simples que ajude de verdade.</div>
+            <div style="margin-top:10px;"><span style="display:inline-block;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,0.13);border:1px solid rgba(255,255,255,0.18);margin:2px;">FC</span><span style="display:inline-block;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,0.13);border:1px solid rgba(255,255,255,0.18);margin:2px;">SpO2</span><span style="display:inline-block;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,0.13);border:1px solid rgba(255,255,255,0.18);margin:2px;">Passos</span><span style="display:inline-block;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,0.13);border:1px solid rgba(255,255,255,0.18);margin:2px;">Sono</span></div>
+            <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;opacity:0.4;margin-top:auto;padding-top:10px;text-align:center;">👆 toque para ver o passo a passo</div>
+          </div>
+          <div style="position:absolute;width:100%;height:100%;backface-visibility:hidden;transform:rotateY(180deg);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;background:linear-gradient(135deg,#081020,#142240);color:#fff;border:1.5px solid rgba(74,144,226,0.35);overflow:hidden;">
+            <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;opacity:0.6;margin-bottom:10px;">📋 Passo a passo — Bruno</div>
+            <div style="display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.07);"><div style="min-width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">1</div><div style="font-size:12px;line-height:1.5;opacity:0.88;">Mostre o <strong>batimento cardíaco em repouso</strong> — o que é um valor saudável e por que acompanhar a tendência semanal importa.</div></div>
+            <div style="display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.07);"><div style="min-width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">2</div><div style="font-size:12px;line-height:1.5;opacity:0.88;">Acesse o <strong>Sleep Score + SpO2</strong>. Explique de forma simples: "Se essa linha cair muito, vale conversar com o médico."</div></div>
+            <div style="display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.07);"><div style="min-width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">3</div><div style="font-size:12px;line-height:1.5;opacity:0.88;">Configure a <strong>meta de passos</strong> para 5.000. Reforce: o objetivo é consistência, não velocidade.</div></div>
+            <div style="display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.07);"><div style="min-width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">4</div><div style="font-size:12px;line-height:1.5;opacity:0.88;">Ative os <strong>lembretes de hidratação</strong> e mostre como registrar o consumo de água — dois toques no relógio.</div></div>
+            <div style="display:flex;gap:10px;align-items:flex-start;padding:7px 0;"><div style="min-width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">5</div><div style="font-size:12px;line-height:1.5;opacity:0.88;">Mostre o <strong>histórico semanal</strong> — passos e sono em gráfico. "O médico consegue ver essa evolução com você."</div></div>
+            <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;opacity:0.4;margin-top:auto;padding-top:10px;text-align:center;">👆 toque para voltar</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── QUIZ ── -->
+    <div class="quiz-reveal-sep">
+      <button class="quiz-reveal-btn" onclick="revealModuleQuiz('quizWrapCorredor','initQuizCorredor')">✅ Li o conteúdo — Iniciar Quiz</button>
+      <div class="quiz-reveal-hint">Leia tudo antes de responder · 12 questões · mínimo 70% para aprovação</div>
+    </div>
+    <div class="quiz-wrap" id="quizWrapCorredor" style="display:none;margin-top:16px;">
+      <div class="quiz-header">
+        <div class="quiz-title">🎯 Quiz — Garmin Connect</div>
+        <div class="quiz-sub">12 questões · Mínimo 70% para aprovação · Resultado enviado para a liderança</div>
+        <div class="quiz-progress"><div class="quiz-progress-bar" id="quizBarCorredor" style="width:0%"></div></div>
+      </div>
+      <div id="quizContentCorredor"></div>
+    </div>
+
   </div>
 </div>
 
@@ -1742,12 +2070,39 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
 
 <!-- RANKING -->
 <div class="panel" id="panel-ranking">
-  <div class="panel-header"><button class="back-btn" onclick="goHome()">← Início</button><div class="panel-title">🏆 Ranking da <span>Equipe</span></div></div>
+  <div class="panel-header"><button class="back-btn" onclick="goHome()">← Início</button><div class="panel-title">⚔️ Álbum da <span>Equipe</span></div></div>
   <div class="panel-body">
-    <div class="ranking-hero"><div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:22px;letter-spacing:2px;margin-bottom:12px;">COMO PONTUAR</div><div class="grid3"><div style="text-align:center;"><div style="font-size:28px;margin-bottom:4px;">🏅</div><div style="font-family:'Rajdhani',sans-serif;font-weight:700;color:var(--gold);font-size:24px;">+100 pts</div><div style="font-size:12px;opacity:0.75;">Certificação concluída</div></div><div style="text-align:center;"><div style="font-size:28px;margin-bottom:4px;">⚡</div><div style="font-family:'Rajdhani',sans-serif;font-weight:700;color:var(--gold);font-size:24px;">+50 pts</div><div style="font-size:12px;opacity:0.75;">Quiz com nota máxima</div></div><div style="text-align:center;"><div style="font-size:28px;margin-bottom:4px;">🎯</div><div style="font-family:'Rajdhani',sans-serif;font-weight:700;color:var(--gold);font-size:24px;">+25 pts</div><div style="font-size:12px;opacity:0.75;">Quiz aprovado (≥70%)</div></div></div></div>
-    <div id="rankingList"></div>
-    <div class="tip" style="margin-top:16px;">📌 Para atualizar o ranking, entre em contato com a liderança de treinamento da Proparts.</div>
+
+    <div style="background:linear-gradient(135deg,#0a0a14,#14142a);border-radius:var(--r);padding:22px;margin-bottom:20px;color:#fff;position:relative;overflow:hidden;">
+      <div style="position:absolute;right:-20px;top:-20px;font-size:120px;opacity:0.04;pointer-events:none;">⚔️</div>
+      <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:6px;">Proparts Training · Temporada 2026</div>
+      <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:26px;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">ÁLBUM DOS CAMPEÕES</div>
+      <p style="font-size:13px;opacity:0.7;line-height:1.6;margin-bottom:16px;">Cada colaborador tem sua figurinha. A classe evolui conforme as certificações</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <span style="font-size:11px;font-family:'Rajdhani',sans-serif;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:20px;background:rgba(240,165,0,0.12);border:1px solid rgba(240,165,0,0.35);color:#F0A500;">🎯 Comissão Técnica</span>
+        <span style="font-size:11px;font-family:'Rajdhani',sans-serif;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:20px;background:rgba(212,88,10,0.12);border:1px solid rgba(212,88,10,0.35);color:#e8793a;">🟠 Morumbi</span>
+        <span style="font-size:11px;font-family:'Rajdhani',sans-serif;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:20px;background:rgba(26,106,219,0.12);border:1px solid rgba(26,106,219,0.35);color:#5a9aea;">🔵 Moema</span>
+      </div>
+      <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">
+        <span style="font-size:11px;font-family:'Rajdhani',sans-serif;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:20px;background:rgba(138,147,160,0.1);border:1px solid rgba(138,147,160,0.25);color:rgba(255,255,255,0.5);">🧭 Explorador</span>
+        <span style="font-size:11px;font-family:'Rajdhani',sans-serif;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:20px;background:rgba(0,194,168,0.12);border:1px solid rgba(0,194,168,0.3);color:#00C2A8;">🏃 Corredor</span>
+        <span style="font-size:11px;font-family:'Rajdhani',sans-serif;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:20px;background:rgba(155,89,182,0.12);border:1px solid rgba(155,89,182,0.3);color:#c39bd3;">🏅 Maratonista</span>
+        <span style="font-size:11px;font-family:'Rajdhani',sans-serif;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:20px;background:rgba(240,165,0,0.12);border:1px solid rgba(240,165,0,0.3);color:var(--gold);">🏆 Triatleta</span>
+      </div>
+    </div>
+
+    <div id="albumGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:16px;"></div>
+
+    <div style="margin-top:20px;background:var(--off);border:1px solid var(--border);border-radius:var(--r);padding:14px;font-size:12px;color:var(--text3);line-height:1.6;">
+      📌 Álbum atualizado mensalmente pela liderança de treinamento. Concluiu um módulo? Fala com a Samara.
+    </div>
+
   </div>
+</div>
+
+<!-- MODAL FIGURINHA -->
+<div id="cardModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:500;align-items:center;justify-content:center;padding:20px;" onclick="if(event.target===this)closeCardModal()">
+  <div id="cardModalInner" style="max-width:340px;width:100%;position:relative;"></div>
 </div>
 
 <script>
@@ -1873,44 +2228,175 @@ function switchIRTab(showId, btn) {
     btn.classList.add('active');
   }
 }
-// ── RANKING ───────────────────────────────────────────────────
-const rankingData = [
-  { name:'Ailma Ferraz',     pts:0, level:'Explorador' },
-  { name:'Beatriz Ferreira', pts:0, level:'Explorador' },
-  { name:'Daniel Lucena',    pts:0, level:'Explorador' },
-  { name:'Dayane',           pts:0, level:'Explorador' },
-  { name:'Fabio Borges',     pts:0, level:'Explorador' },
-  { name:'Gustavo Morais',   pts:0, level:'Explorador' },
-  { name:'Joyce Souza',      pts:0, level:'Explorador' },
-  { name:'Mayara Araújo',    pts:0, level:'Explorador' },
-  { name:'Renato Dias',      pts:0, level:'Explorador' },
-  { name:'Ribs',             pts:0, level:'Explorador' },
+// ── ÁLBUM DE FIGURINHAS ───────────────────────────────────────
+const classeConfig = {
+  'Explorador': { cor:'#8a93a0', corBg:'rgba(138,147,160,0.12)', corBorda:'rgba(138,147,160,0.35)', emoji:'🧭', gradiente:'linear-gradient(135deg,#1a1d21,#2a2d35)' },
+  'Corredor':   { cor:'#00C2A8', corBg:'rgba(0,194,168,0.12)',   corBorda:'rgba(0,194,168,0.4)',   emoji:'🏃', gradiente:'linear-gradient(135deg,#0a1a18,#0d2a26)' },
+  'Maratonista':{ cor:'#9b59b6', corBg:'rgba(155,89,182,0.12)', corBorda:'rgba(155,89,182,0.4)', emoji:'🏅', gradiente:'linear-gradient(135deg,#140d1e,#1e1030)' },
+  'Triatleta':  { cor:'#F0A500', corBg:'rgba(240,165,0,0.12)',   corBorda:'rgba(240,165,0,0.4)',   emoji:'🏆', gradiente:'linear-gradient(135deg,#1a1400,#2a2000)' },
+};
+
+const lojaConfig = {
+  'comissão técnica': { cor:'#F0A500', corBorda:'rgba(240,165,0,0.55)', brilho:'0 0 0 2px rgba(240,165,0,0.4),0 8px 24px rgba(240,165,0,0.15)', label:'🎯 Comissão Técnica', labelCor:'#F0A500' },
+  'morumbi':   { cor:'#d4580a', corBorda:'rgba(212,88,10,0.55)',  brilho:'0 0 0 2px rgba(212,88,10,0.35),0 8px 24px rgba(212,88,10,0.12)', label:'🟠 Morumbi', labelCor:'#e8793a' },
+  'moema':     { cor:'#1a6adb', corBorda:'rgba(26,106,219,0.55)', brilho:'0 0 0 2px rgba(26,106,219,0.35),0 8px 24px rgba(26,106,219,0.12)', label:'🔵 Moema', labelCor:'#5a9aea' },
+};
+
+const albumData = [
+  {
+    num:'01', nome:'Samara Pereira', loja:'Comissão Técnica', classe:'Corredor', raro:true, selo:'⭐⭐⭐⭐⭐',
+    especialidade:'🗺️ GPS de Mão', relogio:'Fenix 8S', frase:'Tente de novo, falhe novamente. Falhe melhor.',
+    attrs:{ Produto:92, Ritmo:88, Precisão:85, Jogo:90, Reputação:30 }
+  },
+  {
+    num:'02', nome:'Mariana Muzzio', loja:'Coordenadora', classe:'Explorador', raro:true, selo:'⭐⭐⭐⭐⭐',
+    especialidade:'Cuidar do Fefe', relogio:'955', frase:'Quer sucesso? Encare o processo!', attrs:{Produto:90, Ritmo:100, Precisão:85, Jogo:95, Reputação:20}
+  },
+  { num:'03', nome:'Ailma',   loja:'morumbi', classe:'Explorador', raro:false, selo:'', especialidade:'', relogio:'', frase:'', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0} },
+  { num:'04', nome:'Daniel',  loja:'morumbi', classe:'Explorador', raro:false, selo:'', especialidade:'', relogio:'', frase:'', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0} },
+  { num:'05', nome:'Fabio',   loja:'morumbi', classe:'Explorador', raro:false, selo:'', especialidade:'', relogio:'', frase:'', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0} },
+  { num:'06', nome:'Gustavo', loja:'morumbi', classe:'Corredor', raro:false, selo:'', especialidade:'', relogio:'', frase:'', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0} },
+  { num:'07', nome:'Joyce',   loja:'morumbi', classe:'Corredor', raro:false, selo:'', especialidade:'', relogio:'', frase:'', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0} },
+  { num:'08', nome:'Mayara',  loja:'morumbi', classe:'Explorador', raro:false, selo:'', especialidade:'', relogio:'', frase:'', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0} },
+  { num:'09', nome:'Renato',  loja:'morumbi', classe:'Explorador', raro:false, selo:'', especialidade:'', relogio:'', frase:'', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0} },
+  { num:'10', nome:'Ribs',    loja:'moema',   classe:'Explorador', raro:false, selo:'', especialidade:'', relogio:'', frase:'', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0} },
+  { num:'11', nome:'Beatriz', loja:'moema',   classe:'Explorador', raro:false, selo:'', especialidade:'', relogio:'', frase:'', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0} },
+  { num:'12', nome:'Dayane',  loja:'moema',   classe:'Explorador', raro:false, selo:'', especialidade:'', relogio:'', frase:'', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0} },
+  { num:'13', nome:'William', loja:'moema',   classe:'Explorador', raro:false, selo:'', especialidade:'', relogio:'', frase:'', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0} },
+  { num:'14', nome:'Salomão Setton', loja:'Comissão Técnica',   classe: 'Ultramaratonista', raro:false, selo:'', especialidade:'', relogio:'', frase:'', attrs:{Produto:100,Ritmo:70,Precisão:90,Jogo:30} },
+  { num:'15', vazio:true },
+  { num:'16', vazio:true },
+  { num:'17', vazio:true },
+  { num:'18', vazio:true },
+  { num:'19', vazio:true },
+  { num:'20', vazio:true },
 ];
 
-function renderRanking() {
-  const miniEl = document.getElementById('rankMini');
-  const medals = ['🥇','🥈','🥉'];
-  if (miniEl) {
-    miniEl.innerHTML = rankingData.slice(0,3).map((r,i) => `
-      <div class="rank-mini-row">
-        <span class="rank-medal">${medals[i]}</span>
-        <span class="rank-name-text">${r.name}</span>
-        <span class="rank-level-badge">${r.level}</span>
-        <span class="rank-pts-mini">${r.pts} pts</span>
-      </div>`).join('');
-  }
-  const rankEl = document.getElementById('rankingList');
-  if (rankEl) {
-    const posClass = ['g1','g2','g3'];
-    rankEl.innerHTML = rankingData.map((r,i) => `
-      <div class="rank-row">
-        <div class="rank-pos-num ${posClass[i]||''}">${i+1}</div>
-        <div class="rank-info"><div class="rank-pname">${r.name}</div><div class="rank-plevel">${r.level}</div></div>
-        <div class="rank-ppts">${r.pts} pts</div>
-      </div>`).join('');
-  }
+function attrBarColor(val){
+  if(val >= 85) return '#00C2A8';
+  if(val >= 65) return '#F0A500';
+  if(val >= 40) return '#4a90e2';
+  return '#8a93a0';
 }
-renderRanking();
+
+function renderAlbum(){
+  const grid = document.getElementById('albumGrid');
+  if(!grid) return;
+  grid.innerHTML = albumData.map((h, idx) => {
+    if(h.vazio) return `
+      <div style="background:#f0f2f5;border:2px dashed #d0d5dc;border-radius:12px;min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;opacity:0.5;">
+        <div style="font-size:32px;opacity:0.25;">❓</div>
+        <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#8a93a0;">#${h.num}</div>
+        <div style="font-size:11px;color:#8a93a0;">A colar</div>
+      </div>`;
+
+    const cfg = classeConfig[h.classe] || classeConfig['Explorador'];
+    const loja = lojaConfig[h.loja] || lojaConfig['moema'];
+    const isRaro = h.raro;
+
+    const bordaCor = isRaro ? 'rgba(240,165,0,0.6)' : loja.corBorda;
+    const sombra = isRaro ? '0 0 0 2px rgba(240,165,0,0.45),0 8px 28px rgba(240,165,0,0.18)' : loja.brilho;
+    const shimmer = isRaro ? `<div style="position:absolute;inset:0;border-radius:11px;background:linear-gradient(125deg,transparent 38%,rgba(255,215,0,0.07) 50%,transparent 62%);pointer-events:none;"></div><div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#F0A500,transparent);border-radius:12px 12px 0 0;"></div>` : '';
+
+    /* faixa lateral colorida da loja */
+    const faixaLoja = `<div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:${loja.cor};border-radius:12px 0 0 12px;opacity:0.8;"></div>`;
+
+    return `
+      <div onclick="openCardModal(${idx})" style="cursor:pointer;border-radius:12px;border:1.5px solid ${bordaCor};box-shadow:${sombra};background:${cfg.gradiente};color:#fff;padding:14px 12px 12px;position:relative;overflow:hidden;transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
+        ${shimmer}
+        ${faixaLoja}
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;padding-left:6px;">
+          <div>
+            <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:10px;letter-spacing:2px;color:${cfg.cor};opacity:0.8;">#${h.num}</div>
+            <div style="font-size:9px;font-family:'Rajdhani',sans-serif;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:${loja.labelCor};margin-top:1px;">${loja.label}</div>
+          </div>
+          <div style="font-size:14px;">${cfg.emoji}</div>
+        </div>
+        <div style="font-size:28px;text-align:center;margin-bottom:6px;">${isRaro ? '✨' : '👤'}</div>
+        <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:13px;text-align:center;letter-spacing:0.5px;margin-bottom:2px;line-height:1.2;padding-left:4px;">
+          ${h.nome.split(' ')[0]}<br><span style="font-size:11px;opacity:0.7;">${h.nome.split(' ').slice(1).join(' ')}</span>
+        </div>
+        <div style="text-align:center;margin-bottom:10px;">
+          <span style="font-size:9px;font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:${cfg.cor};background:${cfg.corBg};padding:2px 8px;border-radius:20px;border:1px solid ${cfg.corBorda};">${h.classe}</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;padding-left:4px;">
+          ${Object.entries(h.attrs).map(([k,v])=>`
+            <div style="display:flex;align-items:center;gap:6px;">
+              <div style="font-size:9px;font-family:'Rajdhani',sans-serif;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.45);width:52px;flex-shrink:0;">${k}</div>
+              <div style="flex:1;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;">
+                <div style="height:100%;width:${v}%;background:${attrBarColor(v)};border-radius:2px;"></div>
+              </div>
+              <div style="font-size:9px;font-family:'Rajdhani',sans-serif;font-weight:700;color:rgba(255,255,255,0.45);width:20px;text-align:right;">${v||'—'}</div>
+            </div>`).join('')}
+        </div>
+        ${isRaro ? `<div style="text-align:center;margin-top:8px;font-size:9px;font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold);">${h.selo}</div>` : ''}
+      </div>`;
+  }).join('');
+}
+
+function openCardModal(idx){
+  const h = albumData[idx];
+  if(!h || h.vazio) return;
+  const cfg = classeConfig[h.classe] || classeConfig['Explorador'];
+  const loja = lojaConfig[h.loja] || lojaConfig['moema'];
+  const modal = document.getElementById('cardModal');
+  const inner = document.getElementById('cardModalInner');
+  if(!modal || !inner) return;
+
+  const isRaro = h.raro;
+  const bordaCor = isRaro ? 'rgba(240,165,0,0.6)' : loja.corBorda;
+  const sombra = isRaro ? 'border:2px solid rgba(240,165,0,0.6);box-shadow:0 0 0 1px rgba(240,165,0,0.2),0 24px 64px rgba(0,0,0,0.7);' : `border:1.5px solid ${loja.corBorda};box-shadow:${loja.brilho},0 24px 64px rgba(0,0,0,0.6);`;
+
+  inner.innerHTML = `
+    <div style="${sombra}background:${cfg.gradiente};border-radius:16px;padding:24px;color:#fff;position:relative;overflow:hidden;">
+      ${isRaro ? `<div style="position:absolute;inset:0;border-radius:15px;background:linear-gradient(125deg,transparent 35%,rgba(255,215,0,0.06) 50%,transparent 65%);pointer-events:none;"></div><div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#F0A500,transparent);"></div>` : ''}
+      <div style="position:absolute;left:0;top:0;bottom:0;width:4px;background:${loja.cor};border-radius:16px 0 0 16px;"></div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-left:8px;">
+        <div>
+          <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:${loja.labelCor};margin-bottom:2px;">${loja.label}</div>
+          <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;color:${cfg.cor};">#${h.num} · ${h.classe.toUpperCase()}</div>
+        </div>
+        <div style="font-size:28px;">${cfg.emoji}</div>
+      </div>
+
+      <div style="text-align:center;margin-bottom:14px;">
+        <div style="font-size:56px;margin-bottom:6px;">${isRaro ? '✨' : '👤'}</div>
+        <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:22px;letter-spacing:1px;">${h.nome}</div>
+        ${isRaro ? `<div style="margin-top:8px;font-size:10px;font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);background:rgba(240,165,0,0.12);border:1px solid rgba(240,165,0,0.3);padding:3px 12px;border-radius:20px;display:inline-block;">${h.selo}</div>` : ''}
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;padding-left:8px;">
+        ${Object.entries(h.attrs).map(([k,v])=>`
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
+              <div style="font-size:10px;font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.55);">${k}</div>
+              <div style="font-size:10px;font-family:'Rajdhani',sans-serif;font-weight:700;color:${attrBarColor(v)};">${v||'—'}</div>
+            </div>
+            <div style="height:6px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden;">
+              <div style="height:100%;width:${v}%;background:${attrBarColor(v)};border-radius:3px;"></div>
+            </div>
+          </div>`).join('')}
+      </div>
+
+      <div style="border-top:1px solid rgba(255,255,255,0.08);padding-top:14px;padding-left:8px;display:flex;flex-direction:column;gap:8px;">
+        ${h.especialidade ? `<div style="display:flex;align-items:center;gap:8px;"><div style="font-size:9px;font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.35);width:80px;">Especialidade</div><div style="font-size:12px;font-weight:600;">${h.especialidade}</div></div>` : ''}
+        ${h.relogio ? `<div style="display:flex;align-items:center;gap:8px;"><div style="font-size:9px;font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.35);width:80px;">Equipamento</div><div style="font-size:12px;font-weight:600;">⌚ ${h.relogio}</div></div>` : ''}
+        ${h.frase ? `<div style="margin-top:4px;background:rgba(255,255,255,0.05);border-left:2px solid ${loja.cor};border-radius:0 6px 6px 0;padding:8px 10px;font-size:12px;font-style:italic;opacity:0.8;line-height:1.5;">"${h.frase}"</div>` : ''}
+      </div>
+
+      <button onclick="closeCardModal()" style="width:100%;margin-top:16px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:rgba(255,255,255,0.55);font-family:'Rajdhani',sans-serif;font-weight:600;font-size:12px;letter-spacing:1px;text-transform:uppercase;padding:10px;cursor:pointer;">Fechar</button>
+    </div>`;
+
+  modal.style.display = 'flex';
+}
+
+function closeCardModal(){
+  const modal = document.getElementById('cardModal');
+  if(modal) modal.style.display = 'none';
+}
+
+renderAlbum();
 
 // ── PERFIS ────────────────────────────────────────────────────
 const profiles = [
@@ -2693,6 +3179,7 @@ function revealModuleQuiz(wrapId, initFn) {
   else if (initFn === 'initQuiz2') initQuiz2();
   else if (initFn === 'initQuiz3') initQuiz3();
   else if (initFn === 'initQuiz4') initQuiz4();
+  else if (initFn === 'initQuizCorredor') initQuizCorredor();
   wrap.scrollIntoView({behavior: 'smooth', block: 'start'});
 }
 
@@ -5283,6 +5770,252 @@ function mgMostrarResultado(){
 
 function mgVoltarAbertura(){
   gMostrarTela('mg-abertura');
+}
+
+/* ══════════════════════════════════════════
+   QUIZ — CORREDOR · MÓDULO 1 — GARMIN CONNECT
+   ══════════════════════════════════════════ */
+const quizDataCorredor = [
+  {
+    q: 'Uma cliente diz: "Acordo cansada todo dia, mesmo dormindo 8 horas." Qual recurso do Garmin Connect você mostraria primeiro?',
+    opts: [
+      'Minutos de Intensidade — ela provavelmente não está se exercitando o suficiente',
+      'Sleep Score + HRV Status — O HRV mostra o estado real de recuperação do sistema nervoso',
+      'Body Battery — e diria que ela deveria dormir mais cedo',
+      'Status de Treinamento — para ver se ela está sobrecarregada'
+    ],
+    correct: 1,
+    exp: 'Dormir 8 horas mas acordar cansada pode indicar sono de baixa qualidade. O Sleep Score mostra as fases e o SpO2 noturno, enquanto o HRV Status revela se o sistema nervoso está se recuperando de verdade — muito mais preciso do que só olhar a duração.'
+  },
+  {
+    q: 'Um cliente pergunta qual a diferença entre Body Battery e estresse. Como você explica?',
+    opts: [
+      'São a mesma coisa — o Body Battery é outro nome para o nível de estresse',
+      'O Body Battery é o resultado acumulado de sono, estresse e atividade ao longo do tempo. O estresse mostra os picos de tensão em tempo real',
+      'O estresse mede a atividade física e o Body Battery mede o sono isoladamente',
+      'O Body Battery é calculado pela contagem de passos e o estresse pelo batimento cardíaco médio'
+    ],
+    correct: 1,
+    exp: 'O Body Battery é um indicador de energia acumulado, ele considera sono, estresse e atividade das últimas horas. O estresse, medido pela variabilidade da FC, mostra os picos de tensão momento a momento. Um impacta diretamente o outro.'
+  },
+  {
+    q: 'O HRV Status é monitorado principalmente em qual momento?',
+    opts: [
+      'Durante o treino, para ajustar a intensidade em tempo real',
+      'Durante o dia, com leituras automáticas a cada hora',
+      'Durante o sono, porque é quando o corpo está em repouso',
+      'Apenas quando o usuário ativa manualmente no relógio'
+    ],
+    correct: 2,
+    exp: 'O HRV Status é medido durante o sono porque é nesse período que o corpo está em repouso e a variabilidade cardíaca reflete de forma honesta o equilíbrio do sistema nervoso autônomo. É uma das métricas mais confiáveis do ecossistema Garmin.'
+  },
+  {
+    q: 'Um cliente quer emagrecer e pergunta se o Garmin ajuda. Qual é a melhor resposta?',
+    opts: [
+      '"Não diretamente.. O Garmin é mais voltado para atletas de corrida"',
+      '"Ele conta calorias queimadas, mas você teria que usar outro app separado, sem integração"',
+      '"O Garmin mede o gasto calórico diário, o relógio mede o que você gasta, e é só integrar com o app que mede o que você come"',
+      '"O Garmin Pay facilita comprar alimentos saudáveis sem sair do ritmo"'
+    ],
+    correct: 2,
+    exp: 'A integração com MyFitnessPal é um argumento forte para quem quer emagrecer ou ganhar massa. Fecha o ciclo de gasto e consumo calórico em um ecossistema só'
+  },
+  {
+    q: 'É possível baixar músicas via MP3 no Garmin?',
+    opts: [
+      'Apenas o Fenix 8 e o Forerunner 970',
+      'Sim, em modelos com armazenamento interno',
+      'Qualquer relógio Garmin que tenha Bluetooth',
+      'Somente na linha Venu 4 '
+    ],
+    correct: 1,
+    exp: 'O Bluetooth sozinho não garante música offline — O relógio precisa ter memória interna para armazenar as playlists. e além dos streamings de música, também é possível transferir as músicas MP3 diretamente para o relógio'
+  },
+  {
+    q: 'Uma cliente quer usar o Garmin Pay para pagar o café após a corrida. Quais bancos são compatíveis no Brasil?',
+    opts: [
+      'Nubank, Itaú e Inter',
+      'BTG, Banco do Brasil e Santander',
+      'Bradesco, Caixa e C6 Bank',
+      'Qualquer banco com app de pagamento por aproximação'
+    ],
+    correct: 1,
+    exp: 'No Brasil, os bancos compatíveis com Garmin Pay são BTG, Banco do Brasil e Santander. Vale confirmar com a cliente antes de usar esse argumento — e lembrar que nem todos os modelos têm NFC.'
+  },
+  {
+    q: 'O Status de Treinamento classifica o atleta como "Sobrecarregado". Como você traduz isso em benefício de venda?',
+    opts: [
+      '"Significa que o relógio está com problema de leitura"',
+      '"Quer dizer que ele está treinando demais e precisa de um modelo mais avançado"',
+      '"Avisa quando você está além da conta antes de virar lesão"',
+      '"Significa que o firmware precisa de atualização"'
+    ],
+    correct: 2,
+    exp: 'Traduzir métrica em benefício é o que separa uma venda técnica de uma venda consultiva. "Sobrecarregado" não é um problema, é uma vantagem: o relógio antecipa o que o corpo ainda não sinalizou visivelmente.'
+  },
+  {
+    q: 'Por que o monitoramento de Ciclo Menstrual no Garmin vai além de um simples calendário?',
+    opts: [
+      'Porque envia lembretes automáticos por SMS',
+      'Porque correlaciona as fases do ciclo com HRV, sono e Body Battery',
+      'Porque funciona sem internet',
+      'Porque é exclusivo dos modelos Fenix'
+    ],
+    correct: 1,
+    exp: 'A diferença é a integração com os dados de saúde do dia a dia. É possivel  entender como cada fase impacta o sono, a energia e o desempenho nos treinos. Isso é argumento de venda  para o público feminino.'
+  },
+  {
+    q: 'Um cliente diz que não vai usar o Garmin Connect, só o relógio para correr. Como você responde?',
+    opts: [
+      '"Tudo bem, você pode usar normalmente sem o app"',
+      '"Sem o app o relógio não funciona! é obrigatório"',
+      '"O relógio funciona, mas você perde o histórico e as análises que mostram se você está evoluindo ou não"',
+      '"Nesse caso o Forerunner 55 já é suficiente"'
+    ],
+    correct: 2,
+    exp: 'O Connect não é obrigatório para o relógio funcionar no pulso, mas é onde os dados ganham contexto e se tornam úteis ao longo das semanas. Mostrar isso posiciona o ecossistema como diferencial.'
+  },
+  {
+    q: 'Uma pessoa sedentária compra um Garmin pela primeira vez. Quais métricas têm mais valor para ela no começo?',
+    opts: [
+      'HRV Status, VO2 Máx e Status de Treinamento',
+      'Passos, Body Battery, Sleep Score e Monitoramento de Hábitos',
+      'Garmin Pay e armazenamento de música',
+      'SpO2 durante o treino e zonas de frequência cardíaca'
+    ],
+    correct: 1,
+    exp: 'Para quem ainda não treina, as métricas de vida cotidiana são as mais impactantes. Ver os passos, o sono, a energia do dia e a consistência ao longo das semanas cria o hábito antes do esporte.'
+  },
+  {
+    q: 'O que acontece quando o relógio sincroniza com o Garmin Connect?',
+    opts: [
+      'Os dados do relógio são apagados para liberar espaço',
+      'O app envia automaticamente um relatório para o médico cadastrado',
+      'Os dados são organizados em histórico, gráficos e análises',
+      'O Garmin Pay é reativado automaticamente'
+    ],
+    correct: 2,
+    exp: 'A sincronização transfere os dados para o app, que os organiza em histórico, gráficos e insights ao longo do tempo. A integração com outras plataformas é um dos grandes diferenciais do ecossistema Garmin.'
+  },
+  {
+    q: 'Para usar música offline no relógio com o Spotify, o que o cliente precisa ter?',
+    opts: [
+      'Apenas o Garmin Connect instalado no celular',
+      'Assinatura Spotify Premium e um fone de ouvido Bluetooth',
+      'Somente um fone Bluetooth. Qualquer relógio Garmin funciona',
+      'Uma assinatura do plano Garmin Connect Premium'
+    ],
+    correct: 1,
+    exp: 'Três requisitos juntos: relógio com armazenamento interno, Spotify Premium para download offline e fone Bluetooth para ouvir. Identificar o fone como acessório complementar na venda é uma boa oportunidade de ticket.'
+  }
+];
+
+let currentQCorredor = 0, scoreCorredor = 0, answeredCorredor = false, wrongCorredor = [];
+
+function initQuizCorredor(){
+  currentQCorredor = 0; scoreCorredor = 0; answeredCorredor = false; wrongCorredor = [];
+  renderQuizCorredor();
+}
+
+function renderQuizCorredor(){
+  const q = quizDataCorredor[currentQCorredor];
+  const bar = document.getElementById('quizBarCorredor');
+  if(bar) bar.style.width = (currentQCorredor / quizDataCorredor.length * 100) + '%';
+  const content = document.getElementById('quizContentCorredor');
+  if(!content) return;
+  content.innerHTML = `
+    <div class="quiz-q-num">Pergunta ${currentQCorredor+1} de ${quizDataCorredor.length}</div>
+    <div class="quiz-q">${q.q}</div>
+    <div class="quiz-options">${q.opts.map((o,i) => `<button class="quiz-opt" onclick="answerCorredor(${i})" id="copt-${i}">${o}</button>`).join('')}</div>
+    <div class="quiz-feedback" id="quizFeedbackCorredor"></div>
+    <div class="quiz-nav"><button class="quiz-btn" id="nextBtnCorredor" onclick="nextCorredor()" disabled>${currentQCorredor < quizDataCorredor.length-1 ? 'Próxima →' : 'Ver Resultado'}</button></div>
+  `;
+  answeredCorredor = false;
+}
+
+function answerCorredor(i){
+  if(answeredCorredor) return;
+  answeredCorredor = true;
+  const q = quizDataCorredor[currentQCorredor];
+  document.querySelectorAll('#quizContentCorredor .quiz-opt').forEach(b => b.classList.add('disabled'));
+  const fb = document.getElementById('quizFeedbackCorredor');
+  if(i === q.correct){
+    document.getElementById('copt-'+i).classList.add('correct');
+    fb.className = 'quiz-feedback show ok';
+    fb.textContent = '✅ Correto! ' + q.exp;
+    scoreCorredor++;
+  } else {
+    document.getElementById('copt-'+i).classList.add('wrong');
+    document.getElementById('copt-'+q.correct).classList.add('correct');
+    fb.className = 'quiz-feedback show fail';
+    fb.textContent = '❌ Incorreto. ' + q.exp;
+    wrongCorredor.push('Q'+(currentQCorredor+1)+' — '+q.q.substring(0,65)+'...');
+  }
+  document.getElementById('nextBtnCorredor').disabled = false;
+  setTimeout(() => fb.scrollIntoView({behavior:'smooth', block:'nearest'}), 100);
+}
+
+function nextCorredor(){
+  currentQCorredor++;
+  if(currentQCorredor < quizDataCorredor.length) renderQuizCorredor();
+  else showResultCorredor();
+}
+
+function showResultCorredor(){
+  const pct = Math.round(scoreCorredor / quizDataCorredor.length * 100);
+  const passed = pct >= 70;
+  const bar = document.getElementById('quizBarCorredor');
+  if(bar) bar.style.width = '100%';
+  const content = document.getElementById('quizContentCorredor');
+  if(!content) return;
+  content.innerHTML = `
+    <div class="quiz-result">
+      <div class="quiz-result-emoji">${passed ? '🎉' : '📚'}</div>
+      <div class="quiz-result-title" style="color:${passed ? 'var(--acc)' : 'var(--warn)'};">${passed ? 'Aprovado! Corredor desbloqueado.' : 'Continue estudando!'}</div>
+      <div class="quiz-result-score">Você acertou <strong>${scoreCorredor}</strong> de ${quizDataCorredor.length} questões — <strong>${pct}%</strong></div>
+      ${passed ? `
+        <div class="register-form" id="registerFormCorredor">
+          <label class="register-label">📝 Registre sua conclusão — informe seu nome completo</label>
+          <input type="text" class="register-input" id="regNameCorredor" placeholder="Ex: João Silva" maxlength="60" onkeydown="if(event.key==='Enter') registerCorredor(${pct})">
+          <button class="register-btn" onclick="registerCorredor(${pct})">Registrar Conclusão ✓</button>
+          <div class="register-success" id="regSuccessCorredor">✅ Registrado com sucesso! Resultado enviado para a liderança.</div>
+        </div>` : ''}
+      <div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+        ${!passed ? '<button class="quiz-btn" style="background:var(--text2);" onclick="initQuizCorredor()">↺ Tentar Novamente</button>' : ''}
+        <button class="quiz-btn" onclick="openPanel(\'formacao\')">← Formação</button>
+      </div>
+    </div>`;
+}
+
+async function registerCorredor(pct){
+  const nameInput = document.getElementById('regNameCorredor');
+  const name = nameInput ? nameInput.value.trim() : '';
+  if(!name){ if(nameInput) nameInput.style.borderColor = 'var(--warn)'; return; }
+  const btn = document.querySelector('#registerFormCorredor .register-btn');
+  if(!btn) return;
+  btn.textContent = 'Enviando...'; btn.disabled = true;
+  const now = new Date();
+  const data = now.toLocaleDateString('pt-BR');
+  const hora = now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  const erradas = wrongCorredor.length > 0 ? '\n\n❌ Questões erradas:\n' + wrongCorredor.map(q => '• ' + q).join('\n') : '\n\n✅ Nenhuma questão errada!';
+  try {
+    await emailjs.send('service_b5gnp0k','template_kqnxv5h',{
+      nome: name,
+      modulo: 'CORREDOR · Módulo 1 — Garmin Connect',
+      nota: pct + '%',
+      acertos: scoreCorredor + '/' + quizDataCorredor.length,
+      status: pct >= 70 ? '✅ APROVADO' : '❌ Não atingiu 70%',
+      data: data,
+      hora: hora,
+      erradas: erradas
+    });
+    const suc = document.getElementById('regSuccessCorredor');
+    if(suc) suc.style.display = 'block';
+    btn.style.display = 'none';
+  } catch(e){
+    btn.textContent = 'Erro ao enviar — tente novamente';
+    btn.disabled = false;
+  }
 }
 </script>
 
