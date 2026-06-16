@@ -2372,11 +2372,24 @@ function openCardModal(idx){
       </div>
 
       <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;padding-left:8px;">
-        ${Object.entries(h.attrs).map(([k,v])=>`
-          <div><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
-              <div style="width:90px;font-size:10px<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
-              <div style="font-size:10px;font-family:'Rajdhani',sans-serif;font-weight:700;color:${k === 'Reputação' ? '#FFD700' : attrBarColor(v)};">${v||'—'}</div>
-            </div>
+  ${Object.entries(h.attrs).map(([k,v])=>`
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
+        <div style="width:90px;font-size:10px;font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.55);">
+          ${k}
+        </div>
+
+        <div style="font-size:10px;font-family:'Rajdhani',sans-serif;font-weight:700;color:${k === 'Reputação' ? '#FFD700' : attrBarColor(v)};">
+          ${v || '—'}
+        </div>
+      </div>
+
+      <div style="height:6px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden;">
+        <div style="height:100%;width:${v}%;background:${k === 'Reputação' ? '#FFD700' : attrBarColor(v)};border-radius:3px;"></div>
+      </div>
+    </div>
+  `).join('')}
+</div>
             <div style="height:6px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden;">
               <div style="height:100%;width:${v}%;background:${k === 'Reputação' ? '#FFD700' : attrBarColor(v)};border-radius:3px;"></div>
             </div>
