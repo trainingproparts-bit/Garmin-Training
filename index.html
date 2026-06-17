@@ -108,11 +108,8 @@ header{background:#0a0a0a;border-bottom:1px solid #1e1e1e;position:sticky;top:0;
 .album-mini:hover{transform:translateY(-2px);border-color:rgba(240,165,0,0.4);}
 .album-mini-top{display:flex;align-items:baseline;justify-content:space-between;position:relative;z-index:1;}
 .album-mini-count{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:26px;color:#fff;line-height:1;}
-.album-mini-total{font-size:14px;color:rgba(255,255,255,0.4);font-weight:600;}
 .album-mini-badge{font-size:18px;}
-.album-mini-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin:2px 0 10px;position:relative;z-index:1;}
-.album-mini-bar{height:6px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden;margin-bottom:10px;position:relative;z-index:1;}
-.album-mini-bar-fill{height:100%;background:linear-gradient(90deg,#F0A500,#ffd76a);border-radius:3px;transition:width 0.6s ease;}
+.album-mini-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin:2px 0 12px;position:relative;z-index:1;}
 .album-mini-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;position:relative;z-index:1;}
 .album-mini-tag{font-size:9px;font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 9px;border-radius:20px;}
 .album-mini-cta{display:flex;align-items:center;justify-content:center;gap:6px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);color:#fff;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;padding:8px 14px;border-radius:var(--r2);transition:background 0.2s;position:relative;z-index:1;}
@@ -906,11 +903,10 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
         <div class="dash-label">⚔️ Álbum da Equipe</div>
         <div class="album-mini" onclick="openPanel('ranking')">
           <div class="album-mini-top">
-            <div class="album-mini-count" id="albumMiniCount">–<span class="album-mini-total">/20</span></div>
+            <div class="album-mini-count" id="albumMiniCount">–</div>
             <div class="album-mini-badge">⚔️</div>
           </div>
-          <div class="album-mini-label">figurinhas coladas</div>
-          <div class="album-mini-bar"><div class="album-mini-bar-fill" id="albumMiniBarFill" style="width:0%;"></div></div>
+          <div class="album-mini-label">colaboradores no álbum</div>
           <div class="album-mini-tags" id="albumMiniTags"></div>
           <div class="album-mini-cta">Ver álbum completo →</div>
         </div>
@@ -2143,20 +2139,28 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
         <div style="font-size:12px;color:var(--text2);line-height:1.5;">Nível atual do colaborador na trilha de certificação. Evolui assim: Explorador → Corredor → Maratonista → Triatleta → Ultramaratonista, conforme os módulos concluídos.</div>
       </div>
       <div>
-        <div style="font-size:12px;font-weight:700;color:var(--g);margin-bottom:2px;">⭐ Selo de raridade</div>
-        <div style="font-size:12px;color:var(--text2);line-height:1.5;">Destaque dado a figurinhas com desempenho ou contribuição excepcional na equipe.</div>
+        <div style="font-size:12px;font-weight:700;color:var(--g);margin-bottom:2px;">⭐ Selo</div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.5;">Destaque dado a figurinhas com desempenho ou contribuição na equipe.</div>
       </div>
       <div>
         <div style="font-size:12px;font-weight:700;color:var(--g);margin-bottom:2px;">🖼️ Avatar</div>
-        <div style="font-size:12px;color:var(--text2);line-height:1.5;">Foto do colaborador. Quando não há foto cadastrada, aparece o ícone padrão (✨ figurinhas raras, 👤 demais figurinhas).</div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.5;">Mostra o emoji escolhido pela pessoa (se houver) ou, na falta dos dois, o ícone padrão (✨ figurinhas raras, 👤 demais figurinhas).</div>
       </div>
       <div>
-        <div style="font-size:12px;font-weight:700;color:var(--g);margin-bottom:2px;">📦 Produto · ⏱️ Ritmo · 🎯 Precisão · 🧠 Jogo</div>
-        <div style="font-size:12px;color:var(--text2);line-height:1.5;">Barras de 0 a 100 que representam o desempenho técnico: Produto é o conhecimento sobre as linhas Garmin, Ritmo é a agilidade no atendimento, Precisão é o acerto nas recomendações ao cliente, e Jogo é o jogo de cintura na venda.</div>
+        <div style="font-size:12px;font-weight:700;color:var(--g);margin-bottom:2px;">📦 Produto · 🎯 Precisão · 🧠 Jogo</div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.5;">Barras de 0 a 100 que representam o desempenho técnico: Produto é o conhecimento sobre as linhas. Precisão é o acerto nos quizzes do portal. Jogo é o desempenho nas vendas.</div>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:700;color:var(--g);margin-bottom:2px;">⏱️ Ritmo</div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.5;">Reflete a posição do colaborador no ranking de vendas do mês. Quem fica em 1º lugar sobe mais nesse atributo, 2º e 3º sobem um pouco menos, e os demais sobem por participação.</div>
       </div>
       <div>
         <div style="font-size:12px;font-weight:700;color:var(--g);margin-bottom:2px;">⭐ Reputação</div>
-        <div style="font-size:12px;color:var(--text2);line-height:1.5;">Barra separada dos atributos técnicos que reflete o reconhecimento do colaborador junto à equipe e à liderança.</div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.5;">Barra separada com o número de avaliações recebidas nos canais.</div>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:700;color:var(--g);margin-bottom:2px;">🔥 Ponta do Mês</div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.5;">Faixa de destaque que aparece no topo da figurinha de quem foi o 1º lugar em vendas no mês. É um reconhecimento visual, atualizado mensalmente — não soma pontos por si só.</div>
       </div>
       <div>
         <div style="font-size:12px;font-weight:700;color:var(--g);margin-bottom:2px;">🌟 Especialidade</div>
@@ -2164,7 +2168,7 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
       </div>
       <div>
         <div style="font-size:12px;font-weight:700;color:var(--g);margin-bottom:2px;">⌚ Equipamento</div>
-        <div style="font-size:12px;color:var(--text2);line-height:1.5;">Modelo de relógio Garmin que o colaborador usa no dia a dia.</div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.5;">Modelo de relógio favorito e de maior domínio.</div>
       </div>
       <div>
         <div style="font-size:12px;font-weight:700;color:var(--g);margin-bottom:2px;">🏃 Esporte</div>
@@ -2319,34 +2323,42 @@ const lojaConfig = {
 // pra evitar o bug de "Comissão Técnica" (com acento/maiúsculas) cair no padrão Moema.
 
 // Campos novos em cada figurinha:
-//  avatar    -> URL de uma foto/imagem do colaborador (opcional). Se vazio, usa o ícone padrão (✨/👤).
-//  esporte   -> modalidade esportiva praticada pelo colaborador (opcional, aparece ao abrir a figurinha).
-//  reputacao -> 0–100, alimenta a barra de Reputação (separada dos atributos técnicos).
+//  avatar      -> URL de uma foto/imagem do colaborador (opcional). Se vazio, usa o ícone padrão (✨/👤).
+//  esporte     -> modalidade esportiva praticada pelo colaborador (opcional, aparece ao abrir a figurinha).
+//  reputacao   -> 0–100, alimenta a barra de Reputação (separada dos atributos técnicos).
+//  emoji       -> emoji escolhido pela pessoa pra usar como avatar (ex: '🥲'). Só aparece se não
+//                 houver foto em avatar. Sem foto e sem emoji, cai no ícone padrão (✨/👤).
+//  pontaDoMes  -> true/false. Marque true SÓ pra quem ficou em 1º lugar nas vendas do mês (vem da planilha
+//                 de vendedores, não tem esse dado no site). Deixe false nos outros — e lembre de tirar o
+//                 true de quem foi ponta no mês anterior antes de marcar o novo. Mostra a faixa 🔥 no card.
+//  Ritmo (dentro de attrs) -> não é mais avaliação subjetiva: reflete a posição da pessoa no ranking de
+//                 vendas do mês (mesma planilha). Sugestão de incremento mensal nesse atributo por posição:
+//                 1º lugar +15 · 2º lugar +10 · 3º lugar +7 · demais +3 a +5 (sempre com teto de 100).
 const albumData = [
   {
     num:'01', nome:'Samara Pereira', loja:'Comissão Técnica', classe:'Corredor', raro:true, selo:'⭐⭐⭐⭐⭐',
-    especialidade:'🗺️ GPS de Mão', relogio:'Fenix 8S', esporte:'', avatar:'',
+    especialidade:'🗺️ GPS de Mão', relogio:'Fenix 8S', esporte:'', avatar:'', emoji:'', pontaDoMes:false,
     frase:'Tente de novo, falhe novamente. Falhe melhor.',
     attrs:{ Produto:92, Ritmo:88, Precisão:85, Jogo:90 }, reputacao:30
   },
   {
     num:'02', nome:'Mariana Muzzio', loja:'Comissão Técnica', classe:'Explorador', raro:true, selo:'⭐⭐⭐⭐⭐',
-    especialidade:'Cuidar do Fefe', relogio:'955', esporte:'', avatar:'',
+    especialidade:'Cuidar do Fefe', relogio:'955', esporte:'', avatar:'', emoji:'', pontaDoMes:false,
     frase:'Quer sucesso? Encare o processo!',
     attrs:{Produto:90, Ritmo:100, Precisão:85, Jogo:95}, reputacao:20
   },
-  { num:'03', nome:'Ailma',   loja:'morumbi', classe:'Explorador', raro:false, selo:'', especialidade:'', relogio:'', esporte:'', avatar:'', frase:'', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:0 },
-  { num:'04', nome:'Daniel',  loja:'morumbi', classe:'Explorador', raro:false, selo:'', especialidade:'', relogio:'', esporte:'', avatar:'', frase:'', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:0 },
-  { num:'05', nome:'Fabio',   loja:'morumbi', classe:'Explorador', raro:false, selo:'', especialidade:'', relogio:'', esporte:'', avatar:'', frase:'', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:0 },
-  { num:'06', nome:'Gustavo', loja:'morumbi', classe:'Corredor', raro:false, selo:'', especialidade:'', relogio:'', esporte:'', avatar:'', frase:'', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:0 },
-  { num:'07', nome:'Joyce',   loja:'morumbi', classe:'Corredor', raro:false, selo:'', especialidade:'', relogio:'', esporte:'', avatar:'', frase:'', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:0 },
-  { num:'08', nome:'Mayara',  loja:'morumbi', classe:'Explorador', raro:false, selo:'', especialidade:'', relogio:'', esporte:'', avatar:'', frase:'', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:0 },
-  { num:'09', nome:'Renato',  loja:'morumbi', classe:'Explorador', raro:false, selo:'', especialidade:'', relogio:'', esporte:'', avatar:'', frase:'', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:0 },
-  { num:'10', nome:'Ribs',    loja:'moema',   classe:'Explorador', raro:false, selo:'', especialidade:'', relogio:'', esporte:'', avatar:'', frase:'', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:0 },
-  { num:'11', nome:'Beatriz', loja:'moema',   classe:'Explorador', raro:false, selo:'', especialidade:'', relogio:'', esporte:'', avatar:'', frase:'', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:0 },
-  { num:'12', nome:'Dayane',  loja:'moema',   classe:'Explorador', raro:false, selo:'', especialidade:'', relogio:'', esporte:'', avatar:'', frase:'', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:0 },
-  { num:'13', nome:'William', loja:'moema',   classe:'Explorador', raro:false, selo:'', especialidade:'', relogio:'', esporte:'', avatar:'', frase:'', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:0 },
-  { num:'14', nome:'Salomão Setton', loja:'Comissão Técnica',   classe: 'Ultramaratonista', raro:false, selo:'', especialidade:'', relogio:'', esporte:'', avatar:'', frase:'', attrs:{Produto:100,Ritmo:70,Precisão:90,Jogo:30}, reputacao:0 },
+  { num:'03', nome:'Ailma Ferraz', loja:'morumbi', classe:'Explorador', raro:false, selo:'', especialidade:'Gestão', relogio:'Venu 3 Marfim', esporte:'Caminhada', avatar:'', emoji:'😉', pontaDoMes:false, frase:'O sucesso é a soma de pequenos esforços repetidos dia após dia.', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:0 },
+  { num:'04', nome:'Daniel',  loja:'morumbi', classe:'Explorador', raro:false, selo:'', especialidade:'', relogio:'', esporte:'', avatar:'', emoji:'', pontaDoMes:false, frase:'', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:0 },
+  { num:'05', nome:'Fabio Borges', loja:'morumbi', classe:'Explorador', raro:false, selo:'', especialidade:'Métricas de saúde', relogio:'Mk3i 43mm', esporte:'Corrida', avatar:'', emoji:'👽', pontaDoMes:false, frase:'Você só falha quando desiste.', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:0 },
+  { num:'06', nome:'Gustavo Morais', loja:'morumbi', classe:'Corredor', raro:false, selo:'', especialidade:'Atendimento diferenciado', relogio:'Fênix 8 Amoled', esporte:'Musculação', avatar:'', emoji:'🥲', pontaDoMes:true, frase:'Socorro!', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:0 },
+  { num:'07', nome:'Joyce Souza', loja:'morumbi', classe:'Corredor', raro:false, selo:'', especialidade:'Gestão', relogio:'Venu 3s', esporte:'Caminhada', avatar:'', emoji:'😉', pontaDoMes:false, frase:'O sucesso é a soma de pequenos esforços repetidos dia após dia.', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:0 },
+  { num:'08', nome:'Mayara Freire', loja:'morumbi', classe:'Explorador', raro:false, selo:'', especialidade:'Cintas cardíacas', relogio:'Venu 4', esporte:'', avatar:'', emoji:'🫩', pontaDoMes:false, frase:'A sua principal motivação é você mesmo!', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:0 },
+  { num:'09', nome:'Renato Dias', loja:'morumbi', classe:'Explorador', raro:false, selo:'', especialidade:'Configurações técnicas', relogio:'Venu 4 Cinza', esporte:'Taco', avatar:'', emoji:'🪃', pontaDoMes:false, frase:'', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:0 },
+  { num:'10', nome:'Ribs',    loja:'moema',   classe:'Explorador', raro:false, selo:'', especialidade:'', relogio:'', esporte:'', avatar:'', emoji:'', pontaDoMes:false, frase:'', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:0 },
+  { num:'11', nome:'Beatriz', loja:'moema',   classe:'Explorador', raro:false, selo:'', especialidade:'', relogio:'', esporte:'', avatar:'', emoji:'', pontaDoMes:false, frase:'', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:0 },
+  { num:'12', nome:'Dayane',  loja:'moema',   classe:'Explorador', raro:false, selo:'', especialidade:'', relogio:'', esporte:'', avatar:'', emoji:'', pontaDoMes:false, frase:'', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:0 },
+  { num:'13', nome:'William', loja:'moema',   classe:'Explorador', raro:false, selo:'', especialidade:'', relogio:'', esporte:'', avatar:'', emoji:'', pontaDoMes:false, frase:'', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:0 },
+  { num:'14', nome:'Salomão Setton', loja:'Comissão Técnica',   classe: 'Ultramaratonista', raro:false, selo:'', especialidade:'', relogio:'', esporte:'', avatar:'', emoji:'', pontaDoMes:false, frase:'', attrs:{Produto:100,Ritmo:70,Precisão:90,Jogo:30}, reputacao:0 },
   { num:'15', vazio:true },
   { num:'16', vazio:true },
   { num:'17', vazio:true },
@@ -2363,10 +2375,11 @@ function attrBarColor(val){
 }
 
 /* Avatar próprio: se a figurinha tiver h.avatar (URL de foto), mostra a foto numa
-   moldura circular. Sem avatar cadastrado, cai no ícone padrão (✨ raro / 👤 comum).
-   Se a imagem falhar ao carregar, também volta pro ícone padrão automaticamente. */
+   moldura circular. Sem foto, usa o h.emoji escolhido pela pessoa, se houver.
+   Sem foto e sem emoji, cai no ícone padrão (✨ raro / 👤 comum). Se a foto falhar
+   ao carregar, também volta pro emoji/ícone padrão automaticamente. */
 function avatarHTML(h, size){
-  const fallback = h.raro ? '✨' : '👤';
+  const fallback = h.emoji || (h.raro ? '✨' : '👤');
   if(h.avatar){
     const anel = h.raro ? '2px solid rgba(240,165,0,0.55)' : '2px solid rgba(255,255,255,0.14)';
     return `<div style="width:${size}px;height:${size}px;border-radius:50%;overflow:hidden;border:${anel};background:rgba(255,255,255,0.06);flex-shrink:0;display:flex;align-items:center;justify-content:center;">
@@ -2398,10 +2411,15 @@ function renderAlbum(){
     /* faixa lateral colorida da loja */
     const faixaLoja = `<div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:${loja.cor};border-radius:12px 0 0 12px;opacity:0.8;"></div>`;
 
+    /* faixa "Ponta do Mês": destaque mensal de quem liderou as vendas (vem da planilha de vendedores) */
+    const faixaPonta = h.pontaDoMes ? `<div style="position:absolute;top:0;left:0;right:0;background:linear-gradient(90deg,#ff4d2e,#ff8a00);color:#fff;font-size:8px;font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;text-align:center;padding:3px 0;border-radius:11px 11px 0 0;z-index:2;">🔥 Ponta do Mês</div>` : '';
+    const cardPadding = h.pontaDoMes ? '26px 12px 12px' : '14px 12px 12px';
+
     return `
-      <div onclick="openCardModal(${idx})" style="cursor:pointer;border-radius:12px;border:1.5px solid ${bordaCor};box-shadow:${sombra};background:${cfg.gradiente};color:#fff;padding:14px 12px 12px;position:relative;overflow:hidden;transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
+      <div onclick="openCardModal(${idx})" style="cursor:pointer;border-radius:12px;border:1.5px solid ${bordaCor};box-shadow:${sombra};background:${cfg.gradiente};color:#fff;padding:${cardPadding};position:relative;overflow:hidden;transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
         ${shimmer}
         ${faixaLoja}
+        ${faixaPonta}
         <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;padding-left:6px;">
           <div>
             <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:10px;letter-spacing:2px;color:${cfg.cor};opacity:0.8;">#${h.num}</div>
@@ -2451,8 +2469,13 @@ function openCardModal(idx){
   const bordaCor = isRaro ? 'rgba(240,165,0,0.6)' : loja.corBorda;
   const sombra = isRaro ? 'border:2px solid rgba(240,165,0,0.6);box-shadow:0 0 0 1px rgba(240,165,0,0.2),0 24px 64px rgba(0,0,0,0.7);' : `border:1.5px solid ${loja.corBorda};box-shadow:${loja.brilho},0 24px 64px rgba(0,0,0,0.6);`;
 
+  /* faixa "Ponta do Mês" no modal: mesmo destaque do card mini, mas em tamanho maior */
+  const faixaPontaModal = h.pontaDoMes ? `<div style="position:absolute;top:0;left:0;right:0;background:linear-gradient(90deg,#ff4d2e,#ff8a00);color:#fff;font-size:10px;font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-align:center;padding:6px 0;border-radius:15px 15px 0 0;z-index:2;">🔥 Ponta do Mês</div>` : '';
+  const modalPadding = h.pontaDoMes ? '36px 24px 24px' : '24px';
+
   inner.innerHTML = `
-    <div style="${sombra}background:${cfg.gradiente};border-radius:16px;padding:24px;color:#fff;position:relative;overflow:hidden;">
+    <div style="${sombra}background:${cfg.gradiente};border-radius:16px;padding:${modalPadding};color:#fff;position:relative;overflow:hidden;">
+      ${faixaPontaModal}
       ${isRaro ? `<div style="position:absolute;inset:0;border-radius:15px;background:linear-gradient(125deg,transparent 35%,rgba(255,215,0,0.06) 50%,transparent 65%);pointer-events:none;"></div><div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#F0A500,transparent);"></div>` : ''}
       <div style="position:absolute;left:0;top:0;bottom:0;width:4px;background:${loja.cor};border-radius:16px 0 0 16px;"></div>
 
@@ -2525,14 +2548,11 @@ function closeGlossary(){
    direto do albumData, então nunca fica desatualizado em relação ao álbum. */
 function renderAlbumMini(){
   const countEl = document.getElementById('albumMiniCount');
-  const barEl = document.getElementById('albumMiniBarFill');
   const tagsEl = document.getElementById('albumMiniTags');
-  if(!countEl || !barEl || !tagsEl) return;
+  if(!countEl || !tagsEl) return;
 
-  const total = albumData.length;
   const preenchidas = albumData.filter(h => !h.vazio).length;
-  countEl.innerHTML = `${preenchidas}<span class="album-mini-total">/${total}</span>`;
-  barEl.style.width = Math.round(preenchidas / total * 100) + '%';
+  countEl.textContent = preenchidas;
 
   const porLoja = {};
   albumData.forEach(h => {
