@@ -3114,7 +3114,8 @@ async function registerIPX(pct){
   const erradas=wrongIPX.length>0?'\n\n❌ Questões erradas:\n'+wrongIPX.map(q=>'• '+q).join('\n'):'\n\n✅ Nenhuma questão errada!';
   const message=`👤 Colaborador: ${name}\n📚 Módulo: Quiz Especial — IPX & Resistência à Água\n🎯 Nota: ${pct}%\n✅ Acertos: ${scoreIPX} de ${quizDataIPX.length}\n📅 Data: ${data}\n⏰ Hora: ${hora}\n📊 Status: ${status}${erradas}`;
   try{
-    await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{nome:name,modulo:'Quiz Especial — IPX & Resistência à Água',nota:pct+'%',acertos:scoreIPX+' de '+quizDataIPX.length,data,hora,status,message});
+    await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{
+      nome:name,modulo:'Quiz Especial — IPX & Resistência à Água',nota:pct+'%',acertos:scoreIPX+' de '+quizDataIPX.length,data,hora,status,message});
     const form=document.getElementById('registerFormIPX');if(form)form.style.display='none';
     const success=document.getElementById('regSuccessIPX');if(success)success.style.display='block';
   }catch(err){btn.textContent='Registrar Conclusão ✓';btn.disabled=false;alert('Erro ao enviar. Verifique sua conexão.');}
@@ -3172,7 +3173,8 @@ async function registerAT(pct){
   const erradas=wrongAT.length>0?'\n\n❌ Questões erradas:\n'+wrongAT.map(q=>'• '+q).join('\n'):'\n\n✅ Nenhuma questão errada!';
   const message=`👤 Colaborador: ${name}\n📚 Módulo: Quiz Especial — Script de Atendimento\n🎯 Nota: ${pct}%\n✅ Acertos: ${scoreAT} de ${quizDataAT.length}\n📅 Data: ${data}\n⏰ Hora: ${hora}\n📊 Status: ${status}${erradas}`;
   try{
-    await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{nome:name,modulo:'Quiz Especial — Script de Atendimento',nota:pct+'%',acertos:scoreAT+' de '+quizDataAT.length,data,hora,status,message});
+    await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{
+      nome:name,modulo:'Quiz Especial — Script de Atendimento',nota:pct+'%',acertos:scoreAT+' de '+quizDataAT.length,data,hora,status,message});
     const form=document.getElementById('registerFormAT');if(form)form.style.display='none';
     const success=document.getElementById('regSuccessAT');if(success)success.style.display='block';
   }catch(err){btn.textContent='Registrar Conclusão ✓';btn.disabled=false;alert('Erro ao enviar. Verifique sua conexão.');}
@@ -3255,7 +3257,8 @@ async function sendResultI3(){
   const erradas=wrongI3.length>0?'\n\n❌ Questões erradas:\n'+wrongI3.map(q=>'• '+q).join('\n'):'\n\n✅ Nenhuma questão errada!';
   const message=`👤 Colaborador: ${name}\n📚 Módulo: Quiz Técnico — Instinct 3\n🎯 Nota: ${pct}%\n✅ Acertos: ${scoreI3} de ${quizDataI3.length}\n📅 Data: ${data}\n⏰ Hora: ${hora}\n📊 Status: ${status}${erradas}`;
   try{
-    await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{nome:name,modulo:'Quiz Técnico — Instinct 3',nota:pct+'%',acertos:scoreI3+' de '+quizDataI3.length,data,hora,status,message});
+    await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{
+      nome:name,modulo:'Quiz Técnico — Instinct 3',nota:pct+'%',acertos:scoreI3+' de '+quizDataI3.length,data,hora,status,message});
     const form=document.getElementById('registerFormI3');if(form)form.style.display='none';
     const success=document.getElementById('regSuccessI3');if(success)success.style.display='block';
   }catch(err){btn.textContent='Registrar Conclusão ✓';btn.disabled=false;alert('Erro ao enviar. Verifique sua conexão.');}
@@ -3338,7 +3341,8 @@ async function sendResultTEC(){
   const erradas=wrongTEC.length>0?'\n\n❌ Questões erradas:\n'+wrongTEC.map(q=>'• '+q).join('\n'):'\n\n✅ Nenhuma questão errada!';
   const message=`👤 Colaborador: ${name}\n📚 Módulo: Quiz Técnico Garmin\n🎯 Nota: ${pct}%\n✅ Acertos: ${scoreTEC} de ${quizDataTEC.length}\n📅 Data: ${data}\n⏰ Hora: ${hora}\n📊 Status: ${status}${erradas}`;
   try{
-    await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{nome:name,modulo:'Quiz Técnico Garmin',nota:pct+'%',acertos:scoreTEC+' de '+quizDataTEC.length,data,hora,status,message});
+    await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{
+      nome:name,modulo:'Quiz Técnico Garmin',nota:pct+'%',acertos:scoreTEC+' de '+quizDataTEC.length,data,hora,status,message});
     const form=document.getElementById('registerFormTEC');if(form)form.style.display='none';
     const success=document.getElementById('regSuccessTEC');if(success)success.style.display='block';
   }catch(err){btn.textContent='Registrar Conclusão ✓';btn.disabled=false;alert('Erro ao enviar. Verifique sua conexão.');}
@@ -3431,7 +3435,8 @@ async function registerResult3(pct){
   const erradas=wrongAnswers3.length>0?'\n\n❌ Questões erradas:\n'+wrongAnswers3.map(q=>'• '+q).join('\n'):'\n\n✅ Nenhuma questão errada!';
   const message=`👤 Colaborador: ${name}\n📚 Módulo: Módulo 3 — Linha de Produtos\n🎯 Nota: ${pct}%\n✅ Acertos: ${score3} de ${quizData3.length}\n📅 Data: ${data}\n⏰ Hora: ${hora}\n📊 Status: ${status}${erradas}`;
   try{
-    await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{nome:name,modulo:'Módulo 3 — Linha de Produtos',nota:pct+'%',acertos:score3+' de '+quizData3.length,data,hora,status,message});
+    await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{
+      nome:name,modulo:'Módulo 3 — Linha de Produtos',nota:pct+'%',acertos:score3+' de '+quizData3.length,data,hora,status,message});
     const form=document.getElementById('registerForm3');if(form)form.style.display='none';
     const success=document.getElementById('regSuccess3');if(success)success.style.display='block';
   }catch(err){btn.textContent='Registrar Conclusão ✓';btn.disabled=false;alert('Erro ao enviar. Verifique sua conexão.');}
@@ -6174,8 +6179,7 @@ async function registerCorredor(pct){
   const erradas = wrongCorredor.length > 0 ? '\n\n❌ Questões erradas:\n' + wrongCorredor.map(q => '• ' + q).join('\n') : '\n\n✅ Nenhuma questão errada!';
   try {
     await emailjs.send(EMAILJS_SERVICE, EMAILJS_TEMPLATE,{
-      nome: name,
-      modulo: 'CORREDOR · Módulo 1 — Garmin Connect',
+      nome: name,modulo: 'CORREDOR · Módulo 1 — Garmin Connect',
       nota: pct + '%',
       acertos: scoreCorredor + '/' + quizDataCorredor.length,
       status: pct >= 70 ? '✅ APROVADO' : '❌ Não atingiu 70%',
