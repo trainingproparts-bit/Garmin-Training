@@ -828,6 +828,203 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
   .game-confronto-inner { gap:6px; }
   .game-time-nome { font-size:11px; }
 }
+
+/* ══════════════════════════════════════════
+   CORREDOR M2 — COMPONENTES INTERATIVOS
+   ══════════════════════════════════════════ */
+
+/* tabs de modalidade */
+.coach-tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:16px;-webkit-overflow-scrolling:touch;}
+.coach-tab{flex:1;min-width:88px;background:var(--white);border:1.5px solid var(--border);border-radius:var(--r2);padding:10px 6px;text-align:center;cursor:pointer;transition:all 0.2s;font-family:'Rajdhani',sans-serif;}
+.coach-tab .ct-icon{font-size:22px;display:block;margin-bottom:4px;}
+.coach-tab .ct-label{font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:var(--text2);}
+.coach-tab.active{border-color:var(--g);background:var(--g3);box-shadow:0 2px 8px rgba(227,16,32,0.12);}
+.coach-tab.active .ct-label{color:var(--g);}
+.coach-tab:hover{border-color:var(--border2);}
+.coach-panel{display:none;animation:coachFadeIn 0.3s ease;}
+.coach-panel.active{display:block;}
+@keyframes coachFadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+/* flip-cards de treinadores (3 colunas) */
+.coach-trainer-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:8px 0 4px;}
+.trainer-card{perspective:1200px;cursor:pointer;height:190px;}
+@media(max-width:760px){.coach-trainer-grid{grid-template-columns:1fr;} .trainer-card{height:140px;}}
+.trainer-card-inner{position:relative;width:100%;height:100%;transition:transform 0.6s;transform-style:preserve-3d;}
+.trainer-card.flipped .trainer-card-inner{transform:rotateY(180deg);}
+.trainer-face{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:var(--r);padding:14px;display:flex;flex-direction:column;color:#fff;overflow:hidden;}
+.trainer-face.back{transform:rotateY(180deg);}
+.trainer-emoji{font-size:24px;margin-bottom:5px;}
+.trainer-name{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:15px;letter-spacing:0.5px;margin-bottom:2px;}
+.trainer-role{font-size:10.5px;opacity:0.75;letter-spacing:0.5px;margin-bottom:auto;}
+.trainer-hint{font-size:9.5px;letter-spacing:1px;text-transform:uppercase;opacity:0.65;text-align:center;padding-top:5px;}
+.trainer-best-for{font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;opacity:0.7;margin-bottom:4px;}
+.trainer-pitch{font-size:10.5px;line-height:1.35;flex:1;overflow-y:auto;}
+.trainer-pitch strong{display:block;font-size:8.5px;letter-spacing:0.8px;text-transform:uppercase;opacity:0.7;margin-top:5px;margin-bottom:1px;}
+
+/* simulador barra de ritmo + confidence score */
+.sim-box{background:#10131a;border-radius:var(--r);padding:22px 20px;color:#fff;margin-bottom:6px;}
+.sim-row{margin-bottom:18px;}
+.sim-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:10px;}
+.sim-pacebar-track{position:relative;height:36px;border-radius:18px;background:linear-gradient(90deg,var(--warn) 0%, var(--warn) 28%, var(--acc) 38%, var(--acc) 62%, var(--warn) 72%, var(--warn) 100%);overflow:visible;margin-bottom:8px;}
+.sim-pacebar-zone-label{position:absolute;top:-20px;font-size:9.5px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.45);}
+.sim-pacebar-needle{position:absolute;top:-6px;width:6px;height:48px;background:#fff;border-radius:3px;box-shadow:0 0 10px rgba(255,255,255,0.8),0 2px 6px rgba(0,0,0,0.4);transform:translateX(-50%);transition:left 0.15s ease;}
+.sim-pacebar-needle::after{content:'';position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid #fff;}
+.sim-readout{display:flex;justify-content:space-between;align-items:baseline;margin-top:14px;}
+.sim-readout-status{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:15px;letter-spacing:1px;text-transform:uppercase;}
+.sim-readout-sub{font-size:11.5px;color:rgba(255,255,255,0.55);}
+.sim-slider{-webkit-appearance:none;width:100%;height:6px;border-radius:3px;background:rgba(255,255,255,0.15);outline:none;margin-top:4px;}
+.sim-slider::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#fff;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,0.4);}
+.sim-slider::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;cursor:pointer;border:none;box-shadow:0 2px 6px rgba(0,0,0,0.4);}
+.sim-divider{height:1px;background:rgba(255,255,255,0.1);margin:18px 0;}
+.sim-confidence-grid{display:flex;gap:8px;margin-top:10px;}
+.sim-conf-chip{flex:1;text-align:center;padding:10px 4px;border-radius:var(--r2);background:rgba(255,255,255,0.05);border:1.5px solid transparent;transition:all 0.25s;}
+.sim-conf-chip.active{background:rgba(255,255,255,0.1);transform:translateY(-2px);}
+.sim-conf-emoji{font-size:18px;display:block;margin-bottom:3px;opacity:0.4;transition:opacity 0.25s;}
+.sim-conf-chip.active .sim-conf-emoji{opacity:1;}
+.sim-conf-name{font-size:9.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.4);}
+.sim-conf-chip.active .sim-conf-name{color:#fff;}
+.sim-toggle-row{display:flex;gap:8px;margin-bottom:14px;}
+.sim-toggle-btn{flex:1;background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);border-radius:var(--r2);padding:9px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;}
+.sim-toggle-btn.active{background:#fff;color:#10131a;border-color:#fff;}
+
+/* árvore de decisão — diagnóstico de plano */
+.diag-box{background:var(--off);border:1.5px solid var(--border);border-radius:var(--r);padding:20px;}
+.diag-step-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:10px;}
+.diag-question{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:18px;color:var(--text);margin-bottom:16px;letter-spacing:0.3px;}
+.diag-opts{display:flex;flex-direction:column;gap:8px;}
+.diag-opt{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r2);padding:12px 16px;text-align:left;font-family:'DM Sans',sans-serif;font-size:13.5px;font-weight:500;color:var(--text);cursor:pointer;transition:all 0.18s;display:flex;align-items:center;gap:10px;}
+.diag-opt:hover{border-color:var(--g);background:var(--g3);}
+.diag-opt .diag-opt-emoji{font-size:18px;}
+.diag-breadcrumb{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+.diag-crumb{font-size:11px;background:var(--white);border:1px solid var(--border);color:var(--text2);padding:4px 10px;border-radius:20px;}
+.diag-result{text-align:center;animation:coachFadeIn 0.35s ease;}
+.diag-result-emoji{font-size:44px;margin-bottom:8px;}
+.diag-result-plan{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:21px;letter-spacing:1px;text-transform:uppercase;color:var(--g);margin-bottom:10px;}
+.diag-result-desc{font-size:13.5px;color:var(--text2);line-height:1.7;text-align:left;background:var(--white);border-radius:var(--r2);padding:14px 16px;margin-bottom:14px;}
+.diag-restart-btn{background:transparent;border:1.5px solid var(--border2);color:var(--text2);border-radius:var(--r2);padding:9px 18px;font-size:12.5px;font-weight:600;cursor:pointer;transition:all 0.2s;}
+.diag-restart-btn:hover{border-color:var(--g);color:var(--g);}
+
+/* vídeo embed responsivo (YouTube) */
+.video-embed-wrap{position:relative;width:100%;padding-top:56.25%;border-radius:var(--r);overflow:hidden;background:#000;}
+.video-embed-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;}
+
+/* card de vídeo externo (link para YouTube) */
+.video-link-card{position:relative;display:block;width:100%;padding-top:56.25%;border-radius:var(--r);overflow:hidden;background:#000;cursor:pointer;text-decoration:none;}
+.video-link-card img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;}
+.video-link-card .video-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(0,0,0,0.05) 0%,rgba(0,0,0,0.55) 100%);display:flex;align-items:center;justify-content:center;transition:background 0.2s;}
+.video-link-card:hover .video-overlay{background:linear-gradient(180deg,rgba(0,0,0,0.15) 0%,rgba(0,0,0,0.7) 100%);}
+.video-play-btn{width:68px;height:68px;border-radius:50%;background:rgba(227,16,32,0.92);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(0,0,0,0.4);transition:transform 0.2s;}
+.video-link-card:hover .video-play-btn{transform:scale(1.08);}
+.video-play-btn svg{width:26px;height:26px;fill:#fff;margin-left:3px;}
+.video-link-badge{position:absolute;bottom:12px;right:14px;background:rgba(0,0,0,0.65);color:#fff;font-size:11px;font-weight:600;letter-spacing:0.5px;padding:5px 10px;border-radius:5px;display:flex;align-items:center;gap:5px;}
+
+/* ══════════════════════════════════════════
+   GPS DA CARREIRA — TRILHA DE FORMAÇÃO
+   ══════════════════════════════════════════ */
+
+/* painel HUD estilo relógio esportivo */
+.gps-hud{background:linear-gradient(160deg,#0d1117,#161b22);border-radius:var(--r);padding:22px 20px;color:#fff;position:relative;overflow:hidden;}
+.gps-hud::before{content:'';position:absolute;top:-40%;right:-15%;width:260px;height:260px;background:radial-gradient(circle,rgba(0,194,168,0.16),transparent 70%);pointer-events:none;}
+.gps-hud-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;position:relative;z-index:1;}
+.gps-hud-brand{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.45);display:flex;align-items:center;gap:6px;}
+.gps-hud-brand .dot{width:6px;height:6px;border-radius:50%;background:var(--acc);box-shadow:0 0 8px var(--acc);animation:gpsPulseDot 1.6s ease-in-out infinite;}
+@keyframes gpsPulseDot{0%,100%{opacity:1;}50%{opacity:0.35;}}
+.gps-hud-zone{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 11px;border-radius:20px;}
+.gps-hud-metrics{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;position:relative;z-index:1;}
+.gps-hud-metric{text-align:left;}
+.gps-hud-metric-label{font-size:9.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:4px;}
+.gps-hud-metric-value{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:26px;letter-spacing:0.5px;line-height:1;}
+.gps-hud-metric-value .unit{font-size:13px;font-weight:600;color:rgba(255,255,255,0.45);margin-left:2px;}
+.gps-hud-bar-track{position:relative;z-index:1;height:8px;border-radius:5px;background:rgba(255,255,255,0.1);margin-top:18px;overflow:hidden;}
+.gps-hud-bar-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--acc),#4ee6cc);width:0%;transition:width 1.1s cubic-bezier(.22,1,.36,1);box-shadow:0 0 10px rgba(0,194,168,0.6);}
+.gps-hud-bar-caption{font-size:11px;color:rgba(255,255,255,0.45);margin-top:8px;position:relative;z-index:1;}
+
+/* percurso vertical */
+.gps-route{position:relative;margin-top:24px;padding-left:38px;}
+.gps-route-line{position:absolute;left:14px;top:6px;bottom:6px;width:3px;background:var(--border);border-radius:2px;z-index:0;}
+.gps-route-line-fill{position:absolute;left:14px;top:6px;width:3px;border-radius:2px;background:linear-gradient(180deg,var(--acc),var(--acc));z-index:0;transition:height 1s cubic-bezier(.22,1,.36,1);}
+
+.gps-zone-header{position:relative;display:flex;align-items:center;gap:12px;margin:30px 0 16px;}
+.gps-zone-header:first-child{margin-top:0;}
+.gps-zone-flag{position:absolute;left:-38px;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;z-index:2;border:3px solid var(--white);box-shadow:0 1px 4px rgba(0,0,0,0.15);}
+.gps-zone-title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:15px;letter-spacing:1.5px;text-transform:uppercase;}
+.gps-zone-sub{font-size:11px;color:var(--text3);margin-top:1px;}
+
+.gps-checkpoint{position:relative;margin-bottom:14px;cursor:pointer;}
+.gps-checkpoint-node{position:absolute;left:-38px;top:14px;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;z-index:2;border:3px solid var(--white);background:var(--off);color:var(--text3);transition:all 0.25s;box-shadow:0 1px 4px rgba(0,0,0,0.1);}
+.gps-checkpoint.done .gps-checkpoint-node{background:var(--acc);color:#fff;box-shadow:0 0 0 4px rgba(0,194,168,0.18);}
+.gps-checkpoint.current .gps-checkpoint-node{background:var(--g);color:#fff;animation:gpsCurrentPulse 1.8s ease-in-out infinite;}
+@keyframes gpsCurrentPulse{0%,100%{box-shadow:0 0 0 0 rgba(227,16,32,0.45);}50%{box-shadow:0 0 0 8px rgba(227,16,32,0);}}
+.gps-checkpoint.locked .gps-checkpoint-node{background:var(--off);color:var(--border2);}
+
+.gps-checkpoint-card{display:flex;align-items:center;gap:14px;background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:14px 16px;transition:all 0.2s;}
+.gps-checkpoint:not(.locked):hover .gps-checkpoint-card{border-color:var(--border2);box-shadow:0 3px 10px rgba(0,0,0,0.06);transform:translateX(2px);}
+.gps-checkpoint.locked .gps-checkpoint-card{opacity:0.55;cursor:not-allowed;filter:grayscale(0.4);}
+.gps-checkpoint-emoji{font-size:28px;flex-shrink:0;width:40px;text-align:center;}
+.gps-checkpoint-body{flex:1;min-width:0;}
+.gps-checkpoint-eyebrow{font-size:9.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:2px;}
+.gps-checkpoint-name{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:15px;color:var(--text);text-transform:uppercase;letter-spacing:0.3px;}
+.gps-checkpoint-desc{font-size:12px;color:var(--text2);line-height:1.4;margin-top:2px;}
+.gps-checkpoint-status{flex-shrink:0;font-size:11px;font-weight:700;letter-spacing:0.5px;display:flex;align-items:center;gap:5px;white-space:nowrap;}
+.gps-checkpoint.done .gps-checkpoint-status{color:var(--acc);}
+.gps-checkpoint.current .gps-checkpoint-status{color:var(--g);}
+.gps-checkpoint.locked .gps-checkpoint-status{color:var(--text3);}
+
+.gps-checkpoint-markdone-btn{flex-shrink:0;background:var(--white);border:1.5px solid var(--g);color:var(--g);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.3px;padding:7px 12px;border-radius:20px;cursor:pointer;transition:all 0.18s;white-space:nowrap;}
+.gps-checkpoint-markdone-btn:hover{background:var(--g);color:#fff;}
+
+.gps-finish-banner{position:relative;margin-top:30px;background:linear-gradient(135deg,#1a1400,#2a2000);border-radius:var(--r);padding:20px;text-align:center;color:#fff;}
+.gps-finish-flag{position:absolute;left:-38px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:14px;z-index:2;border:3px solid var(--white);}
+
+/* ramal lateral — circuito de desafios (se desprende da trilha principal e volta, tipo desvio de metrô) */
+.gps-branch-wrap{position:relative;margin:8px 0 26px;padding-left:38px;}
+.gps-branch-svg{position:absolute;left:-38px;top:-4px;width:46px;height:calc(100% + 8px);pointer-events:none;overflow:visible;}
+.gps-branch-svg path{fill:none;stroke:#4a90e2;stroke-width:3;stroke-dasharray:6 5;opacity:0.5;}
+.gps-branch-header{position:relative;display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-left:0;}
+.gps-branch-flag{position:absolute;left:-38px;width:28px;height:28px;border-radius:50%;background:rgba(74,144,226,0.16);color:#4a90e2;display:flex;align-items:center;justify-content:center;font-size:13px;z-index:2;border:3px solid var(--white);}
+.gps-branch-title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:13.5px;letter-spacing:1.2px;text-transform:uppercase;color:#4a90e2;}
+.gps-branch-sub{font-size:10.5px;color:var(--text3);margin-top:1px;}
+.gps-branch-row{display:flex;gap:10px;overflow-x:auto;padding:2px 2px 10px;-webkit-overflow-scrolling:touch;}
+.gps-branch-card{position:relative;flex:0 0 168px;background:var(--white);border:1.5px solid rgba(74,144,226,0.3);border-radius:var(--r2);padding:12px;cursor:pointer;transition:all 0.18s;}
+.gps-branch-card:hover{border-color:#4a90e2;box-shadow:0 3px 10px rgba(74,144,226,0.12);transform:translateY(-2px);}
+.gps-branch-card.done{border-color:var(--acc);background:rgba(0,194,168,0.05);}
+.gps-branch-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.gps-branch-card-emoji{font-size:20px;}
+.gps-branch-card-check{width:20px;height:20px;border-radius:50%;background:var(--off);color:var(--border2);font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s;}
+.gps-branch-card.done .gps-branch-card-check{background:var(--acc);color:#fff;}
+.gps-branch-card-eyebrow{font-size:8.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:2px;}
+.gps-branch-card-name{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:13px;color:var(--text);line-height:1.25;margin-bottom:4px;}
+.gps-branch-card-desc{font-size:10.5px;color:var(--text2);line-height:1.35;margin-bottom:8px;min-height:28px;}
+.gps-branch-card-btn{display:block;width:100%;text-align:center;background:transparent;border:1.5px solid #4a90e2;color:#4a90e2;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.3px;padding:5px 8px;border-radius:16px;cursor:pointer;transition:all 0.18s;}
+.gps-branch-card-btn:hover{background:#4a90e2;color:#fff;}
+.gps-branch-card.done .gps-branch-card-btn{border-color:var(--acc);color:var(--acc);}
+.gps-branch-card.done .gps-branch-card-btn:hover{background:var(--acc);color:#fff;}
+.gps-branch-zone-clear{display:none;align-items:center;gap:10px;margin-top:4px;background:rgba(74,144,226,0.1);border:1.5px dashed rgba(74,144,226,0.4);border-radius:var(--r2);padding:10px 14px;cursor:pointer;}
+
+/* confete */
+.gps-confetti-piece{position:fixed;top:-10px;border-radius:2px;z-index:9999;pointer-events:none;}
+@keyframes gpsConfettiFall{to{transform:translateY(110vh) rotate(540deg);opacity:0.3;}}
+
+/* seletor de pessoa (identidade em PC compartilhado) */
+.gps-whois-overlay{display:none;position:fixed;inset:0;background:rgba(10,12,16,0.78);z-index:600;align-items:center;justify-content:center;padding:20px;}
+.gps-whois-overlay.open{display:flex;}
+.gps-whois-box{max-width:420px;width:100%;background:var(--white);border-radius:var(--r);padding:26px 24px;max-height:85vh;overflow-y:auto;}
+.gps-whois-title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:19px;letter-spacing:0.5px;color:var(--text);margin-bottom:4px;}
+.gps-whois-sub{font-size:12.5px;color:var(--text2);line-height:1.5;margin-bottom:18px;}
+.gps-whois-list{display:flex;flex-direction:column;gap:7px;max-height:340px;overflow-y:auto;margin-bottom:6px;}
+.gps-whois-item{display:flex;align-items:center;gap:10px;background:var(--off);border:1.5px solid var(--border);border-radius:var(--r2);padding:10px 13px;cursor:pointer;transition:all 0.15s;font-size:13.5px;font-weight:500;color:var(--text);text-align:left;}
+.gps-whois-item:hover{border-color:var(--g);background:var(--g3);}
+.gps-whois-item .gps-whois-store{margin-left:auto;font-size:10px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(--text3);}
+.gps-whois-divider{height:1px;background:var(--border);margin:12px 0;}
+.gps-whois-guest{display:flex;align-items:center;gap:10px;background:var(--white);border:1.5px dashed var(--border2);border-radius:var(--r2);padding:10px 13px;cursor:pointer;transition:all 0.15s;font-size:13px;color:var(--text2);width:100%;}
+.gps-whois-guest:hover{border-color:var(--text3);}
+
+/* chip de usuário ativo no HUD */
+.gps-hud-user{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);border-radius:20px;padding:5px 12px 5px 6px;cursor:pointer;transition:background 0.2s;}
+.gps-hud-user:hover{background:rgba(255,255,255,0.14);}
+.gps-hud-user-avatar{width:20px;height:20px;border-radius:50%;background:var(--g);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0;}
+.gps-hud-user-name{font-size:11.5px;font-weight:600;color:#fff;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.gps-hud-user-swap{font-size:9px;color:rgba(255,255,255,0.45);}
 </style>
 </head>
 <body>
@@ -913,17 +1110,30 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
       </div>
       <div class="dash-divider"></div>
       <div class="dash-section" style="padding-right:0">
-        <div class="dash-label">🎯 Próxima Missão</div>
+        <div class="dash-label">🧭 Sua Formação</div>
         <div class="cert-mini">
-          <div class="cert-mini-level">Corredor · Nível 2</div>
-          <div class="cert-mini-name">📱 Garmin Connect</div>
-          <div class="cert-mini-module">Módulo 1 — App, métricas, música, Garmin Pay e estudo de caso</div>
-          <button class="cert-mini-btn" onclick="openPanel('corredor-connect')">Estudar Agora →</button>
+          <div class="cert-mini-level">GPS da Carreira</div>
+          <div class="cert-mini-name">🏃 Continue sua trilha de certificação</div>
+          <div class="cert-mini-module">Explorador → Corredor → Maratonista → Triatleta — acompanhe seus checkpoints e avance no percurso.</div>
+          <button class="cert-mini-btn" onclick="openPanel('formacao')">Ver Minha Trilha →</button>
         </div>
       </div>
     </div>
 
 
+
+    <div class="menu-section-label">Games & Quizzes</div>
+    <div class="menu-grid" style="grid-template-columns: repeat(2,1fr);">
+      <div class="menu-card priority" onclick="openPanel('games')"><div class="menu-badge new">GAME</div><span class="menu-icon">⚔️</span><div class="menu-name">Games</div><div class="menu-desc">Duelo de Especificações — Instinct 3 vs E · MARQ Carbon</div></div>
+      <div class="menu-card" onclick="openPanel('quizzes')"><span class="menu-icon">📝</span><div class="menu-name">Quizzes</div><div class="menu-desc">Avaliações técnicas — IPX, Atendimento, Instinct 3</div></div>
+    </div>
+
+    <div class="menu-section-label">Formação & Reconhecimento</div>
+    <div class="menu-grid">
+      <div class="menu-card priority" onclick="openPanel('formacao')"><div class="menu-badge new">NOVO</div><span class="menu-icon">🎓</span><div class="menu-name">Formação</div><div class="menu-desc">Trilha de módulos — estude e seja certificado</div></div>
+      <div class="menu-card" onclick="openPanel('certificacao')"><span class="menu-icon">🏅</span><div class="menu-name">Certificação</div><div class="menu-desc">Sua trilha: Explorador → Triatleta</div></div>
+      <div class="menu-card" onclick="openPanel('ranking')"><span class="menu-icon">⚔️</span><div class="menu-name">Álbum</div><div class="menu-desc">Figurinhas da equipe</div></div>
+    </div>
 
     <div class="menu-section-label">Ferramentas de Venda</div>
     <div class="menu-grid">
@@ -948,16 +1158,7 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
     <div class="menu-section-label">Apoio & Referência</div>
     <div class="menu-grid">
       <div class="menu-card" onclick="openPanel('materiais')"><span class="menu-icon">📱</span><div class="menu-name">Materiais</div><div class="menu-desc">Apps, integrações e tecnologias</div></div>
-    </div>
-
-    <div class="menu-section-label">Formação & Gamificação</div>
-    <div class="menu-grid">
-      <div class="menu-card priority" onclick="openPanel('formacao')"><div class="menu-badge new">NOVO</div><span class="menu-icon">🎓</span><div class="menu-name">Formação</div><div class="menu-desc">Trilha de módulos — estude e seja certificado</div></div>
       <div class="menu-card priority" onclick="openPanel('novidades')"><div class="menu-badge new">NOVO</div><span class="menu-icon">⚡</span><div class="menu-name">Novidades</div><div class="menu-desc">Forerunner 70 e 170 — os lançamentos 2026</div></div>
-      <div class="menu-card priority" onclick="openPanel('games')"><div class="menu-badge new">GAME</div><span class="menu-icon">⚔️</span><div class="menu-name">Games</div><div class="menu-desc">Duelo de Especificações — Instinct 3 vs E · MARQ Carbon</div></div>
-      <div class="menu-card" onclick="openPanel('quizzes')"><span class="menu-icon">📝</span><div class="menu-name">Quizzes</div><div class="menu-desc">Avaliações técnicas — IPX, Atendimento, Instinct 3</div></div>
-      <div class="menu-card" onclick="openPanel('certificacao')"><span class="menu-icon">🏅</span><div class="menu-name">Certificação</div><div class="menu-desc">Sua trilha: Explorador → Triatleta</div></div>
-      <div class="menu-card" onclick="openPanel('ranking')"><span class="menu-icon">⚔️</span><div class="menu-name">Álbum</div><div class="menu-desc">Figurinhas da equipe</div></div>
     </div>
 
   </div>
@@ -1507,80 +1708,274 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
   </div>
 </div>
 
-<!-- HUB DE FORMAÇÃO -->
+<!-- HUB DE FORMAÇÃO — GPS DA CARREIRA -->
 <div class="panel" id="panel-formacao">
   <div class="panel-header"><button class="back-btn" onclick="goHome()">← Início</button><div class="panel-title">🎓 Trilha de <span>Formação</span></div></div>
   <div class="panel-body">
-    <div class="universe-hero" style="background:linear-gradient(135deg,#0a0a0a,#1a1a2e);">
-      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:0.7;margin-bottom:4px;">Explorador · Nível 1 — by Proparts</div>
-      <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:28px;letter-spacing:2px;margin-bottom:8px;">SUA TRILHA DE ESTUDOS</div>
-      <p style="font-size:14px;opacity:0.85;line-height:1.6;">Conclua os módulos em ordem, acerte o quiz com 70%+ e registre sua conclusão. Cada certificação evolui sua classe no álbum da equipe.</p>
-    </div>
-    <div class="card" style="border-left:4px solid var(--g);margin-bottom:14px;cursor:pointer;" onclick="openPanel('universo')">
-      <div style="display:flex;align-items:center;gap:14px;">
-        <div style="font-size:36px;">🌍</div>
-        <div style="flex:1;">
-          <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:2px;">Módulo 1</div>
-          <div class="card-title" style="margin-bottom:4px;">Universo Garmin</div>
-          <p style="font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:8px;">História, DNA da marca, 5 tecnologias essenciais e posicionamento. Saiba por que o Garmin vence.</p>
-          <div><span class="tag blue">10 questões</span> <span class="tag green">+40 pts aprovado</span> <span class="tag gold">+10 pts nota máxima</span></div>
-        </div>
-        <div style="font-size:20px;color:var(--g);font-weight:700;flex-shrink:0;">→</div>
-      </div>
-    </div>
-    <div class="card" style="border-left:4px solid var(--acc);margin-bottom:14px;cursor:pointer;" onclick="openPanel('perfis-modulo')">
-      <div style="display:flex;align-items:center;gap:14px;">
-        <div style="font-size:36px;">👥</div>
-        <div style="flex:1;">
-          <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--acc);margin-bottom:2px;">Módulo 2</div>
-          <div class="card-title" style="margin-bottom:4px;">Perfis de Cliente</div>
-          <p style="font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:8px;">Identifique cada perfil pelos sinais certos, saiba o que indicar e como responder objeções com confiança.</p>
-          <div><span class="tag blue">15 questões</span> <span class="tag green">+40 pts aprovado</span> <span class="tag gold">+10 pts nota máxima</span></div>
-        </div>
-        <div style="font-size:20px;color:var(--acc);font-weight:700;flex-shrink:0;">→</div>
-      </div>
-    </div>
-    <div class="card" style="border-left:4px solid #7c3aed;margin-bottom:14px;cursor:pointer;" onclick="openPanel('produtos-modulo')">
-      <div style="display:flex;align-items:center;gap:14px;">
-        <div style="font-size:36px;">⌚</div>
-        <div style="flex:1;">
-          <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#7c3aed;margin-bottom:2px;">Módulo 3</div>
-          <div class="card-title" style="margin-bottom:4px;">Linha de Produtos</div>
-          <p style="font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:8px;">Forerunner, Fenix, Instinct, Edge e mais — diferenciais técnicos de cada linha.</p>
-          <div><span class="tag blue">10 questões</span> <span class="tag green">+40 pts aprovado</span> <span class="tag gold">+10 pts nota máxima</span></div>
-        </div>
-        <div style="font-size:20px;color:#7c3aed;font-weight:700;flex-shrink:0;">→</div>
-      </div>
-    </div>
-    <div class="card" style="border-left:4px solid var(--warn);margin-bottom:14px;cursor:pointer;" onclick="openPanel('concorrentes-modulo')">
-      <div style="display:flex;align-items:center;gap:14px;">
-        <div style="font-size:36px;">⚔️</div>
-        <div style="flex:1;">
-          <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--warn);margin-bottom:2px;">Módulo 4</div>
-          <div class="card-title" style="margin-bottom:4px;">Concorrentes & Objeções</div>
-          <p style="font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:8px;">Apple Watch, Polar, Coros — argumentação técnica, como contornar objeções e fechar a venda.</p>
-          <div><span class="tag blue">12 questões</span> <span class="tag green">+40 pts aprovado</span> <span class="tag gold">+10 pts nota máxima</span></div>
-        </div>
-        <div style="font-size:20px;color:var(--warn);font-weight:700;flex-shrink:0;">→</div>
-      </div>
-    </div>
-    <div class="tip">💡 Novos módulos são liberados conforme a trilha evolui. Complete os disponíveis e evolua sua classe no álbum! Para os quizzes de avaliação, acesse a aba <strong>Quizzes</strong> no menu principal.</div>
 
-    <div style="margin-top:24px;border-top:2px dashed var(--border);padding-top:20px;">
-      <div style="font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#4a90e2;margin-bottom:14px;display:flex;align-items:center;gap:8px;">🏃 Corredor · Nível 2 <span style="flex:1;height:1px;background:var(--border);display:block;"></span></div>
-      <div class="card" style="border-left:4px solid #4a90e2;margin-bottom:14px;cursor:pointer;" onclick="openPanel('corredor-connect')">
-        <div style="display:flex;align-items:center;gap:14px;">
-          <div style="font-size:36px;">📱</div>
-          <div style="flex:1;">
-            <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#4a90e2;margin-bottom:2px;">Módulo 1 — Corredor</div>
-            <div class="card-title" style="margin-bottom:4px;">Garmin Connect</div>
-            <p style="font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:8px;">Visão geral do app, métricas de saúde e treino, armazenamento de música, Garmin Pay e estudo de caso com 4 perfis reais.</p>
-            <div><span class="tag blue">12 questões</span> <span class="tag green">+40 pts aprovado</span> <span class="tag gold">+10 pts nota máxima</span></div>
+    <!-- HUD ESTILO RELÓGIO ESPORTIVO -->
+    <div class="gps-hud">
+      <div class="gps-hud-top">
+        <div class="gps-hud-brand"><span class="dot"></span> GPS DA CARREIRA · LIVE</div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div class="gps-hud-user" onclick="gpsOpenWhois(true)">
+            <div class="gps-hud-user-avatar" id="gpsUserAvatar">?</div>
+            <span class="gps-hud-user-name" id="gpsUserName">Quem é você?</span>
+            <span class="gps-hud-user-swap">↺</span>
           </div>
-          <div style="font-size:20px;color:#4a90e2;font-weight:700;flex-shrink:0;">→</div>
         </div>
       </div>
+      <div class="gps-hud-metrics">
+        <div class="gps-hud-metric">
+          <div class="gps-hud-metric-label">Percurso</div>
+          <div class="gps-hud-metric-value" id="gpsHudPercent">0<span class="unit">%</span></div>
+        </div>
+        <div class="gps-hud-metric">
+          <div class="gps-hud-metric-label">Checkpoints</div>
+          <div class="gps-hud-metric-value" id="gpsHudCheckpoints">0<span class="unit">/6</span></div>
+        </div>
+        <div class="gps-hud-metric">
+          <div class="gps-hud-metric-label">XP Total</div>
+          <div class="gps-hud-metric-value" id="gpsHudXp">0<span class="unit">pts</span></div>
+        </div>
+      </div>
+      <div class="gps-hud-bar-track"><div class="gps-hud-bar-fill" id="gpsHudBarFill"></div></div>
+      <div class="gps-hud-bar-caption" id="gpsHudCaption">Conclua os módulos em ordem, acerte o quiz com 70%+ e avance no percurso.</div>
     </div>
+
+    <!-- PERCURSO VERTICAL -->
+    <div class="gps-route" id="gpsRoute">
+      <div class="gps-route-line"></div>
+      <div class="gps-route-line-fill" id="gpsRouteLineFill"></div>
+
+      <!-- ZONA 1 — EXPLORADOR -->
+      <div class="gps-zone-header">
+        <div class="gps-zone-flag" style="background:rgba(138,147,160,0.18);color:#5a6270;">🧭</div>
+        <div>
+          <div class="gps-zone-title" style="color:var(--text);">Zona Explorador <span style="color:var(--text3);">· Nível 1</span></div>
+          <div class="gps-zone-sub">Largada — fundamentos da marca e do produto</div>
+        </div>
+      </div>
+
+      <div class="gps-checkpoint done" data-checkpoint="universo" onclick="gpsGoTo('universo')">
+        <div class="gps-checkpoint-node">✓</div>
+        <div class="gps-checkpoint-card">
+          <div class="gps-checkpoint-emoji">🌍</div>
+          <div class="gps-checkpoint-body">
+            <div class="gps-checkpoint-eyebrow">Checkpoint 1 · Explorador</div>
+            <div class="gps-checkpoint-name">Universo Garmin</div>
+            <div class="gps-checkpoint-desc">História, DNA da marca e 5 tecnologias essenciais.</div>
+          </div>
+          <div class="gps-checkpoint-status">✓ Concluído</div>
+        </div>
+      </div>
+
+      <div class="gps-checkpoint done" data-checkpoint="perfis-modulo" onclick="gpsGoTo('perfis-modulo')">
+        <div class="gps-checkpoint-node">✓</div>
+        <div class="gps-checkpoint-card">
+          <div class="gps-checkpoint-emoji">👥</div>
+          <div class="gps-checkpoint-body">
+            <div class="gps-checkpoint-eyebrow">Checkpoint 2 · Explorador</div>
+            <div class="gps-checkpoint-name">Perfis de Cliente</div>
+            <div class="gps-checkpoint-desc">Identifique sinais, indique o produto certo e resolva objeções.</div>
+          </div>
+          <div class="gps-checkpoint-status">✓ Concluído</div>
+        </div>
+      </div>
+
+      <div class="gps-checkpoint done" data-checkpoint="produtos-modulo" onclick="gpsGoTo('produtos-modulo')">
+        <div class="gps-checkpoint-node">✓</div>
+        <div class="gps-checkpoint-card">
+          <div class="gps-checkpoint-emoji">⌚</div>
+          <div class="gps-checkpoint-body">
+            <div class="gps-checkpoint-eyebrow">Checkpoint 3 · Explorador</div>
+            <div class="gps-checkpoint-name">Linha de Produtos</div>
+            <div class="gps-checkpoint-desc">Forerunner, Fenix, Instinct, Edge e diferenciais técnicos.</div>
+          </div>
+          <div class="gps-checkpoint-status">✓ Concluído</div>
+        </div>
+      </div>
+
+      <div class="gps-checkpoint done" data-checkpoint="concorrentes-modulo" onclick="gpsGoTo('concorrentes-modulo')">
+        <div class="gps-checkpoint-node">✓</div>
+        <div class="gps-checkpoint-card">
+          <div class="gps-checkpoint-emoji">⚔️</div>
+          <div class="gps-checkpoint-body">
+            <div class="gps-checkpoint-eyebrow">Checkpoint 4 · Explorador</div>
+            <div class="gps-checkpoint-name">Concorrentes &amp; Objeções</div>
+            <div class="gps-checkpoint-desc">Apple Watch, Polar, Coros — argumentação e fechamento.</div>
+          </div>
+          <div class="gps-checkpoint-status">✓ Concluído</div>
+        </div>
+      </div>
+
+      <!-- BANNER DE CHECKPOINT DE ZONA (visibilidade controlada por JS conforme progresso real da pessoa) -->
+      <div class="gps-checkpoint-zone-clear" data-zone="explorador" onclick="gpsConfetti()" style="display:none;position:relative;margin:18px 0 6px;background:var(--g3);border:1.5px dashed var(--g4);border-radius:var(--r2);padding:12px 16px;align-items:center;gap:10px;cursor:pointer;">
+        <span style="font-size:20px;">🏁</span>
+        <div style="font-size:12.5px;color:var(--text);"><strong>Zona Explorador concluída!</strong> Você abriu a Zona Corredor. <span style="color:var(--text3);">(toque para comemorar 🎉)</span></div>
+      </div>
+
+      <!-- RAMAL LATERAL — CIRCUITO DE DESAFIOS (sem ordem obrigatória, acessível a qualquer momento) -->
+      <div class="gps-branch-wrap">
+        <svg class="gps-branch-svg" viewBox="0 0 46 220" preserveAspectRatio="none">
+          <path d="M 14 0 C 14 22, 36 18, 36 40 L 36 180 C 36 202, 14 198, 14 220" />
+        </svg>
+        <div class="gps-branch-header">
+          <div class="gps-branch-flag">🎮</div>
+          <div>
+            <div class="gps-branch-title">Circuito de Desafios</div>
+            <div class="gps-branch-sub">Sem ordem fixa — jogue e responda quando quiser, em qualquer fase da trilha</div>
+          </div>
+        </div>
+        <div class="gps-branch-row" id="gpsBranchRow">
+          <div class="gps-branch-card" data-checkpoint="quiz-ipx" onclick="gpsGoTo('quiz-ipx')">
+            <div class="gps-branch-card-top"><span class="gps-branch-card-emoji">💧</span><span class="gps-branch-card-check">○</span></div>
+            <div class="gps-branch-card-eyebrow">Quiz</div>
+            <div class="gps-branch-card-name">IPX</div>
+            <div class="gps-branch-card-desc">Resistência à água e ATM.</div>
+            <button class="gps-branch-card-btn" onclick="event.stopPropagation();gpsGoTo('quiz-ipx')">Responder</button>
+          </div>
+          <div class="gps-branch-card" data-checkpoint="quiz-atendimento" onclick="gpsGoTo('quiz-atendimento')">
+            <div class="gps-branch-card-top"><span class="gps-branch-card-emoji">🎭</span><span class="gps-branch-card-check">○</span></div>
+            <div class="gps-branch-card-eyebrow">Quiz</div>
+            <div class="gps-branch-card-name">Atendimento</div>
+            <div class="gps-branch-card-desc">Objeções e fechamento.</div>
+            <button class="gps-branch-card-btn" onclick="event.stopPropagation();gpsGoTo('quiz-atendimento')">Responder</button>
+          </div>
+          <div class="gps-branch-card" data-checkpoint="quiz-instinct3" onclick="gpsGoTo('quiz-instinct3')">
+            <div class="gps-branch-card-top"><span class="gps-branch-card-emoji">⌚</span><span class="gps-branch-card-check">○</span></div>
+            <div class="gps-branch-card-eyebrow">Quiz</div>
+            <div class="gps-branch-card-name">Instinct 3</div>
+            <div class="gps-branch-card-desc">Solar, Stealth e Expedition.</div>
+            <button class="gps-branch-card-btn" onclick="event.stopPropagation();gpsGoTo('quiz-instinct3')">Responder</button>
+          </div>
+          <div class="gps-branch-card" data-checkpoint="quiz-tecnico" onclick="gpsGoTo('quiz-tecnico')">
+            <div class="gps-branch-card-top"><span class="gps-branch-card-emoji">🧠</span><span class="gps-branch-card-check">○</span></div>
+            <div class="gps-branch-card-eyebrow">Quiz</div>
+            <div class="gps-branch-card-name">Técnico Garmin</div>
+            <div class="gps-branch-card-desc">Body Battery, VO2, PacePro.</div>
+            <button class="gps-branch-card-btn" onclick="event.stopPropagation();gpsGoTo('quiz-tecnico')">Responder</button>
+          </div>
+          <div class="gps-branch-card" data-checkpoint="game-duelo" onclick="gpsGoTo('games')">
+            <div class="gps-branch-card-top"><span class="gps-branch-card-emoji">⚔️</span><span class="gps-branch-card-check">○</span></div>
+            <div class="gps-branch-card-eyebrow">Game</div>
+            <div class="gps-branch-card-name">Duelo</div>
+            <div class="gps-branch-card-desc">Acerte 8+ de 10 num duelo.</div>
+            <button class="gps-branch-card-btn" onclick="event.stopPropagation();gpsGoTo('games')">Jogar</button>
+          </div>
+        </div>
+        <div class="gps-branch-zone-clear" id="gpsBranchZoneClear" onclick="gpsConfetti()">
+          <span style="font-size:18px;">🏁</span>
+          <div style="font-size:12px;color:var(--text);"><strong>Circuito de Desafios completo!</strong> Você dominou todos os quizzes e games extras. <span style="color:var(--text3);">(toque para comemorar 🎉)</span></div>
+        </div>
+      </div>
+
+      <!-- ZONA 2 — CORREDOR -->
+      <div class="gps-zone-header">
+        <div class="gps-zone-flag" style="background:rgba(0,194,168,0.18);color:var(--acc);">🏃</div>
+        <div>
+          <div class="gps-zone-title" style="color:var(--text);">Zona Corredor <span style="color:var(--text3);">· Nível 2</span></div>
+          <div class="gps-zone-sub">5K — ecossistema do app e treinos guiados</div>
+        </div>
+      </div>
+
+      <div class="gps-checkpoint current" data-checkpoint="corredor-connect" onclick="gpsGoTo('corredor-connect')">
+        <div class="gps-checkpoint-node">📱</div>
+        <div class="gps-checkpoint-card">
+          <div class="gps-checkpoint-emoji">📱</div>
+          <div class="gps-checkpoint-body">
+            <div class="gps-checkpoint-eyebrow">Checkpoint 1 · Corredor</div>
+            <div class="gps-checkpoint-name">Garmin Connect</div>
+            <div class="gps-checkpoint-desc">App, métricas de saúde, música, Garmin Pay e estudo de caso.</div>
+          </div>
+          <div class="gps-checkpoint-status">🔴 Em andamento</div>
+        </div>
+      </div>
+
+      <div class="gps-checkpoint current" data-checkpoint="corredor-coach" onclick="gpsGoTo('corredor-coach')">
+        <div class="gps-checkpoint-node">🏃‍♂️</div>
+        <div class="gps-checkpoint-card">
+          <div class="gps-checkpoint-emoji">🏃‍♂️</div>
+          <div class="gps-checkpoint-body">
+            <div class="gps-checkpoint-eyebrow">Checkpoint 2 · Corredor</div>
+            <div class="gps-checkpoint-name">Ecossistema Garmin Coaches</div>
+            <div class="gps-checkpoint-desc">Run Coach, treinadores especialistas e Confidence Score.</div>
+          </div>
+          <div class="gps-checkpoint-status">🔴 Em andamento</div>
+        </div>
+      </div>
+
+      <!-- BANNER DE CHECKPOINT DE ZONA (visibilidade controlada por JS conforme progresso real da pessoa) -->
+      <div class="gps-checkpoint-zone-clear" data-zone="corredor" onclick="gpsConfetti()" style="display:none;position:relative;margin:18px 0 6px;background:rgba(0,194,168,0.1);border:1.5px dashed rgba(0,194,168,0.4);border-radius:var(--r2);padding:12px 16px;align-items:center;gap:10px;cursor:pointer;">
+        <span style="font-size:20px;">🏁</span>
+        <div style="font-size:12.5px;color:var(--text);"><strong>Zona Corredor concluída!</strong> Você está pronto para a Zona Maratonista. <span style="color:var(--text3);">(toque para comemorar 🎉)</span></div>
+      </div>
+
+      <!-- ZONA 3 — MARATONISTA (bloqueada) -->
+      <div class="gps-zone-header">
+        <div class="gps-zone-flag" style="background:rgba(155,89,182,0.18);color:#9b59b6;">🏅</div>
+        <div>
+          <div class="gps-zone-title" style="color:var(--text3);">Zona Maratonista <span style="color:var(--text3);">· Nível 3</span></div>
+          <div class="gps-zone-sub">21K — em construção pela Comissão Técnica</div>
+        </div>
+      </div>
+
+      <div class="gps-checkpoint locked">
+        <div class="gps-checkpoint-node">🔒</div>
+        <div class="gps-checkpoint-card">
+          <div class="gps-checkpoint-emoji">🔒</div>
+          <div class="gps-checkpoint-body">
+            <div class="gps-checkpoint-eyebrow">Checkpoint 1 · Maratonista</div>
+            <div class="gps-checkpoint-name">Em breve</div>
+            <div class="gps-checkpoint-desc">Novos módulos liberados conforme a trilha evolui.</div>
+          </div>
+          <div class="gps-checkpoint-status">🔒 Bloqueado</div>
+        </div>
+      </div>
+
+      <!-- ZONA 4 — TRIATLETA (bloqueada) -->
+      <div class="gps-zone-header">
+        <div class="gps-zone-flag" style="background:rgba(240,165,0,0.18);color:var(--gold);">🏆</div>
+        <div>
+          <div class="gps-zone-title" style="color:var(--text3);">Zona Triatleta <span style="color:var(--text3);">· Nível 4</span></div>
+          <div class="gps-zone-sub">42K — a classe máxima da certificação</div>
+        </div>
+      </div>
+
+      <div class="gps-checkpoint locked">
+        <div class="gps-checkpoint-node">🔒</div>
+        <div class="gps-checkpoint-card">
+          <div class="gps-checkpoint-emoji">🔒</div>
+          <div class="gps-checkpoint-body">
+            <div class="gps-checkpoint-eyebrow">Checkpoint 1 · Triatleta</div>
+            <div class="gps-checkpoint-name">Em breve</div>
+            <div class="gps-checkpoint-desc">A linha de chegada da certificação Proparts.</div>
+          </div>
+          <div class="gps-checkpoint-status">🔒 Bloqueado</div>
+        </div>
+      </div>
+
+      <!-- LINHA DE CHEGADA -->
+      <div class="gps-finish-banner">
+        <div class="gps-finish-flag">🏆</div>
+        <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:16px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;">Linha de Chegada</div>
+        <div style="font-size:12.5px;opacity:0.8;">Complete as 4 zonas e vire Triatleta — o ápice da certificação Proparts.</div>
+      </div>
+    </div>
+
+    <div class="tip" style="margin-top:20px;">💡 Para os quizzes de avaliação, acesse a aba <strong>Quizzes</strong> no menu principal. Cada certificação evolui sua classe no Álbum da Equipe.</div>
+
+  </div>
+</div>
+
+<!-- MODAL — QUEM ESTÁ USANDO O PORTAL -->
+<div class="gps-whois-overlay" id="gpsWhoisOverlay">
+  <div class="gps-whois-box">
+    <div class="gps-whois-title">👋 Quem é você?</div>
+    <div class="gps-whois-sub">Esse computador é usado por várias pessoas. Escolha seu nome para acompanhar seu próprio progresso no GPS da Carreira — fica salvo só neste PC.</div>
+    <div class="gps-whois-list" id="gpsWhoisList"></div>
+    <div class="gps-whois-divider"></div>
+    <button class="gps-whois-guest" onclick="gpsSelectPerson('Convidado / Terceiro')">👤 Sou visitante / terceiro — não rastrear meu progresso</button>
   </div>
 </div>
 
@@ -1883,6 +2278,324 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
         <div class="quiz-progress"><div class="quiz-progress-bar" id="quizBarCorredor" style="width:0%"></div></div>
       </div>
       <div id="quizContentCorredor"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CORREDOR · MÓDULO 2 — ECOSSISTEMA GARMIN COACHES -->
+<div class="panel" id="panel-corredor-coach">
+  <div class="panel-header"><button class="back-btn" onclick="openPanel('formacao')">← Formação</button><div class="panel-title">🏃‍♂️ Garmin <span>Coach</span></div></div>
+  <div class="panel-body">
+
+    <div class="universe-hero" style="background:linear-gradient(135deg,#0a1a14,#10302a);">
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:0.7;margin-bottom:4px;">Módulo 2 — Corredor · by Proparts</div>
+      <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:28px;letter-spacing:2px;margin-bottom:8px;">ECOSSISTEMA GARMIN COACHES</div>
+      <p style="font-size:14px;opacity:0.85;line-height:1.6;">Um personal trainer vitalício e gratuito dentro do relógio. Toque, arraste e explore antes de ir para o quiz.</p>
+    </div>
+
+    <!-- ── O QUE É ── -->
+    <div class="card-label" style="margin-top:20px;margin-bottom:14px;">🎯 O que é o Garmin Coach</div>
+    <div class="card" style="border-left:4px solid #00C2A8;margin-bottom:14px;">
+      <div class="card-title">Consultoria esportiva gratuita, direto no pulso</div>
+      <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:14px;">Plataforma de planos de treinamento dinâmicos e adaptáveis, gratuita no Garmin Connect. Não é só um recurso — é um serviço de consultoria esportiva que agrega valor direto à venda e fideliza o cliente.</p>
+      <div class="grid2" style="gap:10px;">
+        <div style="background:var(--off);border-radius:var(--r2);padding:14px;">
+          <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:8px;">Pilares de valor</div>
+          <ul class="bul">
+            <li>Treinar para um evento</li>
+            <li>Alcançar um marco (ex: primeiro 5K)</li>
+            <li>Melhorar o condicionamento físico</li>
+            <li>Ganhar força</li>
+          </ul>
+        </div>
+        <div style="background:var(--off);border-radius:var(--r2);padding:14px;">
+          <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#00C2A8;margin-bottom:8px;">Diferenciais técnicos</div>
+          <ul class="bul">
+            <li>Feito por fisiologistas esportivos</li>
+            <li>Ciência do esporte aplicada (carga/recuperação)</li>
+            <li>Sincronização bidirecional relógio ↔ plano</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tip" style="margin-top:14px;">💡 <strong>Na venda:</strong> "Um treinador pessoal custa em média R$150 a R$300 por mês. Com o Garmin Coach, você leva esse serviço vitalício e gratuito direto no relógio."</div>
+    </div>
+
+    <!-- ── A CIÊNCIA ── -->
+    <div class="card-label" style="margin-bottom:14px;">🧠 A Ciência por Trás — Treinamento Adaptativo</div>
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-title">Diferente de planilha de PDF</div>
+      <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:12px;">O Coach usa algoritmos que leem sono, estresse e HRV (variabilidade da frequência cardíaca) e cruzam com o desempenho real nos treinos. O plano reage ao que está acontecendo com o corpo do atleta.</p>
+      <div style="background:var(--off);border-radius:var(--r2);padding:14px;margin-bottom:12px;">
+        <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:8px;">Cenário e resposta — a inteligência em ação</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.6;"><strong style="color:var(--text);">Cenário:</strong> sono ruim detectado pelo relógio, ou dois treinos perdidos na semana.</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.6;margin-top:6px;"><strong style="color:var(--text);">Resposta:</strong> o plano reduz a intensidade ou sugere descanso, evitando lesão e mantendo o caminho até a meta.</div>
+      </div>
+      <div class="tip" style="margin:0;">💡 <strong>Tapering (Polimento):</strong> perto da prova, o volume de treino diminui propositalmente para o corpo recuperar energia e chegar no ápice da performance no dia do evento.</div>
+    </div>
+
+    <!-- ══════════════ MODALIDADES — TABS INTERATIVAS ══════════════ -->
+    <div class="card-label" style="margin-bottom:14px;">🏅 Modalidades e Especialistas <span style="font-weight:400;text-transform:none;color:var(--text3);font-size:11.5px;">— toque em cada aba</span></div>
+
+    <div class="coach-tabs" id="coachTabs">
+      <div class="coach-tab active" data-tab="corrida" onclick="switchCoachTab('corrida')"><span class="ct-icon">🏃</span><span class="ct-label">Corrida</span></div>
+      <div class="coach-tab" data-tab="ciclismo" onclick="switchCoachTab('ciclismo')"><span class="ct-icon">🚴</span><span class="ct-label">Ciclismo</span></div>
+      <div class="coach-tab" data-tab="forca" onclick="switchCoachTab('forca')"><span class="ct-icon">💪</span><span class="ct-label">Força</span></div>
+      <div class="coach-tab" data-tab="triatlo" onclick="switchCoachTab('triatlo')"><span class="ct-icon">🏊‍♂️</span><span class="ct-label">Triatlo</span></div>
+    </div>
+
+    <!-- PAINEL: CORRIDA -->
+    <div class="coach-panel active" id="coachPanel-corrida">
+      <div class="card" style="border-left:4px solid var(--g);margin-bottom:14px;">
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:14px;"><strong>Run Coach:</strong> treinos 100% personalizados que mudam diariamente conforme o desempenho. <strong>Planos Expert:</strong> o cliente escolhe um treinador pela filosofia. Toque em cada card para ver o perfil completo e quando indicar. 👇</p>
+
+        <div class="coach-trainer-grid">
+          <div class="trainer-card" onclick="this.classList.toggle('flipped')">
+            <div class="trainer-card-inner">
+              <div class="trainer-face front" style="background:linear-gradient(135deg,#1a4d2e,#0d2818);">
+                <div class="trainer-emoji">🚶‍♂️</div>
+                <div class="trainer-name">Jeff Galloway</div>
+                <div class="trainer-role">Método Run Walk Run</div>
+                <div class="trainer-hint">👆 toque para ver indicação</div>
+              </div>
+              <div class="trainer-face back" style="background:linear-gradient(135deg,#0d2818,#1a4d2e);">
+                <div class="trainer-best-for">Indique quando o cliente...</div>
+                <div class="trainer-pitch">É iniciante ou está voltando de uma lesão.
+                  <strong>Método</strong>
+                  Run Walk Run — alterna corrida e caminhada para reduzir impacto e dar confiança.
+                  <strong>Frase de venda</strong>
+                  "Esse plano foi feito pra quem quer voltar a correr sem se machucar de novo."
+                </div>
+                <div class="trainer-hint">👆 toque para voltar</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="trainer-card" onclick="this.classList.toggle('flipped')">
+            <div class="trainer-card-inner">
+              <div class="trainer-face front" style="background:linear-gradient(135deg,#1a3a5c,#0d1f33);">
+                <div class="trainer-emoji">🩺</div>
+                <div class="trainer-name">Amy Parkerson-Mitchell</div>
+                <div class="trainer-role">Fisioterapeuta</div>
+                <div class="trainer-hint">👆 toque para ver indicação</div>
+              </div>
+              <div class="trainer-face back" style="background:linear-gradient(135deg,#0d1f33,#1a3a5c);">
+                <div class="trainer-best-for">Indique quando o cliente...</div>
+                <div class="trainer-pitch">Já sofreu lesões recorrentes ou se preocupa com a mecânica da corrida.
+                  <strong>Foco</strong>
+                  Mecânica corporal e prevenção de lesões — corrida mais segura, não necessariamente mais rápida.
+                  <strong>Frase de venda</strong>
+                  "Ela é fisioterapeuta — o plano dela cuida do seu corpo antes de cuidar do seu tempo."
+                </div>
+                <div class="trainer-hint">👆 toque para voltar</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="trainer-card" onclick="this.classList.toggle('flipped')">
+            <div class="trainer-card-inner">
+              <div class="trainer-face front" style="background:linear-gradient(135deg,#5c2d1a,#33170d);">
+                <div class="trainer-emoji">📊</div>
+                <div class="trainer-name">Greg McMillan</div>
+                <div class="trainer-role">Fisiologia &amp; Ritmo</div>
+                <div class="trainer-hint">👆 toque para ver indicação</div>
+              </div>
+              <div class="trainer-face back" style="background:linear-gradient(135deg,#33170d,#5c2d1a);">
+                <div class="trainer-best-for">Indique quando o cliente...</div>
+                <div class="trainer-pitch">Já corre e quer evoluir tempo/performance com método.
+                  <strong>Foco</strong>
+                  Fisiologia aplicada — entender a dinâmica do ritmo, zonas e por que cada treino existe.
+                  <strong>Frase de venda</strong>
+                  "Se você já corre e quer entender o porquê de cada treino, esse é o seu treinador."
+                </div>
+                <div class="trainer-hint">👆 toque para voltar</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="warn-tip" style="margin-top:14px;margin-bottom:0;">📌 Distâncias disponíveis: 5K, 10K e Meia Maratona. Suporte a ritmos entre 4:24 e 7:30 min/km.</div>
+      </div>
+    </div>
+
+    <!-- PAINEL: CICLISMO -->
+    <div class="coach-panel" id="coachPanel-ciclismo">
+      <div class="card" style="border-left:4px solid #1565c0;margin-bottom:14px;">
+        <div class="card-title">🚴 Garmin Cycling Coach e Autoguiados</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:12px;">Tipos de plano: Century (160km), Gran Fondo, Metric Century (100km), MTB, Race e Time Trial.</p>
+        <div class="grid2" style="gap:10px;">
+          <div style="background:var(--off);border-radius:var(--r2);padding:14px;">
+            <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:6px;">Ecossistema Tacx</div>
+            <p style="font-size:12.5px;color:var(--text2);line-height:1.5;">Compatível com Smart Trainers Tacx via app Tacx Training — treino indoor perfeitamente integrado.</p>
+          </div>
+          <div style="background:var(--off);border-radius:var(--r2);padding:14px;">
+            <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--g);margin-bottom:6px;">Requisito obrigatório</div>
+            <p style="font-size:12.5px;color:var(--text2);line-height:1.5;">Monitor de FC ou medidor de potência. Usar os dois juntos é recomendado para máxima precisão.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAINEL: FORÇA -->
+    <div class="coach-panel" id="coachPanel-forca">
+      <div class="card" style="border-left:4px solid var(--gold);margin-bottom:14px;">
+        <div class="card-title">💪 Treinamento de Força</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:12px;">Planos configuráveis com base em três variáveis que o próprio cliente escolhe no app:</p>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+          <div style="background:var(--off);border-radius:var(--r2);padding:14px;text-align:center;">
+            <div style="font-size:22px;margin-bottom:6px;">🎯</div>
+            <div style="font-size:11.5px;font-weight:700;color:var(--text);margin-bottom:3px;">Objetivo</div>
+            <div style="font-size:11px;color:var(--text3);">Hipertrofia, Força ou Condicionamento</div>
+          </div>
+          <div style="background:var(--off);border-radius:var(--r2);padding:14px;text-align:center;">
+            <div style="font-size:22px;margin-bottom:6px;">🏋️</div>
+            <div style="font-size:11.5px;font-weight:700;color:var(--text);margin-bottom:3px;">Equipamento</div>
+            <div style="font-size:11px;color:var(--text3);">Dumbbells, barras ou peso corporal</div>
+          </div>
+          <div style="background:var(--off);border-radius:var(--r2);padding:14px;text-align:center;">
+            <div style="font-size:22px;margin-bottom:6px;">💪</div>
+            <div style="font-size:11.5px;font-weight:700;color:var(--text);margin-bottom:3px;">Foco muscular</div>
+            <div style="font-size:11px;color:var(--text3);">Grupos musculares específicos</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAINEL: TRIATLO -->
+    <div class="coach-panel" id="coachPanel-triatlo">
+      <div class="card" style="border-left:4px solid #9b59b6;margin-bottom:14px;">
+        <div class="card-title">🏊‍♂️ Triatlo</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:10px;">Abordagem para as três disciplinas. Permite agendar dias específicos de piscina e sessões <strong>Two-a-day</strong> (dois treinos no mesmo dia).</p>
+        <div class="tip" style="margin:0;">💡 <strong>Garmin Connect+:</strong> upgrade de experiência com vídeos exclusivos e conteúdo educacional de especialistas para técnica de transição e natação.</div>
+      </div>
+    </div>
+
+    <!-- ══════════════ SIMULADOR — BARRA DE RITMO + CONFIDENCE SCORE ══════════════ -->
+    <div class="card-label" style="margin-top:6px;margin-bottom:14px;">⌚ Simulador — Experiência no Relógio <span style="font-weight:400;text-transform:none;color:var(--text3);font-size:11.5px;">— arraste o ritmo do corredor</span></div>
+    <div class="sim-box">
+      <div class="sim-row">
+        <div class="sim-label">Barra de Ritmo durante o treino</div>
+        <div class="sim-pacebar-track" id="simTrack">
+          <div class="sim-pacebar-needle" id="simNeedle" style="left:50%;"></div>
+        </div>
+        <input type="range" min="0" max="100" value="50" class="sim-slider" id="simSlider" oninput="updateSimulator(this.value)">
+        <div class="sim-readout">
+          <div>
+            <div class="sim-readout-status" id="simStatus" style="color:var(--acc);">NA META</div>
+            <div class="sim-readout-sub" id="simSub">Ritmo dentro da zona ideal definida pelo treinador</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sim-divider"></div>
+
+      <div class="sim-row" style="margin-bottom:6px;">
+        <div class="sim-label">Confidence Score — depende de você ter definido meta de tempo</div>
+        <div class="sim-toggle-row">
+          <button class="sim-toggle-btn active" id="simToggleComMeta" onclick="setSimGoalMode(true)">Com Meta de Tempo</button>
+          <button class="sim-toggle-btn" id="simToggleSemMeta" onclick="setSimGoalMode(false)">Só "Completar Distância"</button>
+        </div>
+        <div class="sim-confidence-grid" id="simConfidenceGrid">
+          <div class="sim-conf-chip" data-conf="roxo"><span class="sim-conf-emoji">🟣</span><span class="sim-conf-name">Roxo</span></div>
+          <div class="sim-conf-chip active" data-conf="verde"><span class="sim-conf-emoji">🟢</span><span class="sim-conf-name">Verde</span></div>
+          <div class="sim-conf-chip" data-conf="laranja"><span class="sim-conf-emoji">🟠</span><span class="sim-conf-name">Laranja</span></div>
+          <div class="sim-conf-chip" data-conf="vermelho"><span class="sim-conf-emoji">🔴</span><span class="sim-conf-name">Vermelho</span></div>
+        </div>
+        <div class="sim-readout-sub" id="simConfNote" style="margin-top:10px;">Mova o slider acima para ver o Confidence Score reagir ao ritmo.</div>
+      </div>
+    </div>
+    <div class="warn-tip" style="margin-top:10px;margin-bottom:20px;">📌 <strong>Ritmo Médio da Etapa:</strong> o relógio mostra a média da lap/etapa atual — não o ritmo instantâneo. Vital para manter constância em intervalos longos. O Confidence Score só aparece com Meta de Tempo/Ritmo definida.</div>
+
+    <!-- ══════════════ ÁRVORE DE DECISÃO — QUAL PLANO INDICAR ══════════════ -->
+    <div class="card-label" style="margin-bottom:14px;">🧭 Diagnóstico Rápido — Qual plano indicar pro cliente?</div>
+    <div class="diag-box" id="diagBox" style="margin-bottom:20px;"></div>
+
+    <!-- ── REQUISITOS TÉCNICOS ── -->
+    <div class="card-label" style="margin-bottom:14px;">⚙️ Requisitos Técnicos e Ecossistema</div>
+    <div class="tbl-wrap" style="margin-bottom:16px;">
+      <table>
+        <thead><tr><th>Componente</th><th>Função / Exigência</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:600;color:var(--text);">App Garmin Connect</td><td style="font-size:12.5px;color:var(--text2);">Configuração, vídeos educativos e acompanhamento de métricas.</td></tr>
+          <tr><td style="font-weight:600;color:var(--text);">Garmin Express</td><td style="font-size:12.5px;color:var(--text2);">Essencial para atualizar o software. Se o Coach não aparece, atualize via PC/Mac.</td></tr>
+          <tr><td style="font-weight:600;color:var(--text);">Sensores</td><td style="font-size:12.5px;color:var(--text2);">Cintas HRM ou medidores de potência (ex: Rally) para planos de ciclismo.</td></tr>
+          <tr><td style="font-weight:600;color:var(--text);">Smart Trainers</td><td style="font-size:12.5px;color:var(--text2);">Linha Tacx para integração com planos de ciclismo indoor.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="warn-tip" style="margin-bottom:20px;">📌 <strong>Dispositivos compatíveis:</strong> Forerunner (45 até 970), fēnix (5 até fēnix 8/E), Venu (Sq até Venu 4/X1), Instinct (todas as gerações incluindo Instinct 3), vívoactive 5/6 e ciclocomputadores Edge.</div>
+
+    <!-- ── VÍDEO — PASSO A PASSO ── -->
+    <div class="card-label" style="margin-bottom:14px;">🎬 Vídeo — Onde Encontrar o Garmin Coach no App</div>
+    <div class="card" style="margin-bottom:20px;">
+      <a class="video-link-card" href="https://www.youtube.com/watch?v=JvJjE-GOq9Y" target="_blank" rel="noopener noreferrer">
+        <img src="https://img.youtube.com/vi/JvJjE-GOq9Y/hqdefault.jpg" alt="Vídeo: como encontrar o Garmin Coach no app Garmin Connect" loading="lazy">
+        <div class="video-overlay">
+          <div class="video-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        </div>
+        <div class="video-link-badge">▶ Assistir no YouTube</div>
+      </a>
+      <p style="font-size:12.5px;color:var(--text2);line-height:1.6;margin-top:12px;margin-bottom:0;">📍 Use esse vídeo na hora da venda: mostre o caminho <strong>App Garmin Connect → Mais → Treinamento &amp; Planejamento → Planos Garmin Coach</strong> direto no celular do cliente.</p>
+    </div>
+
+    <!-- ── GERENCIAMENTO ── -->
+    <div class="card-label" style="margin-bottom:14px;">🛠️ Gerenciamento do Plano</div>
+    <div class="card" style="margin-bottom:20px;">
+      <div class="grid2" style="gap:10px;margin-bottom:10px;">
+        <div style="background:var(--off);border-radius:var(--r2);padding:12px 14px;"><div style="font-size:11px;font-weight:700;color:var(--g);margin-bottom:4px;">Reagendar — Corrida/Força</div><p style="font-size:12.5px;color:var(--text2);">Direto pelo app.</p></div>
+        <div style="background:var(--off);border-radius:var(--r2);padding:12px 14px;"><div style="font-size:11px;font-weight:700;color:var(--warn);margin-bottom:4px;">Reagendar — Ciclismo Autoguiado</div><p style="font-size:12.5px;color:var(--text2);">Obrigatório usar o Garmin Connect Web.</p></div>
+      </div>
+      <div class="tip" style="margin:0;">💡 <strong>Pausar vs. Sair:</strong> Pausar mantém o progresso. Sair remove todos os treinos futuros — os concluídos ficam no calendário, mas para voltar é preciso iniciar um plano do zero.</div>
+    </div>
+
+    <!-- ── DICIONÁRIO TÉCNICO ── -->
+    <div class="card-label" style="margin-bottom:14px;">📖 Dicionário Técnico Rápido</div>
+    <div class="grid2" style="margin-bottom:20px;gap:10px;">
+      <div class="card" style="margin-bottom:0;"><div class="card-title" style="font-size:14px;">Tapering (Polimento)</div><p style="font-size:12.5px;color:var(--text2);line-height:1.5;">Redução estratégica da carga antes de uma prova para garantir descanso.</p></div>
+      <div class="card" style="margin-bottom:0;"><div class="card-title" style="font-size:14px;">Two-a-day</div><p style="font-size:12.5px;color:var(--text2);line-height:1.5;">Dois treinos estruturados no mesmo dia — comum no Triatlo.</p></div>
+      <div class="card" style="margin-bottom:0;"><div class="card-title" style="font-size:14px;">Confidence Score</div><p style="font-size:12.5px;color:var(--text2);line-height:1.5;">Métrica preditiva baseada no histórico de treinos do plano atual.</p></div>
+      <div class="card" style="margin-bottom:0;"><div class="card-title" style="font-size:14px;">HRV / Carga</div><p style="font-size:12.5px;color:var(--text2);line-height:1.5;">Variabilidade da frequência cardíaca — base da ciência adaptativa do Coach.</p></div>
+    </div>
+
+    <!-- ── FAQ ── -->
+    <div class="card-label" style="margin-bottom:14px;">❓ Perguntas Frequentes</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;">
+      <div class="acc-item">
+        <button class="acc-btn" onclick="toggleAcc(this)"><span><span class="acc-icon">❓</span> Posso usar meus alertas de ritmo habituais?</span><span class="acc-chevron">▼</span></button>
+        <div class="acc-body">Não. Os alertas do Coach substituem os padrões do perfil de atividade para garantir a precisão da orientação do treinador.</div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-btn" onclick="toggleAcc(this)"><span><span class="acc-icon">❓</span> O que acontece se eu pular as partes opcionais?</span><span class="acc-chevron">▼</span></button>
+        <div class="acc-body">Basta apertar o botão Lap (Volta). O plano é inteligente e, se você pular muitas sessões, ele sugerirá pausar ou ajustará a carga para baixo.</div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-btn" onclick="toggleAcc(this)"><span><span class="acc-icon">❓</span> Quantos planos posso ter ativos?</span><span class="acc-chevron">▼</span></button>
+        <div class="acc-body">Apenas um plano Garmin Coach ativo por vez.</div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-btn" onclick="toggleAcc(this)"><span><span class="acc-icon">❓</span> Quais idiomas são suportados?</span><span class="acc-chevron">▼</span></button>
+        <div class="acc-body">Português, Inglês, Espanhol, Francês, Alemão, Chinês, Japonês, Coreano, Holandês, Dinamarquês, Norueguês, Sueco, Italiano, Tailandês, Vietnamita, Indonésio e Checo.</div>
+      </div>
+    </div>
+
+    <!-- ── DICA DE VENDA ── -->
+    <div class="hero-card" style="margin-bottom:20px;">
+      <div class="card-label">⭐ Dica de Ouro</div>
+      <p style="font-size:15px;font-weight:500;line-height:1.7;color:var(--text);">Não finalize a venda sem abrir o app do cliente e mostrar a aba "Treinamento e Planejamento". Configure o primeiro plano de 5K ou de Força com ele. <strong style="color:var(--g)">Um cliente que entende que o relógio "pensa" por ele é um cliente que nunca trocará a Garmin por outra marca.</strong></p>
+    </div>
+
+    <!-- ── QUIZ ── -->
+    <div class="quiz-reveal-sep">
+      <button class="quiz-reveal-btn" onclick="revealModuleQuiz('quizWrapCorredor2','initQuizCorredor2')">✅ Li o conteúdo — Iniciar Quiz</button>
+      <div class="quiz-reveal-hint">Leia tudo antes de responder · 14 questões · mínimo 70% para aprovação</div>
+    </div>
+    <div class="quiz-wrap" id="quizWrapCorredor2" style="display:none;margin-top:16px;">
+      <div class="quiz-header">
+        <div class="quiz-title">🎯 Quiz — Ecossistema Garmin Coaches</div>
+        <div class="quiz-sub">14 questões · Mínimo 70% para aprovação · Resultado enviado para a liderança</div>
+        <div class="quiz-progress"><div class="quiz-progress-bar" id="quizBarCorredor2" style="width:0%"></div></div>
+      </div>
+      <div id="quizContentCorredor2"></div>
     </div>
 
   </div>
@@ -2229,7 +2942,13 @@ function openPanel(id) {
     window.scrollTo(0, 0);
     if (id === 'universo') { const w=document.getElementById('quizWrap'); if(w) w.style.display='none'; }
     if (id === 'perfis-modulo') { const w=document.getElementById('quizWrap2'); if(w) w.style.display='none'; }
+    if (id === 'corredor-coach') {
+      const w=document.getElementById('quizWrapCorredor2'); if(w) w.style.display='none';
+      diagHistory = []; if (typeof renderDiag === 'function') renderDiag('start');
+      if (typeof updateSimulator === 'function') updateSimulator(50);
+    }
     if (id === 'produtos-modulo') { const w=document.getElementById('quizWrap3'); if(w) w.style.display='none'; }
+    if (id === 'formacao') { if (typeof initGpsHud === 'function') initGpsHud(); }
     if (id === 'games') {
       ['g-abertura','g-partida','g-resultado','mg-abertura','mg-partida','mg-resultado'].forEach(tid=>{
         const el=document.getElementById(tid); if(el) el.style.display='none';
@@ -2353,7 +3072,7 @@ const albumData = [
   { num:'06', nome:'Gustavo Morais', loja:'morumbi', classe:'Corredor', raro:false, selo:'', especialidade:'Atendimento diferenciado', relogio:'Fênix 8 Amoled', esporte:'Musculação', avatar:'', emoji:'🥲', pontaDoMes:true, frase:'Socorro!', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:18 },
   { num:'07', nome:'Joyce Souza', loja:'morumbi', classe:'Corredor', raro:false, selo:'', especialidade:'', relogio:'Venu 3s', esporte:'', avatar:'', emoji:'😉', pontaDoMes:false, frase:'O sucesso é a soma de pequenos esforços repetidos dia após dia.', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:5 },
   { num:'08', nome:'Mayara Freire', loja:'morumbi', classe:'Corredor', raro:false, selo:'', especialidade:'Cintas cardíacas', relogio:'Venu 4', esporte:'', avatar:'', emoji:'🫩', pontaDoMes:false, frase:'A sua principal motivação é você mesmo!', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:19 },
-  { num:'09', nome:'Renato Dias', loja:'morumbi', classe:'Corredor', raro:false, selo:'', especialidade:'Configurações técnicas', relogio:'Venu 4 Cinza', esporte:'Taco', avatar:'', emoji:'🪃', pontaDoMes:false, frase:'Às vezes o primeiro metro é mais difícil do que o primeiro KM!', attrs:{Produto:5,Ritmo:0,Precisão:0,Jogo:0}, reputacao:5 },
+  { num:'09', nome:'Renato Dias', loja:'morumbi', classe:'Corredor', raro:false, selo:'', especialidade:'Configurações técnicas', relogio:'Venu 4 Cinza', esporte:'Taco', avatar:'', emoji:'🪃', pontaDoMes:false, frase:'Às vezes o primeiro metro é mais difícil do que o primeiro KM!', attrs:{Produto:5,Ritmo:0,Precisão:0,Jogo:0}, reputacao:9 },
   { num:'10', nome:'Ribs',    loja:'moema',   classe:'Explorador', raro:false, selo:'', especialidade:'', relogio:'', esporte:'', avatar:'', emoji:'', pontaDoMes:false, frase:'', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:0 },
   { num:'11', nome:'Beatriz', loja:'moema',   classe:'Explorador', raro:false, selo:'', especialidade:'', relogio:'', esporte:'', avatar:'', emoji:'', pontaDoMes:false, frase:'', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:15 },
   { num:'12', nome:'Dayane',  loja:'moema',   classe:'Explorador', raro:false, selo:'', especialidade:'', relogio:'', esporte:'', avatar:'', emoji:'', pontaDoMes:false, frase:'', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:2 },
@@ -3118,6 +3837,7 @@ async function registerIPX(pct){
       nome:name,modulo:'Quiz Especial — IPX & Resistência à Água',nota:pct+'%',acertos:scoreIPX+' de '+quizDataIPX.length,data,hora,status,message});
     const form=document.getElementById('registerFormIPX');if(form)form.style.display='none';
     const success=document.getElementById('regSuccessIPX');if(success)success.style.display='block';
+    if(pct>=70 && typeof gpsAutoCompleteCheckpoint==='function') gpsAutoCompleteCheckpoint('quiz-ipx');
   }catch(err){btn.textContent='Registrar Conclusão ✓';btn.disabled=false;alert('Erro ao enviar. Verifique sua conexão.');}
 }
 
@@ -3177,6 +3897,7 @@ async function registerAT(pct){
       nome:name,modulo:'Quiz Especial — Script de Atendimento',nota:pct+'%',acertos:scoreAT+' de '+quizDataAT.length,data,hora,status,message});
     const form=document.getElementById('registerFormAT');if(form)form.style.display='none';
     const success=document.getElementById('regSuccessAT');if(success)success.style.display='block';
+    if(pct>=70 && typeof gpsAutoCompleteCheckpoint==='function') gpsAutoCompleteCheckpoint('quiz-atendimento');
   }catch(err){btn.textContent='Registrar Conclusão ✓';btn.disabled=false;alert('Erro ao enviar. Verifique sua conexão.');}
 }
 
@@ -3261,6 +3982,7 @@ async function sendResultI3(){
       nome:name,modulo:'Quiz Técnico — Instinct 3',nota:pct+'%',acertos:scoreI3+' de '+quizDataI3.length,data,hora,status,message});
     const form=document.getElementById('registerFormI3');if(form)form.style.display='none';
     const success=document.getElementById('regSuccessI3');if(success)success.style.display='block';
+    if(pct>=70 && typeof gpsAutoCompleteCheckpoint==='function') gpsAutoCompleteCheckpoint('quiz-instinct3');
   }catch(err){btn.textContent='Registrar Conclusão ✓';btn.disabled=false;alert('Erro ao enviar. Verifique sua conexão.');}
 }
 
@@ -3345,6 +4067,7 @@ async function sendResultTEC(){
       nome:name,modulo:'Quiz Técnico Garmin',nota:pct+'%',acertos:scoreTEC+' de '+quizDataTEC.length,data,hora,status,message});
     const form=document.getElementById('registerFormTEC');if(form)form.style.display='none';
     const success=document.getElementById('regSuccessTEC');if(success)success.style.display='block';
+    if(pct>=70 && typeof gpsAutoCompleteCheckpoint==='function') gpsAutoCompleteCheckpoint('quiz-tecnico');
   }catch(err){btn.textContent='Registrar Conclusão ✓';btn.disabled=false;alert('Erro ao enviar. Verifique sua conexão.');}
 }
 
@@ -3358,6 +4081,7 @@ function revealModuleQuiz(wrapId, initFn) {
   else if (initFn === 'initQuiz3') initQuiz3();
   else if (initFn === 'initQuiz4') initQuiz4();
   else if (initFn === 'initQuizCorredor') initQuizCorredor();
+  else if (initFn === 'initQuizCorredor2') initQuizCorredor2();
   wrap.scrollIntoView({behavior: 'smooth', block: 'start'});
 }
 
@@ -5603,6 +6327,8 @@ function gMostrarResultado(){
     </div>`).join('');
 
   document.getElementById('gBarra').style.width='100%';
+
+  if(gAcertos>=8 && typeof gpsAutoCompleteCheckpoint==='function') gpsAutoCompleteCheckpoint('game-duelo');
 }
 
 function gVoltarAbertura(){
@@ -5945,6 +6671,8 @@ function mgMostrarResultado(){
     </div>`).join('');
 
   document.getElementById('mgBarra').style.width='100%';
+
+  if(mgAcertos>=8 && typeof gpsAutoCompleteCheckpoint==='function') gpsAutoCompleteCheckpoint('game-duelo');
 }
 
 function mgVoltarAbertura(){
@@ -6188,6 +6916,719 @@ async function registerCorredor(pct){
       erradas: erradas
     });
     const suc = document.getElementById('regSuccessCorredor');
+    if(suc) suc.style.display = 'block';
+    btn.style.display = 'none';
+  } catch(e){
+    btn.textContent = 'Erro ao enviar — tente novamente';
+    btn.disabled = false;
+  }
+}
+
+/* ══════════════════════════════════════════
+   CORREDOR M2 — TABS DE MODALIDADE
+   ══════════════════════════════════════════ */
+function switchCoachTab(tab){
+  document.querySelectorAll('#coachTabs .coach-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+  document.querySelectorAll('.coach-panel').forEach(p => p.classList.remove('active'));
+  const panel = document.getElementById('coachPanel-' + tab);
+  if(panel) panel.classList.add('active');
+}
+
+/* ══════════════════════════════════════════
+   CORREDOR M2 — SIMULADOR BARRA DE RITMO + CONFIDENCE SCORE
+   ══════════════════════════════════════════ */
+let simGoalMode = true; // true = com meta de tempo, false = só completar distância
+
+function updateSimulator(val){
+  val = Number(val);
+  const needle = document.getElementById('simNeedle');
+  const statusEl = document.getElementById('simStatus');
+  const subEl = document.getElementById('simSub');
+  if(needle) needle.style.left = val + '%';
+
+  let status, color, sub, confLevel;
+  if(val < 28){
+    status = 'MUITO LENTO'; color = 'var(--warn)';
+    sub = 'Ritmo abaixo da zona da meta — o treinador vai sugerir acelerar';
+    confLevel = val < 14 ? 'vermelho' : 'laranja';
+  } else if(val <= 38){
+    status = 'UM POUCO LENTO'; color = 'var(--warn)';
+    sub = 'Perto da zona, mas ainda fora da meta';
+    confLevel = 'laranja';
+  } else if(val <= 62){
+    status = 'NA META'; color = 'var(--acc)';
+    sub = 'Ritmo dentro da zona ideal definida pelo treinador';
+    confLevel = val >= 45 && val <= 55 ? 'verde' : 'verde';
+  } else if(val <= 72){
+    status = 'UM POUCO RÁPIDO'; color = 'var(--warn)';
+    sub = 'Acima da zona da meta — cuidado para não gastar energia demais';
+    confLevel = 'roxo';
+  } else {
+    status = 'MUITO RÁPIDO'; color = 'var(--warn)';
+    sub = 'Bem acima do ritmo planejado pelo treinador';
+    confLevel = 'roxo';
+  }
+
+  if(statusEl){ statusEl.textContent = status; statusEl.style.color = color; }
+  if(subEl) subEl.textContent = sub;
+
+  updateConfidenceChip(confLevel, val);
+}
+
+function updateConfidenceChip(level, val){
+  const note = document.getElementById('simConfNote');
+  if(!simGoalMode){
+    document.querySelectorAll('.sim-conf-chip').forEach(c => c.classList.remove('active'));
+    if(note) note.textContent = 'Sem Meta de Tempo definida, o Confidence Score fica oculto no relógio — o app só mostra "completar a distância".';
+    return;
+  }
+  document.querySelectorAll('.sim-conf-chip').forEach(c => c.classList.toggle('active', c.dataset.conf === level));
+  const messages = {
+    roxo: 'Roxo — no ritmo atual, o corredor está excedendo a meta de tempo.',
+    verde: 'Verde — no ritmo atual, o corredor está no caminho certo para bater a meta.',
+    laranja: 'Laranja — no ritmo atual, o corredor está abaixo do esperado para a meta.',
+    vermelho: 'Vermelho — no ritmo atual, é improvável atingir a meta se continuar assim.'
+  };
+  if(note) note.textContent = messages[level] || '';
+}
+
+function setSimGoalMode(withGoal){
+  simGoalMode = withGoal;
+  document.getElementById('simToggleComMeta').classList.toggle('active', withGoal);
+  document.getElementById('simToggleSemMeta').classList.toggle('active', !withGoal);
+  const slider = document.getElementById('simSlider');
+  updateSimulator(slider ? slider.value : 50);
+}
+
+/* ══════════════════════════════════════════
+   CORREDOR M2 — ÁRVORE DE DECISÃO (DIAGNÓSTICO DE PLANO)
+   ══════════════════════════════════════════ */
+const diagTree = {
+  start: {
+    q: 'Qual é o objetivo principal do cliente?',
+    opts: [
+      { label: 'Quer correr — uma prova, um 5K, melhorar o tempo', emoji: '🏃', next: 'corrida_nivel', crumb: 'Corrida' },
+      { label: 'Quer pedalar — prova, percurso longo, performance', emoji: '🚴', next: 'ciclismo_disp', crumb: 'Ciclismo' },
+      { label: 'Quer ganhar força ou massa muscular', emoji: '💪', next: 'forca_obj', crumb: 'Força' },
+      { label: 'Está se preparando para um Triatlo', emoji: '🏊‍♂️', next: 'triatlo_result', crumb: 'Triatlo' }
+    ]
+  },
+  corrida_nivel: {
+    q: 'Qual é o perfil dele como corredor?',
+    opts: [
+      { label: 'Nunca correu ou está voltando de lesão', emoji: '🚶‍♂️', next: 'galloway_result', crumb: 'Iniciante / retorno' },
+      { label: 'Já corre, mas se preocupa com dores e lesões', emoji: '🩺', next: 'amy_result', crumb: 'Preocupado com lesão' },
+      { label: 'Já corre bem e quer evoluir tempo com método', emoji: '📊', next: 'mcmillan_result', crumb: 'Quer performance' }
+    ]
+  },
+  ciclismo_disp: {
+    q: 'Qual é a distância ou tipo de prova do cliente?',
+    opts: [
+      { label: 'Prova longa (Century / Gran Fondo, ~100-160km)', emoji: '🚴', next: 'ciclismo_result', crumb: 'Prova longa' },
+      { label: 'Trilha / Mountain Bike', emoji: '⛰️', next: 'ciclismo_result', crumb: 'MTB' },
+      { label: 'Quer treinar indoor com Smart Trainer', emoji: '🏠', next: 'ciclismo_indoor_result', crumb: 'Indoor / Tacx' }
+    ]
+  },
+  forca_obj: {
+    q: 'Qual é o objetivo de força dele?',
+    opts: [
+      { label: 'Ganhar massa muscular (hipertrofia)', emoji: '🏋️', next: 'forca_result', crumb: 'Hipertrofia' },
+      { label: 'Ficar mais forte para os esportes', emoji: '💪', next: 'forca_result', crumb: 'Força funcional' },
+      { label: 'Condicionamento geral, sem equipamento', emoji: '🤸', next: 'forca_result', crumb: 'Peso corporal' }
+    ]
+  },
+  galloway_result: { result: true, emoji: '🚶‍♂️', plan: 'Plano Expert — Jeff Galloway', desc: 'Método Run Walk Run (corrida-caminhada-corrida). Ideal para reduzir impacto e dar confiança a quem está começando ou voltando de lesão. Configure direto pelo app, com distância 5K ou 10K.', tip: 'Mostre o app e configure o primeiro 5K com ele na hora da venda.' },
+  amy_result: { result: true, emoji: '🩺', plan: 'Plano Expert — Amy Parkerson-Mitchell', desc: 'Fisioterapeuta focada em mecânica corporal e prevenção de lesões. Indicado para quem já corre, mas tem histórico de dores ou quer correr de forma mais segura.', tip: 'Reforce que ela é fisioterapeuta — isso costuma fechar a venda com clientes mais cautelosos.' },
+  mcmillan_result: { result: true, emoji: '📊', plan: 'Plano Expert — Greg McMillan', desc: 'Foco em fisiologia aplicada e dinâmica de ritmo. Ideal para corredores que já têm uma base e querem evoluir tempo de forma estruturada, entendendo o "porquê" de cada treino.', tip: 'Funciona bem com clientes mais analíticos, que gostam de entender dados e métricas.' },
+  ciclismo_result: { result: true, emoji: '🚴', plan: 'Garmin Cycling Coach — Plano por Distância', desc: 'Century, Gran Fondo, Metric Century, MTB ou Race — escolha conforme a prova do cliente. Reforce o requisito de Monitor de FC ou Medidor de Potência.', tip: 'Para ciclismo autoguiado, lembre o cliente que reagendar treinos exige o Garmin Connect Web.' },
+  ciclismo_indoor_result: { result: true, emoji: '🏠', plan: 'Garmin Cycling Coach + Ecossistema Tacx', desc: 'Indique um Smart Trainer Tacx integrado ao app Tacx Training para treino indoor totalmente sincronizado com o plano do relógio.', tip: 'Ótima oportunidade de venda cruzada: relógio + Smart Trainer Tacx.' },
+  forca_result: { result: true, emoji: '💪', plan: 'Garmin Coach — Treinamento de Força', desc: 'Plano configurável por objetivo (Hipertrofia, Força ou Condicionamento), equipamento disponível e grupo muscular foco — tudo ajustável direto no app.', tip: 'Pergunte que equipamento ele tem em casa ou na academia antes de configurar o plano com ele.' },
+  triatlo_result: { result: true, emoji: '🏊‍♂️', plan: 'Garmin Coach — Triatlo + Connect+', desc: 'Plano cobre as três disciplinas, com dias de piscina e sessões Two-a-day. Ofereça o Garmin Connect+ para vídeos exclusivos de técnica de transição e natação.', tip: 'O Connect+ é um upgrade de experiência — ótimo argumento de valor agregado na venda.' }
+};
+
+let diagHistory = [];
+
+function renderDiag(nodeKey){
+  const node = diagTree[nodeKey];
+  const box = document.getElementById('diagBox');
+  if(!box || !node) return;
+
+  const crumbsHtml = diagHistory.length
+    ? `<div class="diag-breadcrumb">${diagHistory.map(c => `<span class="diag-crumb">${c}</span>`).join('')}</div>`
+    : '';
+
+  if(node.result){
+    box.innerHTML = `
+      ${crumbsHtml}
+      <div class="diag-result">
+        <div class="diag-result-emoji">${node.emoji}</div>
+        <div class="diag-result-plan">${node.plan}</div>
+        <div class="diag-result-desc">${node.desc}<br><br>💡 <strong>Na prática:</strong> ${node.tip}</div>
+        <button class="diag-restart-btn" onclick="restartDiag()">↺ Recomeçar diagnóstico</button>
+      </div>`;
+    return;
+  }
+
+  box.innerHTML = `
+    ${crumbsHtml}
+    <div class="diag-step-label">Pergunta ${diagHistory.length + 1}</div>
+    <div class="diag-question">${node.q}</div>
+    <div class="diag-opts">
+      ${node.opts.map((o,i) => `<button class="diag-opt" onclick="answerDiag('${nodeKey}', ${i})"><span class="diag-opt-emoji">${o.emoji}</span> ${o.label}</button>`).join('')}
+    </div>
+  `;
+}
+
+function answerDiag(nodeKey, optIndex){
+  const node = diagTree[nodeKey];
+  const opt = node.opts[optIndex];
+  diagHistory.push(opt.crumb);
+  renderDiag(opt.next);
+}
+
+function restartDiag(){
+  diagHistory = [];
+  renderDiag('start');
+}
+
+/* ══════════════════════════════════════════
+   GPS DA CARREIRA — IDENTIDADE + HUD + PERCURSO + CONFETE
+   ══════════════════════════════════════════ */
+const GPS_XP_POR_CHECKPOINT = 40;
+const GPS_STORAGE_KEY = 'gpsProgressByPerson_v1';
+const GPS_ACTIVE_PERSON_KEY = 'gpsActivePerson_v1';
+
+// estrutura por zona — cada zona pode ter quantos checkpoints quiser (2, 4, 5, o quanto for preciso).
+// para adicionar um novo módulo a uma zona: (1) acrescente o id aqui na ordem certa,
+// (2) acrescente o card .gps-checkpoint correspondente no HTML, com o mesmo data-checkpoint. Só isso.
+const GPS_ZONES = [
+  { id: 'explorador', label: 'Zona Explorador', bannerMsg: 'Zona Explorador concluída! Você abriu a Zona Corredor.', checkpoints: ['universo', 'perfis-modulo', 'produtos-modulo', 'concorrentes-modulo'] },
+  { id: 'corredor',   label: 'Zona Corredor',   bannerMsg: 'Zona Corredor concluída! Você está pronto para a Zona Maratonista.', checkpoints: ['corredor-connect', 'corredor-coach'] },
+  // freeOrder: true => todos os checkpoints desta zona ficam liberados de uma vez, sem bloqueio sequencial
+  { id: 'desafios',   label: 'Circuito de Desafios', freeOrder: true, bannerMsg: 'Circuito de Desafios completo! Você dominou todos os quizzes e games extras.', checkpoints: ['quiz-ipx', 'quiz-atendimento', 'quiz-instinct3', 'quiz-tecnico', 'game-duelo'] }
+];
+
+// lista plana, na ordem, derivada de GPS_ZONES — sempre recalculada a partir do array de zonas atual
+function gpsGetCheckpointOrder(){
+  return GPS_ZONES.flatMap(z => z.checkpoints);
+}
+
+// checkpoints que já nascem concluídos para qualquer pessoa (conteúdo legado, sem quiz retroativo)
+const GPS_DEFAULT_DONE = ['universo', 'perfis-modulo', 'produtos-modulo', 'concorrentes-modulo'];
+
+function gpsLoadAllProgress(){
+  try {
+    const raw = localStorage.getItem(GPS_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch(e){ return {}; }
+}
+
+function gpsSaveAllProgress(data){
+  try { localStorage.setItem(GPS_STORAGE_KEY, JSON.stringify(data)); } catch(e){}
+}
+
+function gpsGetActivePerson(){
+  try { return localStorage.getItem(GPS_ACTIVE_PERSON_KEY) || null; } catch(e){ return null; }
+}
+
+function gpsSetActivePerson(name){
+  try { localStorage.setItem(GPS_ACTIVE_PERSON_KEY, name); } catch(e){}
+}
+
+function gpsGetPersonProgress(name){
+  const all = gpsLoadAllProgress();
+  if(!all[name]){
+    all[name] = { done: GPS_DEFAULT_DONE.slice() };
+    gpsSaveAllProgress(all);
+  }
+  return all[name];
+}
+
+function gpsMarkCheckpointDone(name, checkpointId){
+  const all = gpsLoadAllProgress();
+  if(!all[name]) all[name] = { done: GPS_DEFAULT_DONE.slice() };
+  if(!all[name].done.includes(checkpointId)) all[name].done.push(checkpointId);
+  gpsSaveAllProgress(all);
+}
+
+function gpsInitials(name){
+  const parts = name.trim().split(' ').filter(Boolean);
+  if(parts.length === 0) return '?';
+  if(parts.length === 1) return parts[0].substring(0,2).toUpperCase();
+  return (parts[0][0] + parts[1][0]).toUpperCase();
+}
+
+function gpsOpenWhois(forceOpen){
+  const overlay = document.getElementById('gpsWhoisOverlay');
+  const list = document.getElementById('gpsWhoisList');
+  if(!overlay || !list) return;
+  if(list.children.length === 0 && typeof albumData !== 'undefined'){
+    albumData.filter(p => !p.vazio).forEach(p => {
+      const storeLabel = (p.loja || '').toString().toLowerCase() === 'moema' ? '🔵 Moema'
+        : (p.loja || '').toString().toLowerCase() === 'morumbi' ? '🟠 Morumbi'
+        : '🎯 Comissão';
+      const btn = document.createElement('button');
+      btn.className = 'gps-whois-item';
+      btn.innerHTML = `<span>${p.nome}</span><span class="gps-whois-store">${storeLabel}</span>`;
+      btn.onclick = () => gpsSelectPerson(p.nome);
+      list.appendChild(btn);
+    });
+  }
+  overlay.classList.add('open');
+}
+
+function gpsCloseWhois(){
+  const overlay = document.getElementById('gpsWhoisOverlay');
+  if(overlay) overlay.classList.remove('open');
+}
+
+function gpsSelectPerson(name){
+  gpsSetActivePerson(name);
+  gpsCloseWhois();
+  gpsGetPersonProgress(name); // garante progresso inicial gravado
+  initGpsHud();
+}
+
+function gpsGoTo(panelId){
+  if(event && event.currentTarget && event.currentTarget.classList.contains('locked')) return;
+  openPanel(panelId);
+}
+
+// função núcleo: marca um checkpoint como concluído para a pessoa ativa do GPS,
+// dispara confete se a zona inteira foi concluída agora, e atualiza o HUD se estiver na tela.
+// Pode ser chamada tanto pelo botão manual quanto automaticamente por quizzes/games aprovados.
+function gpsAutoCompleteCheckpoint(checkpointId){
+  const activePerson = gpsGetActivePerson();
+  if(!activePerson) return false; // sem pessoa identificada neste PC, não há onde gravar o progresso
+
+  const already = (gpsGetPersonProgress(activePerson).done || []).includes(checkpointId);
+  gpsMarkCheckpointDone(activePerson, checkpointId);
+
+  const zone = GPS_ZONES.find(z => z.checkpoints.includes(checkpointId));
+  let zoneJustCompleted = false;
+  if(zone && !already){
+    const progress = gpsGetPersonProgress(activePerson);
+    const doneSet = new Set(progress.done || []);
+    zoneJustCompleted = zone.checkpoints.every(cp => doneSet.has(cp));
+  }
+
+  // se o painel de formação estiver montado na tela, atualiza o HUD/percurso na hora
+  if(document.getElementById('gpsRoute')) initGpsHud();
+  if(zoneJustCompleted) setTimeout(() => gpsConfetti(), 200);
+  return true;
+}
+
+function gpsMarkDoneClick(evt, checkpointId){
+  if(evt) evt.stopPropagation();
+  const activePerson = gpsGetActivePerson();
+  if(!activePerson){
+    gpsOpenWhois(false);
+    return;
+  }
+  gpsMarkCheckpointDone(activePerson, checkpointId);
+
+  // se esse era o último checkpoint pendente da zona, a zona acabou de ser concluída agora
+  const zone = GPS_ZONES.find(z => z.checkpoints.includes(checkpointId));
+  let zoneJustCompleted = false;
+  if(zone){
+    const progress = gpsGetPersonProgress(activePerson);
+    const doneSet = new Set(progress.done || []);
+    zoneJustCompleted = zone.checkpoints.every(cp => doneSet.has(cp));
+  }
+
+  initGpsHud();
+  if(zoneJustCompleted){
+    setTimeout(() => gpsConfetti(), 200);
+  }
+}
+
+function initGpsHud(){
+  const route = document.getElementById('gpsRoute');
+  if(!route) return;
+
+  const activePerson = gpsGetActivePerson();
+  const nameEl = document.getElementById('gpsUserName');
+  const avatarEl = document.getElementById('gpsUserAvatar');
+
+  if(!activePerson){
+    if(nameEl) nameEl.textContent = 'Quem é você?';
+    if(avatarEl) avatarEl.textContent = '?';
+    gpsOpenWhois(false);
+    // ainda assim renderiza o percurso com o progresso padrão (não-personalizado) por baixo do modal
+  } else {
+    if(nameEl) nameEl.textContent = activePerson;
+    if(avatarEl) avatarEl.textContent = gpsInitials(activePerson);
+  }
+
+  const progress = gpsGetPersonProgress(activePerson || '__preview__');
+  const doneSet = new Set(progress.done || []);
+
+  // recalcula classes done/current/locked de cada checkpoint, zona por zona.
+  // zonas sequenciais: só o primeiro pendente da zona fica "current", o resto "locked".
+  // zonas freeOrder (ex: Circuito de Desafios): todo pendente fica "current" — não há ordem a respeitar.
+  // cada checkpoint pode existir em dois formatos de card: .gps-checkpoint (trilha principal) ou .gps-branch-card (ramal lateral)
+  GPS_ZONES.forEach(zone => {
+    let firstPendingFoundInZone = false;
+    zone.checkpoints.forEach(cpId => {
+      const isDone = doneSet.has(cpId);
+      const isCurrent = zone.freeOrder || !firstPendingFoundInZone;
+      if(!isDone && isCurrent) firstPendingFoundInZone = true;
+
+      // formato 1: card da trilha principal vertical
+      const el = route.querySelector(`.gps-checkpoint[data-checkpoint="${cpId}"]`);
+      if(el){
+        const statusEl = el.querySelector('.gps-checkpoint-status');
+        const nodeEl = el.querySelector('.gps-checkpoint-node');
+        el.classList.remove('done','current','locked');
+        if(isDone){
+          el.classList.add('done');
+          if(statusEl) statusEl.innerHTML = '✓ Concluído';
+          if(nodeEl) nodeEl.textContent = '✓';
+        } else if(isCurrent){
+          el.classList.add('current');
+          if(statusEl) statusEl.innerHTML = `<button class="gps-checkpoint-markdone-btn" onclick="gpsMarkDoneClick(event,'${cpId}')">✓ Já concluí</button>`;
+        } else {
+          el.classList.add('locked');
+          if(statusEl) statusEl.innerHTML = '🔒 Bloqueado';
+        }
+      }
+
+      // formato 2: card compacto do ramal lateral (Circuito de Desafios)
+      const branchEl = document.querySelector(`.gps-branch-card[data-checkpoint="${cpId}"]`);
+      if(branchEl){
+        const checkEl = branchEl.querySelector('.gps-branch-card-check');
+        branchEl.classList.toggle('done', isDone);
+        if(checkEl) checkEl.textContent = isDone ? '✓' : '○';
+      }
+    });
+  });
+
+  // mostra/esconde o banner de "zona concluída" dinamicamente por zona, conforme o progresso real da pessoa
+  GPS_ZONES.forEach(zone => {
+    const zoneComplete = zone.checkpoints.every(cp => doneSet.has(cp));
+    const banner = route.querySelector(`.gps-checkpoint-zone-clear[data-zone="${zone.id}"]`);
+    if(banner) banner.style.display = zoneComplete ? 'flex' : 'none';
+    // banner especial do ramal lateral (Circuito de Desafios), fora da trilha vertical principal
+    if(zone.id === 'desafios'){
+      const branchBanner = document.getElementById('gpsBranchZoneClear');
+      if(branchBanner) branchBanner.style.display = zoneComplete ? 'flex' : 'none';
+    }
+  });
+
+  const allCheckpointIds = gpsGetCheckpointOrder();
+  const total = allCheckpointIds.length;
+  const done = allCheckpointIds.filter(id => doneSet.has(id)).length;
+  const current = total - done; // todo pendente está sempre "disponível" em algum formato (current ou no topo da fila bloqueada)
+
+  const pct = total ? Math.round((done / total) * 100) : 0;
+  const xp = done * GPS_XP_POR_CHECKPOINT;
+
+  const pctEl = document.getElementById('gpsHudPercent');
+  const cpEl = document.getElementById('gpsHudCheckpoints');
+  const xpEl = document.getElementById('gpsHudXp');
+  const barFill = document.getElementById('gpsHudBarFill');
+  const caption = document.getElementById('gpsHudCaption');
+  const lineFill = document.getElementById('gpsRouteLineFill');
+
+  if(pctEl) pctEl.innerHTML = pct + '<span class="unit">%</span>';
+  if(cpEl) cpEl.innerHTML = done + '<span class="unit">/' + total + '</span>';
+  if(xpEl) xpEl.innerHTML = xp + '<span class="unit">pts</span>';
+
+  setTimeout(() => { if(barFill) barFill.style.width = pct + '%'; }, 150);
+
+  if(lineFill && route){
+    const routeHeight = route.scrollHeight;
+    setTimeout(() => { lineFill.style.height = (routeHeight * (pct/100)) + 'px'; }, 150);
+  }
+
+  if(caption){
+    if(!activePerson) caption.textContent = 'Escolha seu nome para começar a acompanhar seu progresso individual.';
+    else if(pct >= 100) caption.textContent = 'Percurso completo! Você é Triatleta certificado. 🏆';
+    else if(current > 0) caption.textContent = 'Continue pelos checkpoints em vermelho para avançar no percurso.';
+    else caption.textContent = 'Conclua os módulos em ordem, acerte o quiz com 70%+ e avance no percurso.';
+  }
+}
+
+function gpsConfetti(){
+  const colors = ['#E31020','#00C2A8','#F0A500','#9b59b6','#4a90e2'];
+  const count = 60;
+  for(let i = 0; i < count; i++){
+    const piece = document.createElement('div');
+    piece.className = 'gps-confetti-piece';
+    const size = 6 + Math.random() * 6;
+    const startX = Math.random() * window.innerWidth;
+    const duration = 1.8 + Math.random() * 1.4;
+    const delay = Math.random() * 0.4;
+    piece.style.left = startX + 'px';
+    piece.style.width = size + 'px';
+    piece.style.height = (size * 0.4) + 'px';
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.transform = 'rotate(' + (Math.random() * 360) + 'deg)';
+    piece.style.animation = 'gpsConfettiFall ' + duration + 's ease-in ' + delay + 's forwards';
+    document.body.appendChild(piece);
+    setTimeout(() => piece.remove(), (duration + delay) * 1000 + 200);
+  }
+}
+
+/* ══════════════════════════════════════════
+   QUIZ — CORREDOR · MÓDULO 2 — ECOSSISTEMA GARMIN COACHES
+   ══════════════════════════════════════════ */
+const quizDataCorredor2 = [
+  {
+    q: 'O que é o Garmin Coach, em uma frase para o cliente?',
+    opts: [
+      'Um conjunto de planilhas de treino em PDF que vêm com o relógio',
+      'Um serviço de consultoria esportiva gratuito, com planos de treino adaptativos dentro do Garmin Connect',
+      'Um curso pago dentro do Connect IQ Store',
+      'Um aplicativo separado que precisa ser comprado'
+    ],
+    correct: 1,
+    exp: 'O Garmin Coach é uma plataforma de planos de treinamento dinâmicos e adaptáveis, gratuita, disponível no app Garmin Connect — não é só um recurso, é um serviço de consultoria esportiva que fideliza o cliente.'
+  },
+  {
+    q: 'Qual é a principal diferença entre o Garmin Coach e uma planilha de treino estática em PDF?',
+    opts: [
+      'O Coach é mais bonito visualmente, mas o conteúdo é o mesmo',
+      'O Coach usa algoritmos que leem sono, estresse e HRV para adaptar o plano automaticamente ao desempenho real',
+      'A planilha em PDF é mais precisa porque foi feita por um humano',
+      'Não há diferença real, ambos seguem o calendário fixo'
+    ],
+    correct: 1,
+    exp: 'O Coach lê métricas de saúde (sono, estresse, HRV) e cruza com o desempenho nos treinos para adaptar o plano em tempo real — algo impossível numa planilha estática.'
+  },
+  {
+    q: 'Um cliente perdeu dois treinos na semana e dormiu mal na véspera. O que o Garmin Coach faz?',
+    opts: [
+      'Mantém o plano idêntico, sem considerar isso',
+      'Cancela o plano automaticamente',
+      'Adapta o plano reduzindo a intensidade ou sugerindo descanso, para evitar lesão e manter o caminho até a meta',
+      'Envia uma notificação de erro pedindo para reiniciar o app'
+    ],
+    correct: 2,
+    exp: 'Esse é o cenário clássico de adaptação: o plano reage ao sono ruim ou aos treinos perdidos, ajustando a carga para baixo e evitando lesões — sem tirar o usuário do caminho da meta.'
+  },
+  {
+    q: 'O que é o Tapering (Polimento) e por que ele é importante perto da prova?',
+    opts: [
+      'É um aumento de volume de treino na última semana para "chegar afiado"',
+      'É a redução estratégica do volume de treino conforme a prova se aproxima, para o corpo recuperar energia e atingir o ápice da performance',
+      'É um tipo de alongamento feito só no dia da prova',
+      'É a fase em que o atleta troca de treinador no plano'
+    ],
+    correct: 1,
+    exp: 'O Tapering reduz o volume propositalmente nos dias antes da prova, permitindo que o corpo recupere energia e chegue no auge de performance no dia do evento.'
+  },
+  {
+    q: 'Quais são os 4 pilares de valor do Garmin Coach para o cliente?',
+    opts: [
+      'Emagrecer, dormir melhor, comer melhor e gastar menos',
+      'Treinar para um evento, alcançar um marco, melhorar o condicionamento físico e ganhar força',
+      'Comprar acessórios, sincronizar música, usar Garmin Pay e configurar notificações',
+      'Correr mais rápido, pedalar mais, nadar melhor e jogar golfe'
+    ],
+    correct: 1,
+    exp: 'Os 4 pilares são: treinar para um evento específico, alcançar um marco (como o primeiro 5K), melhorar o condicionamento físico geral e ganhar força.'
+  },
+  {
+    q: 'Um cliente está voltando de uma lesão e quer recomeçar a correr com segurança. Qual treinador dos Planos Expert você indica?',
+    opts: [
+      'Greg McMillan, focado em fisiologia avançada de ritmo',
+      'Amy Parkerson-Mitchell, fisioterapeuta focada em mecânica corporal',
+      'Jeff Galloway, com o método Run Walk Run (corrida-caminhada-corrida)',
+      'Não existe um treinador específico para esse caso'
+    ],
+    correct: 2,
+    exp: 'Jeff Galloway é o mais indicado para iniciantes ou retorno de lesões, usando o método Run Walk Run — alterna corrida e caminhada para reduzir o impacto.'
+  },
+  {
+    q: 'Para planos de ciclismo no Garmin Coach, qual é o requisito técnico obrigatório?',
+    opts: [
+      'Ter um smartwatch Garmin com tela AMOLED',
+      'Estar conectado ao Wi-Fi durante todo o pedal',
+      'Usar Monitor de Frequência Cardíaca ou Medidor de Potência (o uso de ambos é recomendado)',
+      'Ter assinatura do Garmin Connect+'
+    ],
+    correct: 2,
+    exp: 'É obrigatório o uso de Monitor de FC ou Medidor de Potência para planos de ciclismo — usar os dois juntos é recomendado para máxima precisão dos dados.'
+  },
+  {
+    q: 'O que diferencia o Garmin Connect+ no contexto do Triatlo?',
+    opts: [
+      'Permite criar planos de mais de um esporte ao mesmo tempo, sem limite',
+      'Oferece vídeos exclusivos e conteúdo educacional de especialistas para técnica de transição e natação',
+      'É obrigatório para qualquer plano de corrida',
+      'Substitui a necessidade de monitor de FC'
+    ],
+    correct: 1,
+    exp: 'O Garmin Connect+ é um upgrade de experiência que adiciona vídeos exclusivos e conteúdo educacional de especialistas, voltado para ajudar na técnica de transição e natação no Triatlo.'
+  },
+  {
+    q: 'O que são as sessões "Two-a-day" mencionadas no módulo de Triatlo?',
+    opts: [
+      'Dois planos de Garmin Coach ativos ao mesmo tempo',
+      'Dois treinos estruturados realizados no mesmo dia',
+      'Um treino que dura duas horas seguidas',
+      'Uma função exclusiva do Connect+ para revisão de vídeo'
+    ],
+    correct: 1,
+    exp: 'Two-a-day são dois treinos estruturados no mesmo dia — algo comum na rotina de triatletas, que o Garmin Coach permite agendar, incluindo dias específicos de piscina.'
+  },
+  {
+    q: 'O cliente diz que o Garmin Coach não aparece no app dele. Qual é o primeiro passo de troubleshooting?',
+    opts: [
+      'Reinstalar o aplicativo do zero',
+      'Comprar um relógio novo, pois o modelo dele é incompatível',
+      'Atualizar o software do relógio via Garmin Express no PC/Mac',
+      'Desativar o Bluetooth do celular e reconectar'
+    ],
+    correct: 2,
+    exp: 'O Garmin Express é essencial para atualizar o software do relógio. Se o Coach não aparece, a primeira orientação é atualizar via PC/Mac antes de qualquer outra ação.'
+  },
+  {
+    q: 'O cliente quer mover um treino de ciclismo autoguiado para outro dia no calendário. Como ele faz isso?',
+    opts: [
+      'Direto pelo aplicativo no celular, como qualquer outro treino',
+      'É obrigatório usar o Garmin Connect Web para mover treinos de ciclismo autoguiado',
+      'Não é possível reagendar treinos de ciclismo, apenas de corrida',
+      'Precisa entrar em contato com o suporte Garmin'
+    ],
+    correct: 1,
+    exp: 'Para Corrida e Força o reagendamento pode ser feito direto pelo app, mas para Ciclismo Autoguiado é obrigatório usar o Garmin Connect Web para mover treinos no calendário.'
+  },
+  {
+    q: 'Qual é a diferença prática entre "Pausar" e "Sair" de um plano Garmin Coach?',
+    opts: [
+      'Pausar e Sair têm exatamente o mesmo efeito',
+      'Pausar mantém o progresso; Sair remove todos os treinos futuros, e o usuário precisa começar um plano do zero para voltar',
+      'Pausar é só para planos de corrida; Sair é só para planos de ciclismo',
+      'Sair mantém o progresso; Pausar apaga todo o histórico'
+    ],
+    correct: 1,
+    exp: 'Pausar mantém o progresso intacto. Sair do plano remove todos os treinos futuros — os já concluídos continuam no calendário, mas para voltar é necessário iniciar um plano novo do zero.'
+  },
+  {
+    q: 'Durante um treino guiado, por que o relógio mostra o ritmo médio da etapa/lap atual, e não o ritmo instantâneo?',
+    opts: [
+      'Porque o GPS multibanda não permite leitura instantânea',
+      'Isso é vital para manter a constância em intervalos longos, evitando que pequenas variações de passo distorçam a leitura',
+      'É uma limitação de bateria do relógio',
+      'Só ocorre em modelos de entrada, como o Forerunner 55'
+    ],
+    correct: 1,
+    exp: 'Mostrar a média da etapa/lap atual (em vez do ritmo instantâneo ou por km fechado) ajuda o atleta a manter constância em treinos de intervalo longos, sem reagir a oscilações momentâneas.'
+  },
+  {
+    q: 'Um cliente configurou um plano de Garmin Coach só com o objetivo de "completar a distância", sem meta de tempo. O que acontece com o Confidence Score?',
+    opts: [
+      'Ele aparece em vermelho automaticamente',
+      'Ele fica oculto, pois o Confidence Score só aparece quando há uma Meta de Tempo/Ritmo definida',
+      'Ele aparece sempre em roxo, indicando que está excedendo a meta',
+      'O Confidence Score não existe no Garmin Coach, apenas em planos Expert'
+    ],
+    correct: 1,
+    exp: 'O Confidence Score só aparece se o usuário definir uma Meta de Tempo/Ritmo. Se o objetivo for apenas completar a distância, o score fica oculto — é uma nota técnica importante para não gerar confusão na demonstração ao cliente.'
+  }
+];
+
+let currentQCorredor2 = 0, scoreCorredor2 = 0, answeredCorredor2 = false, wrongCorredor2 = [];
+
+function initQuizCorredor2(){
+  currentQCorredor2 = 0; scoreCorredor2 = 0; answeredCorredor2 = false; wrongCorredor2 = [];
+  renderQuizCorredor2();
+}
+
+function renderQuizCorredor2(){
+  const q = quizDataCorredor2[currentQCorredor2];
+  const bar = document.getElementById('quizBarCorredor2');
+  if(bar) bar.style.width = (currentQCorredor2 / quizDataCorredor2.length * 100) + '%';
+  const content = document.getElementById('quizContentCorredor2');
+  if(!content) return;
+  content.innerHTML = `
+    <div class="quiz-q-num">Pergunta ${currentQCorredor2+1} de ${quizDataCorredor2.length}</div>
+    <div class="quiz-q">${q.q}</div>
+    <div class="quiz-options">${q.opts.map((o,i) => `<button class="quiz-opt" onclick="answerCorredor2(${i})" id="copt2-${i}">${o}</button>`).join('')}</div>
+    <div class="quiz-feedback" id="quizFeedbackCorredor2"></div>
+    <div class="quiz-nav"><button class="quiz-btn" id="nextBtnCorredor2" onclick="nextCorredor2()" disabled>${currentQCorredor2 < quizDataCorredor2.length-1 ? 'Próxima →' : 'Ver Resultado'}</button></div>
+  `;
+  answeredCorredor2 = false;
+}
+
+function answerCorredor2(i){
+  if(answeredCorredor2) return;
+  answeredCorredor2 = true;
+  const q = quizDataCorredor2[currentQCorredor2];
+  document.querySelectorAll('#quizContentCorredor2 .quiz-opt').forEach(b => b.classList.add('disabled'));
+  const fb = document.getElementById('quizFeedbackCorredor2');
+  if(i === q.correct){
+    document.getElementById('copt2-'+i).classList.add('correct');
+    fb.className = 'quiz-feedback show ok';
+    fb.textContent = '✅ Correto! ' + q.exp;
+    scoreCorredor2++;
+  } else {
+    document.getElementById('copt2-'+i).classList.add('wrong');
+    document.getElementById('copt2-'+q.correct).classList.add('correct');
+    fb.className = 'quiz-feedback show fail';
+    fb.textContent = '❌ Incorreto. ' + q.exp;
+    wrongCorredor2.push('Q'+(currentQCorredor2+1)+' — '+q.q.substring(0,65)+'...');
+  }
+  document.getElementById('nextBtnCorredor2').disabled = false;
+  setTimeout(() => fb.scrollIntoView({behavior:'smooth', block:'nearest'}), 100);
+}
+
+function nextCorredor2(){
+  currentQCorredor2++;
+  if(currentQCorredor2 < quizDataCorredor2.length) renderQuizCorredor2();
+  else showResultCorredor2();
+}
+
+function showResultCorredor2(){
+  const pct = Math.round(scoreCorredor2 / quizDataCorredor2.length * 100);
+  const passed = pct >= 70;
+  const bar = document.getElementById('quizBarCorredor2');
+  if(bar) bar.style.width = '100%';
+  const content = document.getElementById('quizContentCorredor2');
+  if(!content) return;
+  content.innerHTML = `
+    <div class="quiz-result">
+      <div class="quiz-result-emoji">${passed ? '🎉' : '📚'}</div>
+      <div class="quiz-result-title" style="color:${passed ? 'var(--acc)' : 'var(--warn)'};">${passed ? 'Aprovado! Módulo concluído.' : 'Continue estudando!'}</div>
+      <div class="quiz-result-score">Você acertou <strong>${scoreCorredor2}</strong> de ${quizDataCorredor2.length} questões — <strong>${pct}%</strong></div>
+      ${passed ? `
+        <div class="register-form" id="registerFormCorredor2">
+          <label class="register-label">📝 Registre sua conclusão — informe seu nome completo</label>
+          <input type="text" class="register-input" id="regNameCorredor2" placeholder="Ex: João Silva" maxlength="60" onkeydown="if(event.key==='Enter') registerCorredor2(${pct})">
+          <button class="register-btn" onclick="registerCorredor2(${pct})">Registrar Conclusão ✓</button>
+          <div class="register-success" id="regSuccessCorredor2">✅ Registrado com sucesso! Resultado enviado para a liderança.</div>
+        </div>` : ''}
+      <div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+        ${!passed ? '<button class="quiz-btn" style="background:var(--text2);" onclick="initQuizCorredor2()">↺ Tentar Novamente</button>' : ''}
+        <button class="quiz-btn" onclick="openPanel(\'formacao\')">← Formação</button>
+      </div>
+    </div>`;
+}
+
+async function registerCorredor2(pct){
+  const nameInput = document.getElementById('regNameCorredor2');
+  const name = nameInput ? nameInput.value.trim() : '';
+  if(!name){ if(nameInput) nameInput.style.borderColor = 'var(--warn)'; return; }
+  const btn = document.querySelector('#registerFormCorredor2 .register-btn');
+  if(!btn) return;
+  btn.textContent = 'Enviando...'; btn.disabled = true;
+  const now = new Date();
+  const data = now.toLocaleDateString('pt-BR');
+  const hora = now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  const erradas = wrongCorredor2.length > 0 ? '\n\n❌ Questões erradas:\n' + wrongCorredor2.map(q => '• ' + q).join('\n') : '\n\n✅ Nenhuma questão errada!';
+  try {
+    await emailjs.send(EMAILJS_SERVICE, EMAILJS_TEMPLATE,{
+      nome: name,modulo: 'CORREDOR · Módulo 2 — Ecossistema Garmin Coaches',
+      nota: pct + '%',
+      acertos: scoreCorredor2 + '/' + quizDataCorredor2.length,
+      status: pct >= 70 ? '✅ APROVADO' : '❌ Não atingiu 70%',
+      data: data,
+      hora: hora,
+      erradas: erradas
+    });
+    const suc = document.getElementById('regSuccessCorredor2');
     if(suc) suc.style.display = 'block';
     btn.style.display = 'none';
   } catch(e){
