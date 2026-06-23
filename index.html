@@ -25,6 +25,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--off);color:var(--text);mi
 
 /* HEADER */
 header{background:#0a0a0a;border-bottom:1px solid #1e1e1e;position:sticky;top:0;z-index:300;padding:0 20px;box-shadow:0 4px 24px rgba(0,0,0,0.6);}
+body.on-brand-selector header{display:none;}
 .header-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:10px 0;gap:12px;}
 .brand{display:flex;align-items:center;gap:12px;}
 .brand-wordmark{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-style:italic;font-size:26px;color:#fff;letter-spacing:1px;text-transform:uppercase;line-height:1;}
@@ -1043,13 +1044,13 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
 .gps-hud-user-swap{font-size:9px;color:rgba(255,255,255,0.45);}
 </style>
 </head>
-<body>
+<body class="on-brand-selector">
 
 <!-- HEADER -->
 <header>
   <div class="header-inner">
     <div class="brand">
-      <span class="brand-wordmark">PROPARTS</span>
+      <img src="logo-branco.png" alt="Proparts" style="height:22px;width:auto;">
       <div class="brand-divider"></div>
       <div class="brand-label">Training <span>Hub</span></div>
     </div>
@@ -2942,6 +2943,7 @@ function enterPortal(brand) {
   if (brand === 'garmin') {
     document.getElementById('brandSelector').style.display = 'none';
     document.getElementById('home').style.display = 'block';
+    document.body.classList.remove('on-brand-selector');
     const btn = document.getElementById('headerMarcasBtn');
     const badge = document.getElementById('headerPortalBadge');
     if (btn) btn.classList.add('visible');
@@ -2954,6 +2956,7 @@ function backToBrands() {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.getElementById('home').style.display = 'none';
   document.getElementById('brandSelector').style.display = 'block';
+  document.body.classList.add('on-brand-selector');
   const btn = document.getElementById('headerMarcasBtn');
   const badge = document.getElementById('headerPortalBadge');
   if (btn) btn.classList.remove('visible');
@@ -2965,6 +2968,7 @@ function backToBrands() {
 function openPanel(id) {
   document.getElementById('home').style.display = 'none';
   document.getElementById('brandSelector').style.display = 'none';
+  document.body.classList.remove('on-brand-selector');
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   const panel = document.getElementById('panel-' + id);
   if (panel) {
