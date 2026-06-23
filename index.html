@@ -52,9 +52,9 @@ header{background:#0a0a0a;border-bottom:1px solid #1e1e1e;position:sticky;top:0;
 .bs-sub{font-size:13px;color:rgba(255,255,255,0.45);letter-spacing:1px;margin-bottom:48px;text-align:center;}
 .bs-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;max-width:920px;width:100%;}
 .bs-card{border-radius:16px;padding:32px 28px;cursor:pointer;transition:all 0.25s;position:relative;overflow:hidden;border:2px solid transparent;}
-.bs-card.available{background:linear-gradient(135deg,rgba(22,22,22,0.92),rgba(30,30,30,0.92));border-color:#333;backdrop-filter:blur(2px);}
+.bs-card.available{background:linear-gradient(135deg,rgba(38,38,40,0.88),rgba(48,48,52,0.88));border-color:#3d3d3d;backdrop-filter:blur(2px);}
 .bs-card.available:hover{border-color:var(--g);transform:translateY(-4px);box-shadow:0 20px 48px rgba(227,16,32,0.25);}
-.bs-card.locked{background:linear-gradient(135deg,rgba(17,17,17,0.85),rgba(22,22,22,0.85));border-color:#222;cursor:not-allowed;opacity:0.6;backdrop-filter:blur(2px);}
+.bs-card.locked{background:linear-gradient(135deg,rgba(32,32,34,0.8),rgba(38,38,40,0.8));border-color:#333;cursor:not-allowed;opacity:0.65;backdrop-filter:blur(2px);}
 .bs-card-logo{font-size:40px;margin-bottom:16px;}
 .bs-card-name{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:22px;letter-spacing:2px;text-transform:uppercase;color:#fff;margin-bottom:4px;}
 .bs-card-desc{font-size:12px;color:rgba(255,255,255,0.45);line-height:1.5;margin-bottom:16px;}
@@ -75,7 +75,14 @@ header{background:#0a0a0a;border-bottom:1px solid #1e1e1e;position:sticky;top:0;
 
 /* HOME HERO */
 #home{display:none;}
-.home-hero{background:#0a0a0a;color:#fff;padding:32px 20px 28px;position:relative;overflow:hidden;}
+.home-hero{
+  background:
+    linear-gradient(180deg,rgba(10,10,10,0.88) 0%,rgba(10,10,10,0.80) 40%,rgba(10,10,10,0.92) 100%),
+    url('bg-home.jpg');
+  background-size:cover;
+  background-position:center 35%;
+  color:#fff;padding:32px 20px 28px;position:relative;overflow:hidden;
+}
 .home-hero::before{content:'';position:absolute;right:-60px;top:-60px;width:240px;height:240px;border-radius:50%;background:rgba(227,16,32,0.10);}
 .home-hero::after{content:'';position:absolute;left:-40px;bottom:-80px;width:200px;height:200px;border-radius:50%;background:rgba(227,16,32,0.05);}
 .hero-inner{max-width:1100px;margin:0 auto;position:relative;z-index:1;text-align:center;}
@@ -1064,7 +1071,7 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
     <div class="bs-eyebrow">portal de treinamento</div>
     <img src="logo-branco.png" alt="Proparts" style="height:48px;width:auto;margin-bottom:16px;">
     <div class="bs-title"><span>Training</span> Hub</div>
-    <div class="bs-sub">Selecione a marca para acessar o portal</div>
+    <div class="bs-sub">Selecione a marca para acessar o portal · Uso Interno da Equipe</div>
 
     <div class="bs-grid">
       <!-- GARMIN — DISPONÍVEL -->
@@ -1073,7 +1080,7 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
         <div class="bs-card-stripe"></div>
         <div class="bs-card-logo">⌚</div>
         <div class="bs-card-name">Garmin</div>
-        <div class="bs-card-desc"></div>
+        <div class="bs-card-desc">Catálogo completo, perfis de cliente, scripts de venda, quiz e certificação.</div>
         <div class="bs-card-btn">Acessar Portal →</div>
       </div>
 
@@ -1083,7 +1090,7 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
         <div class="bs-card-stripe"></div>
         <div class="bs-card-logo">🎧</div>
         <div class="bs-card-name">Shokz</div>
-        <div class="bs-card-desc">Fones de condução óssea</div>
+        <div class="bs-card-desc">Fones de condução óssea — linha OpenRun, OpenFit e mais.</div>
         <div class="bs-card-btn">Acessar Portal →</div>
       </div>
 
@@ -1113,7 +1120,7 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
     <div class="hero-inner">
       <div class="hero-greeting">proparts training hub · portal garmin</div>
       <div class="hero-title">GARMIN <span>Training</span></div>
-      <div class="hero-sub">Ferramentas de Venda & Formação</div>
+      <div class="hero-sub">Equipe Interna · Ferramentas de Venda & Formação</div>
     </div>
   </div>
 
@@ -3085,13 +3092,13 @@ const albumData = [
   },
   {
     num:'02', nome:'Mariana Muzzio', loja:'Comissão Técnica', classe:'Explorador', raro:false, selo:'⭐⭐⭐⭐⭐',
-    especialidade:'Cuidar do Fefe', relogio:'955', esporte:'', avatar:'', emoji:'', pontaDoMes:false,
+    especialidade:'Cuidar do Fefe', relogio:'955', esporte:'', avatar:'🫩', emoji:'', pontaDoMes:false,
     frase:'Quer sucesso? Encare o processo!',
     attrs:{Produto:90, Ritmo:100, Precisão:85, Jogo:95}, reputacao:8
   },
   { num:'03', nome:'Ailma Ferraz', loja:'morumbi', classe:'Corredor', raro:false, selo:'', especialidade:'Gestão', relogio:'Venu 3 Marfim', esporte:'Caminhada', avatar:'', emoji:'😉', pontaDoMes:false, frase:'O sucesso é a soma de pequenos esforços repetidos dia após dia.', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:0 },
   { num:'04', nome:'Daniel',  loja:'morumbi', classe:'Corredor', raro:false, selo:'', especialidade:'', relogio:'', esporte:'', avatar:'', emoji:'', pontaDoMes:false, frase:'', attrs:{Produto:5,Ritmo:0,Precisão:0,Jogo:0}, reputacao:14 },
-  { num:'05', nome:'Fabio Borges', loja:'morumbi', classe:'Corredor', raro:false, selo:'', especialidade:'Métricas de saúde', relogio:'Mk3i 43mm', esporte:'Corrida', avatar:'', emoji:'👽', pontaDoMes:false, frase:'Você só falha quando desiste.', attrs:{Produto:5,Ritmo:0,Precisão:0,Jogo:0}, reputacao:4 },
+  { num:'05', nome:'Fabio Borges', loja:'morumbi', classe:'Corredor', raro:false, selo:'', especialidade:'Métricas de saúde', relogio:'Mk3i 43mm', esporte:'Corrida', avatar:'', emoji:'👽', pontaDoMes:false, frase:'Você só falha quando desiste.', attrs:{Produto:5,Ritmo:0,Precisão:0,Jogo:0}, reputacao:9 },
   { num:'06', nome:'Gustavo Morais', loja:'morumbi', classe:'Corredor', raro:false, selo:'', especialidade:'Atendimento diferenciado', relogio:'Fênix 8 Amoled', esporte:'Musculação', avatar:'', emoji:'🥲', pontaDoMes:true, frase:'Socorro!', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:18 },
   { num:'07', nome:'Joyce Souza', loja:'morumbi', classe:'Corredor', raro:false, selo:'', especialidade:'', relogio:'Venu 3s', esporte:'', avatar:'', emoji:'😉', pontaDoMes:false, frase:'O sucesso é a soma de pequenos esforços repetidos dia após dia.', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:5 },
   { num:'08', nome:'Mayara Freire', loja:'morumbi', classe:'Corredor', raro:false, selo:'', especialidade:'Cintas cardíacas', relogio:'Venu 4', esporte:'', avatar:'', emoji:'🫩', pontaDoMes:false, frase:'A sua principal motivação é você mesmo!', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:19 },
