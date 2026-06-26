@@ -3107,9 +3107,9 @@ const albumData = [
   { num:'07', nome:'Joyce Souza', loja:'morumbi', classe:'Corredor', raro:false, selo:'', especialidade:'', relogio:'Venu 3s', esporte:'', avatar:'', emoji:'😉', pontaDoMes:false, frase:'O sucesso é a soma de pequenos esforços repetidos dia após dia.', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:5 },
   { num:'08', nome:'Mayara Freire', loja:'morumbi', classe:'Corredor', raro:false, selo:'', especialidade:'Cintas cardíacas', relogio:'Venu 4', esporte:'', avatar:'', emoji:'🫩', pontaDoMes:false, frase:'A sua principal motivação é você mesmo!', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:19 },
   { num:'09', nome:'Renato Dias', loja:'morumbi', classe:'Corredor', raro:false, selo:'', especialidade:'Configurações técnicas', relogio:'Venu 4 Cinza', esporte:'Taco', avatar:'', emoji:'🪃', pontaDoMes:false, frase:'Às vezes o primeiro metro é mais difícil do que o primeiro KM!', attrs:{Produto:5,Ritmo:0,Precisão:0,Jogo:0}, reputacao:9 },
-  { num:'10', nome:'Ribs',    loja:'moema',   classe:'Explorador', raro:false, selo:'', especialidade:'', relogio:'', esporte:'', avatar:'', emoji:'', pontaDoMes:false, frase:'', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:0 },
-  { num:'11', nome:'Beatriz', loja:'moema',   classe:'Explorador', raro:false, selo:'', especialidade:'', relogio:'', esporte:'', avatar:'', emoji:'', pontaDoMes:false, frase:'', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:15 },
-  { num:'12', nome:'Dayane',  loja:'moema',   classe:'Explorador', raro:false, selo:'', especialidade:'', relogio:'', esporte:'', avatar:'', emoji:'', pontaDoMes:false, frase:'', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:2 },
+  { num:'10', nome:'Ribli',   loja:'moema',   classe:'Explorador', raro:false, selo:'', especialidade:'Forerunner | Processos', relogio:'955', esporte:'Corrida, Jiu-jitsu, Academia e Ciclismo', avatar:'', emoji:'👑', pontaDoMes:false, frase:'Não existe arvore com galhos tão grandes que chegam ao céu sem raízes tão profundas que cheguem ao inferno.', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:0 },
+  { num:'11', nome:'Beatriz', loja:'moema',   classe:'Explorador', raro:false, selo:'', especialidade:'Suporte ao cliente', relogio:'Venu 4 Marfim', esporte:'Futebol', avatar:'', emoji:'🌷', pontaDoMes:false, frase:'Desistir não acelera a chegada', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:15 },
+  { num:'12', nome:'Dayane',  loja:'moema',   classe:'Explorador', raro:false, selo:'', especialidade:'Forerunner', relogio:'Venu 4 Lilás', esporte:'Academia', avatar:'', emoji:'🧠', pontaDoMes:false, frase:'Pra quem tem fé a vida nunca tem fim.', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:2 },
   { num:'13', nome:'William', loja:'moema',   classe:'Explorador', raro:false, selo:'', especialidade:'', relogio:'', esporte:'', avatar:'', emoji:'', pontaDoMes:false, frase:'', attrs:{Produto:0,Ritmo:0,Precisão:0,Jogo:0}, reputacao:0 },
   { num:'14', nome:'Salomão Setton', loja:'Comissão Técnica',   classe: 'Ultramaratonista', raro:false, selo:'', especialidade:'', relogio:'', esporte:'', avatar:'', emoji:'', pontaDoMes:false, frase:'', attrs:{Produto:100,Ritmo:70,Precisão:90,Jogo:30}, reputacao:0 },
   { num:'15', vazio:true },
@@ -7148,7 +7148,7 @@ function gpsGetCheckpointOrder(){
 }
 
 // checkpoints que já nascem concluídos para qualquer pessoa (conteúdo legado, sem quiz retroativo)
-const GPS_DEFAULT_DONE = ['universo', 'perfis-modulo', 'produtos-modulo', 'concorrentes-modulo'];
+const GPS_DEFAULT_DONE = ['universo', 'perfis-modulo', 'produtos-modulo', 'concorrentes-modulo', 'quiz-ipx', 'quiz-atendimento', 'quiz-instinct3', 'quiz-tecnico', 'game-duelo'];
 
 function gpsLoadAllProgress(){
   try {
