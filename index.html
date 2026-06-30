@@ -1936,6 +1936,33 @@ ul.bul li::before{content:'▸';position:absolute;left:0;color:var(--g);}
         </div>
       </div>
 
+      <!-- RAMAL LATERAL — CIRCUITO DE DESAFIOS NÍVEL 2 -->
+      <div class="gps-branch-wrap">
+        <svg class="gps-branch-svg" viewBox="0 0 46 220" preserveAspectRatio="none">
+          <path d="M 14 0 C 14 22, 36 18, 36 40 L 36 180 C 36 202, 14 198, 14 220" />
+        </svg>
+        <div class="gps-branch-header">
+          <div class="gps-branch-flag">🔬</div>
+          <div>
+            <div class="gps-branch-title">Circuito de Desafios · Nível 2</div>
+            <div class="gps-branch-sub">Técnico avançado — sem ordem fixa, responda quando quiser</div>
+          </div>
+        </div>
+        <div class="gps-branch-row" id="gpsBranchRow2">
+          <div class="gps-branch-card" data-checkpoint="quiz-cintas" onclick="gpsGoTo('quiz-cintas')">
+            <div class="gps-branch-card-top"><span class="gps-branch-card-emoji">❤️‍🔥</span><span class="gps-branch-card-check">○</span></div>
+            <div class="gps-branch-card-eyebrow">Quiz Especial</div>
+            <div class="gps-branch-card-name">Cintas Garmin</div>
+            <div class="gps-branch-card-desc">HRM-Fit, Pro Plus, HRM 200 e HRM 600.</div>
+            <button class="gps-branch-card-btn" onclick="event.stopPropagation();gpsGoTo('quiz-cintas')">Responder</button>
+          </div>
+        </div>
+        <div class="gps-branch-zone-clear" id="gpsBranchZoneClear2" onclick="gpsConfetti()">
+          <span style="font-size:18px;">🏁</span>
+          <div style="font-size:12px;color:var(--text);"><strong>Circuito Nível 2 completo!</strong> Você dominou as cintas de frequência cardíaca. <span style="color:var(--text3);">(toque para comemorar 🎉)</span></div>
+        </div>
+      </div>
+
       <!-- BANNER DE CHECKPOINT DE ZONA (visibilidade controlada por JS conforme progresso real da pessoa) -->
       <div class="gps-checkpoint-zone-clear" data-zone="corredor" onclick="gpsConfetti()" style="display:none;position:relative;margin:18px 0 6px;background:rgba(0,194,168,0.1);border:1.5px dashed rgba(0,194,168,0.4);border-radius:var(--r2);padding:12px 16px;align-items:center;gap:10px;cursor:pointer;">
         <span style="font-size:20px;">🏁</span>
@@ -3060,6 +3087,31 @@ function switchIRTab(showId, btn) {
   }
 }
 // ── ÁLBUM DE FIGURINHAS ───────────────────────────────────────
+// Metadados dos quizzes pra exibir como badges nas figurinhas do álbum.
+// id deve bater exatamente com o checkpoint usado em GPS_ZONES / openPanel.
+const QUIZ_BADGES = {
+  'quiz-ipx':         { emoji:'💧', nome:'IPX',        cor:'#0066cc' },
+  'quiz-atendimento': { emoji:'🎭', nome:'Atendimento', cor:'#cc5500' },
+  'quiz-instinct3':   { emoji:'⌚', nome:'Instinct 3',  cor:'#00C2A8' },
+  'quiz-tecnico':     { emoji:'🧠', nome:'Técnico',     cor:'#8855cc' },
+  'quiz-cintas':      { emoji:'❤️‍🔥', nome:'Cintas',     cor:'#c07000' },
+};
+
+// O atributo "Produto" do álbum reflete o quanto da trilha de conteúdo (quizzes + módulos)
+// a pessoa já completou, numa escala de 0 a 100. A meta total prevista é de 10 quizzes
+// + 20 módulos = 30 itens completáveis — então cada item vale 100/30 pontos.
+// Hoje só os quizzes existem de fato (em QUIZ_BADGES); quando os módulos forem criados,
+// é só somar a contagem deles aqui dentro de recalcProduto() do mesmo jeito.
+const PRODUTO_TOTAL_ITENS = 30; // 10 quizzes + 20 módulos (meta final)
+const PRODUTO_PONTOS_POR_ITEM = 100 / PRODUTO_TOTAL_ITENS; // ≈ 3,33 pontos por item concluído
+
+function recalcProduto(h){
+  const quizzesFeitos = (h.quizzes || []).length;
+  // const modulosFeitos = (h.modulos || []).length; // habilitar quando o sistema de módulos existir
+  const itensFeitos = quizzesFeitos /* + modulosFeitos */;
+  return Math.min(100, Math.round(itensFeitos * PRODUTO_PONTOS_POR_ITEM));
+}
+
 const classeConfig = {
   'Explorador': { cor:'#8a93a0', corBg:'rgba(138,147,160,0.12)', corBorda:'rgba(138,147,160,0.35)', emoji:'🧭', gradiente:'linear-gradient(135deg,#1a1d21,#2a2d35)' },
   'Corredor':   { cor:'#00C2A8', corBg:'rgba(0,194,168,0.12)',   corBorda:'rgba(0,194,168,0.4)',   emoji:'🏃', gradiente:'linear-gradient(135deg,#0a1a18,#0d2a26)' },
@@ -3090,28 +3142,30 @@ const lojaConfig = {
 const albumData = [
   {
     num:'01', nome:'Samara Pereira', loja:'Comissão Técnica', classe:'Corredor', raro:false, selo:'⭐⭐⭐⭐⭐',
-    especialidade:'🗺️ GPS de Mão', relogio:'Fenix 8S', esporte:'', avatar:'', emoji:'', pontaDoMes:false,
+    especialidade:'🗺️ GPS de Mão', relogio:'Fenix 8S', esporte:'', avatar:'', emoji:'⭐', pontaDoMes:false,
+    quizzes:['quiz-ipx','quiz-atendimento','quiz-instinct3','quiz-tecnico'],
     frase:'Tente de novo, falhe novamente. Falhe melhor.',
     attrs:{ Produto:92, Ritmo:88, Precisão:85, Jogo:90 }, reputacao:24
   },
   {
     num:'02', nome:'Mariana Muzzio', loja:'Comissão Técnica', classe:'Explorador', raro:false, selo:'⭐⭐⭐⭐⭐',
-    especialidade:'Cuidar do Fefe', relogio:'955', esporte:'', avatar:'', emoji:'', pontaDoMes:false,
+    especialidade:'Cuidar do Fefe', relogio:'955', esporte:'', avatar:'', emoji:'🫩', pontaDoMes:false,
+    quizzes:['quiz-ipx','quiz-atendimento','quiz-instinct3','quiz-tecnico'],
     frase:'Quer sucesso? Encare o processo!',
     attrs:{Produto:90, Ritmo:100, Precisão:85, Jogo:95}, reputacao:8
   },
-  { num:'03', nome:'Ailma Ferraz', loja:'morumbi', classe:'Corredor', raro:false, selo:'', especialidade:'Gestão', relogio:'Venu 3 Marfim', esporte:'Caminhada', avatar:'', emoji:'😉', pontaDoMes:false, frase:'O sucesso é a soma de pequenos esforços repetidos dia após dia.', attrs:{Produto:0,Ritmo:0,Precisão:63,Jogo:0}, reputacao:0 },
-  { num:'04', nome:'Daniel',  loja:'morumbi', classe:'Corredor', raro:false, selo:'', especialidade:'', relogio:'', esporte:'', avatar:'', emoji:'', pontaDoMes:false, frase:'', attrs:{Produto:5,Ritmo:0,Precisão:95,Jogo:0}, reputacao:14 },
-  { num:'05', nome:'Fabio Borges', loja:'morumbi', classe:'Corredor', raro:false, selo:'', especialidade:'Métricas de saúde', relogio:'Mk3i 43mm', esporte:'Corrida', avatar:'', emoji:'👽', pontaDoMes:false, frase:'Você só falha quando desiste.', attrs:{Produto:5,Ritmo:0,Precisão:32,Jogo:0}, reputacao:4 },
-  { num:'06', nome:'Gustavo Morais', loja:'morumbi', classe:'Corredor', raro:false, selo:'', especialidade:'Atendimento diferenciado', relogio:'Fênix 8 Amoled', esporte:'Musculação', avatar:'', emoji:'🥲', pontaDoMes:true, frase:'Socorro!', attrs:{Produto:0,Ritmo:0,Precisão:80,Jogo:0}, reputacao:18 },
-  { num:'07', nome:'Joyce Souza', loja:'morumbi', classe:'Corredor', raro:false, selo:'', especialidade:'', relogio:'Venu 3s', esporte:'', avatar:'', emoji:'😉', pontaDoMes:false, frase:'O sucesso é a soma de pequenos esforços repetidos dia após dia.', attrs:{Produto:0,Ritmo:0,Precisão:72,Jogo:0}, reputacao:5 },
-  { num:'08', nome:'Mayara Freire', loja:'morumbi', classe:'Corredor', raro:false, selo:'', especialidade:'Cintas cardíacas', relogio:'Venu 4', esporte:'', avatar:'', emoji:'🫩', pontaDoMes:false, frase:'A sua principal motivação é você mesmo!', attrs:{Produto:0,Ritmo:0,Precisão:100,Jogo:0}, reputacao:19 },
-  { num:'09', nome:'Renato Dias', loja:'morumbi', classe:'Corredor', raro:false, selo:'', especialidade:'Configurações técnicas', relogio:'Venu 4 Cinza', esporte:'Taco', avatar:'', emoji:'🪃', pontaDoMes:false, frase:'Às vezes o primeiro metro é mais difícil do que o primeiro KM!', attrs:{Produto:5,Ritmo:0,Precisão:100,Jogo:0}, reputacao:10 },
-  { num:'10', nome:'Ribli',   loja:'moema',   classe:'Corredor', raro:false, selo:'', especialidade:'Forerunner | Processos', relogio:'955', esporte:'Corrida, Jiu-jitsu, Academia e Ciclismo', avatar:'', emoji:'👑', pontaDoMes:false, frase:'Não existe arvore com galhos tão grandes que chegam ao céu sem raízes tão profundas que cheguem ao inferno.', attrs:{Produto:0,Ritmo:0,Precisão:70,Jogo:0}, reputacao:0 },
-  { num:'11', nome:'Beatriz', loja:'moema',   classe:'Corredor', raro:false, selo:'', especialidade:'Suporte ao cliente', relogio:'Venu 4 Marfim', esporte:'Futebol', avatar:'', emoji:'🌷', pontaDoMes:false, frase:'Desistir não acelera a chegada', attrs:{Produto:0,Ritmo:0,Precisão:93,Jogo:0}, reputacao:15 },
-  { num:'12', nome:'Dayane',  loja:'moema',   classe:'Corredor', raro:false, selo:'', especialidade:'Forerunner', relogio:'Venu 4 Lilás', esporte:'Academia', avatar:'', emoji:'🧠', pontaDoMes:false, frase:'Pra quem tem fé a vida nunca tem fim.', attrs:{Produto:0,Ritmo:0,Precisão:78,Jogo:0}, reputacao:2 },
-  { num:'13', nome:'William', loja:'moema',   classe:'Corredor', raro:false, selo:'', especialidade:'', relogio:'', esporte:'', avatar:'', emoji:'', pontaDoMes:false, frase:'', attrs:{Produto:0,Ritmo:0,Precisão:95,Jogo:0}, reputacao:0 },
-  { num:'14', nome:'Salomão Setton', loja:'Comissão Técnica',   classe: 'Ultramaratonista', raro:false, selo:'', especialidade:'', relogio:'', esporte:'', avatar:'', emoji:'', pontaDoMes:false, frase:'', attrs:{Produto:100,Ritmo:70,Precisão:90,Jogo:30}, reputacao:0 },
+  { num:'03', nome:'Ailma Ferraz', loja:'morumbi', classe:'Corredor', raro:false, selo:'', especialidade:'Gestão', relogio:'Venu 3 Marfim', esporte:'Caminhada', avatar:'', emoji:'😉', pontaDoMes:false, quizzes:['quiz-ipx','quiz-atendimento','quiz-instinct3','quiz-tecnico'], frase:'O sucesso é a soma de pequenos esforços repetidos dia após dia.', attrs:{Produto:30,Ritmo:0,Precisão:63,Jogo:0}, reputacao:0 },
+  { num:'04', nome:'Daniel',  loja:'morumbi', classe:'Corredor', raro:false, selo:'', especialidade:'', relogio:'', esporte:'', avatar:'', emoji:'', pontaDoMes:false, quizzes:['quiz-ipx','quiz-atendimento','quiz-instinct3','quiz-tecnico'], frase:'', attrs:{Produto:30,Ritmo:0,Precisão:95,Jogo:0}, reputacao:14 },
+  { num:'05', nome:'Fabio Borges', loja:'morumbi', classe:'Corredor', raro:false, selo:'', especialidade:'Métricas de saúde', relogio:'Mk3i 43mm', esporte:'Corrida', avatar:'', emoji:'👽', pontaDoMes:false, quizzes:['quiz-ipx','quiz-atendimento','quiz-instinct3','quiz-tecnico'], frase:'Você só falha quando desiste.', attrs:{Produto:30,Ritmo:0,Precisão:32,Jogo:0}, reputacao:4 },
+  { num:'06', nome:'Gustavo Morais', loja:'morumbi', classe:'Corredor', raro:false, selo:'', especialidade:'Atendimento diferenciado', relogio:'Fênix 8 Amoled', esporte:'Musculação', avatar:'', emoji:'🥲', pontaDoMes:true, quizzes:['quiz-ipx','quiz-atendimento','quiz-instinct3','quiz-tecnico'], frase:'Socorro!', attrs:{Produto:30,Ritmo:0,Precisão:80,Jogo:0}, reputacao:18 },
+  { num:'07', nome:'Joyce Souza', loja:'morumbi', classe:'Corredor', raro:false, selo:'', especialidade:'', relogio:'Venu 3s', esporte:'', avatar:'', emoji:'😉', pontaDoMes:false, quizzes:['quiz-ipx','quiz-atendimento','quiz-instinct3','quiz-tecnico'], frase:'O sucesso é a soma de pequenos esforços repetidos dia após dia.', attrs:{Produto:30,Ritmo:0,Precisão:72,Jogo:0}, reputacao:5 },
+  { num:'08', nome:'Mayara Freire', loja:'morumbi', classe:'Corredor', raro:false, selo:'', especialidade:'Cintas cardíacas', relogio:'Venu 4', esporte:'', avatar:'', emoji:'🫩', pontaDoMes:false, quizzes:['quiz-ipx','quiz-atendimento','quiz-instinct3','quiz-tecnico'], frase:'A sua principal motivação é você mesmo!', attrs:{Produto:30,Ritmo:0,Precisão:100,Jogo:0}, reputacao:19 },
+  { num:'09', nome:'Renato Dias', loja:'morumbi', classe:'Corredor', raro:false, selo:'', especialidade:'Configurações técnicas', relogio:'Venu 4 Cinza', esporte:'Taco', avatar:'', emoji:'🪃', pontaDoMes:false, quizzes:['quiz-ipx','quiz-atendimento','quiz-instinct3','quiz-tecnico'], frase:'Às vezes o primeiro metro é mais difícil do que o primeiro KM!', attrs:{Produto:30,Ritmo:0,Precisão:100,Jogo:0}, reputacao:10 },
+  { num:'10', nome:'Ribli',   loja:'moema',   classe:'Corredor', raro:false, selo:'', especialidade:'Forerunner | Processos', relogio:'955', esporte:'Corrida, Jiu-jitsu, Academia e Ciclismo', avatar:'', emoji:'👑', pontaDoMes:false, quizzes:['quiz-ipx','quiz-atendimento','quiz-instinct3','quiz-tecnico'], frase:'Não existe arvore com galhos tão grandes que chegam ao céu sem raízes tão profundas que cheguem ao inferno.', attrs:{Produto:30,Ritmo:0,Precisão:70,Jogo:0}, reputacao:0 },
+  { num:'11', nome:'Beatriz', loja:'moema',   classe:'Corredor', raro:false, selo:'', especialidade:'Suporte ao cliente', relogio:'Venu 4 Marfim', esporte:'Futebol', avatar:'', emoji:'🌷', pontaDoMes:false, quizzes:['quiz-ipx','quiz-atendimento','quiz-instinct3','quiz-tecnico'], frase:'Desistir não acelera a chegada', attrs:{Produto:30,Ritmo:0,Precisão:93,Jogo:0}, reputacao:15 },
+  { num:'12', nome:'Dayane',  loja:'moema',   classe:'Corredor', raro:false, selo:'', especialidade:'Forerunner', relogio:'Venu 4 Lilás', esporte:'Academia', avatar:'', emoji:'🧠', pontaDoMes:false, quizzes:['quiz-ipx','quiz-atendimento','quiz-instinct3','quiz-tecnico'], frase:'Pra quem tem fé a vida nunca tem fim.', attrs:{Produto:30,Ritmo:0,Precisão:78,Jogo:0}, reputacao:2 },
+  { num:'13', nome:'William', loja:'moema',   classe:'Corredor', raro:false, selo:'⭐', especialidade:'Métricas de saúde | Processos', relogio:'Epix Pro', esporte:'Bodybuilding', avatar:'', emoji:'🧅', pontaDoMes:false, quizzes:['quiz-ipx','quiz-atendimento','quiz-instinct3','quiz-tecnico'], frase:'', attrs:{Produto:30,Ritmo:0,Precisão:95,Jogo:0}, reputacao:0 },
+  { num:'14', nome:'Salomão Setton', loja:'Comissão Técnica',   classe: 'Ultramaratonista', raro:false, selo:'', especialidade:'', relogio:'', esporte:'', avatar:'', emoji:'', pontaDoMes:false, quizzes:['quiz-ipx','quiz-atendimento','quiz-instinct3','quiz-tecnico'], frase:'', attrs:{Produto:100,Ritmo:70,Precisão:90,Jogo:30}, reputacao:0 },
   { num:'15', vazio:true },
   { num:'16', vazio:true },
   { num:'17', vazio:true },
@@ -3119,6 +3173,10 @@ const albumData = [
   { num:'19', vazio:true },
   { num:'20', vazio:true },
 ];
+
+// Recalcula o atributo "Produto" de cada figurinha do zero, com base na quantidade
+// de quizzes (e futuramente módulos) já concluídos — ver recalcProduto() acima.
+albumData.forEach(h => { if(!h.vazio && h.attrs) h.attrs.Produto = recalcProduto(h); });
 
 function attrBarColor(val){
   if(val >= 85) return '#00C2A8';
@@ -3204,6 +3262,7 @@ function renderAlbum(){
           </div>
           <div style="font-size:9px;font-family:'Rajdhani',sans-serif;font-weight:700;color:rgba(255,255,255,0.45);width:20px;text-align:right;">${h.reputacao||'—'}</div>
         </div>
+        ${(()=>{const earned=new Set(h.quizzes||[]);const allIds=Object.keys(QUIZ_BADGES);if(!allIds.length)return'';return `<div style="display:flex;gap:5px;justify-content:center;margin-top:8px;flex-wrap:wrap;">${allIds.map(qid=>{const qb=QUIZ_BADGES[qid];const got=earned.has(qid);if(got){return `<span title="Quiz ${qb.nome}" style="font-size:13px;width:22px;height:22px;border-radius:50%;background:radial-gradient(circle at 35% 30%,${qb.cor}55,${qb.cor}1a 70%);border:1px solid ${qb.cor}99;box-shadow:0 0 6px ${qb.cor}66,inset 0 1px 0 rgba(255,255,255,0.25);display:inline-flex;align-items:center;justify-content:center;">${qb.emoji}</span>`;}return `<span title="Quiz ${qb.nome} — ainda não concluído" style="font-size:13px;width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,0.04);border:1px dashed rgba(255,255,255,0.18);display:inline-flex;align-items:center;justify-content:center;opacity:0.3;filter:grayscale(1);">${qb.emoji}</span>`;}).join('')}</div>`;})()}
         ${isRaro ? `<div style="text-align:center;margin-top:8px;font-size:9px;font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold);">${h.selo}</div>` : ''}
       </div>`;
   }).join('');
@@ -3274,6 +3333,26 @@ function openCardModal(idx){
         ${h.relogio ? `<div style="display:flex;align-items:center;gap:8px;"><div style="font-size:9px;font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.35);width:80px;">Equipamento</div><div style="font-size:12px;font-weight:600;">⌚ ${h.relogio}</div></div>` : ''}
         ${h.esporte ? `<div style="display:flex;align-items:center;gap:8px;"><div style="font-size:9px;font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.35);width:80px;">Esporte</div><div style="font-size:12px;font-weight:600;">🏃 ${h.esporte}</div></div>` : ''}
         ${h.frase ? `<div style="margin-top:4px;background:rgba(255,255,255,0.05);border-left:2px solid ${loja.cor};border-radius:0 6px 6px 0;padding:8px 10px;font-size:12px;font-style:italic;opacity:0.8;line-height:1.5;">"${h.frase}"</div>` : ''}
+      </div>
+
+      <div style="border-top:1px solid rgba(255,255,255,0.08);padding-top:14px;padding-left:8px;margin-top:14px;">
+        <div style="font-size:9px;font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:10px;">🏆 Sala de Troféus</div>
+        <div style="display:flex;flex-wrap:wrap;gap:14px;">
+          ${(()=>{const earned=new Set(h.quizzes||[]);return Object.keys(QUIZ_BADGES).map(qid=>{const qb=QUIZ_BADGES[qid];const got=earned.has(qid);
+            if(got){
+              return `
+          <div style="display:flex;flex-direction:column;align-items:center;gap:5px;width:52px;">
+            <div style="width:46px;height:46px;border-radius:50%;background:radial-gradient(circle at 35% 28%,${qb.cor}80,${qb.cor}25 65%,${qb.cor}10 100%);border:1.5px solid ${qb.cor};box-shadow:0 0 14px ${qb.cor}77,inset 0 1px 1px rgba(255,255,255,0.35),inset 0 -2px 4px rgba(0,0,0,0.25);display:flex;align-items:center;justify-content:center;font-size:22px;">${qb.emoji}</div>
+            <div style="font-size:8px;font-family:'Rajdhani',sans-serif;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;color:rgba(255,255,255,0.32);text-align:center;line-height:1.2;">${qb.nome}</div>
+          </div>`;
+            }
+            return `
+          <div style="display:flex;flex-direction:column;align-items:center;gap:5px;width:52px;opacity:0.32;">
+            <div style="width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,0.03);border:1.5px dashed rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:22px;filter:grayscale(1);">${qb.emoji}</div>
+            <div style="font-size:8px;font-family:'Rajdhani',sans-serif;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;color:rgba(255,255,255,0.25);text-align:center;line-height:1.2;">${qb.nome}</div>
+          </div>`;
+          }).join('');})()}
+        </div>
       </div>
 
       <button onclick="closeCardModal()" style="width:100%;margin-top:16px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:rgba(255,255,255,0.55);font-family:'Rajdhani',sans-serif;font-weight:600;font-size:12px;letter-spacing:1px;text-transform:uppercase;padding:10px;cursor:pointer;">Fechar</button>
@@ -4105,6 +4184,297 @@ async function sendResultTEC(){
   }catch(err){btn.textContent='Registrar Conclusão ✓';btn.disabled=false;alert('Erro ao enviar. Verifique sua conexão.');}
 }
 
+// ── QUIZ CINTAS GARMIN ───────────────────────────────────────
+const quizDataCintas = [
+  {
+    q: "Qual é a principal diferenciação técnica entre o HRM-Fit e o HRM-Pro Plus em relação ao ambiente aquático?",
+    opts: [
+      "O HRM-Fit foi desenvolvido com vedação especial de 10 ATM para suportar mergulhos profundos, enquanto o HRM-Pro Plus é limitado a 5 ATM para natação de superfície",
+      "O HRM-Fit possui resistência de 3 ATM e não é indicado para natação, enquanto o HRM-Pro Plus tem resistência de 5 ATM e possui suporte oficial para registrar dados de FC subaquática",
+      "Ambos os monitores possuem exatamente a mesma classificação de 5 ATM, porém o HRM-Fit só transmite dados de natação via Bluetooth, enquanto o Pro Plus utiliza exclusivamente ANT+",
+      "O HRM-Fit e o HRM-Pro Plus possuem a mesma resistência de 3 ATM, sendo ambos indicados apenas para exposição ocasional a respingos de água"
+    ],
+    correct: 1,
+    fb: [
+      "10 ATM seria nível de mergulho profissional — nenhum dos dois chega nem perto disso 😭",
+      "Exato! 3 ATM no HRM-Fit (sem natação) vs 5 ATM no Pro Plus (com suporte oficial subaquático).",
+      "5 ATM nos dois e a diferença sendo só o protocolo de transmissão? O HRM-Fit nem chega a essa classificação 😭",
+      "3 ATM nos dois empataria a resistência, mas o Pro Plus vai além — tem 5 ATM e suporte à natação 😭"
+    ],
+    exp: "O HRM-Fit possui resistência de 3 ATM e não é indicado para natação. O HRM-Pro Plus tem resistência de 5 ATM e suporte oficial para registrar frequência cardíaca durante atividades subaquáticas."
+  },
+  {
+    q: "De acordo com o manual do proprietário, o HRM 200 é tecnicamente indicado para o registro de dados de natação?",
+    opts: [
+      "Sim, ele possui memória interna dedicada para gravar sessões de natação em águas abertas, com sincronização automática ao sair da água",
+      "Sim, ele sincroniza os dados via Bluetooth em tempo real mesmo durante mergulhos, desde que o relógio esteja a menos de 3 metros do monitor",
+      "Não; embora suporte exposição ocasional a produtos químicos para limpeza, sua resistência é de 3 ATM e o manual não lista a natação como atividade suportada para registro de dados",
+      "Sim, mas apenas em modo limitado, registrando exclusivamente a frequência cardíaca média ao final da sessão, sem dados em tempo real"
+    ],
+    correct: 2,
+    fb: [
+      "Memória dedicada para natação seria um recurso e tanto, mas o HRM 200 não tem esse propósito 😭",
+      "Bluetooth funcionando durante mergulho contraria a própria física da transmissão de rádio na água 😭",
+      "Correto! O HRM 200 tem resistência de 3 ATM e a natação não está entre as atividades suportadas pelo manual.",
+      "Mesmo em modo limitado, a natação simplesmente não está na lista de atividades suportadas pelo manual 😭"
+    ],
+    exp: "O HRM 200 possui resistência de 3 ATM, suportando apenas exposição ocasional a água e produtos químicos de limpeza. O manual não lista a natação como atividade suportada para o registro de dados — diferente do HRM-Pro Plus e HRM 600."
+  },
+  {
+    q: "Qual é o objetivo e a funcionalidade do recurso 'Gravação de Atividade' mencionado no manual do HRM 600?",
+    opts: [
+      "Permite que o usuário inicie e registre um treino cronometrado diretamente pelo app Garmin Connect no celular, ideal para esportes coletivos onde o uso de relógio no pulso é proibido",
+      "Funciona como um sistema de captura de voz integrado ao módulo, permitindo gravar notas durante o treino que são anexadas ao resumo da atividade",
+      "Ativa um GPS interno de baixo consumo que mapeia a rota do atleta de forma independente, dispensando conexão com smartphone ou smartwatch",
+      "Permite armazenar até 30 dias de histórico de frequência cardíaca em repouso, sincronizando automaticamente ao reconectar com qualquer dispositivo Garmin"
+    ],
+    correct: 0,
+    fb: [
+      "Exato! O recurso permite gravar a atividade direto pelo app no celular — ótimo para esportes coletivos sem relógio no pulso.",
+      "Captura de voz seria criativo, mas o HRM 600 não tem microfone para isso 😭",
+      "GPS interno autônomo no módulo de peito ainda não existe nessa linha de produtos 😭",
+      "30 dias de histórico em repouso é um recurso de relógios Garmin, não do módulo HRM 600 isoladamente 😭"
+    ],
+    exp: "O recurso 'Gravação de Atividade' do HRM 600 permite iniciar e registrar um treino cronometrado diretamente pelo app Garmin Connect no celular — útil em esportes coletivos onde o uso de relógio no pulso é proibido pelas regras da modalidade."
+  },
+  {
+    q: "Sobre o HRM 600, qual é a orientação do manual quanto ao uso do recurso de gravação em treinos de natação?",
+    opts: [
+      "O recurso de gravação via celular deve ser usado obrigatoriamente na natação em águas abertas, garantindo a precisão do GPS do telefone nos dados cardíacos",
+      "Esse recurso de gravação direta pelo celular não é indicado para natação; para nadar e salvar os dados, o usuário deve iniciar a atividade cronometrada em um dispositivo Garmin emparelhado",
+      "O HRM 600 só permite gravação da natação se a bateria interna estiver acima de 50%, caso contrário o módulo desativa o armazenamento para priorizar transmissão em tempo real",
+      "A gravação via celular funciona normalmente na natação, desde que o smartphone esteja protegido em capa impermeável certificada IPX8"
+    ],
+    correct: 1,
+    fb: [
+      "GPS do celular dentro d'água nem captaria sinal — e essa não é a orientação do manual para natação 😭",
+      "Correto! Para natação, a gravação precisa ser feita por um dispositivo Garmin emparelhado, não pelo app do celular.",
+      "Limite de bateria de 50% para natação é uma regra que não existe no manual do HRM 600 😭",
+      "Capa impermeável no celular não resolve — o problema é a indicação do recurso, não a proteção do aparelho 😭"
+    ],
+    exp: "O recurso de gravação direta pelo celular não é indicado para natação. Para nadar e salvar os dados corretamente, o usuário deve iniciar a atividade cronometrada em um dispositivo Garmin emparelhado (relógio ou ciclocomputador)."
+  },
+  {
+    q: "O acelerômetro interno do HRM-Pro Plus calcula seis métricas de Dinâmica de Corrida. Quais são elas?",
+    opts: [
+      "Cadência, Velocidade, Potência, VO2 Máximo, Altitude e Frequência Máxima",
+      "Cadência, Oscilação Vertical, Tempo de Contato com o Solo, Equilíbrio, Comprimento de Passo e Proporção Vertical",
+      "Passos por Minuto, Calorias, TrueUp, GPS Interno, Ritmo e Distância",
+      "Frequência Cardíaca, Step Speed Loss, Cadência, Potência, VO2 e Altitude"
+    ],
+    correct: 1,
+    fb: [
+      "Potência e altitude não fazem parte das 6 dinâmicas de corrida do HRM-Pro Plus 😭",
+      "Exato! Essas seis métricas formam o conjunto completo de Dinâmicas de Corrida via torso.",
+      "TrueUp e GPS são recursos diferentes — não são métricas de biomecânica 😭",
+      "Step Speed Loss é exclusiva do HRM 600, não do Pro Plus 😭"
+    ],
+    exp: "Estas seis métricas formam o conjunto avançado de Dinâmicas de Corrida, utilizando o movimento do torso para análise de biomecânica. O HRM-Pro Plus as transmite via ANT+ ou tecnologia Bluetooth SIG."
+  },
+  {
+    q: "Como o HRM-Pro Plus gerencia a transmissão de dados durante atividades de natação?",
+    opts: [
+      "Transmite dados em tempo real via Bluetooth SIG mesmo sob a água",
+      "Armazena os dados e os transmite para o relógio durante os intervalos de descanso fora da água",
+      "Utiliza a frequência de 2,4 GHz para transmissão contínua enquanto submerso",
+      "Sincroniza os dados automaticamente via Wi-Fi ao sair da piscina"
+    ],
+    correct: 1,
+    fb: [
+      "Bluetooth e água não são amigos — o sinal não atravessa o meio líquido 😭",
+      "Perfeito! O monitor armazena tudo e descarrega ao salvar a atividade fora da água.",
+      "2,4 GHz também não viaja bem embaixo d'água — valeu pela criatividade 😭",
+      "O HRM-Pro Plus não usa Wi-Fi para essa sincronização 😭"
+    ],
+    exp: "Dados de natação não são transmitidos em tempo real sob a água devido à atenuação do sinal de rádio no meio líquido. O monitor armazena as informações e as descarrega automaticamente ao salvar a atividade fora da água."
+  },
+  {
+    q: "Quais métricas podem ser sincronizadas via TrueUp™ quando o HRM-Pro Plus é utilizado sem um relógio Garmin?",
+    opts: [
+      "Apenas a frequência cardíaca média da atividade",
+      "Mapa de calor da atividade e oscilação lateral do torso",
+      "Passos, calorias, minutos de intensidade e frequência cardíaca diária",
+      "Dinâmicas de corrida completas incluindo proporção vertical e equilíbrio"
+    ],
+    correct: 2,
+    fb: [
+      "Só frequência cardíaca média seria desperdiçar o potencial do TrueUp™ 😭",
+      "Mapa de calor e oscilação lateral não são sincronizados pelo TrueUp™ 😭",
+      "Exato! O sensor funciona de forma autônoma e sincroniza essas métricas de bem-estar.",
+      "As dinâmicas de corrida precisam do relógio para serem transmitidas em tempo real 😭"
+    ],
+    exp: "O recurso TrueUp™ permite a sincronização independente de passos, calorias e minutos de intensidade com o Garmin Connect. O sensor funciona de forma autônoma quando o usuário não está vestindo o relógio."
+  },
+  {
+    q: "No HRM 200, como o usuário alterna entre os modos de conexão 'Segura' (Bluetooth SIG) e 'Aberta' (ANT+)?",
+    opts: [
+      "Realizar a troca exclusivamente pelo aplicativo Garmin Connect™",
+      "Pressionar o botão físico no módulo duas vezes rapidamente",
+      "Manter o botão pressionado por 15 segundos até o LED desligar",
+      "Remover e reinserir a bateria com o módulo próximo ao relógio"
+    ],
+    correct: 1,
+    fb: [
+      "O app ajuda em muita coisa, mas aqui o botão físico é o caminho 😅",
+      "Certo! Dois toques rápidos no botão físico do módulo fazem a alternância.",
+      "15 segundos seria um reset, não uma troca de modo de conexão 😭",
+      "Reinserir a bateria é para manutenção, não para trocar o protocolo 😭"
+    ],
+    exp: "O HRM 200 introduz um botão físico para alternar entre conexões Seguras (Bluetooth SIG) e Abertas (ANT+). Isso aumenta a flexibilidade de pareamento com diversos ecossistemas de dispositivos."
+  },
+  {
+    q: "Qual inovação de design facilita a substituição da bateria na faixa do HRM 200?",
+    opts: [
+      "Acompanha uma chave de fenda de precisão na embalagem para abrir a tampa",
+      "Possui uma tampa de abertura manual que dispensa qualquer ferramenta",
+      "O controle deslizante de ajuste de tamanho da faixa funciona como ferramenta para abrir a tampa da bateria",
+      "A tampa é removida por pressão com a própria thumbnail (unha do polegar)"
+    ],
+    correct: 2,
+    fb: [
+      "Chave de fenda na embalagem seria prático, mas a Garmin foi além 😅",
+      "Manual sem ferramenta seria ótimo, mas aqui tem uma ferramenta camuflada no design 😭",
+      "Correto! O slider de ajuste da faixa dupla função: ajuste de tamanho e abertura da tampa.",
+      "Usar a própria unha seria solução improvável para um produto de engenharia Garmin 😭"
+    ],
+    exp: "O design inovador do HRM 200 integra a ferramenta de abertura no controle deslizante de ajuste da própria faixa. Esta solução elimina a necessidade de chaves externas para trocar a bateria CR2032."
+  },
+  {
+    q: "Qual é o procedimento obrigatório para ativar o HRM 600 antes do primeiro uso?",
+    opts: [
+      "Agitar o módulo por 10 segundos para despertar o acelerômetro",
+      "Molhar os eletrodos e correr por 1 quilômetro para calibração inicial",
+      "Conectar o módulo a uma fonte de energia por 2 segundos",
+      "Parear o módulo ao relógio via Bluetooth antes de qualquer atividade"
+    ],
+    correct: 2,
+    fb: [
+      "Agitar o acelerômetro é uma interpretação criativa, mas não é o procedimento oficial 😅",
+      "Correr 1 km seria um aquecimento com propósito, mas não é o que o manual pede 😭",
+      "Exato! 2 segundos conectado à energia tira o HRM 600 do modo de fábrica. Único do 600.",
+      "Parear sem ativar primeiro não funciona — o modo de fábrica bloqueia o dispositivo 😭"
+    ],
+    exp: "O HRM 600 exige uma conexão a uma fonte de energia por 2 segundos para sair do modo de fábrica. Este procedimento é único deste modelo devido ao seu sistema de bateria interna recarregável."
+  },
+  {
+    q: "Qual métrica de dinâmica de corrida é exclusiva do HRM 600 e qual sua unidade de medida?",
+    opts: [
+      "Comprimento de passo, medida em milímetros",
+      "Proporção Vertical, medida em batimentos por minuto",
+      "Perda de velocidade dos passos (Step Speed Loss), medida em cm/s",
+      "Oscilação Vertical, medida em graus por segundo"
+    ],
+    correct: 2,
+    fb: [
+      "Comprimento de passo existe no Pro Plus também — não é exclusividade do 600 😭",
+      "Proporção Vertical é medida em % (percentual), não em BPM 😭",
+      "Correto! Step Speed Loss em cm/s é a exclusividade do HRM 600 — mede a desaceleração no impacto.",
+      "Oscilação Vertical é medida em milímetros, e também está no Pro Plus 😭"
+    ],
+    exp: "A 'Perda de velocidade dos passos' (Step Speed Loss) é exclusiva do HRM 600, medida em cm/s. Ela indica o quanto o corredor desacelera no impacto, auxiliando na melhoria da eficiência propulsiva."
+  },
+  {
+    q: "Qual é a frequência correta de higienização dos sensores de frequência cardíaca Garmin e quais substâncias devem ser evitadas?",
+    opts: [
+      "Lavagem na máquina após cada uso; evitar apenas água quente acima de 60°C",
+      "Enxágue após cada uso, lavagem manual após cada sete utilizações; evitar protetor solar, repelente e produtos com EDTA ou propilenoglicol",
+      "Lavagem com álcool isopropílico uma vez por mês; evitar sabão neutro e água morna",
+      "Higienização apenas quando visível suor acumulado; evitar tecidos abrasivos no esfregão"
+    ],
+    correct: 1,
+    fb: [
+      "Máquina de lavar é terminantemente proibida pelos manuais Garmin 🚫",
+      "Perfeito! Enxágue frequente + lavagem a cada 7 usos + evitar cosméticos corrosivos. Manual ao pé da letra.",
+      "Álcool isopropílico danifica os materiais — o manual também proíbe isso 😭",
+      "Esperar o suor acumular é o caminho mais rápido para corroer os eletrodos 😭"
+    ],
+    exp: "O enxágue após cada uso remove o sal do suor; a lavagem manual após cada 7 usos preserva a elasticidade. Máquina de lavar/secar é proibida. Substâncias como EDTA e propilenoglicol (presentes em cosméticos e repelentes) degradam quimicamente a faixa."
+  }
+];
+
+let currentQCintas=0, scoreCintas=0, answeredCintas=false, wrongCintas=[];
+
+function initQuizCintas(){
+  currentQCintas=0; scoreCintas=0; answeredCintas=false; wrongCintas=[];
+  renderCintas();
+}
+
+function renderCintas(){
+  const q=quizDataCintas[currentQCintas];
+  const bar=document.getElementById('quizBarCintas');
+  if(bar) bar.style.width=(currentQCintas/quizDataCintas.length*100)+'%';
+  const content=document.getElementById('quizContentCintas');
+  if(!content) return;
+  content.innerHTML=`<div class="quiz-q-num">Pergunta ${currentQCintas+1} de ${quizDataCintas.length}</div><div class="quiz-q">${q.q}</div><div class="quiz-options">${q.opts.map((o,i)=>`<button class="quiz-opt" onclick="answerCintas(${i})">${o}</button>`).join('')}</div><div class="quiz-feedback" id="quizFeedbackCintas"></div><div class="quiz-nav"><button class="quiz-btn" id="nextBtnCintas" onclick="nextCintas()" disabled>${currentQCintas<quizDataCintas.length-1?'Próxima →':'Ver Resultado'}</button></div>`;
+  answeredCintas=false;
+}
+
+function answerCintas(i){
+  if(answeredCintas) return; answeredCintas=true;
+  const q=quizDataCintas[currentQCintas];
+  document.querySelectorAll('#quizContentCintas .quiz-opt').forEach(b=>b.classList.add('disabled'));
+  const opts=document.querySelectorAll('#quizContentCintas .quiz-opt');
+  const fb=document.getElementById('quizFeedbackCintas');
+  const funny=q.fb?q.fb[i]:'';
+  if(i===q.correct){
+    opts[i].classList.add('correct');
+    fb.className='quiz-feedback show ok';
+    fb.innerHTML='✅ '+funny+'<br><small style="opacity:0.85;font-style:italic;">'+q.exp+'</small>';
+    scoreCintas++;
+  } else {
+    opts[i].classList.add('wrong');
+    opts[q.correct].classList.add('correct');
+    fb.className='quiz-feedback show fail';
+    fb.innerHTML='❌ '+funny+'<br><small style="opacity:0.85;font-style:italic;">'+q.exp+'</small>';
+    wrongCintas.push('Q'+(currentQCintas+1)+' — '+q.q.substring(0,70)+'...');
+  }
+  document.getElementById('nextBtnCintas').disabled=false;
+  setTimeout(()=>{ const fb2=document.getElementById('quizFeedbackCintas'); if(fb2) fb2.scrollIntoView({behavior:'smooth',block:'nearest'}); },100);
+}
+
+function nextCintas(){
+  if(currentQCintas<quizDataCintas.length-1){currentQCintas++;renderCintas();}
+  else showResultCintas();
+}
+
+function showResultCintas(){
+  const pct=Math.round(scoreCintas/quizDataCintas.length*100);
+  const pass=pct>=70;
+  const bar=document.getElementById('quizBarCintas');
+  if(bar) bar.style.width='100%';
+  const content=document.getElementById('quizContentCintas');
+  if(!content) return;
+  if(pass){
+    content.innerHTML=`<div class="quiz-result"><div class="quiz-result-emoji">🏆</div><div class="quiz-result-title" style="color:var(--acc);">Especialista em Cintas!</div><div class="quiz-result-score">Você acertou <strong>${scoreCintas} de ${quizDataCintas.length}</strong> questões — <strong>${pct}%</strong></div><div id="registerFormCintas" style="margin-top:16px;"><input type="text" class="pwd-input" id="nameCintas" placeholder="Seu nome completo" style="margin-bottom:10px;"><button class="quiz-btn" onclick="sendResultCintas()">Registrar Conclusão ✓</button></div><div id="regSuccessCintas" style="display:none;color:var(--acc);font-weight:700;margin-top:12px;">✅ Resultado registrado com sucesso!</div><div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><button class="quiz-btn" style="background:var(--text2);" onclick="openPanel('quizzes')">← Quizzes</button></div></div>`;
+  } else {
+    content.innerHTML=`<div class="quiz-result"><div class="quiz-result-emoji">📚</div><div class="quiz-result-title" style="color:var(--warn);">Continue estudando!</div><div class="quiz-result-score">Você acertou <strong>${scoreCintas} de ${quizDataCintas.length}</strong> questões — <strong>${pct}%</strong></div><div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><button class="quiz-btn" onclick="initQuizCintas()">↺ Tentar Novamente</button><button class="quiz-btn" style="background:var(--text2);" onclick="openPanel('quizzes')">← Quizzes</button></div></div>`;
+  }
+}
+
+async function sendResultCintas(){
+  const name=document.getElementById('nameCintas').value.trim();
+  if(!name){alert('Digite seu nome.');return;}
+  const pct=Math.round(scoreCintas/quizDataCintas.length*100);
+  const btn=document.querySelector('#registerFormCintas .quiz-btn');
+  if(!btn) return;
+  btn.textContent='Enviando...'; btn.disabled=true;
+  const now=new Date();
+  const data=now.toLocaleDateString('pt-BR');
+  const hora=now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  const status=pct>=70?'✅ APROVADO':'❌ Não atingiu 70%';
+  const erradas=wrongCintas.length>0?'\n\n❌ Questões erradas:\n'+wrongCintas.map(q=>'• '+q).join('\n'):'\n\n✅ Nenhuma questão errada!';
+  try{
+    await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{
+      nome:name, modulo:'Quiz Especial — Cintas Garmin (HRM-Fit, HRM-Pro Plus, HRM 200 e HRM 600)',
+      nota:pct+'%', acertos:scoreCintas+' de '+quizDataCintas.length, data, hora, status,
+      message:`👤 Colaborador: ${name}\n📚 Módulo: Quiz Especial — Cintas Garmin\n🎯 Nota: ${pct}%\n✅ Acertos: ${scoreCintas} de ${quizDataCintas.length}\n📅 Data: ${data}\n⏰ Hora: ${hora}\n📊 Status: ${status}${erradas}`
+    });
+    const form=document.getElementById('registerFormCintas'); if(form) form.style.display='none';
+    const suc=document.getElementById('regSuccessCintas'); if(suc) suc.style.display='block';
+    if(pct>=70 && typeof gpsAutoCompleteCheckpoint==='function') gpsAutoCompleteCheckpoint('quiz-cintas');
+  }catch(err){btn.textContent='Registrar Conclusão ✓'; btn.disabled=false; alert('Erro ao enviar. Verifique sua conexão.');}
+}
+
 // ── QUIZ REVEAL ───────────────────────────────────────────────
 function revealModuleQuiz(wrapId, initFn) {
   const wrap = document.getElementById(wrapId);
@@ -4454,12 +4824,93 @@ async function registerResult4(pct){
 const _origOpenPanel = openPanel;
 openPanel = function(id) {
   _origOpenPanel(id);
-  if(id === 'quiz-ipx') initQuizIPX();
-  if(id === 'quiz-atendimento') initQuizAT();
+  if(id === 'quiz-ipx') { initQuizIPX(); renderQuizStatusBanner('quiz-ipx'); }
+  if(id === 'quiz-atendimento') { initQuizAT(); renderQuizStatusBanner('quiz-atendimento'); }
   if(id === 'concorrentes-modulo') { const w=document.getElementById('quizWrap4'); if(w) w.style.display='none'; }
-  if(id === 'quiz-instinct3') initQuizI3();
-  if(id === 'quiz-tecnico') initQuizTEC();
+  if(id === 'quiz-instinct3') { initQuizI3(); renderQuizStatusBanner('quiz-instinct3'); }
+  if(id === 'quiz-tecnico') { initQuizTEC(); renderQuizStatusBanner('quiz-tecnico'); }
+  if(id === 'quiz-cintas') { initQuizCintas(); renderQuizStatusBanner('quiz-cintas'); }
+  if(id === 'quizzes') { setTimeout(renderQuizListStatus, 50); }
 };
+
+// ── QUIZ STATUS BANNER ────────────────────────────────────────
+// Mostra no topo do painel de quiz se já foi concluído ou permite flagar manualmente
+function renderQuizStatusBanner(checkpointId) {
+  const banner = document.getElementById('quizStatusBanner-' + checkpointId);
+  if (!banner) return;
+
+  const activePerson = typeof gpsGetActivePerson === 'function' ? gpsGetActivePerson() : null;
+  const progress = activePerson && typeof gpsGetPersonProgress === 'function' ? gpsGetPersonProgress(activePerson) : null;
+  const isDone = progress && (progress.done || []).includes(checkpointId);
+
+  if (isDone) {
+    banner.innerHTML = `
+      <div style="display:flex;align-items:center;gap:12px;background:#e6faf7;border:1.5px solid var(--acc);border-radius:var(--r);padding:12px 16px;margin-bottom:16px;">
+        <div style="font-size:24px;flex-shrink:0;">✅</div>
+        <div style="flex:1;">
+          <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;letter-spacing:1px;text-transform:uppercase;color:#007a6a;">Concluído</div>
+          <div style="font-size:12px;color:#007a6a;opacity:0.85;">Você já completou este quiz. Pode refazer quando quiser.</div>
+        </div>
+        <button onclick="quizUnflag('${checkpointId}')" style="background:transparent;border:1px solid rgba(0,122,106,0.3);color:#007a6a;font-family:'Rajdhani',sans-serif;font-weight:600;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:6px 12px;border-radius:20px;cursor:pointer;white-space:nowrap;transition:all 0.2s;" onmouseover="this.style.background='rgba(0,122,106,0.1)'" onmouseout="this.style.background='transparent'">↩ Desmarcar</button>
+      </div>`;
+  } else if (activePerson) {
+    banner.innerHTML = `
+      <div style="display:flex;align-items:center;gap:12px;background:var(--off);border:1.5px solid var(--border);border-radius:var(--r);padding:12px 16px;margin-bottom:16px;">
+        <div style="font-size:22px;flex-shrink:0;">🏁</div>
+        <div style="flex:1;">
+          <div style="font-size:12px;color:var(--text2);line-height:1.5;">Já fez este quiz antes e quer registrar a conclusão sem refazer?</div>
+        </div>
+        <button onclick="quizFlagDone('${checkpointId}')" style="background:var(--g);border:none;color:#fff;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:8px 14px;border-radius:20px;cursor:pointer;white-space:nowrap;transition:background 0.2s;" onmouseover="this.style.background='var(--g2)'" onmouseout="this.style.background='var(--g)'">✓ Já fiz</button>
+      </div>`;
+  } else {
+    // sem pessoa ativa — mostra aviso suave
+    banner.innerHTML = `
+      <div style="display:flex;align-items:center;gap:10px;background:var(--off);border:1.5px solid var(--border);border-radius:var(--r);padding:10px 14px;margin-bottom:16px;cursor:pointer;" onclick="openPanel('formacao')">
+        <div style="font-size:18px;">👤</div>
+        <div style="font-size:12px;color:var(--text3);line-height:1.5;">Escolha seu nome na <strong style="color:var(--g)">Trilha de Formação</strong> para registrar seu progresso.</div>
+      </div>`;
+  }
+}
+
+function quizFlagDone(checkpointId) {
+  if (typeof gpsMarkDoneClick === 'function') {
+    gpsMarkDoneClick(null, checkpointId);
+  }
+  renderQuizStatusBanner(checkpointId);
+  renderQuizListStatus();
+}
+
+function quizUnflag(checkpointId) {
+  const activePerson = typeof gpsGetActivePerson === 'function' ? gpsGetActivePerson() : null;
+  if (!activePerson) return;
+  const allProgress = typeof gpsLoadAllProgress === 'function' ? gpsLoadAllProgress() : {};
+  if (!allProgress[activePerson]) return;
+  allProgress[activePerson].done = (allProgress[activePerson].done || []).filter(id => id !== checkpointId);
+  if (typeof gpsSaveAllProgress === 'function') gpsSaveAllProgress(allProgress);
+  if (document.getElementById('gpsRoute') && typeof initGpsHud === 'function') initGpsHud();
+  renderQuizStatusBanner(checkpointId);
+  renderQuizListStatus();
+}
+
+// Atualiza os dots (→ / ✅) nos cards da lista de quizzes
+const QUIZ_LIST_IDS = ['quiz-ipx', 'quiz-atendimento', 'quiz-instinct3', 'quiz-tecnico', 'quiz-cintas'];
+function renderQuizListStatus() {
+  const activePerson = typeof gpsGetActivePerson === 'function' ? gpsGetActivePerson() : null;
+  const progress = activePerson && typeof gpsGetPersonProgress === 'function' ? gpsGetPersonProgress(activePerson) : null;
+  const doneSet = new Set(progress ? (progress.done || []) : []);
+  QUIZ_LIST_IDS.forEach(id => {
+    const dot = document.getElementById('quizListDot-' + id);
+    const card = document.getElementById('quizListCard-' + id);
+    if (!dot) return;
+    if (doneSet.has(id)) {
+      dot.innerHTML = '<span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:#e6faf7;border:1.5px solid var(--acc);font-size:14px;">✅</span>';
+      if (card) card.style.background = 'linear-gradient(135deg,#fff,#f0fdfb)';
+    } else {
+      dot.innerHTML = '<span style="font-size:20px;color:var(--text3);">→</span>';
+      if (card) card.style.background = '';
+    }
+  });
+}
 
 // ── SERVICE WORKER ────────────────────────────────────────────
 if('serviceWorker' in navigator){
@@ -4481,7 +4932,7 @@ if('serviceWorker' in navigator){
       <p style="font-size:14px;opacity:0.85;line-height:1.6;">Teste seu domínio técnico. Mínimo 70% para aprovação. Registre seu resultado ao final.</p>
     </div>
     <div style="display:flex;flex-direction:column;gap:12px;margin-top:8px;">
-      <div class="card" style="border-left:4px solid #0066cc;cursor:pointer;" onclick="openPanel('quiz-ipx')">
+      <div class="card" id="quizListCard-quiz-ipx" style="border-left:4px solid #0066cc;cursor:pointer;" onclick="openPanel('quiz-ipx')">
         <div style="display:flex;align-items:center;gap:14px;">
           <div style="font-size:36px;">💧</div>
           <div style="flex:1;">
@@ -4490,10 +4941,10 @@ if('serviceWorker' in navigator){
             <p style="font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:8px;">IPX, ATM, limites de uso e como orientar o cliente corretamente. Situações reais de venda.</p>
             <div><span class="tag blue">10 questões</span> <span class="tag green">Mínimo 70%</span></div>
           </div>
-          <div style="font-size:20px;color:#0066cc;font-weight:700;flex-shrink:0;">→</div>
+          <div id="quizListDot-quiz-ipx" style="font-size:20px;flex-shrink:0;">→</div>
         </div>
       </div>
-      <div class="card" style="border-left:4px solid #cc5500;cursor:pointer;" onclick="openPanel('quiz-atendimento')">
+      <div class="card" id="quizListCard-quiz-atendimento" style="border-left:4px solid #cc5500;cursor:pointer;" onclick="openPanel('quiz-atendimento')">
         <div style="display:flex;align-items:center;gap:14px;">
           <div style="font-size:36px;">🎭</div>
           <div style="flex:1;">
@@ -4502,10 +4953,10 @@ if('serviceWorker' in navigator){
             <p style="font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:8px;">Situações reais de loja, objeções, fechamento e finalização com pulseiras e fones Shokz.</p>
             <div><span class="tag blue">10 questões</span> <span class="tag green">Mínimo 70%</span></div>
           </div>
-          <div style="font-size:20px;color:#cc5500;font-weight:700;flex-shrink:0;">→</div>
+          <div id="quizListDot-quiz-atendimento" style="font-size:20px;flex-shrink:0;">→</div>
         </div>
       </div>
-      <div class="card" style="border-left:4px solid var(--g);cursor:pointer;" onclick="openPanel('quiz-instinct3')">
+      <div class="card" id="quizListCard-quiz-instinct3" style="border-left:4px solid var(--g);cursor:pointer;" onclick="openPanel('quiz-instinct3')">
         <div style="display:flex;align-items:center;gap:14px;">
           <div style="font-size:36px;">⌚</div>
           <div style="flex:1;">
@@ -4514,10 +4965,10 @@ if('serviceWorker' in navigator){
             <p style="font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:8px;">Botões, Solar, Pesca, Jumpmaster, Stealth Mode, Sensores ABC, Storm Alert e Expedition Mode.</p>
             <div><span class="tag blue">10 questões</span> <span class="tag green">Mínimo 70%</span></div>
           </div>
-          <div style="font-size:20px;color:var(--g);font-weight:700;flex-shrink:0;">→</div>
+          <div id="quizListDot-quiz-instinct3" style="font-size:20px;flex-shrink:0;">→</div>
         </div>
       </div>
-      <div class="card" style="border-left:4px solid #8855cc;cursor:pointer;" onclick="openPanel('quiz-tecnico')">
+      <div class="card" id="quizListCard-quiz-tecnico" style="border-left:4px solid #8855cc;cursor:pointer;" onclick="openPanel('quiz-tecnico')">
         <div style="display:flex;align-items:center;gap:14px;">
           <div style="font-size:36px;">🧠</div>
           <div style="flex:1;">
@@ -4526,7 +4977,19 @@ if('serviceWorker' in navigator){
             <p style="font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:8px;">Body Battery, VO2 Máximo, PacePro, Status de Treino, natação e Race Predictor.</p>
             <div><span class="tag blue">10 questões</span> <span class="tag green">Mínimo 70%</span></div>
           </div>
-          <div style="font-size:20px;color:#8855cc;font-weight:700;flex-shrink:0;">→</div>
+          <div id="quizListDot-quiz-tecnico" style="font-size:20px;flex-shrink:0;">→</div>
+        </div>
+      </div>
+      <div class="card" id="quizListCard-quiz-cintas" style="border-left:4px solid #c07000;cursor:pointer;" onclick="openPanel('quiz-cintas')">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="font-size:36px;">❤️‍🔥</div>
+          <div style="flex:1;">
+            <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#c07000;margin-bottom:2px;">Monitores de FC · Especial</div>
+            <div class="card-title" style="margin-bottom:4px;">Quiz Cintas Garmin</div>
+            <p style="font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:8px;">HRM-Fit, HRM-Pro Plus, HRM 200 e HRM 600 — instalação, métricas, bateria e resolução de problemas.</p>
+            <div><span class="tag blue">12 questões</span> <span class="tag green">Mínimo 70%</span><span class="tag orange">Especial</span></div>
+          </div>
+          <div id="quizListDot-quiz-cintas" style="font-size:20px;flex-shrink:0;">→</div>
         </div>
       </div>
     </div>
@@ -4537,6 +5000,7 @@ if('serviceWorker' in navigator){
 <div class="panel" id="panel-quiz-ipx">
   <div class="panel-header"><button class="back-btn" onclick="openPanel('quizzes')">← Quizzes</button><div class="panel-title">💧 Quiz <span>IPX</span></div></div>
   <div class="panel-body">
+    <div id="quizStatusBanner-quiz-ipx"></div>
     <div class="universe-hero" style="background:linear-gradient(135deg,#001a33,#003366);">
       <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:0.7;margin-bottom:4px;">Quiz Especial · by Proparts</div>
       <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:28px;letter-spacing:2px;margin-bottom:8px;">RESISTÊNCIA À ÁGUA</div>
@@ -4557,6 +5021,7 @@ if('serviceWorker' in navigator){
 <div class="panel" id="panel-quiz-atendimento">
   <div class="panel-header"><button class="back-btn" onclick="openPanel('quizzes')">← Quizzes</button><div class="panel-title">🎭 Quiz <span>Atendimento</span></div></div>
   <div class="panel-body">
+    <div id="quizStatusBanner-quiz-atendimento"></div>
     <div class="universe-hero" style="background:linear-gradient(135deg,#1a0a00,#3d1800);">
       <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:0.7;margin-bottom:4px;">Quiz Especial · by Proparts</div>
       <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:28px;letter-spacing:2px;margin-bottom:8px;">SCRIPT DE ATENDIMENTO</div>
@@ -4577,6 +5042,7 @@ if('serviceWorker' in navigator){
 <div class="panel" id="panel-quiz-instinct3">
   <div class="panel-header"><button class="back-btn" onclick="openPanel('quizzes')">← Quizzes</button><div class="panel-title">⌚ Quiz <span>Instinct 3</span></div></div>
   <div class="panel-body">
+    <div id="quizStatusBanner-quiz-instinct3"></div>
     <div class="universe-hero" style="background:linear-gradient(135deg,#0a1a0a,#003300);">
       <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:0.7;margin-bottom:4px;">Funcionalidades do Produto · by Proparts</div>
       <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:28px;letter-spacing:2px;margin-bottom:8px;">INSTINCT 3 — DOMÍNIO TÉCNICO</div>
@@ -4597,6 +5063,7 @@ if('serviceWorker' in navigator){
 <div class="panel" id="panel-quiz-tecnico">
   <div class="panel-header"><button class="back-btn" onclick="openPanel('quizzes')">← Quizzes</button><div class="panel-title">🧠 Quiz <span>Técnico</span></div></div>
   <div class="panel-body">
+    <div id="quizStatusBanner-quiz-tecnico"></div>
     <div class="universe-hero" style="background:linear-gradient(135deg,#1a0a2e,#3d1a66);">
       <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:0.7;margin-bottom:4px;">Métricas & Performance · by Proparts</div>
       <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:28px;letter-spacing:2px;margin-bottom:8px;">QUIZ TÉCNICO GARMIN</div>
@@ -4609,6 +5076,27 @@ if('serviceWorker' in navigator){
         <div class="quiz-progress"><div class="quiz-progress-bar" id="quizBarTEC" style="width:0%"></div></div>
       </div>
       <div id="quizContentTEC"></div>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ CINTAS GARMIN PANEL -->
+<div class="panel" id="panel-quiz-cintas">
+  <div class="panel-header"><button class="back-btn" onclick="openPanel('quizzes')">← Quizzes</button><div class="panel-title">❤️‍🔥 Quiz <span>Cintas Garmin</span></div></div>
+  <div class="panel-body">
+    <div id="quizStatusBanner-quiz-cintas"></div>
+    <div class="universe-hero" style="background:linear-gradient(135deg,#2a1500,#6b3200);">
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:0.7;margin-bottom:4px;">Monitores de FC · Quiz Especial · by Proparts</div>
+      <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:28px;letter-spacing:2px;margin-bottom:8px;">HRM-FIT · HRM-PRO PLUS · HRM 200 · HRM 600</div>
+      <p style="font-size:14px;opacity:0.85;line-height:1.6;">Instalação, métricas avançadas de corrida, bateria, manutenção e resolução de problemas. 12 questões de alto nível técnico.</p>
+    </div>
+    <div class="quiz-wrap" id="quizWrapCintas">
+      <div class="quiz-header">
+        <div class="quiz-title">❤️‍🔥 Quiz Cintas Garmin — Monitores de FC</div>
+        <div class="quiz-sub">12 questões · Mínimo 70% para aprovação · Resultado enviado por email</div>
+        <div class="quiz-progress"><div class="quiz-progress-bar" id="quizBarCintas" style="width:0%"></div></div>
+      </div>
+      <div id="quizContentCintas"></div>
     </div>
   </div>
 </div>
@@ -7128,7 +7616,10 @@ function restartDiag(){
 /* ══════════════════════════════════════════
    GPS DA CARREIRA — IDENTIDADE + HUD + PERCURSO + CONFETE
    ══════════════════════════════════════════ */
-const GPS_XP_POR_CHECKPOINT = 40;
+// XP por checkpoint concluído, na mesma escala 0-100 usada no atributo "Produto" do álbum:
+// meta de 30 itens totais (10 quizzes + 20 módulos) = 100/30 pontos por item, com teto em 100.
+const GPS_XP_TOTAL_ITENS = 30; // mesma meta usada em PRODUTO_TOTAL_ITENS (álbum)
+const GPS_XP_POR_CHECKPOINT = 100 / GPS_XP_TOTAL_ITENS; // ≈ 3,33 pontos por checkpoint
 const GPS_STORAGE_KEY = 'gpsProgressByPerson_v1';
 const GPS_ACTIVE_PERSON_KEY = 'gpsActivePerson_v1';
 
@@ -7139,7 +7630,8 @@ const GPS_ZONES = [
   { id: 'explorador', label: 'Zona Explorador', bannerMsg: 'Zona Explorador concluída! Você abriu a Zona Corredor.', checkpoints: ['universo', 'perfis-modulo', 'produtos-modulo', 'concorrentes-modulo'] },
   { id: 'corredor',   label: 'Zona Corredor',   bannerMsg: 'Zona Corredor concluída! Você está pronto para a Zona Maratonista.', checkpoints: ['corredor-connect', 'corredor-coach'] },
   // freeOrder: true => todos os checkpoints desta zona ficam liberados de uma vez, sem bloqueio sequencial
-  { id: 'desafios',   label: 'Circuito de Desafios', freeOrder: true, bannerMsg: 'Circuito de Desafios completo! Você dominou todos os quizzes e games extras.', checkpoints: ['quiz-ipx', 'quiz-atendimento', 'quiz-instinct3', 'quiz-tecnico', 'game-duelo'] }
+  { id: 'desafios',   label: 'Circuito de Desafios', freeOrder: true, bannerMsg: 'Circuito de Desafios completo! Você dominou todos os quizzes e games extras.', checkpoints: ['quiz-ipx', 'quiz-atendimento', 'quiz-instinct3', 'quiz-tecnico', 'game-duelo'] },
+  { id: 'desafios2',  label: 'Circuito de Desafios · Nível 2', freeOrder: true, bannerMsg: 'Circuito Nível 2 completo! Você dominou as cintas de frequência cardíaca.', checkpoints: ['quiz-cintas'] }
 ];
 
 // lista plana, na ordem, derivada de GPS_ZONES — sempre recalculada a partir do array de zonas atual
@@ -7347,15 +7839,19 @@ function initGpsHud(){
       const branchBanner = document.getElementById('gpsBranchZoneClear');
       if(branchBanner) branchBanner.style.display = zoneComplete ? 'flex' : 'none';
     }
+    if(zone.id === 'desafios2'){
+      const branchBanner2 = document.getElementById('gpsBranchZoneClear2');
+      if(branchBanner2) branchBanner2.style.display = zoneComplete ? 'flex' : 'none';
+    }
   });
 
   const allCheckpointIds = gpsGetCheckpointOrder();
-  const total = allCheckpointIds.length;
+  const total = GPS_XP_TOTAL_ITENS; // meta final de 30 itens (10 quizzes + 20 módulos), não só o que já existe hoje
   const done = allCheckpointIds.filter(id => doneSet.has(id)).length;
-  const current = total - done; // todo pendente está sempre "disponível" em algum formato (current ou no topo da fila bloqueada)
+  const current = allCheckpointIds.length - done; // todo pendente está sempre "disponível" em algum formato (current ou no topo da fila bloqueada)
 
   const pct = total ? Math.round((done / total) * 100) : 0;
-  const xp = done * GPS_XP_POR_CHECKPOINT;
+  const xp = Math.min(100, Math.round(done * GPS_XP_POR_CHECKPOINT));
 
   const pctEl = document.getElementById('gpsHudPercent');
   const cpEl = document.getElementById('gpsHudCheckpoints');
