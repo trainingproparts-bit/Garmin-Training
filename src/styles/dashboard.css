@@ -509,6 +509,7 @@
  * todos; a curadoria de verdade acontece no Álbum da Equipe) ── */
 .destaques-preview-card {
   height: 100%;
+  max-height: 230px;
   display: flex;
   flex-direction: column;
 }
@@ -517,6 +518,9 @@
   display: flex;
   flex-direction: column;
   margin-top: 6px;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
 }
 
 /* Linha numerada + avatar com iniciais + nome/critério + selo (layout de
@@ -611,17 +615,15 @@
 .destaque-preview-icon-star { color: var(--gold); }
 
 /* ── Mural de Atividades (painel compacto, Dashboard Principal) ──
- * Preenche a altura da coluna (100% da linha de 3 blocos, que estica pra
- * bater com o hero card — ver .dash-main-grid) e deixa a lista interna
- * crescer pra ocupar o que sobrar, com scroll cuidando do excesso. Em telas
- * estreitas (grid empilhado, sem coluna irmã pra "bater a altura com"),
- * volta pra altura fixa — ver media query no fim do arquivo. */
+ * Altura limitada (pedido do usuário, 2026-07-17 — o card tava ficando alto
+ * demais ao lado de Destaques do Mês) — a lista interna rola o que exceder
+ * esse teto, em vez de esticar o card pra caber tudo. */
 .activity-feed-card {
   height: 100%;
   display: flex;
   flex-direction: column;
   position: relative;
-  max-height: 320px;
+  max-height: 230px;
 }
 
 .activity-feed-list {
@@ -882,13 +884,9 @@
     height: auto;
   }
 
-  .activity-feed-card {
-    max-height: 320px;
-  }
-
   .activity-feed-list {
     flex: none;
-    max-height: 240px;
+    max-height: 170px;
   }
 }
 
