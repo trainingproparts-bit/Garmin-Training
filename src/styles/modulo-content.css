@@ -1,0 +1,553 @@
+/* Proparts Training Hub — Estilos do painel de Conteúdo do Módulo (estilo Coursera) */
+
+/* ── Container principal ── */
+.modulo-content-container {
+  padding: 0;
+  min-height: 100%;
+}
+
+.content-layout {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 20px;
+}
+
+/* ── Área principal de conteúdo ── */
+.content-main {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ── Header do conteúdo ── */
+.content-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Breadcrumb "Zona X › Módulo" — substitui a antiga badge que só repetia o
+ * título do módulo (já mostrado no panel-header fixo do appShell). */
+.content-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  min-width: 0;
+}
+
+.content-breadcrumb-link {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: var(--g);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.content-breadcrumb-link:hover {
+  text-decoration: underline;
+}
+
+.content-breadcrumb-sep {
+  color: var(--text3);
+}
+
+.content-breadcrumb-current {
+  color: var(--text2);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.content-duration {
+  flex-shrink: 0;
+  font-size: 12px;
+  color: var(--text3);
+  font-family: var(--font-display);
+  font-weight: 500;
+}
+
+/* ── Wrapper de vídeo ── */
+.content-video-wrapper {
+  background: #0a0a0c;
+  border-radius: var(--r3);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.content-video-container {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+}
+
+.content-video-iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Artigo/Texto ── */
+.content-article {
+  background: var(--card-bg);
+  border-radius: var(--r4);
+  padding: 24px;
+  border: 1px solid var(--border);
+  box-shadow: var(--sh-neutral-sm);
+}
+
+.content-article .content-article-body {
+  color: var(--text2);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+/* ── Lista de lições dentro do módulo (Sprint 2 — vários .content-article por módulo) ── */
+.content-lesson-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.content-lesson-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 0.5px;
+  color: var(--text);
+  margin: 0 0 12px;
+}
+
+/* ── Barra de progresso do módulo (Sprint 3 — ciclo fechado de conclusão) ── */
+.module-progress {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  box-shadow: var(--sh-neutral-sm);
+}
+
+.module-progress-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 10px;
+}
+
+.module-progress-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text2);
+  font-weight: 700;
+}
+
+.module-progress-count {
+  font-size: 12.5px;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.module-progress-track {
+  background: var(--off);
+  height: 6px;
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.module-progress-fill {
+  background: var(--g);
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.35s var(--ease);
+}
+
+/* CTA "Responder quiz" — aparece quando o módulo chega a 100% concluído,
+ * levando direto pro quiz da trilha sem a pessoa precisar voltar pra
+ * "Minha Trilha" e achar o card recém-desbloqueado manualmente. */
+.module-quiz-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  background: linear-gradient(135deg, var(--g3), #fde3e5);
+  border: 1px solid var(--g4);
+  border-radius: var(--r3);
+  padding: 16px 18px;
+  margin-bottom: 20px;
+}
+
+.module-quiz-cta[hidden] {
+  display: none;
+}
+
+.module-quiz-cta-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.module-quiz-cta-text strong {
+  font-size: 14px;
+  color: var(--g2);
+}
+
+.module-quiz-cta-text span {
+  font-size: 12.5px;
+  color: var(--text2);
+}
+
+.module-quiz-cta-btn {
+  flex-shrink: 0;
+  background: var(--g);
+  color: #fff;
+  border: none;
+  border-radius: var(--r2);
+  padding: 10px 20px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s var(--ease);
+}
+
+.module-quiz-cta-btn:hover {
+  background: var(--g2);
+}
+
+/* Estado visual da lição já concluída */
+.content-article.is-completed {
+  border-color: rgba(140, 31, 46, 0.3);
+}
+
+.content-article.is-completed .content-lesson-title::before {
+  content: '✓ ';
+  color: var(--acc);
+}
+
+.content-complete-btn:disabled {
+  opacity: 0.85;
+  cursor: default;
+  background: rgba(140, 31, 46, 0.15);
+  color: var(--acc);
+  border-color: rgba(140, 31, 46, 0.4);
+}
+
+.content-article .content-article-body h1,
+.content-article .content-article-body h2,
+.content-article .content-article-body h3 {
+  color: var(--text);
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  margin-top: 18px;
+  margin-bottom: 8px;
+}
+
+.content-article .content-article-body h2 { font-size: 20px; }
+.content-article .content-article-body h3 { font-size: 17px; }
+
+.content-article .content-article-body p {
+  margin-bottom: 12px;
+}
+
+.content-article .content-article-body ul,
+.content-article .content-article-body ol {
+  margin-bottom: 12px;
+  padding-left: 22px;
+}
+
+.content-article .content-article-body li {
+  margin-bottom: 6px;
+}
+
+/* ── Placeholder de conteúdo ── */
+.content-placeholder {
+  background: var(--off);
+  border-radius: var(--r3);
+  padding: 48px 32px;
+  text-align: center;
+  border: 1px dashed var(--border2);
+}
+
+.content-placeholder-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.content-placeholder-title {
+  font-size: 18px;
+  color: var(--text);
+  font-family: var(--font-display);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.content-placeholder-text {
+  color: var(--text3);
+  font-size: 14px;
+}
+
+/* ── Footer com botão de conclusão ── */
+.content-footer {
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.content-complete-btn {
+  background: var(--g);
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--font-display);
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.content-complete-btn:hover {
+  background: var(--g2);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(227, 16, 32, 0.3);
+}
+
+.content-complete-btn:active {
+  transform: translateY(0);
+}
+
+/* ── Sidebar lateral ── */
+.content-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.content-sidebar-card {
+  background: var(--card-bg);
+  border-radius: var(--r2);
+  padding: 20px;
+  border: 1px solid var(--border);
+  box-shadow: var(--sh-neutral-sm);
+}
+
+/* Painel fixo de navegação enquanto o usuário rola o conteúdo — o valor de
+ * top precisa ficar abaixo do panel-header sticky do appShell (~64px). */
+.content-sidebar-sticky {
+  position: sticky;
+  top: 76px;
+  max-height: calc(100vh - 96px);
+  overflow-y: auto;
+}
+
+.sidebar-progress {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.sidebar-progress-track {
+  background: var(--off);
+  height: 6px;
+  border-radius: 99px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.sidebar-progress-fill {
+  background: var(--g);
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.35s var(--ease);
+}
+
+.sidebar-progress-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text2);
+}
+
+.sidebar-meta-time {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--text3);
+}
+
+.sidebar-lesson-nav {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sidebar-lesson-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 6px;
+  border-radius: var(--r2);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease);
+}
+
+.sidebar-lesson-item:hover {
+  background: var(--off);
+}
+
+.sidebar-lesson-status {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--off);
+  color: var(--text3);
+  border: 1.5px solid var(--border);
+}
+
+.sidebar-lesson-title {
+  font-size: 12.5px;
+  color: var(--text2);
+  line-height: 1.35;
+}
+
+.sidebar-lesson-item.done .sidebar-lesson-status {
+  background: var(--acc);
+  border-color: var(--acc);
+  color: #fff;
+}
+
+.sidebar-lesson-item.done .sidebar-lesson-title {
+  color: var(--text3);
+  text-decoration: line-through;
+}
+
+.sidebar-lesson-item.current .sidebar-lesson-status {
+  background: var(--g);
+  border-color: var(--g);
+  color: #fff;
+}
+
+.sidebar-lesson-item.current .sidebar-lesson-title {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.sidebar-card-title {
+  font-size: 14px;
+  color: var(--text);
+  font-family: var(--font-display);
+  font-weight: 600;
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+}
+
+.sidebar-card-text {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.sidebar-card-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-card-list li {
+  font-size: 13px;
+  color: var(--text2);
+  padding: 8px 0;
+  padding-left: 20px;
+  position: relative;
+  line-height: 1.5;
+}
+
+.sidebar-card-list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--g);
+  font-weight: 700;
+}
+
+/* ── Estados de erro ── */
+.content-error {
+  color: var(--g);
+  font-size: 14px;
+  text-align: center;
+  padding: 40px;
+}
+
+/* ── Responsivo ── */
+@media (max-width: 1024px) {
+  .content-layout {
+    grid-template-columns: 1fr;
+    padding: 24px 16px;
+  }
+
+  .content-sidebar {
+    order: -1;
+  }
+
+  .content-sidebar-card {
+    padding: 16px;
+  }
+
+  /* Sticky só faz sentido lado a lado com o conteúdo — empilhado (mobile/
+   * tablet) ela ficaria presa colada no topo brigando com o resto da tela. */
+  .content-sidebar-sticky {
+    position: static;
+    max-height: none;
+    overflow-y: visible;
+  }
+}
+
+@media (max-width: 768px) {
+  .content-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .content-article {
+    padding: 18px 16px;
+  }
+
+  .content-placeholder {
+    padding: 32px 20px;
+  }
+
+  .content-complete-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

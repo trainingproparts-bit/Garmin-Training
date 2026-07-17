@@ -1,0 +1,183 @@
+// src/pages/gestoraPanel.js
+// Painel da Gestora — admin-only. 3 blocos:
+//   1. Postar no Blog sem sair do painel (reaproveita blogService, mesma
+//      tabela/RLS já usada em blog.js — não é uma 2ª forma de postar).
+//   2. Relatório com as respostas de quiz de TODOS os colaboradores,
+//      agrupado por loja (gestoraService.js — quiz_attempts_admin_all já
+//      libera a organização inteira pra admin, sem precisar de view nova).
+//   3. CRUD de módulos/lições/quizzes com reordenação por arrastar-e-soltar
+//      (gestoraContentEditor.js) — 2ª rodada, pedida em seguida pelo usuário.
+//      Edição do CONTEÚDO da lição (blocos) continua em ContentBlocks.js,
+//      não duplicada aqui; os 20 tipos de bloco documentados na Fase 4
+//      seguem fora de escopo (hoje só os 13 já existentes).
+
+import { getCurrentProfile, isAdminProfile } from '../config/supabase.js';
+import { CATEGORIES, fetchAllPostsForAdmin, createPost } from '../services/blogService.js';
+import { fetchAllQuizAttemptsReport } from '../services/gestoraService.js';
+import { initContentEditor } from './gestoraContentEditor.js';
+
+window.addEventListener('panel:activated', (e) => {
+  if (e.detail.panelId === 'gestora') initGestoraPanel();
+});
+
+async function initGestoraPanel() {
+  const container = document.getElementById('gestoraContainer');
+  if (!container) return;
+
+  container.innerHTML = '<p class="learning-loading">Carregando painel da gestora…</p>';
+
+  try {
+    const profile = await getCurrentProfile();
+    if (!profile || !isAdminProfile(profile)) {
+      container.innerHTML = '<p class="learning-error">Esta área é restrita a administradores.</p>';
+      return;
+    }
+
+    const [recentPosts, quizRows] = await Promise.all([
+      fetchAllPostsForAdmin(),
+      fetchAllQuizAttemptsReport(),
+    ]);
+
+    container.innerHTML = `
+      <h3 class="dash-section-label">📰 Postar no Blog</h3>
+      ${renderBlogSection(recentPosts)}
+
+      <h3 class="dash-section-label" style="margin-top:32px;">📊 Relatório de Quizzes por Loja</h3>
+      ${renderQuizReportSection(quizRows)}
+
+      <h3 class="dash-section-label" style="margin-top:32px;">🗂️ Conteúdo, Módulos, Lições e Quizzes</h3>
+      <div data-role="ce-root"></div>
+    `;
+
+    wireBlogForm(container, profile);
+    initContentEditor(container.querySelector('[data-role="ce-root"]'));
+  } catch (err) {
+    console.error('[GestoraPanel] erro ao carregar painel:', err);
+    container.innerHTML = '<p class="learning-error">Não foi possível carregar o painel agora.</p>';
+  }
+}
+
+// ── Bloco 1: postar no blog ─────────────────────────────────────────────
+
+function renderBlogSection(recentPosts) {
+  return `
+    <div class="admin-create-card">
+      <form id="gestoraBlogForm" class="blog-form">
+        <input type="text" name="title" class="ranking-highlight-textarea" placeholder="Título" required>
+        <select name="category" class="ranking-highlight-textarea">
+          ${CATEGORIES.map((c) => `<option value="${c}">${c}</option>`).join('')}
+        </select>
+        <input type="text" name="banner_url" class="ranking-highlight-textarea" placeholder="URL do banner (opcional)">
+        <textarea name="content" class="ranking-highlight-textarea" rows="5" placeholder="Conteúdo (HTML permitido)" required></textarea>
+        <label style="display:flex; align-items:center; gap:6px; font-size:13px; color:var(--text2);">
+          <input type="checkbox" name="is_published" checked> Publicado
+        </label>
+        <div class="cb-editor-save-row">
+          <button type="submit" class="cb-editor-btn" id="gestoraBlogSubmit">Publicar</button>
+          <div class="ranking-highlight-form-msg" data-role="msg"></div>
+        </div>
+      </form>
+      ${recentPosts.length ? `
+        <h4 style="margin:20px 0 10px; font-size:12.5px; color:var(--text3); text-transform:uppercase; letter-spacing:0.5px;">Últimos posts</h4>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          ${recentPosts.slice(0, 5).map((p) => `
+            <div style="display:flex; justify-content:space-between; gap:10px; font-size:13px; padding:8px 0; border-bottom:1px solid var(--border);">
+              <span>${p.title}${!p.is_published ? ' <span class="blog-badge blog-badge-draft">Rascunho</span>' : ''}</span>
+              <span style="color:var(--text3); white-space:nowrap;">${new Date(p.created_at).toLocaleDateString('pt-BR')}</span>
+            </div>
+          `).join('')}
+        </div>
+        <p style="margin-top:10px; font-size:12px; color:var(--text3);">Editar ou excluir um post existente: painel <strong>Blog</strong>.</p>
+      ` : ''}
+    </div>`;
+}
+
+function wireBlogForm(container, profile) {
+  const form = container.querySelector('#gestoraBlogForm');
+  if (!form) return;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const submitBtn = form.querySelector('#gestoraBlogSubmit');
+    const msgEl = form.querySelector('[data-role="msg"]');
+    submitBtn.disabled = true;
+    msgEl.textContent = 'Publicando…';
+    msgEl.style.color = 'var(--text3)';
+
+    const fd = new FormData(form);
+    try {
+      await createPost({
+        title: fd.get('title').trim(),
+        content: fd.get('content').trim(),
+        category: fd.get('category'),
+        bannerUrl: fd.get('banner_url').trim(),
+        isPublished: fd.get('is_published') === 'on',
+        authorId: profile.id,
+      });
+      msgEl.textContent = 'Post publicado.';
+      msgEl.style.color = 'var(--acc)';
+      form.reset();
+      initGestoraPanel();
+    } catch (err) {
+      console.error('[GestoraPanel] erro ao publicar post:', err);
+      msgEl.textContent = 'Erro ao publicar: ' + err.message;
+      msgEl.style.color = 'var(--g)';
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+}
+
+// ── Bloco 2: relatório de quizzes por loja ──────────────────────────────
+
+function renderQuizReportSection(rows) {
+  if (!rows.length) {
+    return '<p class="learning-empty">Nenhuma tentativa de quiz registrada ainda.</p>';
+  }
+
+  const byStore = groupByStore(rows);
+  const storeNames = Object.keys(byStore).sort((a, b) => a.localeCompare(b, 'pt-BR'));
+
+  return storeNames.map((storeName) => `
+    <div style="margin-bottom:24px;">
+      <div class="dash-mini-tag" style="margin-bottom:8px;">🏬 ${storeName} · ${byStore[storeName].length} respostas</div>
+      ${renderStoreTable(byStore[storeName])}
+    </div>
+  `).join('');
+}
+
+function groupByStore(rows) {
+  return rows.reduce((acc, r) => {
+    const storeName = r.profiles?.stores?.name || 'Sem loja';
+    if (!acc[storeName]) acc[storeName] = [];
+    acc[storeName].push(r);
+    return acc;
+  }, {});
+}
+
+function renderStoreTable(rows) {
+  return `
+    <div class="lib-table-wrap">
+      <table class="lib-table">
+        <thead><tr><th>Colaborador</th><th>Quiz</th><th>Tentativa</th><th>Nota</th><th>Resultado</th><th>Data</th></tr></thead>
+        <tbody>
+          ${rows.map((r) => `
+            <tr>
+              <td class="lib-prod-name">${r.profiles?.full_name || '—'}</td>
+              <td class="lib-prod-para">${r.quizzes?.title || '—'}</td>
+              <td>${r.attempt_number ?? '—'}</td>
+              <td>${r.score_pct != null ? `${r.score_pct}%` : '—'}</td>
+              <td>${renderResultBadge(r.passed)}</td>
+              <td class="lib-prod-para">${new Date(r.finished_at).toLocaleDateString('pt-BR')}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>`;
+}
+
+function renderResultBadge(passed) {
+  if (passed === true) return '<span class="gaps-badge gaps-badge-controle">Aprovado</span>';
+  if (passed === false) return '<span class="gaps-badge gaps-badge-critico">Reprovado</span>';
+  return '—';
+}

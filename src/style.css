@@ -1,0 +1,19 @@
+/* Proparts Training Hub — entry point de estilos */
+
+@import './styles/tokens.css';
+@import './styles/base.css';
+@import './styles/shell.css';
+@import './styles/login.css';
+@import './styles/home.css';
+@import './styles/dashboard.css';
+@import './styles/cards.css';
+@import './styles/arena.css';
+@import './styles/learning.css';
+@import './styles/library.css';
+@import './styles/modulo-content.css';
+@import './styles/contentBlocks.css';
+@import './styles/ranking.css';
+@import './styles/blog.css';
+@import './styles/album.css';
+@import './styles/trilhaCompleta.css';
+@import './styles/drawer.css';

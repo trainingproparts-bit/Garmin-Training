@@ -1,0 +1,95 @@
+/* Garmin Training Hub — Tela Início (seleção de marca)
+ *
+ * Substituído nesta sprint: o conteúdo anterior deste arquivo (.dash-welcome-row,
+ * .gps-hud, .quick-access-grid...) era CSS órfão — nenhuma dessas classes é
+ * usada por home.js ou appShell.js, e o nome ".dash-welcome-row" colidia
+ * diretamente com a classe de mesmo nome em dashboard.css (cascata
+ * imprevisível dependendo da ordem de import). As classes REALMENTE usadas
+ * pelo painel "home" (.home-welcome, .home-brands-grid, .brand-card...)
+ * nunca tinham estilo próprio em lugar nenhum — a tela sempre rendeu como
+ * texto puro sem estilo, um bug real encontrado ao testar esta sprint.
+ */
+
+.home-welcome h2 {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text);
+  margin: 0 0 8px;
+}
+
+.home-welcome h2 span {
+  color: var(--g);
+}
+
+.home-welcome p {
+  font-size: 14px;
+  color: var(--text2);
+  margin: 0 0 28px;
+}
+
+.home-section-title {
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text2);
+  font-weight: 700;
+  margin: 0 0 14px;
+}
+
+.home-brands-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.brand-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  padding: 24px;
+  cursor: pointer;
+  box-shadow: var(--sh-neutral-sm);
+  transition: transform 0.15s, border-color 0.15s;
+}
+
+.brand-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--border2);
+}
+
+.brand-card-name {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 8px;
+}
+
+.brand-card-desc {
+  font-size: 13px;
+  color: var(--text3);
+  margin: 0 0 16px;
+  line-height: 1.5;
+}
+
+.brand-card-action {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--g);
+}
+
+.home-loading,
+.home-empty {
+  color: var(--text3);
+  font-size: 14px;
+}
+
+.home-error {
+  color: var(--g2);
+  background: var(--g3);
+  border: 1px solid var(--g4);
+  border-radius: var(--r2);
+  padding: 14px 16px;
+  font-size: 13.5px;
+}

@@ -1,0 +1,152 @@
+/* Proparts Training Hub — Ranking de Pontos + Destaque de Vendas por loja */
+
+.ranking-layout {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.ranking-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.ranking-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  padding: 12px 16px;
+  box-shadow: var(--sh-neutral-sm);
+}
+
+.ranking-row.is-me {
+  border-color: var(--acc);
+  background: var(--acc-tint);
+}
+
+.ranking-position {
+  width: 32px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text2);
+  flex-shrink: 0;
+}
+
+.ranking-person {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.ranking-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.ranking-name em {
+  font-style: normal;
+  color: var(--acc);
+  font-weight: 700;
+}
+
+.ranking-store {
+  font-size: 12px;
+  color: var(--text3);
+}
+
+.ranking-score {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--g);
+  white-space: nowrap;
+}
+
+/* ── Destaque de vendas ── */
+.ranking-highlight-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.ranking-highlight-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  padding: 16px;
+  box-shadow: var(--sh-neutral-sm);
+}
+
+.ranking-highlight-store {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text2);
+  margin-bottom: 6px;
+}
+
+.ranking-highlight-message {
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.ranking-highlight-updated {
+  display: block;
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--text3);
+}
+
+.ranking-highlight-edit-btn {
+  margin-top: 10px;
+  padding: 5px 12px;
+  background: var(--off);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  font-size: 12px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.ranking-highlight-form {
+  margin-top: 10px;
+}
+
+.ranking-highlight-textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  font-family: inherit;
+  font-size: 13px;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+.ranking-highlight-form-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.ranking-highlight-form-msg {
+  margin-top: 8px;
+  font-size: 12px;
+}
+
+@media (max-width: 900px) {
+  .ranking-layout { grid-template-columns: 1fr; }
+}

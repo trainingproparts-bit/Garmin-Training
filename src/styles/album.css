@@ -1,0 +1,471 @@
+/* Garmin Training Hub — Álbum da Equipe (sql/037_team_album.sql)
+ * Figurinhas coletáveis por colaborador, portadas de index_redesign_v5.html.
+ * Superfície de "jogo/gamificação" (não é leitura de texto longo) — mantém
+ * o cartão escuro em gradiente do protótipo original, mesma linguagem já
+ * usada em .dash-trail-card/.media-card-thumb no resto do app.
+ */
+
+.album-intro {
+  background: linear-gradient(135deg, #0a0a14, #14142a);
+  border-radius: var(--r3);
+  padding: 22px 24px;
+  margin-bottom: 20px;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+.album-intro-eyebrow {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 6px;
+}
+
+.album-intro-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 24px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.album-intro-sub {
+  font-size: 13px;
+  opacity: 0.7;
+  line-height: 1.6;
+  margin-bottom: 16px;
+  max-width: 560px;
+}
+
+.album-score-explainer {
+  margin-bottom: 16px;
+  max-width: 640px;
+}
+
+.album-score-explainer summary {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  list-style: none;
+}
+
+.album-score-explainer summary::-webkit-details-marker { display: none; }
+
+.album-score-explainer summary::before { content: '▸ '; }
+
+.album-score-explainer[open] summary::before { content: '▾ '; }
+
+.album-score-explainer p {
+  font-size: 12px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 8px 0 0;
+}
+
+.album-score-explainer strong { color: rgba(255, 255, 255, 0.9); }
+
+.album-stats-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.album-stat-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 8px 14px;
+}
+
+.album-stat-num {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 17px;
+  color: #fff;
+  line-height: 1;
+}
+
+.album-stat-label {
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.album-filters-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.album-filter-chip {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  padding: 7px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all var(--dur-fast) var(--ease);
+  font-family: inherit;
+}
+
+.album-filter-chip:hover { background: rgba(255, 255, 255, 0.12); color: #fff; }
+
+.album-filter-chip.active { background: var(--g); border-color: var(--g); color: #fff; }
+
+.album-edit-me-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #fff;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  padding: 7px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: inherit;
+  margin-left: auto;
+}
+
+.album-edit-me-btn:hover { background: rgba(255, 255, 255, 0.14); }
+
+/* ── Grade de figurinhas ── */
+.album-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 16px;
+}
+
+.album-card {
+  cursor: pointer;
+  border-radius: 12px;
+  border: 1.5px solid rgba(255, 255, 255, 0.14);
+  color: #fff;
+  padding: 14px 12px 12px;
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--dur-fast) var(--ease);
+}
+
+.album-card:hover { transform: translateY(-3px); }
+
+.album-card-store-bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  border-radius: 12px 0 0 12px;
+  opacity: 0.85;
+}
+
+.album-card-top-seller {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(90deg, var(--g), var(--g2));
+  color: #fff;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 3px 0;
+  border-radius: 11px 11px 0 0;
+}
+
+.album-card.has-top-seller { padding-top: 26px; }
+
+.album-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+  padding-left: 6px;
+}
+
+.album-card-store-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.album-card-avatar {
+  display: flex;
+  justify-content: center;
+  font-size: 30px;
+  margin-bottom: 6px;
+}
+
+.album-card-avatar img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.14);
+}
+
+.album-card-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 13px;
+  text-align: center;
+  letter-spacing: 0.3px;
+  margin-bottom: 6px;
+  padding-left: 4px;
+  line-height: 1.25;
+}
+
+.album-card-classe {
+  display: block;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.album-card-classe span {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.album-card-attrs {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-left: 4px;
+}
+
+.album-attr-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.album-attr-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  width: 50px;
+  flex-shrink: 0;
+}
+
+.album-attr-track {
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.album-attr-fill {
+  height: 100%;
+  border-radius: 2px;
+  background: var(--acc);
+}
+
+.album-attr-val {
+  font-size: 9px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.5);
+  width: 20px;
+  text-align: right;
+}
+
+/* ── Modal de detalhe ── */
+.album-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.album-modal {
+  max-width: 380px;
+  width: 100%;
+  max-height: 88vh;
+  overflow-y: auto;
+  border-radius: 16px;
+  padding: 24px;
+  color: #fff;
+  position: relative;
+  border: 1.5px solid rgba(255, 255, 255, 0.16);
+}
+
+.album-modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  padding-left: 4px;
+}
+
+.album-modal-avatar {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.album-modal-avatar-emoji { font-size: 48px; }
+
+.album-modal-avatar img {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.16);
+}
+
+.album-modal-name {
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 14px;
+}
+
+.album-modal-attrs {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+  padding-left: 4px;
+}
+
+.album-modal-attr-row { display: flex; flex-direction: column; gap: 3px; }
+
+.album-modal-attr-top { display: flex; justify-content: space-between; }
+
+.album-modal-attr-name {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.album-modal-attr-track {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.album-modal-attr-fill { height: 100%; border-radius: 3px; background: var(--acc); }
+
+.album-modal-facts {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 12px;
+  padding-left: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.album-modal-fact { display: flex; align-items: center; gap: 8px; }
+
+.album-modal-fact-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+  width: 80px;
+  flex-shrink: 0;
+}
+
+.album-modal-fact-val { font-size: 12.5px; font-weight: 600; }
+
+.album-modal-phrase {
+  margin-top: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border-left: 2px solid var(--g);
+  border-radius: 0 6px 6px 0;
+  padding: 8px 10px;
+  font-size: 12px;
+  font-style: italic;
+  opacity: 0.85;
+  line-height: 1.5;
+}
+
+.album-modal-close {
+  width: 100%;
+  margin-top: 16px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  padding: 10px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* ── Formulários (editar meu perfil / curadoria admin) — superfícies claras, mesmo padrão do resto do app admin ── */
+.album-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.album-edit-form input,
+.album-edit-form textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  font-family: inherit;
+  font-size: 13px;
+  box-sizing: border-box;
+}
+
+.album-curated-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.15);
+}
+
+.album-curated-row label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.55);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+@media (max-width: 700px) {
+  .album-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+}

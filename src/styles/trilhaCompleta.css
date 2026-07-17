@@ -1,0 +1,280 @@
+/* Garmin Training Hub — Página "Trilha Completa" (panel-trilha-completa)
+ *
+ * Acordeão por zona (fechado por padrão, zona do próximo passo abre
+ * expandida) + mapa de fases em zigue-zague dentro de cada zona — ver
+ * renderTrilhaCompletaAccordion em src/components/GpsTrail.js. Estilo
+ * "Candy Crush/Duolingo": nós circulares conectados por um caminho
+ * serpenteado, medido de verdade via JS (layoutPhaseMapConnectors) porque a
+ * posição em zigue-zague vem de align-self alternado, não de coordenadas
+ * fixas.
+ */
+
+.panel-title.has-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.panel-title-progress {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text2);
+}
+
+/* ── Acordeão de zona ── */
+.zone-accordion {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  box-shadow: var(--sh-neutral-sm);
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.zone-accordion-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  background: var(--card-bg);
+  border: none;
+  padding: 16px;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  transition: background var(--dur-fast) var(--ease);
+}
+
+.zone-accordion-header:hover {
+  background: var(--off);
+}
+
+.zone-accordion-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: var(--g);
+}
+
+.zone-accordion-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.zone-accordion-name {
+  flex: 1;
+  min-width: 0;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.zone-accordion-progress {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text2);
+  white-space: nowrap;
+}
+
+.zone-accordion-chevron {
+  width: 14px;
+  height: 14px;
+  color: var(--text3);
+  flex-shrink: 0;
+}
+
+.zone-accordion-chevron svg {
+  width: 100%;
+  height: 100%;
+  transition: transform var(--dur-base) var(--ease);
+}
+
+.zone-accordion.open .zone-accordion-chevron svg {
+  transform: rotate(180deg);
+}
+
+/* Transição de altura suave sem medir scrollHeight via JS — a track do
+ * grid anima de 0fr pra 1fr; o conteúdo interno não muda de tamanho durante
+ * a transição, só fica clipado progressivamente. */
+.zone-accordion-body-wrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--dur-slow) var(--ease);
+}
+
+.zone-accordion.open .zone-accordion-body-wrap {
+  grid-template-rows: 1fr;
+}
+
+.zone-accordion-body {
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* ── Mapa de fases ── */
+.phase-map {
+  position: relative;
+  padding: 28px 20px 12px;
+}
+
+.phase-map-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.phase-map-segment.done {
+  fill: none;
+  stroke: var(--acc);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.phase-map-segment.pending {
+  fill: none;
+  stroke: var(--border2);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-dasharray: 2 8;
+}
+
+.phase-map-nodes {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.phase-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: fit-content;
+}
+
+.phase-node:nth-child(4n+1) { align-self: flex-start; margin-left: 6%; }
+.phase-node:nth-child(4n+2) { align-self: center; }
+.phase-node:nth-child(4n+3) { align-self: flex-end; margin-right: 6%; }
+.phase-node:nth-child(4n+4) { align-self: center; }
+
+.phase-node-circle {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 3px solid var(--border);
+  background: var(--off);
+  color: var(--text3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: default;
+  transition: transform var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
+}
+
+.phase-node-circle svg {
+  width: 22px;
+  height: 22px;
+}
+
+.phase-node-circle[data-clickable="true"] {
+  cursor: pointer;
+}
+
+.phase-node-circle[data-clickable="true"]:hover {
+  transform: scale(1.08);
+}
+
+.phase-node.done .phase-node-circle {
+  background: var(--acc);
+  border-color: var(--acc);
+  color: #fff;
+}
+
+.phase-node.current .phase-node-circle {
+  width: 64px;
+  height: 64px;
+  background: var(--g);
+  border-color: var(--g);
+  color: #fff;
+  --pulse-color: 228, 0, 43;
+  animation: phaseNodePulse 1.8s ease-in-out infinite;
+}
+
+.phase-node.available .phase-node-circle {
+  background: var(--card-bg);
+  border-color: var(--border2);
+  color: var(--text2);
+}
+
+.phase-node.locked .phase-node-circle {
+  border-color: var(--locked);
+  color: var(--locked);
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.phase-node.milestone .phase-node-circle {
+  width: 72px;
+  height: 72px;
+  border-color: var(--gold);
+}
+
+.phase-node.milestone:not(.done) .phase-node-circle {
+  background: var(--card-bg);
+  color: var(--gold);
+}
+
+.phase-node.milestone.current .phase-node-circle {
+  --pulse-color: 240, 165, 0;
+  background: var(--gold);
+  color: #fff;
+}
+
+@keyframes phaseNodePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(var(--pulse-color), 0.35); }
+  50% { box-shadow: 0 0 0 10px rgba(var(--pulse-color), 0); }
+}
+
+.phase-node-label {
+  margin-top: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text2);
+  text-align: center;
+  max-width: 96px;
+}
+
+/* ── Mobile: caminho vertical reto em vez de zigue-zague ── */
+@media (max-width: 640px) {
+  .phase-node {
+    position: relative;
+    align-self: center !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  .phase-node-label {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 4px;
+    white-space: nowrap;
+    background: var(--text);
+    color: #fff;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 10.5px;
+    z-index: 5;
+  }
+
+  .phase-node:hover .phase-node-label,
+  .phase-node:focus-within .phase-node-label {
+    display: block;
+  }
+}

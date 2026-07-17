@@ -1,0 +1,811 @@
+/* Garmin Training Hub — App Shell, Panels (redesign premium 2026-07-10) */
+
+/* ── App shell layout ── */
+#appShell {
+  display: flex;
+  align-items: stretch;
+  min-height: 100vh;
+  background: var(--bg-page);
+}
+
+.app-sidebar {
+  width: var(--sidebar-w);
+  flex-shrink: 0;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--border);
+  /* Sidebar branca (pedido do usuário, 2026-07-17) — sombra bem sutil só
+   * pra separar do conteúdo, já que a borda sozinha em branco-sobre-branco
+   * (fundo da página é --bg-page, quase idêntico) não bastava. */
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 200;
+  transition: width var(--dur-base) var(--ease);
+}
+
+.app-sidebar.collapsed {
+  width: var(--sidebar-w-collapsed);
+}
+
+/* O sidebar só existe dentro do dashboard (depois de escolher marca) —
+   nas telas de login/escolha de marca ele fica oculto. Precisa de seletor
+   mais específico que ".app-sidebar" sozinho, senão o display:flex acima
+   vence o atributo [hidden] (regra de origem author sempre bate UA style). */
+.app-sidebar[hidden] {
+  display: none;
+}
+
+.sb-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sb-brand-logo {
+  height: 20px;
+  width: auto;
+  flex-shrink: 0;
+}
+
+/* Bug real reportado: a wordmark completa é mais larga que os 72px do
+ * modo colapsado — como a sidebar corta overflow-x, ficava só "PROPAR" em
+ * vez de "PROPARTS". Sem asset de monograma pronto (favicon.svg é outra
+ * marca, roxo/genérico) — troca por um monograma em CSS, sem depender de
+ * imagem nenhuma. */
+.sb-brand-monogram {
+  display: none;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 35% 30%, var(--g), #7a0c14);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.app-sidebar.collapsed .sb-brand-logo {
+  display: none;
+}
+
+.app-sidebar.collapsed .sb-brand-monogram {
+  display: flex;
+}
+
+.sb-brand-divider {
+  width: 1px;
+  height: 18px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+.sb-brand-label {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text);
+  line-height: 1.15;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.sb-brand-label span {
+  color: var(--g);
+}
+
+.app-sidebar.collapsed .sb-brand {
+  justify-content: center;
+  padding: 12px 8px;
+}
+
+.app-sidebar.collapsed .sb-brand-divider,
+.app-sidebar.collapsed .sb-brand-label {
+  display: none;
+}
+
+.sb-collapse-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  margin: 8px 12px 3px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  color: var(--text3);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.sb-collapse-btn:hover {
+  color: var(--text);
+  border-color: var(--border2);
+}
+
+.sb-collapse-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.sb-nav {
+  padding: 6px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sb-link {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 7px 12px;
+  border-radius: 9px;
+  color: var(--text2);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--dur-fast), color var(--dur-fast);
+  user-select: none;
+  border: 1px solid transparent;
+  text-decoration: none;
+  background: none;
+  font-family: inherit;
+  width: 100%;
+  white-space: nowrap;
+}
+
+.sb-link:hover {
+  background: var(--off);
+  color: var(--text);
+}
+
+/* Sidebar branca: o item ativo era fundo vermelho translúcido + texto
+ * branco (ilegível em fundo claro) — agora texto vermelho escuro sobre o
+ * mesmo tingimento translúcido, que também funciona bem em fundo branco. */
+.sb-link.active {
+  background: linear-gradient(90deg, rgba(228, 0, 43, 0.12), rgba(228, 0, 43, 0.02));
+  color: var(--g2);
+  font-weight: 700;
+  border-color: rgba(228, 0, 43, 0.25);
+}
+
+/* Bug real pré-existente: regra de origem author (.sb-link{display:flex})
+ * sempre vence a regra UA [hidden]{display:none}, não importa a
+ * especificidade — mesmo problema que .app-sidebar[hidden]/.app-topbar[hidden]
+ * já corrigiam explicitamente. Sem isso, os links com role/marca restrita
+ * (revealRoleScopedNav/revealBrandScopedNav só setam a propriedade .hidden)
+ * ficavam visualmente visíveis pra qualquer papel, mesmo com hidden=true. */
+.sb-link[hidden] {
+  display: none;
+}
+
+.sb-icon {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sb-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.sb-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: opacity var(--dur-fast);
+}
+
+.app-sidebar.collapsed .sb-link {
+  position: relative;
+  justify-content: center;
+  padding: 7px;
+}
+
+.app-sidebar.collapsed .sb-label {
+  display: none;
+}
+
+/* Sem texto visível no modo colapsado — tooltip customizado no hover,
+ * reaproveitando o atributo title já presente em todo link (não precisa de
+ * JS nem de duplicar o texto num data-attribute novo). */
+.app-sidebar.collapsed .sb-link:hover::after {
+  content: attr(title);
+  position: absolute;
+  left: calc(100% + 12px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: #2a2724;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: var(--r2);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow: var(--sh-neutral-md);
+  z-index: 300;
+  pointer-events: none;
+}
+
+/* Destaque do item ativo no modo colapsado — só o fundo vermelho ficava
+ * fraco em telas menores; uma barra lateral reforça mesmo se o fundo não
+ * chamar atenção. */
+.app-sidebar.collapsed .sb-link.active::before {
+  content: '';
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 60%;
+  border-radius: 0 3px 3px 0;
+  background: var(--g);
+}
+
+.app-sidebar.collapsed .sb-quick-access-label {
+  display: none;
+}
+
+/* ── Acesso Rápido ── */
+.sb-quick-access {
+  margin-top: 10px;
+  padding: 16px 10px 8px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sb-quick-access-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--text3);
+  padding: 3px 12px 4px;
+}
+
+.sb-quick-link {
+  font-size: 12.5px;
+}
+
+.sb-footer {
+  padding: 10px;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+
+.sb-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--off);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 8px 10px;
+  margin-bottom: 6px;
+}
+
+/* Colapsado, sem avatar aqui e sem espaço pro nome/score — a identidade da
+ * conta já mora no avatar do topbar (menu de conta), não faz sentido
+ * repetir uma versão truncada aqui embaixo também. */
+.app-sidebar.collapsed .sb-profile {
+  display: none;
+}
+
+.sb-profile-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.sb-profile-name {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --gold (#F0A500) tem contraste insuficiente em texto pequeno sobre fundo
+ * branco (~2.2:1, precisa de 4.5:1) — era ilegível só porque a sidebar
+ * antiga era escura. Tom mais escuro aqui, só nesse uso de texto. */
+.sb-profile-level {
+  font-size: 10.5px;
+  color: #8a6200;
+  font-weight: 600;
+}
+
+/* ── Topbar (sino + avatar) ── */
+.app-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 150;
+}
+
+.app-topbar[hidden] {
+  display: none;
+}
+
+.app-topbar-spacer {
+  flex: 1;
+}
+
+.app-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* ── Busca global (topbar) ── */
+.topbar-search-wrap {
+  position: relative;
+  flex: 0 1 340px;
+  min-width: 160px;
+}
+
+.topbar-search-input {
+  width: 100%;
+  padding: 8px 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--off);
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--text);
+}
+
+.topbar-search-input::placeholder { color: var(--text3); }
+
+.topbar-search-input:focus {
+  outline: none;
+  background: var(--white);
+  border-color: var(--g4);
+  box-shadow: 0 0 0 3px rgba(228, 0, 43, 0.08);
+}
+
+.topbar-search-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  max-height: 420px;
+  overflow-y: auto;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  box-shadow: var(--sh-neutral-lg);
+  z-index: 300;
+}
+
+.topbar-search-dropdown[hidden] { display: none; }
+
+.search-dropdown-empty {
+  margin: 0;
+  padding: 16px;
+  font-size: 13px;
+  color: var(--text3);
+  text-align: center;
+}
+
+.search-result-item {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+}
+
+.search-result-item:last-child { border-bottom: none; }
+
+.search-result-item:hover { background: var(--off); }
+
+.search-result-icon { font-size: 16px; line-height: 1.4; flex-shrink: 0; }
+
+.search-result-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+
+.search-result-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.search-result-meta {
+  font-size: 11.5px;
+  color: var(--text3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.notif-bell-wrap {
+  position: relative;
+}
+
+.notif-bell-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--off);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  cursor: pointer;
+}
+
+.notif-bell-btn:hover {
+  background: var(--g3);
+  color: var(--g);
+  border-color: var(--g4);
+}
+
+.notif-bell-btn svg {
+  width: 17px;
+  height: 17px;
+}
+
+.notif-badge {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 3px;
+  border-radius: 999px;
+  background: var(--g);
+  color: #fff;
+  font-size: 9.5px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* Mesmo gotcha do .sb-link[hidden] — display:flex de origem author vence
+ * [hidden] da UA stylesheet (achado pré-existente, não introduzido agora). */
+.notif-badge[hidden] {
+  display: none;
+}
+
+.notif-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 320px;
+  max-height: 400px;
+  overflow-y: auto;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  box-shadow: var(--sh-neutral-lg);
+  z-index: 300;
+}
+
+.notif-dropdown-header {
+  padding: 12px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text2);
+  border-bottom: 1px solid var(--border);
+}
+
+.notif-dropdown-list {
+  padding: 6px;
+}
+
+.notif-item {
+  padding: 10px 10px;
+  border-radius: var(--r2);
+  cursor: default;
+}
+
+.notif-item.is-unread {
+  background: var(--g3);
+  cursor: pointer;
+}
+
+.notif-item-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.notif-item-message {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.4;
+}
+
+.notif-item-time {
+  display: block;
+  margin-top: 4px;
+  font-size: 10.5px;
+  color: var(--text3);
+}
+
+.avatar-menu-wrap {
+  position: relative;
+}
+
+.app-topbar-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--g), #7a0c14);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 12px;
+  color: #fff;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: box-shadow var(--dur-fast);
+}
+
+.app-topbar-avatar:hover {
+  box-shadow: 0 0 0 3px var(--g4);
+}
+
+/* Foto de avatar (profiles.avatar_url) — cada colaborador já pode definir a
+ * própria em Álbum da Equipe → "Editar minha figurinha"; aqui só troca a
+ * inicial colorida por essa foto quando existir. */
+.app-topbar-avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatar-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 230px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  box-shadow: var(--sh-neutral-lg);
+  z-index: 300;
+  overflow: hidden;
+}
+
+.avatar-dropdown-header {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.avatar-dropdown-name {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.avatar-dropdown-role {
+  font-size: 11.5px;
+  color: var(--text3);
+  margin-top: 1px;
+}
+
+.avatar-dropdown-links {
+  padding: 6px;
+}
+
+/* Reaproveita .sb-link (mesma classe pro clique/estado ativo funcionar sem
+ * mudanças em router.js) mas o dropdown é claro, não escuro como a sidebar. */
+.avatar-dropdown-link.sb-link {
+  color: var(--text2);
+  font-size: 13px;
+}
+
+.avatar-dropdown-link.sb-link:hover {
+  background: var(--off);
+  color: var(--text);
+}
+
+.avatar-dropdown-link.sb-link.active {
+  background: var(--g3);
+  color: var(--g2);
+}
+
+.avatar-dropdown-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 4px 0;
+}
+
+.avatar-dropdown-action {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  padding: 9px 12px;
+  border-radius: 9px;
+  border: none;
+  background: none;
+  color: var(--text2);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background var(--dur-fast), color var(--dur-fast);
+}
+
+.avatar-dropdown-action:hover {
+  background: var(--off);
+  color: var(--text);
+}
+
+.avatar-dropdown-action.avatar-dropdown-logout:hover {
+  background: var(--g3);
+  color: var(--g);
+}
+
+/* Mesmo gotcha do .sb-link[hidden] — display:flex de origem author vence
+ * [hidden] da UA stylesheet. */
+.avatar-dropdown-action[hidden] {
+  display: none;
+}
+
+.panel-stack {
+  min-height: 100%;
+  flex: 1;
+}
+
+/* ── Panels ── */
+.panel {
+  display: none;
+}
+
+.panel.active {
+  display: block;
+}
+
+.panel-header {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.back-btn {
+  background: var(--off);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  padding: 7px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text2);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: inherit;
+}
+
+.back-btn:hover {
+  background: var(--g3);
+  border-color: var(--g);
+  color: var(--g);
+}
+
+.panel-title {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 19px;
+  letter-spacing: -0.2px;
+  color: var(--text);
+}
+
+.panel-title span {
+  color: var(--g);
+}
+
+.panel-body {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px 16px 60px;
+}
+
+/* .content-layout já define seu próprio padding/max-width — evita a
+ * densidade dupla ("efeito zoom") de duas camadas de respiro empilhadas. */
+#panel-modulo-conteudo .panel-body {
+  max-width: none;
+  padding: 0;
+}
+
+/* ── Utility tags (usadas na trilha) ── */
+.tag {
+  display: inline-block;
+  background: var(--off);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 3px 9px;
+  font-size: 11px;
+  color: var(--text2);
+  margin: 2px;
+}
+
+.tag.blue {
+  background: var(--g3);
+  border-color: var(--g4);
+  color: var(--g2);
+}
+
+.tag.green {
+  background: var(--acc-tint);
+  border-color: #e0c3c7;
+  color: var(--acc);
+}
+
+.tag.orange {
+  background: var(--warn-tint);
+  border-color: #e6c3c3;
+  color: var(--warn);
+}
+
+.tag.gold {
+  background: #fffbec;
+  border-color: #fce09a;
+  color: #8a6200;
+}
+
+/* ── Responsive shell ── */
+@media (max-width: 768px) {
+  .app-sidebar {
+    display: none;
+  }
+}

@@ -1,0 +1,75 @@
+/* Proparts Training Hub — Design Tokens (extraídos de index_redesign_v5) */
+
+:root {
+  /* Brand — atualizado 2026-07-10 pro vermelho Garmin exato do redesign premium */
+  --g: #E4002B;
+  --g2: #a80020;
+  --g3: #fef0f1;
+  --g4: #fdd6d8;
+
+  /* Semantic — paleta cinza/vermelho (2026-07-17): sem verde/teal/laranja.
+   * --acc (era teal #00C2A8, "sucesso") virou um vinho escuro, deliberadamente
+   * bem diferente do vermelho de ação (--g) pra não confundir "fazer" (ação
+   * em vermelho vivo) com "já feito" (vinho escuro/dessaturado). --warn (era
+   * laranja #FF6B35) virou um vermelho-tijolo médio, entre --g e --acc em
+   * saturação. --locked é novo — cinza médio pra estado bloqueado/indisponível
+   * (badges de checkpoint travado, itens desabilitados). --gold não estava na
+   * lista de cores proibidas pelo usuário (só verde/teal/laranja) — mantido
+   * como está, usado só em selos de recompensa/XP, não é estado de sucesso. */
+  --acc: #8C1F2E;
+  --acc-tint: #f7e9ea;
+  --warn: #B33F3F;
+  --warn-tint: #fbeeee;
+  --locked: #9aa0a8;
+  --gold: #F0A500;
+
+  /* Surfaces — escala de cinza neutra (R=G=B), sem viés azulado */
+  --white: #ffffff;
+  --card-bg: #ffffff;
+  --off: #eeeeee;
+  --border: #dcdcdc;
+  --border2: #c4c4c4;
+  --bg-page: #f5f5f5;
+  --sidebar-bg: #ffffff; /* Sidebar branca (pedido do usuário, 2026-07-17) — era #1a1817 (escuro) */
+  --sidebar-w: 250px;
+  --sidebar-w-collapsed: 72px;
+
+  /* Text */
+  --text: #1a1d21;
+  --text2: #4a5260;
+  --text3: #6b7280;
+
+  /* Radius */
+  --r: 12px;
+  --r2: 8px;
+  --r3: 16px;
+  --r4: 14px;
+
+  /* Shadows */
+  --sh: 0 2px 12px rgba(227, 16, 32, 0.08);
+  --sh2: 0 8px 32px rgba(227, 16, 32, 0.14);
+  --sh-neutral-sm: 0 1px 3px rgba(0, 0, 0, 0.10), 0 1px 2px rgba(0, 0, 0, 0.07);
+  --sh-neutral-md: 0 4px 16px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.08);
+  --sh-neutral-lg: 0 12px 32px rgba(0, 0, 0, 0.16);
+
+  /* Motion */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 340ms;
+
+  /* Spacing scale */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-7: 32px;
+  --sp-8: 48px;
+
+  /* Typography */
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --font-display: 'Rajdhani', system-ui, sans-serif;
+  --font-wordmark: 'Barlow Condensed', system-ui, sans-serif;
+}

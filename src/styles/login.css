@@ -1,0 +1,232 @@
+/* Proparts Training Hub — Estilos da tela de Login */
+
+/* ── Panel body do login (layout centralizado, tela cheia) ──
+ * Imagem de capa (capa-login.jpg, public/) com um degradê escuro
+ * semitransparente por cima, pra manter o card de login legível em
+ * qualquer foto. O painel de login não tem .panel-header (sem topbar/
+ * sidebar — ver NO_SIDEBAR_PANELS em router.js), então max-width/padding
+ * do .panel-body global (shell.css) só limitavam a imagem a uma caixa de
+ * 1100px em vez de cobrir a tela inteira — sobrescrito abaixo. */
+.login-panel-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  max-width: none;
+  margin: 0;
+  background:
+    linear-gradient(160deg, rgba(8, 10, 16, 0.88), rgba(15, 20, 32, 0.78) 45%, rgba(20, 8, 12, 0.82)),
+    url('/capa-login.jpg') center / cover no-repeat;
+  padding: 20px;
+}
+
+/* ── Card de login (glassmorphism) ── */
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  background: rgba(18, 24, 36, 0.6);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--r3);
+  padding: 36px 32px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45), 0 1px 0 rgba(255, 255, 255, 0.06) inset;
+  text-align: center;
+}
+
+/* ── Header do card (logo + subtítulo) ── */
+.login-header {
+  margin-bottom: 28px;
+}
+
+.login-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 14px;
+  gap: 8px;
+}
+
+.login-logo-img {
+  height: 42px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 10px rgba(228, 0, 43, 0.25));
+}
+
+.login-brand-label {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--g);
+}
+
+.login-subtitle {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 13.5px;
+  margin: 0;
+}
+
+/* ── Formulário ── */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.login-field {
+  text-align: left;
+}
+
+.login-label {
+  display: block;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 7px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+.login-input {
+  width: 100%;
+  padding: 13px 14px;
+  border-radius: var(--r2);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background-color: rgba(10, 14, 22, 0.5);
+  color: #fff;
+  font-size: 14.5px;
+  font-family: inherit;
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+
+.login-input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.login-input:focus {
+  outline: none;
+  border-color: var(--g);
+  background-color: rgba(10, 14, 22, 0.75);
+  box-shadow: 0 0 0 3px rgba(228, 0, 43, 0.15);
+}
+
+.login-input:hover {
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+/* ── Botão de login ── */
+.login-btn {
+  width: 100%;
+  padding: 13px;
+  background: linear-gradient(135deg, var(--g), var(--g2));
+  color: #fff;
+  border: none;
+  border-radius: var(--r2);
+  font-weight: 700;
+  font-size: 15.5px;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
+  font-family: inherit;
+  margin-top: 10px;
+  box-shadow: 0 8px 20px rgba(228, 0, 43, 0.3);
+}
+
+.login-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px rgba(228, 0, 43, 0.4);
+  filter: brightness(1.05);
+}
+
+.login-btn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 4px 14px rgba(228, 0, 43, 0.3);
+}
+
+.login-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ── Divisor ── */
+.login-divider {
+  margin: 16px 0;
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  position: relative;
+}
+
+.login-divider::before,
+.login-divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: calc(50% - 20px);
+  height: 1px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.login-divider::before {
+  left: 0;
+}
+
+.login-divider::after {
+  right: 0;
+}
+
+/* ── Link de visitante ── */
+.login-guest-link {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--r2);
+  font-weight: 600;
+  font-size: 14px;
+  box-sizing: border-box;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.login-guest-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* ── Mensagem de erro ── */
+.login-error {
+  margin-top: 14px;
+  padding: 11px 13px;
+  background: rgba(228, 0, 43, 0.12);
+  border: 1px solid rgba(228, 0, 43, 0.4);
+  border-radius: var(--r2);
+  color: #ff8a9a;
+  font-size: 13px;
+  text-align: left;
+}
+
+/* ── Responsivo ── */
+@media (max-width: 768px) {
+  .login-panel-body {
+    padding: 16px;
+    min-height: 100vh;
+  }
+
+  .login-card {
+    padding: 28px 22px;
+  }
+
+  .login-brand-wordmark {
+    font-size: 18px;
+  }
+}

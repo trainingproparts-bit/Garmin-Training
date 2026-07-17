@@ -1,0 +1,864 @@
+/* Garmin Training Hub — Quizzes, Games e Certificações (Sprint 1, novo) */
+
+.learning-loading,
+.learning-empty {
+  color: var(--text3);
+  font-size: 14px;
+  padding: 20px 0;
+}
+
+.learning-error {
+  color: var(--g2);
+  font-size: 14px;
+  background: var(--g3);
+  border: 1px solid var(--g4);
+  border-radius: var(--r2);
+  padding: 14px 16px;
+}
+
+/* ── Navegador de módulos do modo visitante (trilha.js) ── */
+.guest-trilha-banner {
+  background: var(--g3);
+  border: 1px solid var(--g4);
+  border-radius: var(--r3);
+  padding: 20px 24px;
+  margin-bottom: 24px;
+}
+
+.guest-trilha-banner h2 { margin: 0 0 8px; font-size: 19px; color: var(--text); }
+
+.guest-trilha-banner p { margin: 0; font-size: 13.5px; color: var(--text2); line-height: 1.6; }
+
+.guest-trilha-login-link {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-weight: 700;
+  color: var(--g);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.learning-blocked {
+  background: var(--off);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  padding: 24px;
+}
+
+.learning-blocked h3 {
+  margin: 0 0 8px;
+  color: var(--text);
+}
+
+/* Cards de listagem (quizzes/games) */
+.learning-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  padding: 20px;
+  box-shadow: var(--sh-neutral-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.learning-card h4 {
+  margin: 0;
+  font-size: 16px;
+  color: var(--text);
+}
+
+.learning-card p {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--text3);
+}
+
+.learning-card-btn {
+  align-self: flex-start;
+  background: var(--g);
+  color: #fff;
+  border: none;
+  border-radius: var(--r2);
+  padding: 9px 16px;
+  font-weight: 700;
+  font-size: 12.5px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s;
+}
+
+.learning-card-btn:hover {
+  background: var(--g2);
+}
+
+/* ── Quiz / Game runner ── */
+.quiz-runner,
+.game-runner {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.quiz-runner-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.quiz-runner-header-icon {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r2);
+  background: var(--g3);
+  color: var(--g);
+}
+
+.quiz-runner-header-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.quiz-runner-header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.quiz-runner-title {
+  font-weight: 700;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.quiz-runner-progress {
+  font-size: 12px;
+  color: var(--text3);
+}
+
+.quiz-runner-track {
+  background: var(--border);
+  height: 7px;
+  border-radius: 99px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.quiz-runner-track-fill {
+  background: linear-gradient(90deg, var(--g), var(--g2));
+  height: 100%;
+  transition: width 0.35s var(--ease);
+}
+
+.quiz-runner-question {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 20px;
+}
+
+/* ── Duelo de Especificações — cabeçalho de confronto ── */
+.duel-header {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  border-radius: var(--r3);
+  padding: 16px 20px;
+  margin-bottom: 16px;
+}
+
+.duel-header-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.duel-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.3px;
+  color: #fff;
+}
+
+.duel-round-label {
+  font-size: 11.5px;
+  color: rgba(255, 255, 255, 0.6);
+  white-space: nowrap;
+}
+
+.duel-progress-track {
+  background: rgba(255, 255, 255, 0.12);
+  height: 4px;
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.duel-progress-fill {
+  background: var(--g);
+  height: 100%;
+  transition: width 500ms var(--ease);
+}
+
+/* últimas rodadas — barra fica dourada, sinalizando "reta final" */
+.duel-progress-fill.near-end {
+  background: linear-gradient(90deg, var(--g), var(--gold));
+}
+
+/* ── Placar ao vivo do duelo (meta-placar entre os produtos, não do
+ * jogador) — reforça a sensação de disputa em tempo real. ── */
+.duel-scoreboard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.duel-scoreboard-pill {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 99px;
+  border: 1.5px solid var(--border);
+  background: var(--off);
+}
+
+.duel-scoreboard-pill strong {
+  font-size: 13px;
+}
+
+.duel-scoreboard-vs {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--text3);
+  text-transform: uppercase;
+}
+
+/* ── Critério da rodada ── */
+.duel-criteria-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--off);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  padding: 12px 14px;
+  margin-bottom: 16px;
+}
+
+.duel-criteria-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.duel-criteria-name {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.duel-criteria-descr {
+  font-size: 11.5px;
+  color: var(--text3);
+}
+
+.duel-question {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 16px;
+  line-height: 1.4;
+}
+
+/* ── Grade de opções (2x2, 1 coluna no mobile) ── */
+.duel-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.duel-option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  padding: 14px 16px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  overflow: visible;
+  box-shadow: var(--sh-neutral-sm);
+  transition: transform 0.2s var(--ease), border-color 0.15s, box-shadow 0.2s, background 0.2s;
+}
+
+.duel-option-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  transition: transform 250ms var(--ease), color 250ms var(--ease);
+}
+
+.duel-option-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.duel-option-icon-winner {
+  animation: duelTrophyPop 500ms var(--ease);
+}
+
+.duel-option:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: var(--sh-neutral-md);
+}
+
+.duel-option:disabled {
+  cursor: default;
+}
+
+/* Instinct 3 / 1º concorrente — tom quente, mas vermelho-tijolo em vez de
+ * âmbar/laranja (paleta cinza/vermelho, 2026-07-17), pareado com o 2º
+ * concorrente em azul (frio) pra reforçar a "rivalidade" visual. */
+.duel-option-c0 {
+  background: linear-gradient(135deg, #fdf0ee, #fbe0dc);
+  border-color: #e0a89f;
+  color: #8a3226;
+}
+.duel-option-c0 .duel-option-icon { color: #c0392b; }
+.duel-option-c0:hover:not(:disabled) { border-color: #c0392b; }
+
+/* Instinct E / 2º concorrente — tom frio (azul/ciano). Azul não estava na
+ * lista de cores proibidas (só verde/teal/laranja), mantido. */
+.duel-option-c1 {
+  background: linear-gradient(135deg, #eff6ff, #dbeafe);
+  border-color: #93c5fd;
+  color: #1e40af;
+}
+.duel-option-c1 .duel-option-icon { color: #2563eb; }
+.duel-option-c1:hover:not(:disabled) { border-color: #2563eb; }
+
+/* 3º concorrente (duelo 3 vias, ex. MARQ) — era teal, agora vinho escuro
+ * (var(--acc)), distinto o bastante do vermelho-tijolo do c0 e do azul do c1. */
+.duel-option-c2 {
+  background: linear-gradient(135deg, #f5e9eb, #ecd3d7);
+  border-color: #c98a95;
+  color: #5c1f2b;
+}
+.duel-option-c2 .duel-option-icon { color: var(--acc); }
+.duel-option-c2:hover:not(:disabled) { border-color: var(--acc); }
+
+/* Cor própria (roxo/lavanda), de propósito diferente do verde de
+ * ".correct" — antes usava o mesmo teal do estado "acertou" e ficava
+ * ambíguo (parecia que "Ambos iguais" também tinha sido marcado como
+ * certo, mesmo quando o vencedor real era outro concorrente). */
+.duel-option-ambos,
+.duel-option-todos {
+  background: linear-gradient(135deg, #f5f3ff, #ede9fe);
+  border-color: #c4b5fd;
+  color: #5b21b6;
+}
+.duel-option-ambos .duel-option-icon,
+.duel-option-todos .duel-option-icon {
+  color: #7c3aed;
+}
+.duel-option-ambos:hover:not(:disabled),
+.duel-option-todos:hover:not(:disabled) {
+  border-color: #7c3aed;
+}
+
+.duel-option-nenhum {
+  background: var(--off);
+  border-color: var(--border2);
+  color: var(--text2);
+}
+.duel-option-nenhum .duel-option-icon { color: var(--text3); }
+
+.duel-option.correct {
+  border-color: var(--acc);
+  background: linear-gradient(135deg, var(--acc-tint), #ecd3d7);
+  color: var(--acc);
+}
+
+.duel-option.correct .duel-option-icon {
+  color: var(--acc);
+}
+
+.duel-option.incorrect {
+  border-color: var(--g);
+  background: var(--g3);
+  color: var(--g2);
+}
+
+.duel-option.incorrect .duel-option-icon {
+  color: var(--g);
+}
+
+/* ── Animações de gamificação ── */
+@keyframes duelPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(0.96); }
+}
+
+.duel-option-pulse {
+  animation: duelPulse 450ms var(--ease) infinite;
+}
+
+@keyframes duelShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+.duel-option-shake {
+  animation: duelShake 400ms var(--ease);
+}
+
+@keyframes duelTrophyPop {
+  0% { transform: scale(0.4) rotate(-15deg); opacity: 0; }
+  60% { transform: scale(1.25) rotate(6deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0); }
+}
+
+/* Confete leve — divs coloridas espalhando a partir do card vencedor. */
+.duel-confetti-burst {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.duel-confetti-piece {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 2px;
+  background: var(--color, var(--g));
+  transform: translate(-50%, -50%);
+  animation: duelConfettiFly 700ms ease-out forwards;
+}
+
+@keyframes duelConfettiFly {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg) translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(calc(var(--angle))) translateY(-60px);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .duel-options {
+    grid-template-columns: 1fr;
+  }
+}
+
+.quiz-runner-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.quiz-runner-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 15px 18px;
+  font-size: 14px;
+  color: var(--text);
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow: var(--sh-neutral-sm);
+  transition: border-color 200ms var(--ease), background 200ms var(--ease), transform 200ms var(--ease), box-shadow 200ms var(--ease);
+}
+
+.quiz-runner-option:hover:not(:disabled) {
+  border-color: var(--g4);
+  transform: translateY(-2px);
+  box-shadow: var(--sh-neutral-md);
+}
+
+.quiz-runner-option:disabled {
+  cursor: default;
+}
+
+.quiz-runner-option-letter {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--off);
+  color: var(--text2);
+  font-weight: 700;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 200ms var(--ease), color 200ms var(--ease);
+}
+
+.quiz-runner-option-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.quiz-runner-option-result-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+}
+
+.quiz-runner-option-result-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.quiz-runner-option.correct {
+  border-color: var(--acc);
+  background: var(--acc-tint);
+  color: var(--acc);
+  font-weight: 600;
+}
+
+.quiz-runner-option.correct .quiz-runner-option-letter {
+  background: var(--acc);
+  color: #fff;
+}
+
+.quiz-runner-option.correct .quiz-runner-option-result-icon {
+  color: var(--acc);
+}
+
+.quiz-runner-option.incorrect {
+  border-color: var(--g);
+  background: var(--g3);
+  color: var(--g2);
+}
+
+.quiz-runner-option.incorrect .quiz-runner-option-letter {
+  background: var(--g);
+  color: #fff;
+}
+
+.quiz-runner-option.incorrect .quiz-runner-option-result-icon {
+  color: var(--g);
+}
+
+@keyframes quizFeedbackIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.quiz-runner-feedback {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 13.5px;
+  padding: 16px 18px;
+  border-radius: 14px;
+  margin-bottom: 16px;
+  animation: quizFeedbackIn 300ms var(--ease);
+}
+
+.quiz-runner-feedback-icon {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+}
+
+.quiz-runner-feedback-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.quiz-runner-feedback-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.quiz-runner-feedback.ok {
+  background: linear-gradient(135deg, var(--acc-tint), #f0dde0);
+  color: var(--acc);
+}
+
+.quiz-runner-feedback.no {
+  background: linear-gradient(135deg, var(--g3), #fde3e5);
+  color: var(--g2);
+}
+
+.quiz-runner-feedback-headline {
+  margin: 0;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.quiz-runner-feedback-explanation {
+  margin: 0;
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+
+.game-runner-reveal {
+  background: var(--off);
+  border-radius: var(--r2);
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: var(--text2);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.quiz-runner-next {
+  background: var(--text);
+  color: #fff;
+  border: none;
+  border-radius: var(--r2);
+  padding: 11px 20px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.quiz-result {
+  text-align: center;
+  padding: 32px 20px;
+  border-radius: var(--r3);
+}
+
+.quiz-result.passed {
+  background: var(--acc-tint);
+}
+
+.quiz-result.failed {
+  background: var(--g3);
+}
+
+.quiz-result h3 {
+  margin: 0 0 8px;
+  font-size: 22px;
+}
+
+.quiz-result-score {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text);
+  margin: 0 0 20px;
+}
+
+.quiz-result-score span {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text3);
+}
+
+.quiz-result-back {
+  background: var(--text);
+  color: #fff;
+  border: none;
+  border-radius: var(--r2);
+  padding: 10px 22px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* ── Certificações ── */
+.cert-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  padding: 0;
+  box-shadow: var(--sh-neutral-sm);
+  overflow: hidden;
+}
+
+.cert-card.unlocked {
+  border-color: var(--g4);
+}
+
+/* Faixa de destaque por classe — mesma cor da certificação usada no Álbum da Equipe (CLASSE_CONFIG, album.js). */
+.cert-stripe {
+  height: 4px;
+  background: linear-gradient(90deg, var(--g), var(--acc));
+}
+
+.cert-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 20px 20px 10px;
+}
+
+.cert-emoji {
+  font-size: 26px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.cert-header-text { flex: 1; min-width: 0; }
+
+/* padding-bottom em todos — qualquer um pode ser o último elemento do card
+ * dependendo do que a certificação tem preenchido (objetivo/módulos/data). */
+.cert-obj,
+.cert-issued-date,
+.cert-modules {
+  margin: 0 20px 0;
+  padding-bottom: 20px;
+}
+
+.cert-obj { padding-bottom: 8px; }
+
+.cert-modules {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.cert-mod-pill {
+  background: var(--off);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 11px;
+  color: var(--text2);
+}
+
+.cert-level-text {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text3);
+  font-weight: 700;
+}
+
+.cert-name-text {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.cert-status {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text3);
+  white-space: nowrap;
+}
+
+.cert-card.unlocked .cert-status {
+  color: var(--acc);
+}
+
+.cert-obj {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.5;
+}
+
+.cert-issued-date {
+  font-size: 11.5px;
+  color: var(--text3);
+}
+
+/* ── Responsivo mobile ── */
+@media (max-width: 768px) {
+  .quiz-runner,
+  .game-runner {
+    padding: 0 16px;
+  }
+
+  .quiz-runner-header-icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .quiz-runner-header-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .quiz-runner-title {
+    font-size: 13.5px;
+  }
+
+  .quiz-runner-question {
+    font-size: 16px;
+  }
+
+  .quiz-runner-option {
+    padding: 12px 14px;
+    font-size: 13px;
+    gap: 10px;
+  }
+
+  .quiz-runner-option-letter {
+    width: 22px;
+    height: 22px;
+    font-size: 11px;
+  }
+
+  .quiz-runner-feedback {
+    padding: 12px 14px;
+  }
+
+  .quiz-runner-feedback-headline {
+    font-size: 14px;
+  }
+
+  .quiz-result {
+    padding: 24px 16px;
+  }
+
+  .quiz-result-score {
+    font-size: 24px;
+  }
+
+  .learning-card {
+    padding: 16px;
+  }
+
+  .learning-card h4 {
+    font-size: 15px;
+  }
+
+  .cert-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

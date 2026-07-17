@@ -1,0 +1,726 @@
+/* Proparts Training Hub — Schema de blocos de conteúdo (ContentBlocks.js)
+ * Blocos são cards autocontidos (fundo claro + borda), pensados para
+ * funcionar tanto dentro do card escuro da Lição (.content-article) quanto
+ * dentro do card claro da Biblioteca Técnica (.lib-acc-body). */
+
+.cb-banner,
+.cb-card,
+.cb-accordion,
+.cb-timeline,
+.cb-gallery,
+.cb-quiz-embed,
+.cb-roteiro,
+.cb-objecao,
+.cb-table-wrap,
+.cb-card-grid {
+  margin: 12px 0;
+}
+
+/* ── Banner ── */
+.cb-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: var(--r2);
+  background: var(--off);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--text3);
+}
+
+.cb-banner-icon { font-size: 18px; line-height: 1.3; }
+
+.cb-banner-text { margin: 0; font-size: 14px; color: var(--text2); line-height: 1.6; }
+
+.cb-banner-success { background: var(--acc-tint); border-color: var(--acc); border-left-color: var(--acc); }
+.cb-banner-warning { background: var(--warn-tint); border-color: var(--warn); border-left-color: var(--warn); }
+
+/* ── Card ── */
+.cb-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r4);
+  padding: 16px;
+  box-shadow: var(--sh-neutral-sm);
+}
+
+.cb-card-icon { font-size: 24px; display: block; margin-bottom: 8px; }
+
+.cb-card-title { margin: 0 0 6px; font-size: 15px; font-weight: 700; color: var(--text); }
+
+.cb-card-text { margin: 0; font-size: 13.5px; color: var(--text2); line-height: 1.6; }
+
+/* ── Accordion ── */
+.cb-accordion-item {
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  margin-bottom: 8px;
+  overflow: hidden;
+  background: var(--card-bg);
+}
+
+.cb-accordion-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  text-align: left;
+}
+
+.cb-accordion-chevron { transition: transform var(--dur-base) var(--ease); font-size: 11px; color: var(--text3); }
+
+.cb-accordion-btn.open .cb-accordion-chevron { transform: rotate(180deg); }
+
+.cb-accordion-body {
+  padding: 0 16px 14px;
+  font-size: 13.5px;
+  color: var(--text2);
+  line-height: 1.6;
+}
+
+/* ── Timeline ── */
+.cb-timeline { padding-left: 4px; }
+
+.cb-timeline-item {
+  display: flex;
+  gap: 14px;
+  padding-bottom: 20px;
+  position: relative;
+}
+
+.cb-timeline-item:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 20px;
+  bottom: 0;
+  width: 2px;
+  background: var(--border2);
+}
+
+.cb-timeline-dot {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--g);
+  border: 2px solid var(--card-bg);
+  box-shadow: 0 0 0 1px var(--g);
+  margin-top: 5px;
+  flex-shrink: 0;
+}
+
+/* Rótulo (normalmente o ano) em destaque — o pedido explícito foi que datas
+ * de uma linha do tempo (ex.: "O Universo Garmin") chamassem mais atenção
+ * que o texto ao redor. */
+.cb-timeline-label {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 800;
+  color: var(--g);
+  letter-spacing: 0.3px;
+}
+
+.cb-timeline-text { margin: 4px 0 0; font-size: 13px; color: var(--text2); line-height: 1.5; }
+
+/* ── Galeria ── */
+.cb-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.cb-gallery-item { margin: 0; }
+
+.cb-gallery-item img {
+  width: 100%;
+  border-radius: var(--r2);
+  border: 1px solid var(--border);
+  display: block;
+}
+
+.cb-gallery-item figcaption { font-size: 11.5px; color: var(--text3); margin-top: 4px; }
+
+.cb-video-caption { font-size: 12px; color: var(--text3); padding: 8px 4px 0; margin: 0; }
+
+/* ── Quiz embutido ── */
+.cb-quiz-embed {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--g3);
+  border: 1px solid var(--g4);
+  border-radius: var(--r2);
+}
+
+.cb-quiz-embed-icon { font-size: 20px; }
+
+.cb-quiz-embed-text { flex: 1; font-size: 13.5px; color: var(--text); font-weight: 600; }
+
+.cb-quiz-embed-btn {
+  padding: 8px 16px;
+  background: var(--g);
+  color: #fff;
+  border: none;
+  border-radius: var(--r2);
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.cb-quiz-embed-btn:hover { background: var(--g2); }
+
+/* ── Roteiro (passos de script de venda com fala literal) ── */
+.cb-roteiro-step {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.cb-roteiro-step:last-child { margin-bottom: 0; }
+
+.cb-roteiro-num {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--g);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: var(--font-display);
+}
+
+.cb-roteiro-body { flex: 1; min-width: 0; }
+
+.cb-roteiro-title { margin: 0 0 6px; font-size: 14px; font-weight: 700; color: var(--text); }
+
+.cb-roteiro-dialog {
+  position: relative;
+  background: var(--g3);
+  border-left: 3px solid var(--g);
+  border-radius: var(--r2);
+  padding: 10px 76px 10px 12px;
+  font-size: 13.5px;
+  font-style: italic;
+  color: var(--text2);
+  line-height: 1.55;
+  transition: box-shadow var(--dur-base) var(--ease);
+}
+
+.cb-roteiro-dialog:hover { box-shadow: var(--sh-neutral-sm); }
+
+.cb-roteiro-copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: var(--white);
+  border: 1px solid var(--g4);
+  color: var(--g2);
+  border-radius: var(--r2);
+  font-size: 11px;
+  padding: 3px 8px;
+  cursor: pointer;
+  font-family: inherit;
+  opacity: 0.8;
+  transition: opacity var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
+}
+
+.cb-roteiro-dialog:hover .cb-roteiro-copy-btn { opacity: 1; }
+
+.cb-roteiro-copy-btn:hover { background: var(--g3); }
+
+.cb-roteiro-copy-btn.is-copied { color: var(--acc); border-color: var(--acc); }
+
+.cb-roteiro-tip {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 8px 10px;
+  background: var(--off);
+  border-radius: var(--r2);
+  font-size: 12.5px;
+  color: var(--text2);
+  line-height: 1.5;
+}
+
+/* ── Objeção (pergunta do cliente + resposta) ── */
+.cb-objecao-item { margin-bottom: 12px; }
+
+.cb-objecao-item:last-child { margin-bottom: 0; }
+
+.cb-objecao-q {
+  display: flex;
+  gap: 8px;
+  margin: 0 0 4px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--warn);
+}
+
+.cb-objecao-a {
+  display: flex;
+  gap: 8px;
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--text2);
+  line-height: 1.55;
+}
+
+/* ── Tabela comparativa ── */
+.cb-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+}
+
+.cb-table { width: 100%; border-collapse: collapse; min-width: 480px; }
+
+.cb-table th {
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text3);
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--off);
+}
+
+.cb-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--text2);
+  vertical-align: top;
+}
+
+.cb-table tr:last-child td { border-bottom: none; }
+
+.cb-table tbody tr { transition: background var(--dur-fast) var(--ease); }
+
+.cb-table tbody tr:hover { background: var(--off); }
+
+/* ── Tabela colorida (Dicionário Rápido) — opt-in via block.colorful, não
+ * muda as tabelas comparativas já cadastradas nos artigos de Linhas
+ * Especiais. 1ª célula ganha cor+borda por hash do termo (renderTabelaBlock). */
+.cb-table-colorful tbody tr:hover { background: var(--white); }
+
+/* ── ✓/✗ em blocos comparativos (tabela, grade de cards) — verde/vermelho
+ * pra facilitar a leitura visual de "o que tem" vs "o que não tem". ── */
+.cb-check { color: var(--acc); font-weight: 700; }
+
+.cb-x { color: var(--g); font-weight: 700; }
+
+/* ── Grade de cards (2-3 colunas, com tags) ── */
+.cb-card-grid { display: grid; gap: 12px; }
+
+.cb-card-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+
+.cb-card-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+
+.cb-card-grid .cb-card {
+  margin: 0;
+  transition: transform var(--dur-base) var(--ease), box-shadow var(--dur-base) var(--ease);
+}
+
+.cb-card-grid .cb-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--sh-neutral-md);
+}
+
+.cb-card-grid-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+
+@media (max-width: 700px) {
+  .cb-card-grid.cols-2,
+  .cb-card-grid.cols-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Card giratório (flip) — clique para virar e ver o verso ── */
+.cb-flip-grid { display: grid; gap: 12px; }
+
+.cb-flip-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+
+.cb-flip-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+
+.cb-flip-card {
+  perspective: 1200px;
+  cursor: pointer;
+  min-height: 260px;
+}
+
+.cb-flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 260px;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.cb-flip-card.flipped .cb-flip-card-inner { transform: rotateY(180deg); }
+
+.cb-flip-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: var(--r4);
+  padding: 16px;
+  overflow-y: auto;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  box-shadow: var(--sh-neutral-sm);
+  display: flex;
+  flex-direction: column;
+}
+
+.cb-flip-face-back {
+  transform: rotateY(180deg);
+  background: var(--g3);
+  border-color: var(--g4);
+}
+
+.cb-flip-emoji { font-size: 26px; margin-bottom: 6px; }
+
+.cb-flip-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+.cb-flip-subtitle { font-size: 11.5px; color: var(--text3); margin-bottom: 8px; }
+
+.cb-flip-text { font-size: 12.5px; color: var(--text2); line-height: 1.55; flex: 1; }
+
+.cb-flip-back-title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--g2);
+  margin-bottom: 8px;
+}
+
+.cb-flip-hint {
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text3);
+  text-align: center;
+  padding-top: 8px;
+  margin-top: auto;
+}
+
+@media (max-width: 700px) {
+  .cb-flip-grid.cols-2,
+  .cb-flip-grid.cols-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Cards de métrica (expansível) — ícone/nome/selo + definição sempre
+ * visíveis; "toque prático" só aparece ao clicar (reusa a mesma classe
+ * .cb-accordion-chevron/.open do accordion, sem CSS novo pra isso). ── */
+.cb-metric-grid { display: grid; gap: 12px; margin: 12px 0; }
+
+.cb-metric-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+
+.cb-metric-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+
+.cb-metric-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r4);
+  padding: 14px 16px;
+  box-shadow: var(--sh-neutral-sm);
+}
+
+.cb-metric-card-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+
+.cb-metric-icon { font-size: 20px; line-height: 1; }
+
+.cb-metric-name { font-size: 14.5px; font-weight: 700; color: var(--text); flex: 1; }
+
+.cb-metric-badge {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(240, 165, 0, 0.12);
+  color: #8a5c00;
+  border: 1px solid rgba(240, 165, 0, 0.3);
+  white-space: nowrap;
+}
+
+.cb-metric-def { margin: 0 0 10px; font-size: 13px; color: var(--text2); line-height: 1.55; }
+
+.cb-metric-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  background: var(--off);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text2);
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* [hidden] precisa vencer o "display:flex" abaixo — mesma especificidade
+ * (classe vs atributo), e sem isso a folha de estilo do autor sempre ganha
+ * do UA stylesheet, deixando o toque prático sempre visível mesmo com o
+ * atributo hidden=true (bug real: clicar em "Toque prático" parecia não
+ * fazer nada, porque o texto já aparecia sempre, escondido ou não). */
+.cb-metric-tip[hidden] { display: none; }
+
+.cb-metric-tip {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 10px 12px;
+  background: var(--g3);
+  border-left: 3px solid var(--g);
+  border-radius: var(--r2);
+  font-size: 12.5px;
+  color: var(--text2);
+  line-height: 1.55;
+}
+
+.cb-metric-tip p { margin: 0; }
+
+@media (max-width: 700px) {
+  .cb-metric-grid.cols-2,
+  .cb-metric-grid.cols-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Quiz de associação por clique (aquecimento) ── */
+.cb-match-quiz {
+  margin: 16px 0;
+  padding: 14px 16px;
+  background: var(--off);
+  border: 1px solid var(--border);
+  border-radius: var(--r4);
+}
+
+.cb-match-instructions { margin: 0 0 10px; font-size: 12.5px; color: var(--text3); }
+
+.cb-match-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+.cb-match-col { display: flex; flex-direction: column; gap: 6px; }
+
+.cb-match-pill {
+  padding: 8px 12px;
+  background: var(--card-bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r2);
+  font-size: 12.5px;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+}
+
+.cb-match-pill:hover { border-color: var(--border2); }
+
+.cb-match-pill.is-selected { border-color: var(--g); background: var(--g3); }
+
+.cb-match-pill.is-solved {
+  border-color: var(--acc);
+  background: var(--acc-tint);
+  color: var(--text3);
+  cursor: default;
+}
+
+.cb-match-pill.is-wrong { border-color: var(--g); animation: cb-match-shake 0.4s; }
+
+@keyframes cb-match-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+.cb-match-progress { margin: 10px 0 0; font-size: 11.5px; color: var(--text3); text-align: right; }
+
+@media (max-width: 700px) {
+  .cb-match-columns { grid-template-columns: 1fr; }
+}
+
+/* ── Tooltip de termo técnico (fora dos cards) — sublinhado pontilhado +
+ * bolha flutuante no hover/focus (desktop) ou clique (touch, via .is-tip-open
+ * alternado em wireTermTips). ── */
+.term-tip {
+  position: relative;
+  border-bottom: 1.5px dotted var(--acc);
+  color: inherit;
+  font-weight: 700;
+  cursor: help;
+}
+
+.term-tip::after {
+  content: attr(data-tip);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%) translateY(4px);
+  width: max-content;
+  max-width: 240px;
+  background: var(--text);
+  color: #fff;
+  border-radius: var(--r2);
+  padding: 8px 10px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.4;
+  box-shadow: var(--sh-neutral-md);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+  z-index: 30;
+}
+
+.term-tip:hover::after,
+.term-tip:focus::after,
+.term-tip.is-tip-open::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+@media (max-width: 480px) {
+  .term-tip::after { left: 0; transform: translateX(0) translateY(4px); }
+  .term-tip:hover::after, .term-tip:focus::after, .term-tip.is-tip-open::after { transform: translateX(0) translateY(0); }
+}
+
+/* ── Editor de blocos (admin) ── */
+.cb-editor-row {
+  background: var(--off);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  padding: 14px;
+  margin-bottom: 12px;
+}
+
+.cb-editor-row-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.cb-editor-row-type {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text2);
+}
+
+.cb-editor-row-actions { display: flex; gap: 6px; }
+
+.cb-editor-btn {
+  padding: 5px 10px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  font-size: 12px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.cb-editor-btn:disabled { opacity: 0.4; cursor: default; }
+
+.cb-editor-btn-danger { color: var(--g); border-color: var(--g4); }
+
+.cb-editor-row-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cb-editor-row-fields input,
+.cb-editor-row-fields select,
+.cb-editor-row-fields textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  font-size: 13px;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.cb-editor-hint { font-size: 11.5px; color: var(--text3); margin: 4px 0 0; }
+
+.cb-editor-add-row {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.cb-editor-add-row select {
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  font-family: inherit;
+  font-size: 13px;
+}
+
+.cb-editor-save-row {
+  display: flex;
+  gap: 8px;
+}
+
+@media (max-width: 700px) {
+  .cb-gallery { grid-template-columns: 1fr 1fr; }
+}
+
+/* ── Painel da Gestora — CRUD de módulos/lições/quizzes (arrastar-e-soltar) ── */
+.ce-drag-row {
+  cursor: grab;
+  transition: opacity var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
+}
+
+.ce-drag-row.ce-dragging { opacity: 0.4; }
+
+.ce-drag-row.ce-drag-over { background: var(--g3); }
+
+.ce-drag-handle {
+  color: var(--text3);
+  text-align: center;
+  cursor: grab;
+  user-select: none;
+}

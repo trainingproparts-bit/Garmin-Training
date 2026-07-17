@@ -1,0 +1,261 @@
+/* Garmin Training Hub — "Arena de Desafios" (src/pages/arenaDesafios.js).
+ * Substitui as antigas "Quizzes Extras" + "Games" (2 páginas/menus soltos)
+ * por uma vitrine única e gamificada.
+ *
+ * V2 (pedido do usuário): os cards grandes da V1 (thumbnail 16:9/21:9 +
+ * corpo abaixo) ficavam ótimos com poucos itens, mas obrigavam scroll
+ * demais pra achar um item específico assim que a lista cresce. Trocado
+ * por linhas compactas (thumbnail quadrado pequeno + título/meta/progresso
+ * numa faixa horizontal), agrupadas em seções (Duelos / Quizzes Extras) em
+ * vez de um grid misto — escaneia muito mais rápido com muitos jogos.
+ * Mantém a identidade visual da V1 (gradiente temático por assunto do
+ * quiz, animação de bolhas do tema água, selo "VS" do duelo) só que em
+ * miniatura, dentro do thumbnail 56×56 em vez de ocupar o card inteiro.
+ */
+
+.arena-intro {
+  margin-bottom: 20px;
+}
+
+.arena-intro-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: 0.3px;
+  color: var(--text);
+  margin: 0 0 4px;
+}
+
+.arena-intro-sub {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text3);
+  max-width: 560px;
+}
+
+.arena-section {
+  margin-bottom: 24px;
+}
+
+.arena-section-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--text3);
+  margin: 0 0 10px;
+}
+
+.arena-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ── Linha compacta (item de Duelo ou Quiz) ── */
+.arena-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: border-color 150ms var(--ease), box-shadow 150ms var(--ease);
+}
+
+.arena-row:hover {
+  border-color: var(--border2);
+  box-shadow: var(--sh-neutral-sm);
+}
+
+.arena-row-thumb {
+  position: relative;
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 11px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #4a1420, #1c0509);
+}
+
+.arena-row-thumb img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.arena-row-thumb-icon {
+  width: 22px;
+  height: 22px;
+  color: rgba(255, 255, 255, 0.85);
+  z-index: 1;
+}
+
+.arena-row-thumb-icon svg { width: 100%; height: 100%; }
+
+.arena-row-thumb-default { background: linear-gradient(135deg, #3a1a1e, #170a0c); }
+.arena-row-thumb-heart { background: linear-gradient(135deg, #6b1e3a, #2e0d1a); }
+.arena-row-thumb-watch { background: linear-gradient(135deg, #1e293b, #0f172a); }
+.arena-row-thumb-chat { background: linear-gradient(135deg, #4a1f2e, #240d16); }
+/* Água (tema "IPX & Resistência à Água") continua em azul, não teal — azul
+ * não estava na lista de cores proibidas, e é a cor mais natural pro tema. */
+.arena-row-thumb-water { background: linear-gradient(180deg, #0a3d5c 0%, #062942 55%, #041c30 100%); }
+
+.arena-water-waves {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle 2px at 20% 75%, rgba(255,255,255,0.35), transparent 100%),
+    radial-gradient(circle 1.5px at 45% 50%, rgba(255,255,255,0.25), transparent 100%),
+    radial-gradient(circle 2px at 70% 70%, rgba(255,255,255,0.3), transparent 100%),
+    linear-gradient(180deg, transparent 60%, rgba(9, 66, 98, 0.65) 100%);
+  animation: arena-water-drift 6s ease-in-out infinite alternate;
+}
+
+@keyframes arena-water-drift {
+  from { background-position: 0 0, 0 0, 0 0, 0 0; }
+  to { background-position: 0 -4px, 0 -6px, 0 -3px, 0 0; }
+}
+
+/* Thumbnail do duelo — versão em miniatura do corte diagonal "VS" da V1. */
+.arena-row-thumb-duel {
+  background: linear-gradient(135deg, #3a3d44 45%, #4c1d8c 55%);
+}
+
+.arena-row-vs {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 11px;
+  color: #fff;
+  background: radial-gradient(circle at 35% 30%, var(--g), #7a0c14);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.15);
+  z-index: 1;
+}
+
+.arena-row-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.arena-row-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.arena-row-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.arena-row-meta {
+  margin: 2px 0 6px;
+  font-size: 11px;
+  color: var(--text3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.arena-row-status {
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text2);
+  min-width: 36px;
+  text-align: right;
+}
+
+/* ── Selo de recompensa (dourado) — agora inline ao lado do título, não
+ * mais sobreposto na thumbnail. ── */
+.arena-reward-pill {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 9.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  color: #3a2400;
+  background: linear-gradient(135deg, #ffe9a8, var(--gold));
+}
+
+.arena-reward-pill svg { width: 9px; height: 9px; }
+
+.arena-reward-pill-game { background: linear-gradient(135deg, #e9d5ff, #a855f7); color: #2e1065; }
+
+/* ── Botão "Editar capa" (admin) — ícone discreto no fim da linha, só
+ * aparece no hover pra não poluir a lista. ── */
+.arena-edit-cover-btn {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: var(--off);
+  color: var(--text3);
+  font-size: 12px;
+  cursor: pointer;
+  font-family: inherit;
+  opacity: 0;
+  transition: opacity 150ms var(--ease), background 150ms var(--ease), color 150ms var(--ease);
+}
+
+.arena-row:hover .arena-edit-cover-btn { opacity: 1; }
+
+.arena-edit-cover-btn:hover { background: var(--g3); color: var(--g); }
+
+/* ── Barra de progresso ── */
+.arena-progress-track {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--off);
+  overflow: hidden;
+}
+
+.arena-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--warn), var(--gold));
+  transition: width var(--dur-slow) var(--ease);
+}
+
+.arena-progress-fill.is-passed {
+  background: linear-gradient(90deg, var(--acc), #c0485a);
+}
+
+.arena-progress-fill-game {
+  background: linear-gradient(90deg, #6d28d9, #a855f7);
+}
+
+@media (max-width: 480px) {
+  .arena-row-meta { display: none; }
+  .arena-row-status { display: none; }
+}
