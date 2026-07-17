@@ -24,6 +24,7 @@ import { fetchUserNotifications, countUnreadNotifications, markAsRead } from '..
 import { searchAll } from '../services/searchService.js';
 
 const SIDEBAR_COLLAPSE_KEY = 'gth-sidebar-collapsed';
+const DARK_MODE_KEY = 'gth-dark-mode';
 
 const NAV_ITEMS = [
   // "Início" saiu do menu — era redundante com "Trocar de marca" (mesmo
@@ -67,8 +68,21 @@ function readSidebarCollapsed() {
   }
 }
 
+/** Preferência salva tem prioridade; sem nada salvo ainda, segue o tema do sistema (prefers-color-scheme). */
+function readDarkMode() {
+  try {
+    const saved = localStorage.getItem(DARK_MODE_KEY);
+    if (saved === '1') return true;
+    if (saved === '0') return false;
+  } catch {
+    // localStorage indisponível — cai pro tema do sistema abaixo
+  }
+  return window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
+}
+
 export function renderAppShell(container) {
   const collapsed = readSidebarCollapsed();
+  document.body.classList.toggle('dark-mode', readDarkMode());
 
   container.innerHTML = `
     <div id="appShell">
@@ -478,10 +492,19 @@ function setupDarkModeButton() {
   const label = btn?.querySelector('.sb-label');
   if (!btn || !label) return;
 
+  // O body já recebe a classe antes do render (renderAppShell/readDarkMode) —
+  // aqui só sincroniza o texto do botão com esse estado inicial.
+  label.textContent = document.body.classList.contains('dark-mode') ? 'Modo claro' : 'Modo escuro';
+
   btn.addEventListener('click', () => {
     document.body.classList.toggle('dark-mode');
     const isDark = document.body.classList.contains('dark-mode');
     label.textContent = isDark ? 'Modo claro' : 'Modo escuro';
+    try {
+      localStorage.setItem(DARK_MODE_KEY, isDark ? '1' : '0');
+    } catch {
+      // localStorage indisponível (modo privado etc.) — alternância ainda funciona, só não persiste.
+    }
   });
 }
 

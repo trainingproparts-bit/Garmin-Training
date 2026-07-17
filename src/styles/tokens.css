@@ -73,3 +73,32 @@
   --font-display: 'Rajdhani', system-ui, sans-serif;
   --font-wordmark: 'Barlow Condensed', system-ui, sans-serif;
 }
+
+/* ── Modo escuro (2026-07-17) — sobrescreve só os tokens de superfície/texto
+ * no body.dark-mode; como quase todo componente do app já usa var(--...) em
+ * vez de cor fixa (disciplina mantida desde o audit de paleta), essa troca
+ * de tokens já cobre a maior parte da UI sem precisar duplicar CSS por
+ * componente. Cores de marca (--g/--acc/--warn/--gold) continuam as mesmas —
+ * já são saturadas o bastante pra funcionar em fundo escuro. */
+body.dark-mode {
+  --white: #1c1d20;
+  --card-bg: #1c1d20;
+  --off: #26282c;
+  --border: #38393e;
+  --border2: #4a4c52;
+  --bg-page: #101113;
+  --sidebar-bg: #17181b;
+
+  --text: #f0f1f3;
+  --text2: #b7bac1;
+  --text3: #8b8e96;
+
+  --g3: #2a1418;
+  --g4: #3a171d;
+  --acc-tint: #241a1b;
+  --warn-tint: #2a1c1c;
+
+  --sh-neutral-sm: 0 1px 3px rgba(0, 0, 0, 0.35), 0 1px 2px rgba(0, 0, 0, 0.25);
+  --sh-neutral-md: 0 4px 16px rgba(0, 0, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.3);
+  --sh-neutral-lg: 0 12px 32px rgba(0, 0, 0, 0.5);
+}
