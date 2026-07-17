@@ -50,7 +50,7 @@ async function initGestoraPanel() {
     `;
 
     wireBlogForm(container, profile);
-    wireQuizReportSection(container);
+    wireQuizReportSection(container, quizRows);
     initContentEditor(container.querySelector('[data-role="ce-root"]'));
   } catch (err) {
     console.error('[GestoraPanel] erro ao carregar painel:', err);
@@ -134,75 +134,108 @@ function wireBlogForm(container, profile) {
 // de quiz de toda loja, sempre expandida — pedido do usuário, 2026-07-17,
 // pra resolver isso). Agora cada loja é um item de acordeão fechado por
 // padrão (mesmo padrão já usado no FAQ da Biblioteca Técnica, ver
-// LibraryContent.js/wireAccordion), com chips de filtro por loja em cima
-// (mesmo padrão de .lib-tabs/.lib-tab) — só a loja escolhida some visível
-// e já abre sozinha, as outras ficam de fora da lista inteiramente.
+// LibraryContent.js/wireAccordion), com chips de filtro por loja e por
+// período em cima (mesmo padrão de .lib-tabs/.lib-tab) — os dois filtros
+// combinam entre si (ex.: "Moema" + "Últimos 7 dias" ao mesmo tempo).
+// A lista é reconstruída em JS a cada troca de filtro (a partir do array
+// `rows` original guardado em closure) pra manter a contagem "X respostas"
+// de cada loja sempre correta pro recorte ativo.
+
+const PERIOD_OPTIONS = [
+  { value: 'todos', label: 'Todo o período', days: null },
+  { value: '7', label: 'Últimos 7 dias', days: 7 },
+  { value: '15', label: 'Últimos 15 dias', days: 15 },
+  { value: '30', label: 'Últimos 30 dias', days: 30 },
+];
 
 function renderQuizReportSection(rows) {
   if (!rows.length) {
     return '<p class="learning-empty">Nenhuma tentativa de quiz registrada ainda.</p>';
   }
 
-  const byStore = groupByStore(rows);
-  const storeNames = Object.keys(byStore).sort((a, b) => a.localeCompare(b, 'pt-BR'));
+  const storeNames = Object.keys(groupByStore(rows)).sort((a, b) => a.localeCompare(b, 'pt-BR'));
 
-  const tabsHtml = `
-    <div class="lib-tabs" data-role="quiz-report-tabs">
+  return `
+    <div class="lib-tabs" data-role="quiz-report-period-tabs">
+      ${PERIOD_OPTIONS.map((p) => `<button type="button" class="lib-tab ${p.value === 'todos' ? 'active' : ''}" data-period-filter="${p.value}">${p.label}</button>`).join('')}
+    </div>
+    <div class="lib-tabs" data-role="quiz-report-tabs" style="margin-top:8px;">
       <button type="button" class="lib-tab active" data-store-filter="todos">Todas as lojas</button>
       ${storeNames.map((name) => `<button type="button" class="lib-tab" data-store-filter="${name}">${name}</button>`).join('')}
-    </div>`;
-
-  const accordionHtml = `
-    <div class="lib-accordion" data-role="quiz-report-list">
-      ${storeNames.map((storeName, i) => `
-        <div class="lib-acc-item" data-store-block="${storeName}">
-          <button type="button" class="lib-acc-btn" data-acc-target="quiz-report-${i}">
-            <span>🏬 ${storeName} · ${byStore[storeName].length} respostas</span><span class="lib-acc-chevron">▼</span>
-          </button>
-          <div class="lib-acc-body" id="quiz-report-${i}" hidden>${renderStoreTable(byStore[storeName])}</div>
-        </div>
-      `).join('')}
-    </div>`;
-
-  return tabsHtml + accordionHtml;
+    </div>
+    <div class="lib-accordion" data-role="quiz-report-list"></div>`;
 }
 
-function wireQuizReportSection(container) {
-  const tabsEl = container.querySelector('[data-role="quiz-report-tabs"]');
+function wireQuizReportSection(container, rows) {
+  const periodTabsEl = container.querySelector('[data-role="quiz-report-period-tabs"]');
+  const storeTabsEl = container.querySelector('[data-role="quiz-report-tabs"]');
   const listEl = container.querySelector('[data-role="quiz-report-list"]');
-  if (!tabsEl || !listEl) return;
+  if (!periodTabsEl || !storeTabsEl || !listEl) return;
 
-  listEl.querySelectorAll('[data-acc-target]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const body = listEl.querySelector(`#${CSS.escape(btn.dataset.accTarget)}`);
-      if (!body) return;
-      body.hidden = !body.hidden;
-      btn.classList.toggle('open', !body.hidden);
-    });
-  });
+  let activePeriod = 'todos';
+  let activeStore = 'todos';
 
-  tabsEl.querySelectorAll('[data-store-filter]').forEach((tab) => {
-    tab.addEventListener('click', () => {
-      const filter = tab.dataset.storeFilter;
-      tabsEl.querySelectorAll('[data-store-filter]').forEach((t) => t.classList.toggle('active', t === tab));
+  function renderList() {
+    const periodDef = PERIOD_OPTIONS.find((p) => p.value === activePeriod);
+    const cutoff = periodDef?.days ? Date.now() - periodDef.days * 24 * 60 * 60 * 1000 : null;
+    const filteredRows = cutoff ? rows.filter((r) => new Date(r.finished_at).getTime() >= cutoff) : rows;
 
-      listEl.querySelectorAll('[data-store-block]').forEach((block) => {
-        const matches = filter === 'todos' || block.dataset.storeBlock === filter;
-        block.hidden = !matches;
+    if (!filteredRows.length) {
+      listEl.innerHTML = '<p class="learning-empty">Nenhuma tentativa nesse período.</p>';
+      return;
+    }
 
-        // Filtrar por uma loja específica já abre o acordeão dela — não faz
-        // sentido escolher "Moema" e ainda precisar clicar de novo pra ver.
-        if (filter !== 'todos' && matches) {
-          const accBtn = block.querySelector('[data-acc-target]');
-          const body = block.querySelector('.lib-acc-body');
-          if (body && body.hidden) {
-            body.hidden = false;
-            accBtn.classList.add('open');
-          }
-        }
+    const byStore = groupByStore(filteredRows);
+    const storeNames = Object.keys(byStore).sort((a, b) => a.localeCompare(b, 'pt-BR'));
+
+    listEl.innerHTML = storeNames.map((storeName, i) => `
+      <div class="lib-acc-item" data-store-block="${storeName}" ${activeStore !== 'todos' && activeStore !== storeName ? 'hidden' : ''}>
+        <button type="button" class="lib-acc-btn" data-acc-target="quiz-report-${i}">
+          <span>🏬 ${storeName} · ${byStore[storeName].length} respostas</span><span class="lib-acc-chevron">▼</span>
+        </button>
+        <div class="lib-acc-body" id="quiz-report-${i}" hidden>${renderStoreTable(byStore[storeName])}</div>
+      </div>
+    `).join('');
+
+    listEl.querySelectorAll('[data-acc-target]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const body = listEl.querySelector(`#${CSS.escape(btn.dataset.accTarget)}`);
+        if (!body) return;
+        body.hidden = !body.hidden;
+        btn.classList.toggle('open', !body.hidden);
       });
     });
+
+    // Filtrar por uma loja específica já abre o acordeão dela — não faz
+    // sentido escolher "Moema" e ainda precisar clicar de novo pra ver.
+    if (activeStore !== 'todos') {
+      const block = listEl.querySelector(`[data-store-block="${CSS.escape(activeStore)}"]`);
+      const body = block?.querySelector('.lib-acc-body');
+      const accBtn = block?.querySelector('[data-acc-target]');
+      if (body && body.hidden) {
+        body.hidden = false;
+        accBtn.classList.add('open');
+      }
+    }
+  }
+
+  periodTabsEl.querySelectorAll('[data-period-filter]').forEach((tab) => {
+    tab.addEventListener('click', () => {
+      activePeriod = tab.dataset.periodFilter;
+      periodTabsEl.querySelectorAll('[data-period-filter]').forEach((t) => t.classList.toggle('active', t === tab));
+      renderList();
+    });
   });
+
+  storeTabsEl.querySelectorAll('[data-store-filter]').forEach((tab) => {
+    tab.addEventListener('click', () => {
+      activeStore = tab.dataset.storeFilter;
+      storeTabsEl.querySelectorAll('[data-store-filter]').forEach((t) => t.classList.toggle('active', t === tab));
+      renderList();
+    });
+  });
+
+  renderList();
 }
 
 function groupByStore(rows) {
