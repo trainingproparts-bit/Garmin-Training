@@ -33,6 +33,8 @@ const DISPLAY_NAMES = {
   golfer: 'MARQ Golfer',
   athlete: 'MARQ Athlete',
   commander: 'MARQ Commander',
+  fr570: 'Forerunner 570',
+  fr970: 'Forerunner 970',
 };
 
 const ICON = {

@@ -9,7 +9,7 @@ const PANEL_SELECTOR = '.panel';
 const NAV_LINK_SELECTOR = '.sb-link[data-panel]';
 
 /** Painéis que só aparecem na navegação depois que uma marca foi escolhida. */
-const BRAND_SCOPED_PANELS = new Set(['trilha', 'arena', 'certificacao', 'biblioteca', 'ranking', 'album']);
+const BRAND_SCOPED_PANELS = new Set(['trilha', 'arena', 'certificacao', 'biblioteca', 'ranking', 'album', 'academia-produtos']);
 
 /** Painéis "de entrada" (login/escolha de marca) — o sidebar só aparece depois deles, dentro do dashboard. */
 const NO_SIDEBAR_PANELS = new Set(['login', 'home']);
@@ -94,5 +94,16 @@ export function initPanelNavigation() {
   });
   document.getElementById('deepDiveBackBtn')?.addEventListener('click', () => {
     navigateToPanel(window.deepDiveReturnPanel || 'biblioteca');
+  });
+
+  // Academia de Produtos: produto e comparativo são alcançáveis de várias
+  // origens (lista principal, busca global, links de "Relacionados", e um
+  // comparativo pode levar a outro produto e vice-versa) — mesmo padrão de
+  // return-panel dinâmico acima, em vez de data-back-to estático.
+  document.getElementById('academiaProdutoDetailBackBtn')?.addEventListener('click', () => {
+    navigateToPanel(window.academiaReturnPanel || 'academia-produtos');
+  });
+  document.getElementById('academiaComparativoBackBtn')?.addEventListener('click', () => {
+    navigateToPanel(window.academiaReturnPanel || 'academia-produtos');
   });
 }

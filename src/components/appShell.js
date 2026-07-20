@@ -36,6 +36,11 @@ const NAV_ITEMS = [
   { id: 'biblioteca', iconKey: 'biblioteca', label: 'Biblioteca Técnica', brandScoped: true },
   { id: 'ranking', iconKey: 'ranking', label: 'Ranking', brandScoped: true },
   { id: 'album', iconKey: 'album', label: 'Álbum da Equipe', brandScoped: true },
+  // Segundo domínio da plataforma (2026-07-20) — independente das Trilhas,
+  // não é sobre progressão/checkpoint, é consulta rápida de produto durante
+  // atendimento. Fica brandScoped igual ao resto (é conteúdo específico da
+  // marca escolhida), mas não tem relação nenhuma com trilha/zona/checkpoint.
+  { id: 'academia-produtos', iconKey: 'academia', label: 'Academia de Produtos', brandScoped: true },
   { id: 'blog', iconKey: 'blog', label: 'Blog', brandScoped: false },
   // Não são brandScoped: visão de líder/admin é por loja/organização, não
   // por marca/trilha em andamento. Ficam escondidas até o papel ser
@@ -363,6 +368,38 @@ export function renderAppShell(container) {
             </div>
           </div>
 
+          <div class="panel" id="panel-academia-produtos" data-panel="academia-produtos" hidden>
+            <div class="panel-header">
+              <button type="button" class="back-btn" data-back-to="trilha">← Dashboard</button>
+              <div class="panel-title"><span>Academia de Produtos</span></div>
+            </div>
+            <div class="panel-body" id="academiaProdutosContainer"></div>
+          </div>
+
+          <div class="panel" id="panel-academia-produto-detail" data-panel="academia-produto-detail" hidden>
+            <div class="panel-header">
+              <button type="button" class="back-btn" id="academiaProdutoDetailBackBtn">← Voltar</button>
+              <div class="panel-title"><span id="academiaProdutoDetailTitle">Produto</span></div>
+            </div>
+            <div class="panel-body">
+              <div id="academiaProdutoDetailContainer" class="academia-detail-container">
+                <p class="home-loading">Carregando produto...</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel" id="panel-academia-comparativo" data-panel="academia-comparativo" hidden>
+            <div class="panel-header">
+              <button type="button" class="back-btn" id="academiaComparativoBackBtn">← Voltar</button>
+              <div class="panel-title"><span id="academiaComparativoTitle">Comparativo</span></div>
+            </div>
+            <div class="panel-body">
+              <div id="academiaComparativoContainer" class="academia-detail-container">
+                <p class="home-loading">Carregando comparativo...</p>
+              </div>
+            </div>
+          </div>
+
         </div>
       </main>
     </div>
@@ -575,7 +612,7 @@ function setupAvatarMenu() {
   });
 }
 
-const SEARCH_TYPE_ICON = { library: '📘', module: '🎓', quiz: '📝', blog: '📰' };
+const SEARCH_TYPE_ICON = { library: '📘', module: '🎓', quiz: '📝', blog: '📰', product: '⌚', comparison: '⚖️' };
 
 /**
  * Busca global do topbar — o input e o dropdown já existiam no HTML desde a
@@ -670,6 +707,14 @@ function setupGlobalSearch() {
             window.deepDiveReturnPanel = getActivePanelId() || 'biblioteca';
           }
           if (r.nav.libraryCategory) window.selectedLibraryCategory = r.nav.libraryCategory;
+          if (r.nav.productSlug) {
+            window.selectedProductSlug = r.nav.productSlug;
+            window.academiaReturnPanel = getActivePanelId() || 'academia-produtos';
+          }
+          if (r.nav.comparisonSlug) {
+            window.selectedComparisonSlug = r.nav.comparisonSlug;
+            window.academiaReturnPanel = getActivePanelId() || 'academia-produtos';
+          }
           navigateToPanel(r.nav.panel);
           dropdown.hidden = true;
           input.value = '';

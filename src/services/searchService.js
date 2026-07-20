@@ -38,14 +38,55 @@ const CATEGORY_LABELS = {
 export async function searchAll(brandId, term) {
   const pattern = likePattern(term);
 
-  const [library, modules, quizzes, blog] = await Promise.all([
+  const [library, modules, quizzes, blog, products, comparisons] = await Promise.all([
     searchLibrary(brandId, pattern),
     searchModules(brandId, pattern),
     searchQuizzes(brandId, pattern),
     searchBlog(pattern),
+    searchProducts(brandId, pattern),
+    searchComparisons(brandId, pattern),
   ]);
 
-  return [...library, ...modules, ...quizzes, ...blog];
+  return [...library, ...modules, ...quizzes, ...blog, ...products, ...comparisons];
+}
+
+/** Academia de Produtos — busca por produto (nome/tagline) e por comparativo (título). */
+async function searchProducts(brandId, pattern) {
+  const { data, error } = await supabase
+    .from('products')
+    .select('slug, name, tagline')
+    .eq('brand_id', brandId)
+    .eq('is_published', true)
+    .or(`name.ilike.${pattern},tagline.ilike.${pattern}`)
+    .limit(LIMIT_PER_SOURCE);
+  if (error) throw error;
+
+  return data.map((p) => ({
+    type: 'product',
+    label: 'Academia de Produtos',
+    title: p.name,
+    subtitle: p.tagline || '',
+    nav: { panel: 'academia-produto-detail', productSlug: p.slug },
+  }));
+}
+
+async function searchComparisons(brandId, pattern) {
+  const { data, error } = await supabase
+    .from('product_comparisons')
+    .select('slug, title')
+    .eq('brand_id', brandId)
+    .eq('is_published', true)
+    .ilike('title', pattern)
+    .limit(LIMIT_PER_SOURCE);
+  if (error) throw error;
+
+  return data.map((c) => ({
+    type: 'comparison',
+    label: 'Comparativo',
+    title: c.title,
+    subtitle: '',
+    nav: { panel: 'academia-comparativo', comparisonSlug: c.slug },
+  }));
 }
 
 async function searchLibrary(brandId, pattern) {
