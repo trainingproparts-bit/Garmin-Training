@@ -1,0 +1,367 @@
+/* Garmin Training Hub — Revisão Inteligente (2026-07-20)
+ *
+ * Terceiro domínio: card na Home, seletor de modo, e o runner em tela cheia
+ * (1 conteúdo por vez, estilo feed — sem menus, sem voltar, botão "Próximo"
+ * sempre em destaque). Blocos ricos reaproveitam contentBlocks.css sem
+ * nenhuma mudança; aqui só o chrome específico da revisão.
+ */
+
+/* ── Card na Home ── */
+.dash-revisao-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  background: linear-gradient(135deg, var(--g3), var(--card-bg));
+  border: 1px solid var(--g);
+  border-radius: var(--r3);
+  padding: 18px 22px;
+  margin-bottom: 24px;
+  box-shadow: var(--sh-neutral-sm);
+}
+
+.dash-revisao-count {
+  margin: 6px 0 8px;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.dash-revisao-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 12.5px;
+  color: var(--text2);
+}
+
+.dash-revisao-btn {
+  flex-shrink: 0;
+  padding: 12px 22px;
+  background: var(--g);
+  color: #fff;
+  border: none;
+  border-radius: var(--r2);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter var(--dur-fast) var(--ease);
+}
+
+.dash-revisao-btn:hover { filter: brightness(1.08); }
+
+@media (max-width: 640px) {
+  .dash-revisao-card { flex-direction: column; align-items: stretch; }
+  .dash-revisao-btn { width: 100%; }
+}
+
+/* ── Seletor de modo ── */
+.revisao-picker-intro {
+  font-size: 14px;
+  color: var(--text2);
+  margin-bottom: 18px;
+}
+
+.revisao-mode-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px;
+}
+
+.revisao-mode-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 18px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  box-shadow: var(--sh-neutral-sm);
+  transition: border-color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+}
+
+.revisao-mode-card:hover {
+  border-color: var(--g);
+  transform: translateY(-2px);
+}
+
+.revisao-mode-icon { font-size: 26px; }
+
+.revisao-mode-label { font-size: 14.5px; font-weight: 700; color: var(--text); }
+
+.revisao-mode-sub { font-size: 12px; color: var(--text3); }
+
+.revisao-product-picker { margin-top: 18px; }
+
+.revisao-product-picker-label { font-size: 13px; font-weight: 600; color: var(--text2); margin-bottom: 10px; }
+
+.revisao-product-picker-list { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.revisao-product-pill {
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: var(--off);
+  border: 1px solid var(--border);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text2);
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+
+.revisao-product-pill:hover { border-color: var(--g); color: var(--g); }
+
+/* ── Runner em tela cheia ── */
+.panel-fullbleed .panel-body { padding: 0; }
+
+.revisao-runner {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 16px 20px 32px;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.revisao-runner-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.revisao-exit-btn {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: var(--off);
+  color: var(--text2);
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.revisao-progress-track {
+  flex: 1;
+  height: 6px;
+  background: var(--off);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.revisao-progress-fill {
+  height: 100%;
+  background: var(--g);
+  border-radius: 999px;
+  transition: width var(--dur-base) var(--ease);
+}
+
+.revisao-progress-label {
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text3);
+}
+
+.revisao-card {
+  flex: 1;
+  animation: revisaoCardIn var(--dur-slow) var(--ease);
+}
+
+@keyframes revisaoCardIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.revisao-next-btn {
+  margin-top: 20px;
+  padding: 15px;
+  width: 100%;
+  background: var(--g);
+  color: #fff;
+  border: none;
+  border-radius: var(--r3);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--sh2);
+  transition: filter var(--dur-fast) var(--ease);
+}
+
+.revisao-next-btn:hover { filter: brightness(1.08); }
+.revisao-next-btn:disabled { opacity: 0.6; cursor: default; }
+
+/* ── Card "pergunta rápida" / "qual vence?" (exclusivos da revisão) ── */
+.revisao-quiz-card, .revisao-spec-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  padding: 22px;
+  box-shadow: var(--sh-neutral-sm);
+}
+
+.revisao-quiz-card-tag {
+  display: inline-block;
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--g);
+  background: var(--g3);
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+
+.revisao-quiz-card-question {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 18px;
+  line-height: 1.4;
+}
+
+.revisao-quiz-card-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.revisao-quiz-option {
+  padding: 14px 16px;
+  background: var(--off);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  font-family: inherit;
+  font-size: 13.5px;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
+}
+
+.revisao-quiz-option:hover:not(:disabled) { border-color: var(--g); }
+.revisao-quiz-option:disabled { cursor: default; }
+.revisao-quiz-option.correct { background: var(--acc-tint); border-color: var(--acc); color: var(--acc); font-weight: 700; }
+.revisao-quiz-option.incorrect { background: var(--warn-tint); border-color: var(--warn); color: var(--warn); }
+
+.revisao-spec-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.revisao-spec-option {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px;
+  background: var(--off);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  font-family: inherit;
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color var(--dur-fast) var(--ease);
+}
+
+.revisao-spec-option strong { font-size: 13px; }
+.revisao-spec-option span { font-size: 12.5px; color: var(--text2); }
+.revisao-spec-option:hover:not(:disabled) { border-color: var(--g); }
+.revisao-spec-option:disabled { cursor: default; }
+.revisao-spec-option.correct { background: var(--acc-tint); border-color: var(--acc); }
+.revisao-spec-option.incorrect { background: var(--warn-tint); border-color: var(--warn); }
+
+.revisao-quiz-card-feedback {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: var(--r2);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.revisao-quiz-card-feedback.ok { background: var(--acc-tint); color: var(--acc); }
+.revisao-quiz-card-feedback.no { background: var(--warn-tint); color: var(--warn); }
+
+@media (max-width: 480px) {
+  .revisao-spec-options { grid-template-columns: 1fr; }
+}
+
+/* ── Estado vazio ── */
+.revisao-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+  padding: 60px 20px;
+}
+
+.revisao-empty-icon { font-size: 40px; }
+
+.revisao-empty-back {
+  padding: 10px 20px;
+  background: var(--g);
+  color: #fff;
+  border: none;
+  border-radius: var(--r2);
+  font-family: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ── Resumo final ── */
+.revisao-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  padding: 40px 20px;
+}
+
+.revisao-summary-icon { font-size: 42px; margin-bottom: 4px; }
+
+.revisao-summary h2 { font-size: 20px; color: var(--text); margin-bottom: 20px; }
+
+.revisao-summary-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  width: 100%;
+  max-width: 380px;
+  margin-bottom: 26px;
+}
+
+.revisao-summary-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 14px;
+  background: var(--off);
+  border-radius: var(--r2);
+}
+
+.revisao-summary-stat strong { font-size: 20px; color: var(--g); }
+.revisao-summary-stat span { font-size: 11.5px; color: var(--text3); }
+.revisao-summary-stat-warn strong { color: var(--warn); }
+
+.revisao-summary-btn {
+  padding: 13px 28px;
+  background: var(--g);
+  color: #fff;
+  border: none;
+  border-radius: var(--r3);
+  font-family: inherit;
+  font-size: 14.5px;
+  font-weight: 700;
+  cursor: pointer;
+}

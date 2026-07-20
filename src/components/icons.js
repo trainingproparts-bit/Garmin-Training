@@ -57,6 +57,8 @@ export const ICONS = {
   switchBrand: wrap(`<path d="M20 12H4"/><path d="M9 6l-5 6 5 6"/>`),
 
   academia: wrap(`<path d="M2 8.5 12 4l10 4.5-10 4.5-10-4.5z"/><path d="M6 10.7v5c0 1.4 2.7 2.8 6 2.8s6-1.4 6-2.8v-5"/><path d="M20 9v6.5"/>`),
+
+  revisao: wrap(`<path d="M4 12a8 8 0 0 1 14-5.2M4 12a8 8 0 0 0 14 5.2"/><path d="M18 3v4h-4"/><path d="M6 21v-4h4"/>`),
 };
 
 export function icon(name) {

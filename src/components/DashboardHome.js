@@ -19,6 +19,7 @@ import { updateTrailCover } from '../services/trilhaService.js';
 import { fetchMyStreak } from '../services/streakService.js';
 import { fetchTeamAlbum } from '../services/teamAlbumService.js';
 import { fetchAvaliacoesGoogleDoMes } from '../services/avaliacoesGoogleService.js';
+import { fetchReviewStats } from '../services/revisaoService.js';
 import { getCurrentProfile, isAdminProfile } from '../config/supabase.js';
 import { navigateToPanel } from '../router.js';
 
@@ -152,6 +153,8 @@ export async function renderDashboardHome(container, data, onCheckpointClick) {
 
     <div class="dash-full-trail" data-role="trail-full"></div>
 
+    <div data-role="revisao-card"></div>
+
     <div class="dash-special-lines" data-role="special-lines"></div>
   `;
 
@@ -194,8 +197,53 @@ export async function renderDashboardHome(container, data, onCheckpointClick) {
 
   renderDestaquesPreview(container.querySelector('[data-role="destaques-preview"]'));
   renderActivityFeed(container.querySelector('[data-role="activity-feed"]'));
+  renderRevisaoCard(container.querySelector('[data-role="revisao-card"]'));
   renderSpecialLines(container.querySelector('[data-role="special-lines"]'));
   renderStreakPill(container.querySelector('[data-role="streak-pill"]'), userId);
+}
+
+/**
+ * Card "🎲 Revisão Inteligente" — terceiro domínio da plataforma (sql/066/067),
+ * um botão só ("Revisar Agora") que já leva pro seletor de modo
+ * (revisao-inteligente), sem escolher assunto nenhum aqui na Home. Tempo
+ * estimado usa ~40s/item (mesma referência usada pro tamanho das sessões em
+ * fn_start_review_session), arredondado pra minutos.
+ */
+const SECONDS_PER_ITEM_ESTIMATE = 40;
+
+function formatLastReview(iso) {
+  if (!iso) return 'Ainda não revisou';
+  const days = Math.floor((Date.now() - new Date(iso).getTime()) / 86400000);
+  if (days <= 0) return 'Hoje';
+  if (days === 1) return 'Ontem';
+  return `há ${days} dias`;
+}
+
+async function renderRevisaoCard(container) {
+  if (!container) return;
+
+  try {
+    const stats = await fetchReviewStats();
+    const minutos = Math.max(1, Math.round((stats.available_count * SECONDS_PER_ITEM_ESTIMATE) / 60));
+
+    container.innerHTML = `
+      <div class="dash-revisao-card">
+        <div class="dash-revisao-card-text">
+          <span class="dash-mini-tag">🎲 Revisão Inteligente</span>
+          <p class="dash-revisao-count">Você possui <strong>${stats.available_count}</strong> conteúdo${stats.available_count === 1 ? '' : 's'} para revisar</p>
+          <div class="dash-revisao-meta">
+            <span>Última revisão: <strong>${formatLastReview(stats.last_session_at)}</strong></span>
+            <span>Tempo estimado: <strong>${minutos} min</strong></span>
+          </div>
+        </div>
+        <button type="button" class="dash-revisao-btn" data-role="revisar-agora">Revisar Agora →</button>
+      </div>`;
+
+    container.querySelector('[data-role="revisar-agora"]').addEventListener('click', () => navigateToPanel('revisao-inteligente'));
+  } catch (err) {
+    console.error('[DashboardHome] erro ao carregar Revisão Inteligente:', err);
+    container.innerHTML = '';
+  }
 }
 
 /**
