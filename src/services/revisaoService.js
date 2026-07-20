@@ -8,9 +8,15 @@
 
 import { supabase } from '../config/supabase.js';
 
-/** Card "Revisão Inteligente" na Home — disponíveis + última sessão (streak vem de streakService, não duplicado aqui). */
-export async function fetchReviewStats() {
-  const { data, error } = await supabase.from('v_review_stats').select('available_count, last_session_at').single();
+/**
+ * Card "Revisão Inteligente" na Home — disponíveis + última sessão (streak
+ * vem de streakService, não duplicado aqui). brandId é sempre a marca
+ * ESCOLHIDA (window.selectedBrandId) — nunca profiles.brand_id, que é NULL
+ * pra contas admin (bug real corrigido em sql/068: dava sempre "0
+ * disponíveis" pra qualquer admin, já que c.brand_id = null nunca bate).
+ */
+export async function fetchReviewStats(brandId) {
+  const { data, error } = await supabase.rpc('fn_review_stats', { p_brand_id: brandId }).single();
   if (error) throw error;
   return data;
 }
@@ -27,9 +33,9 @@ export async function fetchProductsForPicker(brandId) {
   return data;
 }
 
-/** Monta a fila no servidor e devolve o session_id — nunca a fila calculada no cliente. */
-export async function startReviewSession(mode, productId = null) {
-  const { data, error } = await supabase.rpc('fn_start_review_session', { p_mode: mode, p_product_id: productId });
+/** Monta a fila no servidor e devolve o session_id — nunca a fila calculada no cliente. brandId é sempre a marca escolhida (window.selectedBrandId), mesmo motivo de fetchReviewStats. */
+export async function startReviewSession(mode, brandId, productId = null) {
+  const { data, error } = await supabase.rpc('fn_start_review_session', { p_mode: mode, p_brand_id: brandId, p_product_id: productId });
   if (error) throw error;
   return data; // uuid da sessão
 }

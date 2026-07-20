@@ -222,8 +222,11 @@ function formatLastReview(iso) {
 async function renderRevisaoCard(container) {
   if (!container) return;
 
+  const brandId = window.selectedBrandId;
+  if (!brandId) return;
+
   try {
-    const stats = await fetchReviewStats();
+    const stats = await fetchReviewStats(brandId);
     const minutos = Math.max(1, Math.round((stats.available_count * SECONDS_PER_ITEM_ESTIMATE) / 60));
 
     container.innerHTML = `

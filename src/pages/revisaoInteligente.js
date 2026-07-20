@@ -32,15 +32,15 @@ async function initRevisaoInteligentePage() {
   container.innerHTML = '<p class="learning-loading">Carregando…</p>';
 
   try {
-    const [stats, products] = await Promise.all([fetchReviewStats(), fetchProductsForPicker(brandId)]);
-    renderModePicker(container, stats, products);
+    const [stats, products] = await Promise.all([fetchReviewStats(brandId), fetchProductsForPicker(brandId)]);
+    renderModePicker(container, stats, products, brandId);
   } catch (err) {
     console.error('[RevisaoInteligente] erro ao carregar:', err);
     container.innerHTML = '<p class="learning-error">Não foi possível carregar agora.</p>';
   }
 }
 
-function renderModePicker(container, stats, products) {
+function renderModePicker(container, stats, products, brandId) {
   container.innerHTML = `
     <p class="revisao-picker-intro">
       ${stats.available_count} conteúdo${stats.available_count === 1 ? '' : 's'} disponíve${stats.available_count === 1 ? 'l' : 'is'} pra revisar. Escolha como quer revisar hoje:
@@ -73,19 +73,19 @@ function renderModePicker(container, stats, products) {
         return;
       }
 
-      await launchSession(container, mode, null);
+      await launchSession(container, mode, brandId, null);
     });
   });
 
   productPicker.querySelectorAll('[data-product-id]').forEach((pill) => {
-    pill.addEventListener('click', () => launchSession(container, 'produto', pill.dataset.productId));
+    pill.addEventListener('click', () => launchSession(container, 'produto', brandId, pill.dataset.productId));
   });
 }
 
-async function launchSession(container, mode, productId) {
+async function launchSession(container, mode, brandId, productId) {
   container.innerHTML = '<p class="learning-loading">Montando sua revisão…</p>';
   try {
-    const sessionId = await startReviewSession(mode, productId);
+    const sessionId = await startReviewSession(mode, brandId, productId);
     window.selectedReviewSessionId = sessionId;
     navigateToPanel('revisao-session');
   } catch (err) {
