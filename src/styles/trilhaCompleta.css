@@ -156,6 +156,61 @@
   color: var(--locked);
 }
 
+/* ── Card combinado módulo + avaliação ──
+ * Zonas sequenciais alternam módulo→quiz 1 para 1 — a avaliação vira uma
+ * faixa clicável dentro do próprio card do módulo, não um card à parte
+ * (pedido do usuário, 2026-07-20). */
+.phase-card-pair {
+  gap: 8px;
+}
+
+.phase-card-pair .phase-card-status {
+  margin-top: 0;
+}
+
+.phase-card-quiz {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 7px 10px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  font-family: inherit;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text2);
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+
+.phase-card-quiz:hover {
+  border-color: var(--g);
+  color: var(--g);
+}
+
+.phase-card-quiz-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.phase-card-quiz-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.phase-card-quiz.done {
+  color: var(--acc);
+  border-color: var(--acc);
+}
+
+.phase-card-quiz.locked {
+  opacity: 0.75;
+}
+
 .phase-card.milestone {
   border-color: var(--gold);
 }

@@ -335,27 +335,99 @@ function renderZoneSection(zone, doneCheckpointIds, isCurrent) {
 
 function renderPhaseCards(zone, doneCheckpointIds) {
   const comEstado = statusPorCheckpoint(zone, doneCheckpointIds);
-  const isMilestone = (i) => !zone.free_order && zone.checkpoints.length > 1 && i === zone.checkpoints.length - 1;
+  const groups = groupModuleWithQuiz(zone, comEstado);
+  const isMilestone = (rawIndex) => !zone.free_order && zone.checkpoints.length > 1 && rawIndex === zone.checkpoints.length - 1;
 
-  return comEstado.map(({ cp, state }, i) => {
-    const milestone = isMilestone(i);
-    const iconSvg = state === 'done' ? SVG_ICON.check : (milestone ? SVG_ICON.trophy : SVG_ICON[iconKeyFor(cp)]);
+  return groups.map((group) => (
+    group.type === 'pair'
+      ? renderPairedPhaseCard(group.module, group.quiz, isMilestone(group.quiz.rawIndex))
+      : renderSinglePhaseCard(group.entry, isMilestone(group.entry.rawIndex))
+  )).join('');
+}
 
-    return `
-      <button type="button" class="phase-card ${state}${milestone ? ' milestone' : ''}" data-checkpoint-id="${cp.id}">
-        <span class="phase-card-icon">${iconSvg}</span>
-        <span class="phase-card-title">${cp.title}</span>
-        <span class="phase-card-status">${STATUS_LABEL[state]}</span>
-      </button>`;
-  }).join('');
+/**
+ * Zonas sequenciais (não free_order) sempre alternam módulo → quiz na base
+ * real de dados (1 módulo, 1 avaliação logo em seguida) — confirmado
+ * consultando checkpoints direto no banco. Juntar os dois num card só ("a
+ * avaliação do módulo", não um módulo à parte) resolve a confusão de nomes
+ * redundantes entre módulo e quiz — títulos de quiz como "Corredor, Garmin
+ * Connect" ou "Módulo 1, Universo Garmin" só faziam sentido como item único
+ * numa lista; lado a lado do próprio módulo (grade nova, 2026-07-20),
+ * viravam repetição confusa (pedido do usuário). Zonas free_order (Circuito
+ * de Desafios) não têm módulo nenhum — cada quiz/duelo continua como card
+ * independente, sem mudança.
+ */
+function groupModuleWithQuiz(zone, comEstado) {
+  if (zone.free_order) {
+    return comEstado.map((entry, i) => ({ type: 'single', entry: { ...entry, rawIndex: i } }));
+  }
+
+  const groups = [];
+  for (let i = 0; i < comEstado.length; i++) {
+    const entry = comEstado[i];
+    const next = comEstado[i + 1];
+    if (entry.cp.checkpoint_type === 'module' && next?.cp.checkpoint_type === 'quiz') {
+      groups.push({ type: 'pair', module: { ...entry, rawIndex: i }, quiz: { ...next, rawIndex: i + 1 } });
+      i++;
+    } else {
+      groups.push({ type: 'single', entry: { ...entry, rawIndex: i } });
+    }
+  }
+  return groups;
+}
+
+function renderSinglePhaseCard({ cp, state }, milestone) {
+  const iconSvg = state === 'done' ? SVG_ICON.check : (milestone ? SVG_ICON.trophy : SVG_ICON[iconKeyFor(cp)]);
+
+  return `
+    <div class="phase-card ${state}${milestone ? ' milestone' : ''}" data-checkpoint-id="${cp.id}" role="button" tabindex="0">
+      <span class="phase-card-icon">${iconSvg}</span>
+      <span class="phase-card-title">${cp.title}</span>
+      <span class="phase-card-status">${STATUS_LABEL[state]}</span>
+    </div>`;
+}
+
+const QUIZ_ROW_ICON = { done: 'check', current: 'help', available: 'help', locked: 'lock' };
+const QUIZ_ROW_TEXT = { done: 'Avaliação concluída', current: 'Fazer avaliação', available: 'Fazer avaliação', locked: 'Avaliação' };
+
+function renderPairedPhaseCard(moduleEntry, quizEntry, milestone) {
+  const { cp: moduleCp, state: moduleState } = moduleEntry;
+  const { cp: quizCp, state: quizState } = quizEntry;
+  const iconSvg = moduleState === 'done' ? SVG_ICON.check : (milestone ? SVG_ICON.trophy : SVG_ICON[iconKeyFor(moduleCp)]);
+
+  return `
+    <div class="phase-card phase-card-pair ${moduleState}${milestone ? ' milestone' : ''}" data-checkpoint-id="${moduleCp.id}" role="button" tabindex="0">
+      <span class="phase-card-icon">${iconSvg}</span>
+      <span class="phase-card-title">${moduleCp.title}</span>
+      <span class="phase-card-status">${STATUS_LABEL[moduleState]}</span>
+      <button type="button" class="phase-card-quiz ${quizState}" data-checkpoint-id="${quizCp.id}">
+        <span class="phase-card-quiz-icon">${SVG_ICON[QUIZ_ROW_ICON[quizState]]}</span>
+        ${QUIZ_ROW_TEXT[quizState]}
+      </button>
+    </div>`;
 }
 
 function wirePhaseCardClicks(container, zones, onCheckpointClick) {
-  container.querySelectorAll('.phase-card').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const cpId = btn.dataset.checkpointId;
-      const cp = zones.flatMap((z) => z.checkpoints).find((c) => c.id === cpId);
-      if (cp) onCheckpointClick(cp);
+  const allCheckpoints = zones.flatMap((z) => z.checkpoints);
+  const openCheckpoint = (cpId) => {
+    const cp = allCheckpoints.find((c) => c.id === cpId);
+    if (cp) onCheckpointClick(cp);
+  };
+
+  container.querySelectorAll('.phase-card-quiz').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openCheckpoint(btn.dataset.checkpointId);
+    });
+  });
+
+  container.querySelectorAll('.phase-card').forEach((card) => {
+    card.addEventListener('click', () => openCheckpoint(card.dataset.checkpointId));
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openCheckpoint(card.dataset.checkpointId);
+      }
     });
   });
 }
