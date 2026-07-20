@@ -296,151 +296,68 @@ function zoneIconKey(zone) {
   return 'flag';
 }
 
-function shortTitle(title, max = 24) {
-  return title.length > max ? `${title.slice(0, max - 1)}…` : title;
-}
-
 /**
  * Página dedicada "Trilha Completa" (src/pages/trilhaCompleta.js) — cada
- * zona vira um acordeão fechado por padrão (a zona do próximo passo abre
- * expandida), e dentro dela os checkpoints viram um mapa de fases em
- * zigue-zague em vez do carrossel de cards 16:9 usado no resto do app
- * (pedido explícito do usuário pra esta visão específica: "estilo Candy
- * Crush/Duolingo"). Zonas aparecem todas, sem o agrupamento por nível do
- * renderGpsTrail — aqui o objetivo é mostrar a trilha inteira etapa a etapa.
+ * zona vira uma seção sempre aberta (sem accordion — pedido do usuário,
+ * 2026-07-20: o formato anterior de caminho serpenteado com zigue-zague
+ * dificultava a visão macro dos temas) com os checkpoints numa grade de
+ * cards de tamanho consistente, em vez do carrossel de cards 16:9 usado no
+ * resto do app. Navegação totalmente aberta: qualquer card é clicável,
+ * independente do estado done/current/available/locked — o estado só
+ * aparece como indicador visual (badge/ícone), não bloqueia mais o clique.
  * @param {HTMLElement} container
  * @param {Array} zones
  * @param {Set<string>} doneCheckpointIds
  * @param {(checkpoint: object) => void} onCheckpointClick
- * @param {string|null} currentZoneId - zona do próximo passo, abre expandida
+ * @param {string|null} currentZoneId - zona do próximo passo, ganha destaque visual
  */
 export function renderTrilhaCompletaAccordion(container, zones, doneCheckpointIds, onCheckpointClick, currentZoneId) {
-  container.innerHTML = zones.map((zone) => renderZoneAccordionItem(zone, doneCheckpointIds, zone.id === currentZoneId)).join('');
-  wirePhaseMapAccordion(container, zones, doneCheckpointIds, onCheckpointClick);
+  container.innerHTML = zones.map((zone) => renderZoneSection(zone, doneCheckpointIds, zone.id === currentZoneId)).join('');
+  wirePhaseCardClicks(container, zones, onCheckpointClick);
 }
 
-function renderZoneAccordionItem(zone, doneCheckpointIds, isCurrent) {
+function renderZoneSection(zone, doneCheckpointIds, isCurrent) {
   const total = zone.checkpoints.length;
   const done = zone.checkpoints.filter((cp) => doneCheckpointIds.has(cp.id)).length;
 
   return `
-    <div class="zone-accordion ${isCurrent ? 'open' : ''}" data-zone-id="${zone.id}">
-      <button type="button" class="zone-accordion-header" data-role="zone-toggle" aria-expanded="${isCurrent}">
-        <span class="zone-accordion-icon">${SVG_ICON[zoneIconKey(zone)]}</span>
-        <span class="zone-accordion-name">${zone.name}${zone.free_order ? ' <span class="tag blue">Ordem livre</span>' : ''}</span>
-        <span class="zone-accordion-progress">${done}/${total}</span>
-        <span class="zone-accordion-chevron">${SVG_ICON.chevron}</span>
-      </button>
-      <div class="zone-accordion-body-wrap">
-        <div class="zone-accordion-body">
-          <div class="phase-map" data-role="phase-map">
-            <svg class="phase-map-svg" data-role="phase-svg"></svg>
-            <div class="phase-map-nodes" data-role="phase-nodes">
-              ${renderPhaseNodes(zone, doneCheckpointIds)}
-            </div>
-          </div>
-        </div>
+    <div class="zone-section ${isCurrent ? 'current' : ''}" data-zone-id="${zone.id}">
+      <div class="zone-section-header">
+        <span class="zone-section-icon">${SVG_ICON[zoneIconKey(zone)]}</span>
+        <span class="zone-section-name">${zone.name}${zone.free_order ? ' <span class="tag blue">Ordem livre</span>' : ''}</span>
+        <span class="zone-section-progress">${done}/${total}</span>
+      </div>
+      <div class="phase-card-grid">
+        ${renderPhaseCards(zone, doneCheckpointIds)}
       </div>
     </div>`;
 }
 
-function renderPhaseNodes(zone, doneCheckpointIds) {
+function renderPhaseCards(zone, doneCheckpointIds) {
   const comEstado = statusPorCheckpoint(zone, doneCheckpointIds);
   const isMilestone = (i) => !zone.free_order && zone.checkpoints.length > 1 && i === zone.checkpoints.length - 1;
 
   return comEstado.map(({ cp, state }, i) => {
-    const clickable = state === 'done' || state === 'current' || state === 'available';
     const milestone = isMilestone(i);
     const iconSvg = state === 'done' ? SVG_ICON.check : (milestone ? SVG_ICON.trophy : SVG_ICON[iconKeyFor(cp)]);
-    const lockedTitle = state === 'locked' ? 'Conclua a etapa anterior para desbloquear' : cp.title;
 
     return `
-      <div class="phase-node ${state}${milestone ? ' milestone' : ''}" data-checkpoint-id="${cp.id}">
-        <button type="button" class="phase-node-circle" data-clickable="${clickable}" title="${lockedTitle}">
-          ${iconSvg}
-        </button>
-        <span class="phase-node-label">${shortTitle(cp.title)}</span>
-      </div>`;
+      <button type="button" class="phase-card ${state}${milestone ? ' milestone' : ''}" data-checkpoint-id="${cp.id}">
+        <span class="phase-card-icon">${iconSvg}</span>
+        <span class="phase-card-title">${cp.title}</span>
+        <span class="phase-card-status">${STATUS_LABEL[state]}</span>
+      </button>`;
   }).join('');
 }
 
-let phaseMapResizeWired = false;
-
-function wirePhaseMapAccordion(container, zones, doneCheckpointIds, onCheckpointClick) {
-  container.querySelectorAll('.zone-accordion').forEach((accEl) => {
-    const header = accEl.querySelector('[data-role="zone-toggle"]');
-    const mapEl = accEl.querySelector('[data-role="phase-map"]');
-
-    header.addEventListener('click', () => {
-      const opening = !accEl.classList.contains('open');
-      accEl.classList.toggle('open', opening);
-      header.setAttribute('aria-expanded', String(opening));
-      if (opening) requestAnimationFrame(() => layoutPhaseMapConnectors(mapEl));
+function wirePhaseCardClicks(container, zones, onCheckpointClick) {
+  container.querySelectorAll('.phase-card').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const cpId = btn.dataset.checkpointId;
+      const cp = zones.flatMap((z) => z.checkpoints).find((c) => c.id === cpId);
+      if (cp) onCheckpointClick(cp);
     });
-
-    accEl.querySelectorAll('.phase-node-circle[data-clickable="true"]').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const cpId = btn.closest('.phase-node').dataset.checkpointId;
-        const cp = zones.flatMap((z) => z.checkpoints).find((c) => c.id === cpId);
-        if (cp) onCheckpointClick(cp);
-      });
-    });
-
-    if (accEl.classList.contains('open')) {
-      requestAnimationFrame(() => layoutPhaseMapConnectors(mapEl));
-    }
   });
-
-  if (!phaseMapResizeWired) {
-    phaseMapResizeWired = true;
-    let resizeTimer;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => {
-        document.querySelectorAll('.zone-accordion.open [data-role="phase-map"]').forEach(layoutPhaseMapConnectors);
-      }, 150);
-    });
-  }
-}
-
-/**
- * Desenha o caminho serpenteado conectando os nós, medido de verdade via
- * getBoundingClientRect (o posicionamento em zigue-zague vem de CSS puro —
- * align-self alternado por nth-child — então a posição real de cada nó
- * depende da largura disponível, não dá pra calcular sem medir o DOM já
- * renderizado). Cada segmento vira uma curva em S (mesmo x de entrada e
- * saída, controle no meio do y) — no mobile, onde o CSS força todos os nós
- * pro centro, os dois x coincidem e a curva já sai reta, sem precisar de
- * nenhum caso especial aqui.
- */
-function layoutPhaseMapConnectors(mapEl) {
-  const svg = mapEl.querySelector('[data-role="phase-svg"]');
-  const nodesEl = mapEl.querySelector('[data-role="phase-nodes"]');
-  if (!svg || !nodesEl) return;
-
-  const circles = [...nodesEl.querySelectorAll('.phase-node-circle')];
-  if (circles.length < 2) {
-    svg.innerHTML = '';
-    return;
-  }
-
-  const mapRect = mapEl.getBoundingClientRect();
-  const points = circles.map((el) => {
-    const r = el.getBoundingClientRect();
-    return { x: r.left + r.width / 2 - mapRect.left, y: r.top + r.height / 2 - mapRect.top };
-  });
-
-  svg.setAttribute('viewBox', `0 0 ${mapRect.width} ${mapRect.height}`);
-
-  let pathsHtml = '';
-  for (let i = 0; i < points.length - 1; i++) {
-    const a = points[i];
-    const b = points[i + 1];
-    const midY = (a.y + b.y) / 2;
-    const done = circles[i].closest('.phase-node').classList.contains('done');
-    pathsHtml += `<path d="M ${a.x} ${a.y} C ${a.x} ${midY}, ${b.x} ${midY}, ${b.x} ${b.y}" class="phase-map-segment ${done ? 'done' : 'pending'}" />`;
-  }
-  svg.innerHTML = pathsHtml;
 }
 
 /**
