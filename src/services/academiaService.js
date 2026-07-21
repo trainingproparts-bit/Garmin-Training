@@ -116,6 +116,7 @@ async function fetchRelationships(productId) {
     type: r.relationship_type,
     label: r.related_label || r.related?.name,
     slug: r.related?.slug || null,
+    relatedProductId: r.related_product_id,
   }));
 }
 
@@ -148,10 +149,89 @@ export async function fetchComparisonBySlug(brandId, slug) {
 
   const { data: items, error: itemsErr } = await supabase
     .from('comparison_items')
-    .select('spec_label, value_a, value_b, winner')
+    .select('id, spec_label, value_a, value_b, winner')
     .eq('comparison_id', comparison.id)
     .order('order_index', { ascending: true });
   if (itemsErr) throw itemsErr;
 
   return { ...comparison, items };
+}
+
+// ---------------------------------------------------------------------------
+// Edição (admin) — "preciso que seja possível editar todo o conteúdo
+// facilmente" (pedido do usuário, 2026-07-20). RLS já libera ALL pra admin
+// em toda tabela da Academia (sql/064); aqui só as funções de escrita.
+// Materiais/relacionados/itens de comparativo usam delete-then-reinsert (listas
+// pequenas, mesmo princípio já usado em fn_review_catalog_sync_blocks pra
+// blocos) — mais simples que tentar casar id-a-id numa lista que pode ganhar/
+// perder linhas a qualquer edição.
+// ---------------------------------------------------------------------------
+
+export async function updateProduct(productId, fields) {
+  const { error } = await supabase.from('products').update(fields).eq('id', productId);
+  if (error) throw error;
+}
+
+export async function updateProductSection(productId, sectionType, blocks) {
+  const { error } = await supabase
+    .from('product_sections')
+    .upsert({ product_id: productId, section_type: sectionType, payload: { blocks } }, { onConflict: 'product_id,section_type' });
+  if (error) throw error;
+}
+
+export async function replaceMaterials(productId, materials) {
+  const { error: delErr } = await supabase.from('product_materials').delete().eq('product_id', productId);
+  if (delErr) throw delErr;
+  if (!materials.length) return;
+  const rows = materials.map((m, i) => ({ product_id: productId, type: m.type, title: m.title, url: m.url, order_index: i }));
+  const { error } = await supabase.from('product_materials').insert(rows);
+  if (error) throw error;
+}
+
+export async function replaceRelationships(productId, relationships) {
+  const { error: delErr } = await supabase.from('product_relationships').delete().eq('product_id', productId);
+  if (delErr) throw delErr;
+  if (!relationships.length) return;
+  const rows = relationships.map((r, i) => ({
+    product_id: productId,
+    related_product_id: r.relatedProductId || null,
+    related_label: r.relatedProductId ? null : (r.label || null),
+    relationship_type: r.type || null,
+    order_index: i,
+  }));
+  const { error } = await supabase.from('product_relationships').insert(rows);
+  if (error) throw error;
+}
+
+/** Produtos publicados de TODAS as categorias da marca — pro seletor de "relacionado" no editor. */
+export async function fetchAllProductsForBrand(brandId) {
+  const { data, error } = await supabase
+    .from('products')
+    .select('id, name')
+    .eq('brand_id', brandId)
+    .eq('is_published', true)
+    .order('name', { ascending: true });
+  if (error) throw error;
+  return data;
+}
+
+export async function updateComparison(comparisonId, fields) {
+  const { error } = await supabase.from('product_comparisons').update(fields).eq('id', comparisonId);
+  if (error) throw error;
+}
+
+export async function replaceComparisonItems(comparisonId, items) {
+  const { error: delErr } = await supabase.from('comparison_items').delete().eq('comparison_id', comparisonId);
+  if (delErr) throw delErr;
+  if (!items.length) return;
+  const rows = items.map((it, i) => ({
+    comparison_id: comparisonId,
+    spec_label: it.spec_label,
+    value_a: it.value_a || null,
+    value_b: it.value_b || null,
+    winner: it.winner || null,
+    order_index: i,
+  }));
+  const { error } = await supabase.from('comparison_items').insert(rows);
+  if (error) throw error;
 }

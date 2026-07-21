@@ -319,3 +319,95 @@
 .academia-vs-table td.tie { color: var(--text3); }
 
 .academia-vs-blocks { margin-top: 8px; }
+
+/* ── Edição admin (2026-07-20) — "preciso editar todo o conteúdo facilmente" ──
+ * Botões/formulários simples pros campos estruturados (cabeçalho, downloads,
+ * relacionados, tabela de comparativo). Blocos ricos reaproveitam o editor já
+ * existente (cb-editor-*, ver contentBlocks.css) — sem CSS novo pra eles. */
+.academia-edit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 10px;
+  padding: 7px 14px;
+  background: var(--off);
+  border: 1px dashed var(--border2);
+  border-radius: var(--r2);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text2);
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+
+.academia-edit-btn:hover { border-color: var(--g); color: var(--g); }
+
+.academia-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 16px;
+  background: var(--off);
+  border-radius: var(--r3);
+}
+
+.academia-edit-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text2);
+}
+
+.academia-edit-form input,
+.academia-edit-form textarea {
+  padding: 9px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  background: var(--card-bg);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13px;
+}
+
+.academia-edit-form-actions { display: flex; gap: 8px; margin-top: 4px; }
+
+.academia-edit-list {
+  margin-top: 10px;
+  padding: 16px;
+  background: var(--off);
+  border-radius: var(--r3);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.academia-edit-row {
+  display: grid;
+  grid-template-columns: 110px 1fr 1fr auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.academia-edit-row-table { grid-template-columns: 1.4fr 1fr 1fr 110px auto; }
+
+.academia-edit-row input,
+.academia-edit-row select {
+  padding: 8px 9px;
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  background: var(--card-bg);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 12.5px;
+  min-width: 0;
+}
+
+@media (max-width: 640px) {
+  .academia-edit-row, .academia-edit-row-table {
+    grid-template-columns: 1fr;
+  }
+}
