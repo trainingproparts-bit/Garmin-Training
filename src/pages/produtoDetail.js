@@ -25,6 +25,7 @@ const NAV_SECTIONS = [
   { key: 'visao_geral', label: 'Visão Geral', icon: '📋' },
   { key: 'personas', label: 'Personas', icon: '🧑‍🤝‍🧑' },
   { key: 'diferenciais', label: 'Diferenciais', icon: '⭐' },
+  { key: 'novidades', label: 'O que há de novo?', icon: '🆕' },
   { key: 'comparativos', label: 'Comparativos', icon: '⚖️' },
   { key: 'scripts_venda', label: 'Scripts de Venda', icon: '🗣️' },
   { key: 'objecoes', label: 'Objeções', icon: '🛡️' },
@@ -35,7 +36,7 @@ const NAV_SECTIONS = [
   { key: 'relacionados', label: 'Relacionados', icon: '🔗' },
 ];
 
-const BLOCK_SECTION_KEYS = new Set(['visao_geral', 'personas', 'diferenciais', 'scripts_venda', 'objecoes', 'casos_uso', 'faq']);
+const BLOCK_SECTION_KEYS = new Set(['visao_geral', 'personas', 'diferenciais', 'novidades', 'scripts_venda', 'objecoes', 'casos_uso', 'faq']);
 const MATERIAL_ICON = { pdf: '📄', image: '🖼️', folder: '🗂️', video: '🎬' };
 const MATERIAL_TYPES = ['pdf', 'image', 'folder', 'video'];
 
