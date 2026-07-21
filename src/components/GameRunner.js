@@ -35,6 +35,10 @@ const DISPLAY_NAMES = {
   commander: 'MARQ Commander',
   fr570: 'Forerunner 570',
   fr970: 'Forerunner 970',
+  fr70: 'Forerunner 70',
+  fr170: 'Forerunner 170',
+  fr55: 'Forerunner 55',
+  fr165: 'Forerunner 165',
 };
 
 const ICON = {
