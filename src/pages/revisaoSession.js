@@ -96,6 +96,24 @@ function runSession(container, sessionId, items) {
     }
   }
 
+  // Identifica de onde vem o conteúdo (produto/comparativo/lição/artigo) —
+  // pro conteúdo passivo (accordion, banner, card_grid, roteiro etc.), o
+  // review_catalog.title já guarda exatamente esse contexto (nome do
+  // produto ou título do comparativo/lição/artigo), só nunca tinha sido
+  // exibido na tela — daí a confusão reportada pelo usuário.
+  const SOURCE_ICON = {
+    product_sections: '📦',
+    product_comparisons: '⚖️',
+    lessons: '📘',
+    content_library: '📄',
+  };
+
+  function sourceTagHtml(catalogEntry) {
+    if (!catalogEntry?.title) return '';
+    const icon = SOURCE_ICON[catalogEntry.source_table] || '📌';
+    return `<div class="revisao-source-tag">${icon} ${catalogEntry.title}</div>`;
+  }
+
   function renderCard(cardEl, nextBtn, item, content) {
     nextBtn.textContent = index === items.length - 1 ? 'Ver resumo' : 'Próximo →';
 
@@ -116,7 +134,7 @@ function runSession(container, sessionId, items) {
       return;
     }
 
-    cardEl.innerHTML = renderBlocks([content.block]);
+    cardEl.innerHTML = sourceTagHtml(item.review_catalog) + renderBlocks([content.block]);
     wireBlockInteractions(cardEl, { returnPanel: 'revisao-session' });
 
     // Conteúdo passivo (texto/roteiro/objeção/tabela/vídeo/card etc.) não tem
