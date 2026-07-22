@@ -216,6 +216,8 @@
 /* ── Quiz Especialista ── */
 .academia-quiz-card { display: flex; flex-direction: column; gap: 10px; }
 
+.academia-quiz-item { display: flex; flex-direction: column; gap: 0; }
+
 .academia-quiz-btn {
   display: flex;
   align-items: center;

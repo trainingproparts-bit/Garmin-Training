@@ -20,6 +20,10 @@ import {
 } from '../services/academiaService.js';
 import { renderBlocks, wireBlockInteractions, setupBlockArrayEditor } from '../components/ContentBlocks.js';
 import { getCurrentProfile, isAdminProfile } from '../config/supabase.js';
+import {
+  fetchQuestionsAdmin, createQuestion, updateQuestion, deleteQuestion,
+  createAlternative, updateAlternative, deleteAlternative, markAlternativeCorrect,
+} from '../services/contentAdminService.js';
 
 const NAV_SECTIONS = [
   { key: 'visao_geral', label: 'Visão Geral', icon: '📋' },
@@ -118,13 +122,14 @@ function renderProdutoDetail(container, product, isAdmin, brandId) {
     BLOCK_SECTION_KEYS.forEach((key) => wireBlockSectionEditor(container, product, key));
     wireMaterialsEditor(container, product);
     wireRelationshipsEditor(container, product, brandId);
+    wireQuizEditor(container, product);
   }
 }
 
 function renderSectionPanelInner(sectionKey, product, isAdmin) {
   if (sectionKey === 'comparativos') return renderComparativos(product.comparisons, product.slug);
   if (sectionKey === 'downloads') return renderDownloadsPanel(product, isAdmin);
-  if (sectionKey === 'quiz') return renderQuiz(product.quizzes);
+  if (sectionKey === 'quiz') return renderQuiz(product.quizzes, isAdmin);
   if (sectionKey === 'relacionados') return renderRelacionadosPanel(product, isAdmin);
   return renderBlockSectionPanel(sectionKey, product, isAdmin);
 }
@@ -355,22 +360,205 @@ function wireMaterialsEditor(container, product) {
   });
 }
 
-// ── Quiz Especialista (só leitura) ─────────────────────────────────────
+// ── Quiz Especialista (jogável + edição das perguntas pelo admin) ────────
 
-function renderQuiz(quizzes) {
+function renderQuiz(quizzes, isAdmin) {
   if (!quizzes?.length) return '<p class="learning-empty">Nenhum Quiz Especialista cadastrado ainda.</p>';
   return `
     <div class="academia-quiz-card">
       ${quizzes.map((q) => `
-        <button type="button" class="academia-quiz-btn" data-quiz-id="${q.id}">
-          <span class="academia-quiz-icon">🏆</span>
-          <div>
-            <div class="academia-quiz-title">${q.title}</div>
-            <div class="academia-quiz-sub">Aprovação: ${q.passing_score_pct}% · Concluir concede XP e badge de especialista</div>
-          </div>
-        </button>
+        <div class="academia-quiz-item" data-quiz-item="${q.id}">
+          <button type="button" class="academia-quiz-btn" data-quiz-id="${q.id}">
+            <span class="academia-quiz-icon">🏆</span>
+            <div>
+              <div class="academia-quiz-title">${q.title}</div>
+              <div class="academia-quiz-sub">Aprovação: ${q.passing_score_pct}% · Concluir concede XP e badge de especialista</div>
+            </div>
+          </button>
+          ${isAdmin ? `<button type="button" class="academia-edit-btn" data-edit-quiz="${q.id}">✎ Editar perguntas</button>` : ''}
+          <div data-role="quiz-editor-${q.id}"></div>
+        </div>
       `).join('')}
     </div>`;
+}
+
+function questionRowHtml(q, qi) {
+  const alts = q.alternatives.length ? q.alternatives : [{ body: '', is_correct: qi === 0, order_index: 0 }];
+  return `
+    <div class="academia-edit-list" data-question-index="${qi}" style="margin-top:${qi === 0 ? '0' : '14px'};">
+      <div class="academia-edit-form-actions" style="justify-content:space-between;">
+        <strong style="font-size:12.5px;">Pergunta ${qi + 1}</strong>
+        <button type="button" class="cb-editor-btn cb-editor-btn-danger" data-remove-question>✕ Remover pergunta</button>
+      </div>
+      <label>Enunciado<textarea data-field="body" rows="2">${q.body || ''}</textarea></label>
+      <label>Explicação (mostrada quando erra, opcional)<textarea data-field="explanation" rows="2">${q.explanation || ''}</textarea></label>
+      <div data-role="alt-rows">
+        ${alts.map((a, ai) => altRowHtml(a, qi, ai)).join('')}
+      </div>
+      <button type="button" class="cb-editor-btn" data-add-alt>+ Alternativa</button>
+    </div>`;
+}
+
+function altRowHtml(a, qi, ai) {
+  return `
+    <div class="academia-edit-row" data-alt-index="${ai}" style="grid-template-columns:auto 1fr auto;">
+      <input type="radio" name="correct-${qi}" data-field="is_correct" ${a.is_correct ? 'checked' : ''} title="Correta">
+      <input type="text" data-field="body" value="${a.body || ''}" placeholder="Texto da alternativa">
+      <button type="button" class="cb-editor-btn cb-editor-btn-danger" data-remove-alt>✕</button>
+    </div>`;
+}
+
+function wireQuizEditor(container, product) {
+  (product.quizzes || []).forEach((quiz) => {
+    const item = container.querySelector(`[data-quiz-item="${quiz.id}"]`);
+    const editBtn = item?.querySelector(`[data-edit-quiz="${quiz.id}"]`);
+    const editorHost = item?.querySelector(`[data-role="quiz-editor-${quiz.id}"]`);
+    if (!editBtn || !editorHost) return;
+
+    editBtn.addEventListener('click', async () => {
+      editBtn.hidden = true;
+      editorHost.innerHTML = '<p class="learning-loading">Carregando perguntas…</p>';
+
+      let questions;
+      try {
+        questions = await fetchQuestionsAdmin(quiz.id);
+      } catch (err) {
+        console.error('[ProdutoDetail] erro ao carregar perguntas:', err);
+        editorHost.innerHTML = '<p class="content-error">Não foi possível carregar as perguntas agora.</p>';
+        editBtn.hidden = false;
+        return;
+      }
+
+      // Trabalha sobre uma cópia local (com alternatives clonadas) — só grava no banco no Salvar.
+      let rows = questions.map((q) => ({ ...q, alternatives: q.alternatives.map((a) => ({ ...a })) }));
+
+      function render() {
+        editorHost.innerHTML = `
+          <div data-role="questions">${rows.map((q, qi) => questionRowHtml(q, qi)).join('') || '<p class="learning-empty">Nenhuma pergunta ainda.</p>'}</div>
+          <div class="academia-edit-form-actions" style="margin-top:10px;">
+            <button type="button" class="cb-editor-btn" data-add-question>+ Pergunta</button>
+          </div>
+          <div class="academia-edit-form-actions">
+            <button type="button" class="cb-editor-btn" data-save-quiz>Salvar</button>
+            <button type="button" class="cb-editor-btn" data-cancel-quiz>Cancelar</button>
+          </div>`;
+
+        editorHost.querySelectorAll('[data-add-alt]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            syncFromDom();
+            const qi = Number(btn.closest('[data-question-index]').dataset.questionIndex);
+            rows[qi].alternatives.push({ body: '', is_correct: false, order_index: rows[qi].alternatives.length });
+            render();
+          });
+        });
+        editorHost.querySelectorAll('[data-remove-alt]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            syncFromDom();
+            const qi = Number(btn.closest('[data-question-index]').dataset.questionIndex);
+            const ai = Number(btn.closest('[data-alt-index]').dataset.altIndex);
+            rows[qi].alternatives.splice(ai, 1);
+            render();
+          });
+        });
+        editorHost.querySelectorAll('[data-remove-question]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            syncFromDom();
+            const qi = Number(btn.closest('[data-question-index]').dataset.questionIndex);
+            rows.splice(qi, 1);
+            render();
+          });
+        });
+        editorHost.querySelector('[data-add-question]').addEventListener('click', () => {
+          syncFromDom();
+          rows.push({ body: '', explanation: '', order_index: rows.length, alternatives: [] });
+          render();
+        });
+        editorHost.querySelector('[data-cancel-quiz]').addEventListener('click', () => {
+          editorHost.innerHTML = '';
+          editBtn.hidden = false;
+        });
+        editorHost.querySelector('[data-save-quiz]').addEventListener('click', async () => {
+          syncFromDom();
+          const saveBtn = editorHost.querySelector('[data-save-quiz]');
+          saveBtn.disabled = true;
+          saveBtn.textContent = 'Salvando…';
+          try {
+            await persistQuestions(quiz.id, questions, rows);
+            questions = await fetchQuestionsAdmin(quiz.id);
+            rows = questions.map((q) => ({ ...q, alternatives: q.alternatives.map((a) => ({ ...a })) }));
+            editorHost.innerHTML = '';
+            editBtn.hidden = false;
+          } catch (err) {
+            console.error('[ProdutoDetail] erro ao salvar perguntas:', err);
+            alert('Não foi possível salvar agora.');
+            saveBtn.disabled = false;
+            saveBtn.textContent = 'Salvar';
+          }
+        });
+      }
+
+      function syncFromDom() {
+        editorHost.querySelectorAll('[data-question-index]').forEach((qEl) => {
+          const qi = Number(qEl.dataset.questionIndex);
+          rows[qi].body = qEl.querySelector('[data-field="body"]').value.trim();
+          rows[qi].explanation = qEl.querySelector('[data-field="explanation"]').value.trim() || null;
+          qEl.querySelectorAll('[data-alt-index]').forEach((aEl) => {
+            const ai = Number(aEl.dataset.altIndex);
+            rows[qi].alternatives[ai] = {
+              ...rows[qi].alternatives[ai],
+              body: aEl.querySelector('[data-field="body"]').value.trim(),
+              is_correct: aEl.querySelector('[data-field="is_correct"]').checked,
+            };
+          });
+        });
+      }
+
+      render();
+    });
+  });
+}
+
+/** Sincroniza a cópia local editada com o banco — perguntas/alternativas mantêm o id quando já existiam (update), criam quando novas, e apagam as removidas. */
+async function persistQuestions(quizId, original, edited) {
+  const originalIds = new Set(original.map((q) => q.id));
+  const editedIds = new Set(edited.filter((q) => q.id).map((q) => q.id));
+
+  for (const q of original) {
+    if (!editedIds.has(q.id)) await deleteQuestion(q.id);
+  }
+
+  for (let qi = 0; qi < edited.length; qi += 1) {
+    const q = edited[qi];
+    let questionId = q.id;
+
+    if (questionId && originalIds.has(questionId)) {
+      await updateQuestion(questionId, { body: q.body, explanation: q.explanation, order_index: qi });
+    } else {
+      const created = await createQuestion({ quizId, body: q.body, orderIndex: qi });
+      questionId = created.id;
+    }
+
+    const originalAlts = original.find((oq) => oq.id === q.id)?.alternatives || [];
+    const originalAltIds = new Set(originalAlts.map((a) => a.id));
+    const editedAltIds = new Set(q.alternatives.filter((a) => a.id).map((a) => a.id));
+
+    for (const a of originalAlts) {
+      if (!editedAltIds.has(a.id)) await deleteAlternative(a.id);
+    }
+
+    let correctAltId = null;
+    for (let ai = 0; ai < q.alternatives.length; ai += 1) {
+      const a = q.alternatives[ai];
+      if (a.id && originalAltIds.has(a.id)) {
+        await updateAlternative(a.id, { body: a.body, order_index: ai });
+        if (a.is_correct) correctAltId = a.id;
+      } else {
+        const created = await createAlternative({ questionId, body: a.body, orderIndex: ai, isCorrect: a.is_correct });
+        if (a.is_correct) correctAltId = created.id;
+      }
+    }
+    if (correctAltId) await markAlternativeCorrect(correctAltId);
+  }
 }
 
 // ── Relacionados ───────────────────────────────────────────────────────

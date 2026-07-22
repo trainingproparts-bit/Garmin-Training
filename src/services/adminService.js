@@ -70,3 +70,22 @@ export async function createUser({ full_name, username, role_id, store_id, brand
   if (data?.error) throw new Error(data.error);
   return data;
 }
+
+/**
+ * Redefine a senha de qualquer usuário (RN — colaboradores usam e-mail
+ * técnico @proparts.internal, então o "esqueci minha senha" por e-mail do
+ * Supabase não serve; só a Admin API resolve, daí a Edge Function). Mesma
+ * regra de exibição única da senha do cadastro — nunca fica salva em lugar
+ * nenhum além dessa resposta.
+ */
+export async function resetUserPassword(userId) {
+  const { data, error } = await supabase.functions.invoke('admin-reset-password', {
+    body: { user_id: userId },
+  });
+  if (error) {
+    const message = data?.error || error.message || 'Erro ao redefinir a senha.';
+    throw new Error(message);
+  }
+  if (data?.error) throw new Error(data.error);
+  return data;
+}

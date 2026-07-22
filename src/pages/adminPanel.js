@@ -13,6 +13,7 @@ import {
   updateProfileStore,
   updateProfileStatus,
   createUser,
+  resetUserPassword,
 } from '../services/adminService.js';
 import { fetchActiveBrands } from '../services/brandService.js';
 import { insertAvaliacaoGoogle } from '../services/avaliacoesGoogleService.js';
@@ -240,9 +241,10 @@ function renderTable(profiles, roles, stores) {
   }
 
   return `
+    <div id="resetPasswordResult"></div>
     <div class="lib-table-wrap">
       <table class="lib-table">
-        <thead><tr><th>Nome</th><th>Cargo</th><th>Loja</th><th>Status</th><th>Score</th></tr></thead>
+        <thead><tr><th>Nome</th><th>Cargo</th><th>Loja</th><th>Status</th><th>Senha</th><th>Score</th></tr></thead>
         <tbody>
           ${profiles.map((p) => `
             <tr data-profile-id="${p.id}">
@@ -261,6 +263,11 @@ function renderTable(profiles, roles, stores) {
               <td>
                 <button type="button" class="learning-card-btn" data-status-toggle data-current-status="${p.status}" style="padding:5px 10px;font-size:11.5px;">
                   ${p.status === 'suspended' ? '🔒 Desbloquear' : '🔓 Bloquear'}
+                </button>
+              </td>
+              <td>
+                <button type="button" class="learning-card-btn" data-reset-password style="padding:5px 10px;font-size:11.5px;">
+                  🔑 Redefinir
                 </button>
               </td>
               <td class="lib-prod-dest">${p.performance_score ?? 0} pts</td>
@@ -293,6 +300,34 @@ function setupTableHandlers(container) {
       } catch (err) {
         console.error('[AdminPanel] erro ao atualizar loja:', err);
         alert('Não foi possível atualizar a loja agora.');
+      }
+    });
+  });
+
+  container.querySelectorAll('[data-reset-password]').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const row = btn.closest('[data-profile-id]');
+      const profileId = row.dataset.profileId;
+      const fullName = row.querySelector('.lib-prod-name')?.textContent || 'este usuário';
+      if (!window.confirm(`Redefinir a senha de ${fullName}? A senha atual deixa de funcionar imediatamente.`)) return;
+
+      btn.disabled = true;
+      const resultEl = container.querySelector('#resetPasswordResult');
+      try {
+        const result = await resetUserPassword(profileId);
+        resultEl.innerHTML = `
+          <div class="admin-create-success" style="margin-bottom:14px;">
+            <strong>Senha redefinida.</strong> Repasse pessoalmente ou por canal interno — ela só aparece aqui, uma única vez.
+            <div class="admin-create-credentials">
+              <span>Username: <strong>${result.username}</strong></span>
+              <span>Nova senha: <strong>${result.password}</strong></span>
+            </div>
+          </div>`;
+      } catch (err) {
+        console.error('[AdminPanel] erro ao redefinir senha:', err);
+        resultEl.innerHTML = `<p class="learning-error">${err.message || 'Não foi possível redefinir a senha agora.'}</p>`;
+      } finally {
+        btn.disabled = false;
       }
     });
   });
