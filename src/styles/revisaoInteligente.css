@@ -267,7 +267,7 @@
 
 .revisao-quiz-option:hover:not(:disabled) { border-color: var(--g); }
 .revisao-quiz-option:disabled { cursor: default; }
-.revisao-quiz-option.correct { background: var(--acc-tint); border-color: var(--acc); color: var(--acc); font-weight: 700; }
+.revisao-quiz-option.correct { background: var(--ok-tint); border-color: var(--ok); color: var(--ok2); font-weight: 700; }
 .revisao-quiz-option.incorrect { background: var(--warn-tint); border-color: var(--warn); color: var(--warn); }
 
 .revisao-spec-options {
@@ -295,7 +295,7 @@
 .revisao-spec-option span { font-size: 12.5px; color: var(--text2); }
 .revisao-spec-option:hover:not(:disabled) { border-color: var(--g); }
 .revisao-spec-option:disabled { cursor: default; }
-.revisao-spec-option.correct { background: var(--acc-tint); border-color: var(--acc); }
+.revisao-spec-option.correct { background: var(--ok-tint); border-color: var(--ok); }
 .revisao-spec-option.incorrect { background: var(--warn-tint); border-color: var(--warn); }
 
 .revisao-quiz-card-feedback {

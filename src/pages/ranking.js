@@ -46,7 +46,13 @@ async function initRankingPage() {
       fetchStoreHighlights(brandId),
       (isAdmin || isLeader) ? fetchStoresForBrand(brandId) : Promise.resolve([]),
       (isLeader && !isAdmin && profile) ? fetchLeaderStoreIds(profile.id) : Promise.resolve([]),
-      fetchSeasonHistory(4),
+      // A tabela `leaderboard` (snapshot de temporada) ainda não tem migração
+      // que a crie — sem isolar essa falha, um erro aqui derrubava a página
+      // de Ranking inteira (ranking de pontos e destaques de venda incluídos).
+      fetchSeasonHistory(4).catch((err) => {
+        console.error('[Ranking] histórico de temporadas indisponível:', err);
+        return [];
+      }),
     ]);
 
     renderRanking(container, { ranking, highlights, stores, leaderStoreIds, profile, isAdmin, isLeader, seasonHistory });

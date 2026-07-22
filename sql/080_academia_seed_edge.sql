@@ -120,6 +120,19 @@ begin
     ]}
   ]}
   $j$),
+  (v_p_540, 'novidades', $j$
+  {"blocks": [
+    {"type": "banner", "tone": "info", "text": "Comparado ao <strong>Edge 530</strong> (2019), o modelo direto que o 540 substitui."},
+    {"type": "accordion", "items": [
+      {"title": "GNSS multibanda (recurso totalmente novo)", "html": "<p>O 530 tinha GPS multi-constelação (GPS+GLONASS+Galileo), mas não captava múltiplas frequências. O 540 traz multibanda, melhorando muito a precisão em ambiente urbano denso ou mata fechada.</p>"},
+      {"title": "Coaching adaptativo direcionado (recurso totalmente novo)", "html": "<p>O 530 não analisava a exigência do percurso nem ajustava plano de treino automaticamente — isso é novo do 540.</p>"},
+      {"title": "Monitor de resistência em tempo real (recurso totalmente novo)", "html": "<p>Mostra a reserva de energia estimada durante o pedal — não existia no 530.</p>"},
+      {"title": "Métricas de mountain bike (recurso totalmente novo)", "html": "<p>Contagem/distância de saltos, Grit e Flow — o 530 não tinha esses dados de MTB.</p>"},
+      {"title": "Opção de carregamento solar (recurso totalmente novo)", "html": "<p>O 530 não tinha nenhuma variante solar — o 540 Solar (vendido separadamente) introduz essa opção na linha.</p>"},
+      {"title": "O que NÃO mudou (continua igual ao 530)", "html": "<p>Controle só por botão (sem touchscreen) e tela de tamanho similar já vinham do 530.</p>"}
+    ]}
+  ]}
+  $j$),
   (v_p_540, 'scripts_venda', $j$
   {"blocks": [
     {"type": "roteiro", "steps": [
@@ -195,6 +208,19 @@ begin
       {"title": "Coaching adaptativo direcionado", "html": "<p>Planos de treino que se ajustam automaticamente ao progresso do ciclista.</p>"},
       {"title": "ClimbPro", "html": "<p>Planejador de subida com perfil de elevação em tempo real.</p>"},
       {"title": "Métricas de mountain bike", "html": "<p>Contagem e distância de saltos, Grit e Flow da trilha.</p>"}
+    ]}
+  ]}
+  $j$),
+  (v_p_840, 'novidades', $j$
+  {"blocks": [
+    {"type": "banner", "tone": "info", "text": "Comparado ao <strong>Edge 830</strong> (2019), o modelo direto que o 840 substitui."},
+    {"type": "accordion", "items": [
+      {"title": "GNSS multibanda (recurso totalmente novo)", "html": "<p>O 830 tinha GPS multi-constelação (GPS+GLONASS+Galileo), mas não captava múltiplas frequências. O 840 traz multibanda, melhorando muito a precisão em ambiente urbano denso ou mata fechada.</p>"},
+      {"title": "Coaching adaptativo direcionado (recurso totalmente novo)", "html": "<p>O 830 não analisava a exigência do percurso nem ajustava plano de treino automaticamente — isso é novo do 840.</p>"},
+      {"title": "Monitor de resistência em tempo real (recurso totalmente novo)", "html": "<p>Mostra a reserva de energia estimada durante o pedal — não existia no 830.</p>"},
+      {"title": "Métricas de mountain bike (recurso totalmente novo)", "html": "<p>Contagem/distância de saltos, Grit e Flow — o 830 não tinha esses dados de MTB.</p>"},
+      {"title": "Opção de carregamento solar (recurso totalmente novo)", "html": "<p>O 830 não tinha nenhuma variante solar — o 840 Solar (vendido separadamente) introduz essa opção na linha.</p>"},
+      {"title": "O que NÃO mudou (continua igual ao 830)", "html": "<p>Touchscreen responsivo já vinha do 830 — essa continua sendo a diferença pro 540 (só botão), não uma novidade desta geração.</p>"}
     ]}
   ]}
   $j$),

@@ -392,13 +392,13 @@
 .duel-option-nenhum .duel-option-icon { color: var(--text3); }
 
 .duel-option.correct {
-  border-color: var(--acc);
-  background: linear-gradient(135deg, var(--acc-tint), #ecd3d7);
-  color: var(--acc);
+  border-color: var(--ok);
+  background: var(--ok-tint);
+  color: var(--ok2);
 }
 
 .duel-option.correct .duel-option-icon {
-  color: var(--acc);
+  color: var(--ok);
 }
 
 .duel-option.incorrect {
@@ -542,19 +542,19 @@
 }
 
 .quiz-runner-option.correct {
-  border-color: var(--acc);
-  background: var(--acc-tint);
-  color: var(--acc);
+  border-color: var(--ok);
+  background: var(--ok-tint);
+  color: var(--ok2);
   font-weight: 600;
 }
 
 .quiz-runner-option.correct .quiz-runner-option-letter {
-  background: var(--acc);
+  background: var(--ok);
   color: #fff;
 }
 
 .quiz-runner-option.correct .quiz-runner-option-result-icon {
-  color: var(--acc);
+  color: var(--ok);
 }
 
 .quiz-runner-option.incorrect {

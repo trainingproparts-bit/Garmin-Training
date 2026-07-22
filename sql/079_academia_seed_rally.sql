@@ -115,6 +115,17 @@ begin
     ]}
   ]}
   $j$),
+  (v_p_rk200, 'novidades', $j$
+  {"blocks": [
+    {"type": "banner", "tone": "info", "text": "O RK200 substitui o <strong>Vector 3</strong> (2018) na linha de pedais medidores de potência da Garmin — não é uma sequência numérica direta (Vector → Rally é uma troca de nome de linha), mas é o produto que assumiu esse lugar no catálogo."},
+    {"type": "accordion", "items": [
+      {"title": "Opção off-road XC (recurso totalmente novo)", "html": "<p>O Vector 3 era só de estrada (compatível com LOOK Keo/SHIMANO SPD-SL). A família Rally introduziu o corpo de pedal XC (SHIMANO SPD, off-road) — o Vector 3 nunca teve essa opção.</p>"},
+      {"title": "Corpos de pedal intercambiáveis", "html": "<p>Na Rally, o mesmo eixo sensor transfere entre corpos de pedal de estrada e off-road — o Vector 3 não tinha essa flexibilidade de trocar de sistema de encaixe no mesmo sensor.</p>"},
+      {"title": "O que NÃO mudou (continua igual ao Vector 3)", "html": "<p>Medição dual-sensing, precisão de ±1%, bateria substituível e eixo transferível entre bicicletas (com o mesmo corpo de pedal) já existiam desde o Vector 3 — não são novidades do Rally.</p>"},
+      {"title": "Rally 100: a versão mais simples da mesma geração", "html": "<p>Vale lembrar que o Rally 100 (single-sensing, só potência total) é um tier mais simples lançado junto com o RK200/RS200 em 2021 — não é um antecessor, é uma opção mais em conta da mesma geração.</p>"}
+    ]}
+  ]}
+  $j$),
   (v_p_rk200, 'scripts_venda', $j$
   {"blocks": [
     {"type": "roteiro", "steps": [
@@ -191,6 +202,17 @@ begin
       {"title": "Eixo transferível", "html": "<p>O sensor de potência troca de corpo de pedal sem perder a calibração.</p>"},
       {"title": "Compatível com Edge, Connect e apps de treino indoor", "html": "<p>Funciona com ciclocomputadores Edge, o app Garmin Connect e plataformas como Zwift, TrainerRoad e Tacx Training App.</p>"},
       {"title": "Resistência IPX7", "html": "<p>Protegido contra chuva e respingos.</p>"}
+    ]}
+  ]}
+  $j$),
+  (v_p_rs200, 'novidades', $j$
+  {"blocks": [
+    {"type": "banner", "tone": "info", "text": "O RS200 substitui o <strong>Vector 3</strong> (2018) na linha de pedais medidores de potência da Garmin — não é uma sequência numérica direta (Vector → Rally é uma troca de nome de linha), mas é o produto que assumiu esse lugar no catálogo."},
+    {"type": "accordion", "items": [
+      {"title": "Opção off-road XC (recurso totalmente novo)", "html": "<p>O Vector 3 era só de estrada (compatível com LOOK Keo/SHIMANO SPD-SL). A família Rally introduziu o corpo de pedal XC (SHIMANO SPD, off-road) — o Vector 3 nunca teve essa opção.</p>"},
+      {"title": "Corpos de pedal intercambiáveis", "html": "<p>Na Rally, o mesmo eixo sensor transfere entre corpos de pedal de estrada e off-road — o Vector 3 não tinha essa flexibilidade de trocar de sistema de encaixe no mesmo sensor.</p>"},
+      {"title": "O que NÃO mudou (continua igual ao Vector 3)", "html": "<p>Medição dual-sensing, precisão de ±1%, bateria substituível e eixo transferível entre bicicletas (com o mesmo corpo de pedal) já existiam desde o Vector 3 — não são novidades do Rally.</p>"},
+      {"title": "Rally 100: a versão mais simples da mesma geração", "html": "<p>Vale lembrar que o Rally 100 (single-sensing, só potência total) é um tier mais simples lançado junto com o RK200/RS200 em 2021 — não é um antecessor, é uma opção mais em conta da mesma geração.</p>"}
     ]}
   ]}
   $j$),

@@ -85,6 +85,19 @@ begin
     ]}
   ]}
   $j$),
+  (v_p_id, 'novidades', $j$
+  {"blocks": [
+    {"type": "banner", "tone": "info", "text": "O X30 NÃO é sucessor do <strong>Descent X50i</strong> — são dois produtos da mesma sub-linha \"formato grande\", lançados com ~10 meses de diferença (X50i em nov/2024, X30 em set/2025), em tiers de preço diferentes. Aqui está o comparativo entre os dois, pra ajudar a posicionar a venda dentro da linha Descent."},
+    {"type": "accordion", "items": [
+      {"title": "Tela: touch de 3\" (X50i) vs 2,4\" só botão (X30)", "html": "<p>O X50i tem touchscreen de 3\". O X30 usa tela de 2,4\" com botões metálicos à prova de vazamento, sem touch — mais simples, mais em conta.</p>"},
+      {"title": "Profundidade: 20 ATM (X50i) vs 10 ATM (X30)", "html": "<p>O X50i aguenta o dobro de profundidade classificada — relevante pra mergulho técnico mais avançado.</p>"},
+      {"title": "Sonar SubWave: só no X50i", "html": "<p>Comunicação entre mergulhadores (mensagem, pressão do tanque, profundidade, distância) — recurso exclusivo do X50i, o X30 não tem.</p>"},
+      {"title": "Lanterna de backup: só no X50i", "html": "<p>Lanterna integrada de emergência — o X30 não tem.</p>"},
+      {"title": "NDL Aware e suporte a trimix: presentes nos dois", "html": "<p>Não é diferencial entre os dois modelos — ambos têm essas funções de mergulho técnico.</p>"},
+      {"title": "Preço: quase metade no X30", "html": "<p>US$ 749,99 no X30 contra US$ 1.499,99 no X50i — a diferença de preço reflete diretamente os recursos ausentes (touch, sonar, lanterna, profundidade extra), não uma limitação de geração.</p>"}
+    ]}
+  ]}
+  $j$),
   (v_p_id, 'scripts_venda', $j$
   {"blocks": [
     {"type": "roteiro", "steps": [

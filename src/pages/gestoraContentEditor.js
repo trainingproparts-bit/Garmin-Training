@@ -660,7 +660,7 @@ function alternativeRowHtml(a, questionId) {
   return `
     <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; padding:4px 0;" data-alt-id="${a.id}">
       <input type="radio" name="ce-correct-${questionId}" data-mark-correct="${a.id}" ${a.is_correct ? 'checked' : ''}>
-      <span style="flex:1; ${a.is_correct ? 'color:var(--acc); font-weight:600;' : ''}" data-role="ce-alt-body">${a.body}</span>
+      <span style="flex:1; ${a.is_correct ? 'color:var(--ok2); font-weight:600;' : ''}" data-role="ce-alt-body">${a.body}</span>
       <button type="button" class="cb-editor-btn cb-editor-btn-danger" data-delete-alt="${a.id}" style="padding:3px 8px; font-size:10.5px;">✕</button>
     </label>`;
 }
