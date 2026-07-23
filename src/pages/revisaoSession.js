@@ -59,6 +59,17 @@ function runSession(container, sessionId, items) {
   let index = 0;
   const startedAt = Date.now();
 
+  // Garante que a resposta a uma pergunta NUNCA fique presa esperando a RPC
+  // pra sempre — se `submitReviewItem` travar por qualquer motivo de rede, o
+  // usuário ainda consegue seguir pro próximo item em até 8s (bug relatado:
+  // "as vezes aparece pergunta e trava, nao da a opção de seguir pro proximo").
+  function submitWithTimeout(sessionItemId, answer) {
+    return Promise.race([
+      submitReviewItem(sessionItemId, answer),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 8000)),
+    ]);
+  }
+
   renderItem();
 
   async function renderItem() {
@@ -85,7 +96,10 @@ function runSession(container, sessionId, items) {
     const nextBtn = container.querySelector('[data-role="next"]');
 
     try {
-      const content = await fetchItemContent(item.review_catalog);
+      const content = await Promise.race([
+        fetchItemContent(item.review_catalog),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 10000)),
+      ]);
       renderCard(cardEl, nextBtn, item, content);
     } catch (err) {
       console.error('[RevisaoSession] erro ao buscar conteúdo do item:', err);
@@ -143,7 +157,7 @@ function runSession(container, sessionId, items) {
     nextBtn.addEventListener('click', async () => {
       nextBtn.disabled = true;
       try {
-        await submitReviewItem(item.id, null);
+        await submitWithTimeout(item.id, null);
       } catch (err) {
         console.error('[RevisaoSession] erro ao registrar item:', err);
       }
@@ -170,7 +184,7 @@ function runSession(container, sessionId, items) {
 
         let result;
         try {
-          result = await submitReviewItem(item.id, btn.dataset.altId);
+          result = await submitWithTimeout(item.id, btn.dataset.altId);
         } catch (err) {
           console.error('[RevisaoSession] erro ao registrar resposta:', err);
           result = 'erro';
@@ -214,7 +228,7 @@ function runSession(container, sessionId, items) {
 
         let result;
         try {
-          result = await submitReviewItem(item.id, btn.dataset.answer);
+          result = await submitWithTimeout(item.id, btn.dataset.answer);
         } catch (err) {
           console.error('[RevisaoSession] erro ao registrar resposta:', err);
           result = 'erro';
