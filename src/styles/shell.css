@@ -694,6 +694,63 @@
   display: none;
 }
 
+/* ── Modal "Trocar minha senha" (reaproveita .activity-modal-*, dashboard.css) ── */
+.password-modal {
+  max-width: 380px;
+}
+
+.password-modal-form {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.password-modal-label {
+  display: block;
+  font-size: 13px;
+  color: var(--text3);
+  margin-bottom: 7px;
+  font-weight: 500;
+}
+
+.password-modal-input {
+  width: 100%;
+  padding: 11px 13px;
+  border-radius: var(--r2);
+  border: 1px solid var(--border);
+  background-color: var(--bg-page);
+  color: var(--text);
+  font-size: 14.5px;
+  font-family: inherit;
+  box-sizing: border-box;
+  transition: border-color var(--dur-fast), box-shadow var(--dur-fast);
+}
+
+.password-modal-input:focus {
+  outline: none;
+  border-color: var(--acc);
+  box-shadow: 0 0 0 3px rgba(140, 31, 46, 0.12);
+}
+
+.password-modal-feedback {
+  font-size: 13px;
+  padding: 10px 12px;
+  border-radius: var(--r2);
+}
+
+.password-modal-feedback-error {
+  background: rgba(228, 0, 43, 0.08);
+  border: 1px solid rgba(228, 0, 43, 0.3);
+  color: var(--g);
+}
+
+.password-modal-feedback-success {
+  background: var(--ok-tint);
+  border: 1px solid var(--ok);
+  color: var(--ok2);
+}
+
 .panel-stack {
   min-height: 100%;
   flex: 1;

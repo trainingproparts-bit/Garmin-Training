@@ -16,7 +16,7 @@
  */
 
 import { initLoginPage } from '../pages/login.js';
-import { getCurrentProfile, isLeaderProfile, isAdminProfile } from '../config/supabase.js';
+import { supabase, getCurrentProfile, isLeaderProfile, isAdminProfile } from '../config/supabase.js';
 import { signOut } from '../services/authService.js';
 import { initPanelNavigation, navigateToPanel, getActivePanelId, revealBrandScopedNav, hideBrandScopedNav } from '../router.js';
 import { icon } from './icons.js';
@@ -176,6 +176,9 @@ export function renderAppShell(container) {
                     </a>
                   `).join('')}
                   ${AVATAR_NAV_ITEMS.length ? '<div class="avatar-dropdown-divider"></div>' : ''}
+                  <button type="button" id="changePasswordBtn" class="avatar-dropdown-action" hidden>
+                    <span class="sb-icon">${icon('lock')}</span><span class="sb-label">Trocar minha senha</span>
+                  </button>
                   <button type="button" id="darkModeBtn" class="avatar-dropdown-action">
                     <span class="sb-icon">${icon('moon')}</span><span class="sb-label">Modo escuro</span>
                   </button>
@@ -184,6 +187,7 @@ export function renderAppShell(container) {
                   </button>
                 </div>
               </div>
+              <div data-role="password-modal-root"></div>
             </div>
           </div>
         </div>
@@ -430,6 +434,7 @@ export function renderAppShell(container) {
   setupAuthListeners();
   updateSidebarProfile();
   setupLogoutButton();
+  setupPasswordChangeButton();
   setupDarkModeButton();
   setupSidebarCollapse();
   setupQuickAccess();
@@ -472,6 +477,7 @@ async function updateSidebarProfile() {
   const nameEl = document.getElementById('sbProfileName');
   const levelEl = document.getElementById('sbProfileLevel');
   const logoutBtn = document.getElementById('logoutBtn');
+  const changePasswordBtn = document.getElementById('changePasswordBtn');
   const topbarAvatarEl = document.getElementById('topbarAvatar');
   const avatarDropdownNameEl = document.getElementById('avatarDropdownName');
   const avatarDropdownRoleEl = document.getElementById('avatarDropdownRole');
@@ -498,6 +504,7 @@ async function updateSidebarProfile() {
     // fallback "Nível 1", o que dava a falsa impressão de nível fixo.
     levelEl.textContent = formatScore(profile.performance_score);
     logoutBtn.hidden = false;
+    if (changePasswordBtn) changePasswordBtn.hidden = false;
     refreshNotificationBadge(profile.id);
   } else {
     setAvatarContent(topbarAvatarEl, null, '?');
@@ -508,6 +515,7 @@ async function updateSidebarProfile() {
     // Visitante não tem sessão real, mas precisa de uma saída visível — sem
     // isso ficava preso no modo visitante sem jeito de voltar ao login.
     logoutBtn.hidden = false;
+    if (changePasswordBtn) changePasswordBtn.hidden = true;
   }
 
   revealRoleScopedNav(profile);
@@ -834,6 +842,99 @@ function setupLogoutButton() {
       hideBrandScopedNav();
       updateSidebarProfile();
       navigateToPanel('login');
+    }
+  });
+}
+
+/**
+ * Trocar minha senha — colaboradores usam e-mails fake (@proparts.internal),
+ * então o reset por e-mail do Supabase Auth não serve pra eles. Como o botão
+ * só aparece pra quem já tem sessão ativa, supabase.auth.updateUser() troca a
+ * senha da própria sessão sem pedir a senha atual (self-service de verdade,
+ * sem depender do admin nem de uma Edge Function com service-role).
+ */
+function setupPasswordChangeButton() {
+  const btn = document.getElementById('changePasswordBtn');
+  const modalRoot = document.querySelector('[data-role="password-modal-root"]');
+  if (!btn || !modalRoot) return;
+
+  btn.addEventListener('click', () => openPasswordModal(modalRoot));
+}
+
+function openPasswordModal(root) {
+  root.innerHTML = `
+    <div class="activity-modal-backdrop" data-role="pw-modal-backdrop">
+      <div class="activity-modal password-modal">
+        <div class="activity-modal-head">
+          <h3>Trocar minha senha</h3>
+          <button type="button" class="activity-modal-close" data-role="pw-modal-close">✕</button>
+        </div>
+        <form data-role="pw-form" class="password-modal-form">
+          <div class="password-modal-field">
+            <label for="pwNew" class="password-modal-label">Nova senha</label>
+            <input type="password" id="pwNew" class="password-modal-input" placeholder="••••••••" autocomplete="new-password" required minlength="6" />
+          </div>
+          <div class="password-modal-field">
+            <label for="pwConfirm" class="password-modal-label">Confirmar nova senha</label>
+            <input type="password" id="pwConfirm" class="password-modal-input" placeholder="••••••••" autocomplete="new-password" required minlength="6" />
+          </div>
+          <div data-role="pw-feedback" class="password-modal-feedback" hidden></div>
+          <button type="submit" class="login-btn" data-role="pw-submit">Salvar nova senha</button>
+        </form>
+      </div>
+    </div>`;
+
+  const closeModal = () => { root.innerHTML = ''; };
+  root.querySelector('[data-role="pw-modal-backdrop"]').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) closeModal();
+  });
+  root.querySelector('[data-role="pw-modal-close"]').addEventListener('click', closeModal);
+
+  const form = root.querySelector('[data-role="pw-form"]');
+  const feedbackEl = root.querySelector('[data-role="pw-feedback"]');
+  const submitBtn = root.querySelector('[data-role="pw-submit"]');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const newPassword = form.querySelector('#pwNew').value;
+    const confirmPassword = form.querySelector('#pwConfirm').value;
+
+    feedbackEl.hidden = true;
+
+    if (newPassword.length < 6) {
+      feedbackEl.textContent = 'A senha precisa ter pelo menos 6 caracteres.';
+      feedbackEl.className = 'password-modal-feedback password-modal-feedback-error';
+      feedbackEl.hidden = false;
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      feedbackEl.textContent = 'As senhas não coincidem.';
+      feedbackEl.className = 'password-modal-feedback password-modal-feedback-error';
+      feedbackEl.hidden = false;
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Salvando...';
+
+    try {
+      const { error } = await supabase.auth.updateUser({ password: newPassword });
+      if (error) throw error;
+
+      feedbackEl.textContent = 'Senha alterada com sucesso!';
+      feedbackEl.className = 'password-modal-feedback password-modal-feedback-success';
+      feedbackEl.hidden = false;
+      form.reset();
+      setTimeout(closeModal, 1500);
+    } catch (err) {
+      console.error('[AppShell] erro ao trocar senha:', err);
+      feedbackEl.textContent = 'Não foi possível trocar a senha agora. Tente novamente.';
+      feedbackEl.className = 'password-modal-feedback password-modal-feedback-error';
+      feedbackEl.hidden = false;
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Salvar nova senha';
     }
   });
 }

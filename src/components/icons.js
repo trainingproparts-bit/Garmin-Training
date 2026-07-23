@@ -52,6 +52,8 @@ export const ICONS = {
 
   moon: wrap(`<path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/>`),
 
+  lock: wrap(`<rect x="5" y="11" width="14" height="9" rx="1.8"/><path d="M8 11V7.5a4 4 0 0 1 8 0V11"/>`),
+
   chevronDown: wrap(`<path d="M6 9l6 6 6-6"/>`),
 
   switchBrand: wrap(`<path d="M20 12H4"/><path d="M9 6l-5 6 5 6"/>`),
