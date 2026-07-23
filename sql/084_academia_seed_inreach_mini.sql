@@ -56,8 +56,7 @@ begin
   insert into products (brand_id, category_id, slug, name, model_code, tagline, is_published, order_index) values
   (v_brand_id, v_cat_id, 'inreach-mini-2', 'inReach Mini 2', '010-02602', 'Comunicador satelital compacto, só botão, até 30 dias de bateria', true, 1),
   (v_brand_id, v_cat_id, 'inreach-mini-3', 'inReach Mini 3', '010-03387', 'Comunicador satelital compacto com touchscreen colorido, texto bidirecional e SOS interativo', true, 2),
-  (v_brand_id, v_cat_id, 'inreach-mini-3-plus', 'inReach Mini 3 Plus', '010-03388', 'Comunicador satelital com touchscreen, mensagem de voz, foto e texto em grupo', true, 3)
-  returning id into v_p_m2;
+  (v_brand_id, v_cat_id, 'inreach-mini-3-plus', 'inReach Mini 3 Plus', '010-03388', 'Comunicador satelital com touchscreen, mensagem de voz, foto e texto em grupo', true, 3);
   select id into v_p_m2 from products where slug = 'inreach-mini-2';
   select id into v_p_m3 from products where slug = 'inreach-mini-3';
   select id into v_p_m3p from products where slug = 'inreach-mini-3-plus';

@@ -64,8 +64,7 @@ begin
   (v_brand_id, v_cat_gps, 'gpsmap-65', 'GPSMAP 65', '010-02451', 'GPS de mão outdoor de entrada com GNSS multibanda, tela de 2.6"', true, 3),
   (v_brand_id, v_cat_gps, 'gpsmap-66sr', 'GPSMAP 66sr', '010-02236', 'GPS de mão outdoor com sensores ABC, bateria recarregável de longa duração e download de imagem de satélite', true, 4),
   (v_brand_id, v_cat_gps, 'gpsmap-67', 'GPSMAP 67', '010-02540', 'GPS de mão outdoor topo de linha com tela de 3" e até 5x mais bateria que a geração anterior', true, 5),
-  (v_brand_id, v_cat_nau, 'gpsmap-86sci', 'GPSMAP 86sci', '010-02236-02', 'GPS de mão náutico topo de linha com inReach embutido e cartas BlueChart g3', true, 6)
-  returning id into v_p_65;
+  (v_brand_id, v_cat_nau, 'gpsmap-86sci', 'GPSMAP 86sci', '010-02236-02', 'GPS de mão náutico topo de linha com inReach embutido e cartas BlueChart g3', true, 6);
   select id into v_p_65 from products where slug = 'gpsmap-65';
   select id into v_p_66sr from products where slug = 'gpsmap-66sr';
   select id into v_p_67 from products where slug = 'gpsmap-67';
@@ -407,7 +406,7 @@ begin
   values (v_brand_id, 'quiz-especialista-gpsmap-86sci', 'Quiz Especialista: GPSMAP 86sci', 70, true) returning id into v_quiz;
   insert into questions (quiz_id, body, order_index) values (v_quiz, 'O que torna o GPSMAP 86sci único na série 86?', 1) returning id into v_q;
   insert into alternatives (question_id, body, is_correct, order_index) values
-    (v_q, 'Único com cartas BlueChart g3 E inReach juntos', true, 1), (v_q, 'É o único à prova d\'água', false, 2), (v_q, 'É o único com GPS', false, 3), (v_q, 'Não sei', false, 4);
+    (v_q, 'Único com cartas BlueChart g3 E inReach juntos', true, 1), (v_q, 'É o único à prova d''água', false, 2), (v_q, 'É o único com GPS', false, 3), (v_q, 'Não sei', false, 4);
   insert into questions (quiz_id, body, order_index) values (v_quiz, 'O inReach do 86sci precisa de assinatura?', 2) returning id into v_q;
   insert into alternatives (question_id, body, is_correct, order_index) values
     (v_q, 'Sim, plano ativo contratado à parte', true, 1), (v_q, 'Não, é gratuito', false, 2), (v_q, 'Só em emergência real', false, 3), (v_q, 'Não sei', false, 4);

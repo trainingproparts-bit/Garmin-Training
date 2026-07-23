@@ -58,8 +58,7 @@ begin
 
   insert into products (brand_id, category_id, slug, name, model_code, tagline, is_published, order_index) values
   (v_brand_id, v_cat_id, 'etrex-se', 'eTrex SE', '010-02734', 'GPS de mão de entrada, multi-GNSS, bateria de até 168h', true, 1),
-  (v_brand_id, v_cat_id, 'etrex-solar', 'eTrex Solar', '010-02747', 'GPS de mão com carregamento solar e GPS multibanda, bateria praticamente infinita sob sol', true, 2)
-  returning id into v_p_se;
+  (v_brand_id, v_cat_id, 'etrex-solar', 'eTrex Solar', '010-02747', 'GPS de mão com carregamento solar e GPS multibanda, bateria praticamente infinita sob sol', true, 2);
   select id into v_p_se from products where slug = 'etrex-se';
   select id into v_p_solar from products where slug = 'etrex-solar';
 

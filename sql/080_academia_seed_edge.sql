@@ -69,9 +69,8 @@ begin
   (v_brand_id, v_cat_id, 'edge-1040', 'Edge 1040', '010-02503', 'Ciclocomputador GPS premium com tela de 3.5", GNSS multibanda pioneiro e carregamento solar opcional', true, 12),
   (v_brand_id, v_cat_id, 'edge-550', 'Edge 550', '010-02997', 'Ciclocomputador GPS compacto com tela mais brilhante e Garmin Cycling Coach adaptativo, controle por botão', true, 13),
   (v_brand_id, v_cat_id, 'edge-850', 'Edge 850', '010-02998', 'Ciclocomputador GPS compacto com tela mais brilhante, touchscreen e campainha digital', true, 14),
-  (v_brand_id, v_cat_id, 'edge-1050', 'Edge 1050', '010-02845', 'Ciclocomputador GPS topo de linha com tela de 3.5" touch, Garmin Pay e alto-falante embutido', true, 15)
-  returning id into v_p_540;
-  -- (returning só captura o último; buscamos os ids individualmente a seguir)
+  (v_brand_id, v_cat_id, 'edge-1050', 'Edge 1050', '010-02845', 'Ciclocomputador GPS topo de linha com tela de 3.5" touch, Garmin Pay e alto-falante embutido', true, 15);
+  -- (insert multi-linha não aceita RETURNING...INTO — buscamos os ids individualmente a seguir)
   select id into v_p_540 from products where slug = 'edge-540';
   select id into v_p_840 from products where slug = 'edge-840';
   select id into v_p_1040 from products where slug = 'edge-1040';
