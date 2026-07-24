@@ -96,6 +96,12 @@ function runSession(container, sessionId, items) {
     const nextBtn = container.querySelector('[data-role="next"]');
 
     try {
+      // review_catalog pode vir nulo se o item foi editado e o ponteiro da
+      // fila (congelada no início da sessão) ficou órfão — sem essa checagem,
+      // fetchItemContent tentaria desestruturar null e cairia no catch mesmo
+      // assim, mas de forma menos clara.
+      if (!item.review_catalog) throw new Error('review_catalog ausente (item órfão)');
+
       const content = await Promise.race([
         fetchItemContent(item.review_catalog),
         new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 10000)),

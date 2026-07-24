@@ -68,8 +68,15 @@ export async function fetchItemContent(catalogEntry) {
       .single();
     if (qErr) throw qErr;
 
+    // v_alternatives_public (não a tabela alternatives direto): RLS só libera
+    // SELECT em alternatives pra líder/admin — pra um Colaborador comum, a
+    // query direta na tabela não dá erro nenhum, só retorna 0 linhas (RLS
+    // filtra silenciosamente), o que travava a Revisão Inteligente toda vez
+    // que a fila sorteava uma pergunta de quiz: card renderiza sem nenhuma
+    // opção de resposta, sem jeito de clicar em nada nem avançar. Mesma
+    // view que quizService.js já usa pro Quiz normal (nunca expõe is_correct).
     const { data: alternatives, error: aErr } = await supabase
-      .from('alternatives')
+      .from('v_alternatives_public')
       .select('id, body, order_index')
       .eq('question_id', source_id)
       .order('order_index', { ascending: true });
