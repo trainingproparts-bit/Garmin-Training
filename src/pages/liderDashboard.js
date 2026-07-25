@@ -12,9 +12,11 @@ import {
   fetchTeamCertifications,
   fetchTeamQuizAttempts,
   fetchLeaderZonaAtual,
+  fetchStoreKnowledgeGaps,
 } from '../services/teamService.js';
 import { postLeaderActivity } from '../services/activityFeedService.js';
 import { openMemberDrawer } from '../components/MemberDrawer.js';
+import { navigateToPanel } from '../router.js';
 import {
   fetchCicloAtivo,
   fetchProgressoDoCiclo,
@@ -67,16 +69,18 @@ async function initLiderDashboard() {
       return;
     }
 
-    const [membersRaw, certificationsRaw, attemptsRaw, zonaAtualRaw] = await Promise.all([
+    const [membersRaw, certificationsRaw, attemptsRaw, zonaAtualRaw, gapsRaw] = await Promise.all([
       fetchTeamMembers(),
       fetchTeamCertifications(),
       fetchTeamQuizAttempts(),
       fetchLeaderZonaAtual(),
+      fetchStoreKnowledgeGaps(),
     ]);
     const members = membersRaw || [];
     const certifications = certificationsRaw || [];
     const attempts = attemptsRaw || [];
     const zonaAtual = zonaAtualRaw || [];
+    const gaps = gapsRaw || [];
 
     const activeCertsCount = certifications.filter((c) => !c?.revoked_at).length;
     const avgScore = members.length
@@ -113,6 +117,8 @@ async function initLiderDashboard() {
         </div>
       </div>
 
+      ${renderGapsPreview(gaps)}
+
       ${renderActivityForm(members)}
 
       <h3 class="dash-section-label">Funil de Capacitação</h3>
@@ -130,10 +136,58 @@ async function initLiderDashboard() {
     setupZonaAtualFilter(container, zonaAtual);
     setupHomologacaoWidget(container, ciclosAtivos, profile.id);
     setupTeamTableClicks(container, members);
+    setupGapsPreview(container);
   } catch (err) {
     console.error('[LiderDashboard] erro ao carregar dashboard da equipe:', err);
     container.innerHTML = '<p class="learning-error">Não foi possível carregar o dashboard da equipe agora.</p>';
   }
+}
+
+/**
+ * Farol de erros da equipe — antes disso só existia como "Relatórios" no
+ * menu do avatar, praticamente invisível pro líder (relato do usuário:
+ * "difícil pro líder ver as perguntas que o pessoal errou"). Mostra aqui,
+ * logo no topo do dashboard, as perguntas com maior taxa de erro nos
+ * últimos 30 dias (mesma fonte de teamGapsReport.js, vw_store_knowledge_gaps),
+ * com um botão direto pro relatório completo com filtros.
+ */
+function renderGapsPreview(gaps) {
+  const critical = (gaps || []).filter((g) => (g?.error_rate_pct ?? 0) > 0).slice(0, 3);
+  if (!critical.length) {
+    return `
+      <div class="gaps-alert-card" style="margin-bottom:28px;">
+        <span class="gaps-alert-icon">✅</span>
+        <div>
+          <div class="gaps-alert-tag">Farol de erros da equipe</div>
+          <div class="gaps-alert-title">Nenhuma pergunta com erro registrado nos últimos 30 dias.</div>
+        </div>
+      </div>`;
+  }
+
+  return `
+    <div style="margin-bottom:28px;">
+      <h3 class="dash-section-label">Perguntas que a equipe mais errou (30 dias)</h3>
+      <div class="lib-table-wrap">
+        <table class="lib-table">
+          <thead><tr><th>Pergunta</th><th>Módulo</th><th>Taxa de erro</th></tr></thead>
+          <tbody>
+            ${critical.map((g) => `
+              <tr>
+                <td class="lib-prod-dest">${g?.question_text || '—'}</td>
+                <td class="lib-prod-para">${g?.quiz_title || '—'}</td>
+                <td><span class="gaps-badge gaps-badge-${(g?.error_rate_pct ?? 0) > 50 ? 'critico' : (g?.error_rate_pct ?? 0) >= 30 ? 'atencao' : 'controle'}">${g?.error_rate_pct ?? 0}%</span></td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+      <button type="button" class="learning-card-btn" data-role="ver-relatorio-gaps" style="margin-top:10px;">Ver relatório completo, quem errou →</button>
+    </div>`;
+}
+
+function setupGapsPreview(container) {
+  container.querySelector('[data-role="ver-relatorio-gaps"]')?.addEventListener('click', () => {
+    navigateToPanel('relatorios');
+  });
 }
 
 /**
