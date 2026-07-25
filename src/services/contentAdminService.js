@@ -22,6 +22,56 @@ const slugify = (text) =>
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/(^-|-$)/g, '');
 
+// Todo delete* abaixo apagava só a própria linha (modules/lessons/quizzes/
+// questions/alternatives), sem tocar nas tabelas filhas — sempre falhava
+// com violação de FK assim que o registro tinha qualquer lição, pergunta,
+// progresso ou resposta associada (ou seja, sempre, em conteúdo real). Os
+// dois helpers abaixo apagam a cadeia de dependentes na ordem certa antes
+// do registro principal: review_catalog (fila de Revisão Inteligente,
+// referenciada por source_table/source_id de forma polimórfica, sem FK) e
+// checkpoints (posição na trilha, mesma referência polimórfica via
+// reference_id), cada um com seus próprios filhos de progresso.
+
+/** Remove entradas de review_catalog (e progresso/fila associados) que apontam pra estas linhas de origem. */
+async function deleteReviewCatalogFor(sourceTable, sourceIds) {
+  if (!sourceIds.length) return;
+  const { data: catalogRows, error: cErr } = await supabase
+    .from('review_catalog')
+    .select('id')
+    .eq('source_table', sourceTable)
+    .in('source_id', sourceIds);
+  if (cErr) throw cErr;
+  const catalogIds = (catalogRows || []).map((r) => r.id);
+  if (!catalogIds.length) return;
+
+  const { error: siErr } = await supabase.from('review_session_items').delete().in('catalog_item_id', catalogIds);
+  if (siErr) throw siErr;
+  const { error: rpErr } = await supabase.from('review_progress').delete().in('catalog_item_id', catalogIds);
+  if (rpErr) throw rpErr;
+  const { error: rcErr } = await supabase.from('review_catalog').delete().in('id', catalogIds);
+  if (rcErr) throw rcErr;
+}
+
+/** Remove checkpoints (e progresso associado) que apontam pra estas linhas de origem (módulo ou quiz). */
+async function deleteCheckpointsFor(checkpointType, referenceIds) {
+  if (!referenceIds.length) return;
+  const { data: cps, error: cpErr } = await supabase
+    .from('checkpoints')
+    .select('id')
+    .eq('checkpoint_type', checkpointType)
+    .in('reference_id', referenceIds);
+  if (cpErr) throw cpErr;
+  const checkpointIds = (cps || []).map((c) => c.id);
+  if (!checkpointIds.length) return;
+
+  const { error: cpgErr } = await supabase.from('checkpoint_progress').delete().in('checkpoint_id', checkpointIds);
+  if (cpgErr) throw cpgErr;
+  const { error: upErr } = await supabase.from('user_progress').delete().in('checkpoint_id', checkpointIds);
+  if (upErr) throw upErr;
+  const { error: delErr } = await supabase.from('checkpoints').delete().in('id', checkpointIds);
+  if (delErr) throw delErr;
+}
+
 // ── Zonas (só leitura — escopo de módulos) ──────────────────────────────
 
 export async function fetchZonesWithBrand() {
@@ -69,6 +119,26 @@ export async function updateModule(moduleId, updates) {
 }
 
 export async function deleteModule(moduleId) {
+  const { data: lessonRows, error: lErr } = await supabase.from('lessons').select('id').eq('module_id', moduleId);
+  if (lErr) throw lErr;
+  const lessonIds = (lessonRows || []).map((l) => l.id);
+
+  await deleteReviewCatalogFor('lessons', lessonIds);
+
+  if (lessonIds.length) {
+    const { error: lpErr } = await supabase.from('lesson_progress').delete().in('lesson_id', lessonIds);
+    if (lpErr) throw lpErr;
+    const { error: laErr } = await supabase.from('attachments').delete().in('lesson_id', lessonIds);
+    if (laErr) throw laErr;
+  }
+  const { error: maErr } = await supabase.from('attachments').delete().eq('module_id', moduleId);
+  if (maErr) throw maErr;
+
+  const { error: lessonsErr } = await supabase.from('lessons').delete().eq('module_id', moduleId);
+  if (lessonsErr) throw lessonsErr;
+
+  await deleteCheckpointsFor('module', [moduleId]);
+
   const { error } = await supabase.from('modules').delete().eq('id', moduleId);
   if (error) throw error;
 }
@@ -114,6 +184,11 @@ export async function updateLessonFields(lessonId, updates) {
 }
 
 export async function deleteLesson(lessonId) {
+  await deleteReviewCatalogFor('lessons', [lessonId]);
+  const { error: lpErr } = await supabase.from('lesson_progress').delete().eq('lesson_id', lessonId);
+  if (lpErr) throw lpErr;
+  const { error: aErr } = await supabase.from('attachments').delete().eq('lesson_id', lessonId);
+  if (aErr) throw aErr;
   const { error } = await supabase.from('lessons').delete().eq('id', lessonId);
   if (error) throw error;
 }
@@ -156,6 +231,30 @@ export async function updateQuiz(quizId, updates) {
 }
 
 export async function deleteQuiz(quizId) {
+  const { data: questionRows, error: qErr } = await supabase.from('questions').select('id').eq('quiz_id', quizId);
+  if (qErr) throw qErr;
+  const questionIds = (questionRows || []).map((q) => q.id);
+
+  await deleteReviewCatalogFor('questions', questionIds);
+
+  if (questionIds.length) {
+    const { error: qaErr } = await supabase.from('quiz_answers').delete().in('question_id', questionIds);
+    if (qaErr) throw qaErr;
+    const { error: altErr } = await supabase.from('alternatives').delete().in('question_id', questionIds);
+    if (altErr) throw altErr;
+  }
+
+  const { error: questionsErr } = await supabase.from('questions').delete().eq('quiz_id', quizId);
+  if (questionsErr) throw questionsErr;
+
+  const { error: attemptsErr } = await supabase.from('quiz_attempts').delete().eq('quiz_id', quizId);
+  if (attemptsErr) throw attemptsErr;
+
+  const { error: pqErr } = await supabase.from('product_quizzes').delete().eq('quiz_id', quizId);
+  if (pqErr) throw pqErr;
+
+  await deleteCheckpointsFor('quiz', [quizId]);
+
   const { error } = await supabase.from('quizzes').delete().eq('id', quizId);
   if (error) throw error;
 }
@@ -200,6 +299,11 @@ export async function updateQuestion(questionId, updates) {
 }
 
 export async function deleteQuestion(questionId) {
+  await deleteReviewCatalogFor('questions', [questionId]);
+  const { error: qaErr } = await supabase.from('quiz_answers').delete().eq('question_id', questionId);
+  if (qaErr) throw qaErr;
+  const { error: altErr } = await supabase.from('alternatives').delete().eq('question_id', questionId);
+  if (altErr) throw altErr;
   const { error } = await supabase.from('questions').delete().eq('id', questionId);
   if (error) throw error;
 }
@@ -226,6 +330,8 @@ export async function markAlternativeCorrect(alternativeId) {
 }
 
 export async function deleteAlternative(alternativeId) {
+  const { error: qaErr } = await supabase.from('quiz_answers').delete().eq('alternative_id', alternativeId);
+  if (qaErr) throw qaErr;
   const { error } = await supabase.from('alternatives').delete().eq('id', alternativeId);
   if (error) throw error;
 }
