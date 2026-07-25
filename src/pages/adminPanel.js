@@ -244,7 +244,7 @@ function renderTable(profiles, roles, stores) {
     <div id="resetPasswordResult"></div>
     <div class="lib-table-wrap">
       <table class="lib-table">
-        <thead><tr><th>Nome</th><th>Cargo</th><th>Loja</th><th>Status</th><th>Senha</th><th>Score</th></tr></thead>
+        <thead><tr><th>Nome</th><th>Cargo</th><th>Loja</th><th>Status</th><th>Senha</th><th>Pontuação</th></tr></thead>
         <tbody>
           ${profiles.map((p) => `
             <tr data-profile-id="${p.id}">

@@ -100,7 +100,7 @@ async function initLiderDashboard() {
           <div class="cert-name-text" style="margin-top:8px;">${members.length}</div>
         </div>
         <div class="dash-mini-card">
-          <span class="dash-mini-tag">Score médio da equipe</span>
+          <span class="dash-mini-tag">Pontuação média da equipe</span>
           <div class="cert-name-text" style="margin-top:8px;">${avgScore} pts</div>
         </div>
         <div class="dash-mini-card">
@@ -470,7 +470,7 @@ function renderTeamTable(members) {
   return `
     <div class="lib-table-wrap">
       <table class="lib-table">
-        <thead><tr><th>Nome</th><th>Cargo</th><th>Loja</th><th>Status</th><th>Score</th></tr></thead>
+        <thead><tr><th>Nome</th><th>Cargo</th><th>Loja</th><th>Status</th><th>Pontuação</th></tr></thead>
         <tbody>
           ${(members || []).map((m) => `
             <tr class="team-row-clickable" data-member-id="${m?.id || ''}" title="Ver diagnóstico de ${m?.full_name || 'colaborador'}">

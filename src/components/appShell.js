@@ -30,7 +30,7 @@ const NAV_ITEMS = [
   // "Início" saiu do menu — era redundante com "Trocar de marca" (mesmo
   // destino, panel 'home'). O painel e os "← Início" continuam existindo,
   // só não tem mais link fixo na sidebar pra ele.
-  { id: 'trilha', iconKey: 'trilha', label: 'Dashboard', brandScoped: true },
+  { id: 'trilha', iconKey: 'trilha', label: 'Painel', brandScoped: true },
   { id: 'arena', iconKey: 'arena', label: 'Arena de Desafios', brandScoped: true },
   { id: 'certificacao', iconKey: 'certificacao', label: 'Certificações', brandScoped: true },
   { id: 'biblioteca', iconKey: 'biblioteca', label: 'Biblioteca Técnica', brandScoped: true },
@@ -58,7 +58,7 @@ const NAV_ITEMS = [
   // visibilidade por papel (revealRoleScopedNav) seguem funcionando sem
   // nenhuma mudança em router.js, porque os seletores são por classe/
   // atributo, não por posição no DOM.
-  { id: 'lider', iconKey: 'lider', label: 'Dashboard do Líder', brandScoped: false, rolesAllowed: ['leader', 'admin'], location: 'avatar' },
+  { id: 'lider', iconKey: 'lider', label: 'Painel do Líder', brandScoped: false, rolesAllowed: ['leader', 'admin'], location: 'avatar' },
   { id: 'relatorios', iconKey: 'relatorios', label: 'Relatórios', brandScoped: false, rolesAllowed: ['leader', 'admin'], location: 'avatar' },
   { id: 'admin', iconKey: 'admin', label: 'Painel Admin', brandScoped: false, rolesAllowed: ['admin'], location: 'avatar' },
   { id: 'gestora', iconKey: 'gestora', label: 'Painel da Gestora', brandScoped: false, rolesAllowed: ['admin'], location: 'avatar' },
@@ -242,7 +242,7 @@ export function renderAppShell(container) {
 
           <div class="panel" id="panel-arena" data-panel="arena" hidden>
             <div class="panel-header">
-              <button type="button" class="back-btn" data-back-to="trilha">← Dashboard</button>
+              <button type="button" class="back-btn" data-back-to="trilha">← Painel</button>
               <div class="panel-title"><span>Arena de Desafios</span></div>
             </div>
             <div class="panel-body" id="arenaContainer"></div>
@@ -266,7 +266,7 @@ export function renderAppShell(container) {
 
           <div class="panel" id="panel-certificacao" data-panel="certificacao" hidden>
             <div class="panel-header">
-              <button type="button" class="back-btn" data-back-to="trilha">← Dashboard</button>
+              <button type="button" class="back-btn" data-back-to="trilha">← Painel</button>
               <div class="panel-title"><span>Certificações</span></div>
             </div>
             <div class="panel-body" id="certificacaoContainer"></div>
@@ -282,7 +282,7 @@ export function renderAppShell(container) {
 
           <div class="panel" id="panel-biblioteca" data-panel="biblioteca" hidden>
             <div class="panel-header">
-              <button type="button" class="back-btn" data-back-to="trilha">← Dashboard</button>
+              <button type="button" class="back-btn" data-back-to="trilha">← Painel</button>
               <div class="panel-title"><span>Biblioteca Técnica</span></div>
             </div>
             <div class="panel-body">
@@ -293,7 +293,7 @@ export function renderAppShell(container) {
 
           <div class="panel" id="panel-ranking" data-panel="ranking" hidden>
             <div class="panel-header">
-              <button type="button" class="back-btn" data-back-to="trilha">← Dashboard</button>
+              <button type="button" class="back-btn" data-back-to="trilha">← Painel</button>
               <div class="panel-title"><span>Ranking</span></div>
             </div>
             <div class="panel-body" id="rankingContainer"></div>
@@ -301,7 +301,7 @@ export function renderAppShell(container) {
 
           <div class="panel" id="panel-album" data-panel="album" hidden>
             <div class="panel-header">
-              <button type="button" class="back-btn" data-back-to="trilha">← Dashboard</button>
+              <button type="button" class="back-btn" data-back-to="trilha">← Painel</button>
               <div class="panel-title"><span>Álbum da Equipe</span></div>
             </div>
             <div class="panel-body" id="albumContainer"></div>
@@ -318,7 +318,7 @@ export function renderAppShell(container) {
           <div class="panel" id="panel-lider" data-panel="lider" hidden>
             <div class="panel-header">
               <button type="button" class="back-btn" data-back-to="home">← Início</button>
-              <div class="panel-title"><span>Dashboard do Líder</span></div>
+              <div class="panel-title"><span>Painel do Líder</span></div>
             </div>
             <div class="panel-body" id="liderContainer"></div>
           </div>
@@ -381,7 +381,7 @@ export function renderAppShell(container) {
 
           <div class="panel" id="panel-academia-produtos" data-panel="academia-produtos" hidden>
             <div class="panel-header">
-              <button type="button" class="back-btn" data-back-to="trilha">← Dashboard</button>
+              <button type="button" class="back-btn" data-back-to="trilha">← Painel</button>
               <div class="panel-title"><span>Academia de Produtos</span></div>
             </div>
             <div class="panel-body" id="academiaProdutosContainer"></div>
@@ -413,7 +413,7 @@ export function renderAppShell(container) {
 
           <div class="panel" id="panel-revisao-inteligente" data-panel="revisao-inteligente" hidden>
             <div class="panel-header">
-              <button type="button" class="back-btn" data-back-to="trilha">← Dashboard</button>
+              <button type="button" class="back-btn" data-back-to="trilha">← Painel</button>
               <div class="panel-title"><span>🎲 Revisão Inteligente</span></div>
             </div>
             <div class="panel-body" id="revisaoInteligenteContainer"></div>
