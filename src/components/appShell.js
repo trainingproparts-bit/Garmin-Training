@@ -141,8 +141,11 @@ export function renderAppShell(container) {
         </div>
       </aside>
 
+      <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
       <main class="app-main">
         <div class="app-topbar" id="appTopbar" hidden>
+          <button type="button" class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Abrir menu">${icon('menu')}</button>
           <div class="topbar-search-wrap" id="topbarSearchWrap">
             <input type="search" class="topbar-search-input" id="topbarSearchInput"
               placeholder="Buscar produtos, guias, módulos…" autocomplete="off" aria-label="Busca global">
@@ -437,6 +440,7 @@ export function renderAppShell(container) {
   setupPasswordChangeButton();
   setupDarkModeButton();
   setupSidebarCollapse();
+  setupMobileSidebarDrawer();
   setupQuickAccess();
   setupNotificationBell();
   setupAvatarMenu();
@@ -570,6 +574,41 @@ function setupDarkModeButton() {
     } catch {
       // localStorage indisponível (modo privado etc.) — alternância ainda funciona, só não persiste.
     }
+  });
+}
+
+/**
+ * Drawer da sidebar no celular (bug real reportado 2026-07-24: "no celular
+ * não dá pra ver o sidebar", abaixo de 768px a sidebar inteira sumia sem
+ * nenhum jeito de abrir). Botão hambúrguer só existe nessa faixa de largura
+ * via CSS; aqui só liga clique e fecha ao tocar no backdrop, em qualquer
+ * link da sidebar, ou no ESC, nunca deixa o painel de navegação preso
+ * aberto por cima do conteúdo.
+ */
+function setupMobileSidebarDrawer() {
+  const btn = document.getElementById('mobileMenuBtn');
+  const sidebar = document.getElementById('appSidebar');
+  const backdrop = document.getElementById('sidebarBackdrop');
+  if (!btn || !sidebar || !backdrop) return;
+
+  const closeDrawer = () => {
+    sidebar.classList.remove('mobile-open');
+    backdrop.classList.remove('open');
+  };
+
+  btn.addEventListener('click', () => {
+    sidebar.classList.add('mobile-open');
+    backdrop.classList.add('open');
+  });
+
+  backdrop.addEventListener('click', closeDrawer);
+
+  sidebar.querySelectorAll('a[data-panel], button[data-panel]').forEach((el) => {
+    el.addEventListener('click', closeDrawer);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeDrawer();
   });
 }
 

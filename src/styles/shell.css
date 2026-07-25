@@ -860,9 +860,71 @@
   color: #8a6200;
 }
 
+/* ── Menu mobile (hambúrguer + drawer) ──
+ * Bug real reportado (2026-07-24): abaixo de 768px a sidebar inteira sumia
+ * (display:none) sem nenhum jeito de abrir, deixando o app sem navegação
+ * nenhuma no celular. Agora vira um drawer deslizante, aberto pelo botão
+ * hambúrguer que só existe nessa faixa de largura. */
+.mobile-menu-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  border-radius: var(--r2);
+  color: var(--text2);
+  cursor: pointer;
+}
+
+.mobile-menu-btn:hover {
+  background: var(--off);
+  color: var(--text);
+}
+
+.mobile-menu-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.sidebar-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 199;
+}
+
+.sidebar-backdrop.open {
+  display: block;
+}
+
 /* ── Responsive shell ── */
 @media (max-width: 768px) {
+  .mobile-menu-btn {
+    display: flex;
+  }
+
   .app-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    transform: translateX(-100%);
+    transition: transform var(--dur-base) var(--ease);
+    z-index: 200;
+    /* No mobile a sidebar nunca começa colapsada (o botão de colapsar é
+       recurso de desktop) — sempre largura cheia quando aberta. */
+    width: var(--sidebar-w) !important;
+  }
+
+  .app-sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  #sbCollapseBtn {
     display: none;
   }
 }
