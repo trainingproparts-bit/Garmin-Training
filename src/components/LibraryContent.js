@@ -7,6 +7,7 @@
 
 import { updateContentItem } from '../services/contentLibraryService.js';
 import { navigateToPanel } from '../router.js';
+import { getCurrentProfile, isAdminProfile, isLeaderProfile } from '../config/supabase.js';
 
 export function renderLibrarySection(container, category, items) {
   if (!items.length) {
@@ -50,7 +51,7 @@ function renderPerfis(items) {
           <div class="lib-label">Produtos indicados</div>
           <div class="lib-pill-row">${(p.produtos || []).map((pr) => `<span class="lib-pill ${pr === p.primario ? 'main' : ''}">${pr}</span>`).join('')}</div>
         </div>
-        <button type="button" class="lib-edit-btn" data-persona-index="${index}" style="margin-top: 12px; padding: 6px 12px; background: var(--off); border: 1px solid var(--border); border-radius: var(--r2); cursor: pointer; font-size: 12px;">Editar</button>
+        <button type="button" class="lib-edit-btn" data-persona-index="${index}" hidden style="margin-top: 12px; padding: 6px 12px; background: var(--off); border: 1px solid var(--border); border-radius: var(--r2); cursor: pointer; font-size: 12px;">Editar</button>
       </div>`;
   }).join('')}</div>
   <div id="lib-persona-edit" class="lib-persona-edit" hidden></div>`;
@@ -189,9 +190,24 @@ function wireProductDetails(container, items) {
   });
 }
 
-function wirePersonaEdit(container, items) {
+/**
+ * "Editar" na Biblioteca Técnica é admin/líder, não Colaborador — o botão
+ * vem `hidden` desde a renderização (renderPerfis) e só reaparece aqui,
+ * depois de confirmar o papel. Bug real corrigido (2026-07-24): antes disso
+ * o botão aparecia pra qualquer um sem checagem nenhuma, e um colaborador
+ * comum (RN: "William") conseguiu abrir e submeter o formulário de edição.
+ */
+async function wirePersonaEdit(container, items) {
   const editEl = container.querySelector('#lib-persona-edit');
   if (!editEl) return;
+
+  const profile = await getCurrentProfile();
+  const canEdit = profile && (isAdminProfile(profile) || isLeaderProfile(profile));
+  if (!canEdit) return;
+
+  container.querySelectorAll('.lib-edit-btn').forEach((btn) => {
+    btn.hidden = false;
+  });
 
   container.querySelectorAll('.lib-edit-btn').forEach((btn) => {
     btn.addEventListener('click', () => {
