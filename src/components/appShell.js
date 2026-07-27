@@ -20,11 +20,14 @@ import { supabase, getCurrentProfile, isLeaderProfile, isAdminProfile } from '..
 import { signOut } from '../services/authService.js';
 import { initPanelNavigation, navigateToPanel, getActivePanelId, revealBrandScopedNav, hideBrandScopedNav } from '../router.js';
 import { icon } from './icons.js';
-import { fetchUserNotifications, countUnreadNotifications, markAsRead } from '../services/notificationService.js';
+import { fetchUserNotifications, countUnreadNotifications, markAsRead, subscribeToOwnNotifications, unsubscribeFromNotifications } from '../services/notificationService.js';
 import { searchAll } from '../services/searchService.js';
 
 const SIDEBAR_COLLAPSE_KEY = 'gth-sidebar-collapsed';
 const DARK_MODE_KEY = 'gth-dark-mode';
+
+/** Canal Realtime do sino — guardado em módulo pra não assinar de novo a cada updateSidebarProfile() (troca de marca chama de novo com o mesmo usuário). */
+let notificationChannel = null;
 
 const NAV_ITEMS = [
   // "Início" saiu do menu — era redundante com "Trocar de marca" (mesmo
@@ -46,6 +49,7 @@ const NAV_ITEMS = [
   // de academia-produtos (conteúdo específico da marca escolhida).
   { id: 'revisao-inteligente', iconKey: 'revisao', label: 'Revisão Inteligente', brandScoped: true },
   { id: 'blog', iconKey: 'blog', label: 'Blog', brandScoped: false },
+  { id: 'forum', iconKey: 'forum', label: 'Fórum', brandScoped: false },
   // Não são brandScoped: visão de líder/admin é por loja/organização, não
   // por marca/trilha em andamento. Ficam escondidas até o papel ser
   // resolvido (updateSidebarProfile) — nunca é o client que autoriza o
@@ -315,6 +319,34 @@ export function renderAppShell(container) {
             <div class="panel-body" id="blogContainer"></div>
           </div>
 
+          <div class="panel" id="panel-forum" data-panel="forum" hidden>
+            <div class="panel-header">
+              <button type="button" class="back-btn" data-back-to="home">← Início</button>
+              <div class="panel-title"><span>Fórum</span></div>
+            </div>
+            <div class="panel-body" id="forumContainer"></div>
+          </div>
+
+          <div class="panel" id="panel-forum-topico" data-panel="forum-topico" hidden>
+            <div class="panel-header">
+              <button type="button" class="back-btn" id="forumThreadBackBtn">← Voltar</button>
+              <div class="panel-title"><span id="forumThreadTitle">Tópico</span></div>
+            </div>
+            <div class="panel-body">
+              <div id="forumThreadContainer" class="forum-thread-container">
+                <p class="home-loading">Carregando tópico...</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel" id="panel-forum-novo-topico" data-panel="forum-novo-topico" hidden>
+            <div class="panel-header">
+              <button type="button" class="back-btn" id="forumNovoTopicoBackBtn">← Voltar</button>
+              <div class="panel-title"><span>Novo Tópico</span></div>
+            </div>
+            <div class="panel-body" id="forumNovoTopicoContainer"></div>
+          </div>
+
           <div class="panel" id="panel-lider" data-panel="lider" hidden>
             <div class="panel-header">
               <button type="button" class="back-btn" data-back-to="home">← Início</button>
@@ -510,7 +542,10 @@ async function updateSidebarProfile() {
     logoutBtn.hidden = false;
     if (changePasswordBtn) changePasswordBtn.hidden = false;
     refreshNotificationBadge(profile.id);
+    setupNotificationRealtime(profile.id);
   } else {
+    unsubscribeFromNotifications(notificationChannel);
+    notificationChannel = null;
     setAvatarContent(topbarAvatarEl, null, '?');
     if (avatarDropdownNameEl) avatarDropdownNameEl.textContent = 'Visitante';
     if (avatarDropdownRoleEl) avatarDropdownRoleEl.textContent = 'Sem sessão';
@@ -808,6 +843,26 @@ async function refreshNotificationBadge(userId) {
   }
 }
 
+/**
+ * Assina notificações do próprio usuário ao vivo (Realtime) — antes disso
+ * o sino só atualizava no load do perfil/abertura do dropdown, nunca
+ * "chegava" de verdade (era o caso do fórum: notificação de tópico/resposta
+ * nova ficava só gravada no banco até o próximo reload). Reatribuir o canal
+ * é seguro mesmo chamado de novo pro mesmo usuário (troca de marca).
+ */
+function setupNotificationRealtime(userId) {
+  unsubscribeFromNotifications(notificationChannel);
+  notificationChannel = subscribeToOwnNotifications(userId, (row) => {
+    refreshNotificationBadge(userId);
+    const dropdown = document.getElementById('notifDropdown');
+    const list = document.getElementById('notifList');
+    if (dropdown && list && !dropdown.hidden) {
+      list.insertAdjacentHTML('afterbegin', notificationItemHtml(row));
+      wireNotificationItems(list, userId);
+    }
+  });
+}
+
 function setupNotificationBell() {
   const btn = document.getElementById('notifBellBtn');
   const dropdown = document.getElementById('notifDropdown');
@@ -843,29 +898,51 @@ function setupNotificationBell() {
   });
 }
 
+function notificationItemHtml(n) {
+  return `
+    <div class="notif-item${n.is_read ? '' : ' is-unread'}" data-notif-id="${n.id}" data-action-url="${n.action_url || ''}">
+      <div class="notif-item-title">${n.title}</div>
+      <p class="notif-item-message">${n.message}</p>
+      <span class="notif-item-time">${new Date(n.created_at).toLocaleDateString('pt-BR')}</span>
+    </div>`;
+}
+
 function renderNotificationList(list, notifications) {
   if (!notifications.length) {
     list.innerHTML = '<p class="dash-empty-text">Nenhuma notificação ainda.</p>';
     return;
   }
-  list.innerHTML = notifications.map((n) => `
-    <div class="notif-item${n.is_read ? '' : ' is-unread'}" data-notif-id="${n.id}">
-      <div class="notif-item-title">${n.title}</div>
-      <p class="notif-item-message">${n.message}</p>
-      <span class="notif-item-time">${new Date(n.created_at).toLocaleDateString('pt-BR')}</span>
-    </div>`).join('');
+  list.innerHTML = notifications.map(notificationItemHtml).join('');
 }
 
+/**
+ * Clique em qualquer notificação: marca como lida (se ainda não estava) e
+ * navega pelo action_url quando houver um — antes disso action_url ficava
+ * gravado no banco mas nunca era lido em lugar nenhum do client, clicar
+ * numa notificação não fazia nada além de marcar como lida.
+ */
 function wireNotificationItems(list, userId) {
-  list.querySelectorAll('.notif-item.is-unread').forEach((el) => {
+  list.querySelectorAll('.notif-item').forEach((el) => {
     el.addEventListener('click', async () => {
       const id = el.dataset.notifId;
+      const wasUnread = el.classList.contains('is-unread');
       el.classList.remove('is-unread');
-      try {
-        await markAsRead(id);
-        refreshNotificationBadge(userId);
-      } catch (err) {
-        console.error('[AppShell] erro ao marcar notificação como lida:', err);
+      if (wasUnread) {
+        try {
+          await markAsRead(id);
+          refreshNotificationBadge(userId);
+        } catch (err) {
+          console.error('[AppShell] erro ao marcar notificação como lida:', err);
+        }
+      }
+
+      const actionUrl = el.dataset.actionUrl;
+      if (actionUrl?.startsWith('#forum-topico?thread=')) {
+        const threadId = actionUrl.split('thread=')[1];
+        document.getElementById('notifDropdown').hidden = true;
+        window.selectedForumThreadId = threadId;
+        window.forumReturnPanel = getActivePanelId() || 'forum';
+        navigateToPanel('forum-topico');
       }
     });
   });

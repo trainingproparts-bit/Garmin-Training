@@ -106,4 +106,13 @@ export function initPanelNavigation() {
   document.getElementById('academiaComparativoBackBtn')?.addEventListener('click', () => {
     navigateToPanel(window.academiaReturnPanel || 'academia-produtos');
   });
+
+  // Fórum: tópico é alcançável da lista, da busca e de um clique em
+  // notificação do sininho — mesmo padrão de return-panel dinâmico.
+  document.getElementById('forumThreadBackBtn')?.addEventListener('click', () => {
+    navigateToPanel(window.forumReturnPanel || 'forum');
+  });
+  document.getElementById('forumNovoTopicoBackBtn')?.addEventListener('click', () => {
+    navigateToPanel('forum');
+  });
 }

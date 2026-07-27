@@ -61,6 +61,8 @@ export const ICONS = {
   academia: wrap(`<path d="M2 8.5 12 4l10 4.5-10 4.5-10-4.5z"/><path d="M6 10.7v5c0 1.4 2.7 2.8 6 2.8s6-1.4 6-2.8v-5"/><path d="M20 9v6.5"/>`),
 
   revisao: wrap(`<path d="M4 12a8 8 0 0 1 14-5.2M4 12a8 8 0 0 0 14 5.2"/><path d="M18 3v4h-4"/><path d="M6 21v-4h4"/>`),
+
+  forum: wrap(`<path d="M4 5.5h13a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H10l-4.5 4v-4H4a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2z" transform="translate(1 0) scale(0.9)"/><circle cx="8" cy="10.5" r="0.9" fill="currentColor" stroke="none"/><circle cx="12" cy="10.5" r="0.9" fill="currentColor" stroke="none"/><circle cx="16" cy="10.5" r="0.9" fill="currentColor" stroke="none"/>`),
 };
 
 export function icon(name) {

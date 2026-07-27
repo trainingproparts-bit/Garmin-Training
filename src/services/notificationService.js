@@ -37,3 +37,26 @@ export async function markAsRead(notificationId) {
     .eq('id', notificationId);
   if (error) throw error;
 }
+
+/**
+ * Assina novas notificações do próprio usuário em tempo real (sem
+ * polling) — mesmo padrão de activityFeedService.subscribeToActivityFeed,
+ * mas com filtro de linha (só o INSERT do próprio user_id chega neste
+ * client). Sem isso o sininho só atualizava no load do perfil/abertura do
+ * dropdown, nunca ao vivo. Chame unsubscribeFromNotifications(channel) ao
+ * desmontar.
+ */
+export function subscribeToOwnNotifications(userId, onInsert) {
+  return supabase
+    .channel(`notifications_${userId}`)
+    .on(
+      'postgres_changes',
+      { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${userId}` },
+      (payload) => onInsert(payload.new)
+    )
+    .subscribe();
+}
+
+export function unsubscribeFromNotifications(channel) {
+  if (channel) supabase.removeChannel(channel);
+}
