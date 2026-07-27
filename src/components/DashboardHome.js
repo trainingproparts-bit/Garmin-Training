@@ -205,11 +205,19 @@ export async function renderDashboardHome(container, data, onCheckpointClick) {
 /**
  * Card "🎲 Revisão Inteligente" — terceiro domínio da plataforma (sql/066/067),
  * um botão só ("Revisar Agora") que já leva pro seletor de modo
- * (revisao-inteligente), sem escolher assunto nenhum aqui na Home. Tempo
- * estimado usa ~40s/item (mesma referência usada pro tamanho das sessões em
- * fn_start_review_session), arredondado pra minutos.
+ * (revisao-inteligente), sem escolher assunto nenhum aqui na Home.
+ *
+ * available_count (fn_review_stats) é o tamanho do BANCO inteiro ainda fora
+ * de cooldown, não uma fila do dia — pra uma plataforma com mais de mil
+ * itens publicados, isso já passou de 1000 e virava "Você possui 1117
+ * conteúdos para revisar, tempo estimado: 745 min" (relato do usuário: "fica
+ * assustador"). Nenhuma sessão real passa de 20 itens (fn_start_review_session),
+ * então o card agora fala da PRÓXIMA sessão (8 a 20 perguntas, poucos
+ * minutos), não do total do banco — o número grande nunca aparece aqui.
  */
 const SECONDS_PER_ITEM_ESTIMATE = 40;
+const MIN_SESSION_ITEMS = 8;
+const MAX_SESSION_ITEMS = 20;
 
 function formatLastReview(iso) {
   if (!iso) return 'Ainda não revisou';
@@ -227,16 +235,28 @@ async function renderRevisaoCard(container) {
 
   try {
     const stats = await fetchReviewStats(brandId);
-    const minutos = Math.max(1, Math.round((stats.available_count * SECONDS_PER_ITEM_ESTIMATE) / 60));
+    if (!stats.available_count) {
+      container.innerHTML = `
+        <div class="dash-revisao-card">
+          <div class="dash-revisao-card-text">
+            <span class="dash-mini-tag">🎲 Revisão Inteligente</span>
+            <p class="dash-revisao-count">Tudo em dia por agora, volte depois pra mais uma rodada.</p>
+          </div>
+        </div>`;
+      return;
+    }
+
+    const minMin = Math.round((MIN_SESSION_ITEMS * SECONDS_PER_ITEM_ESTIMATE) / 60);
+    const maxMin = Math.round((MAX_SESSION_ITEMS * SECONDS_PER_ITEM_ESTIMATE) / 60);
 
     container.innerHTML = `
       <div class="dash-revisao-card">
         <div class="dash-revisao-card-text">
           <span class="dash-mini-tag">🎲 Revisão Inteligente</span>
-          <p class="dash-revisao-count">Você possui <strong>${stats.available_count}</strong> conteúdo${stats.available_count === 1 ? '' : 's'} para revisar</p>
+          <p class="dash-revisao-count">Pratique um pouco agora, sessões curtas de ${MIN_SESSION_ITEMS} a ${MAX_SESSION_ITEMS} perguntas</p>
           <div class="dash-revisao-meta">
             <span>Última revisão: <strong>${formatLastReview(stats.last_session_at)}</strong></span>
-            <span>Tempo estimado: <strong>${minutos} min</strong></span>
+            <span>Duração: <strong>${minMin} a ${maxMin} min</strong></span>
           </div>
         </div>
         <button type="button" class="dash-revisao-btn" data-role="revisar-agora">Revisar Agora →</button>
