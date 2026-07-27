@@ -210,11 +210,10 @@
 .cb-roteiro-title { margin: 0 0 6px; font-size: 14px; font-weight: 700; color: var(--text); }
 
 .cb-roteiro-dialog {
-  position: relative;
   background: var(--g3);
   border-left: 3px solid var(--g);
   border-radius: var(--r2);
-  padding: 10px 76px 10px 12px;
+  padding: 10px 12px;
   font-size: 13.5px;
   font-style: italic;
   color: var(--text2);
@@ -224,23 +223,23 @@
 
 .cb-roteiro-dialog:hover { box-shadow: var(--sh-neutral-sm); }
 
+.cb-roteiro-dialog-text { margin: 0 0 8px; }
+
 .cb-roteiro-copy-btn {
-  position: absolute;
-  top: 8px;
-  right: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   background: var(--white);
   border: 1px solid var(--g4);
   color: var(--g2);
   border-radius: var(--r2);
   font-size: 11px;
+  font-style: normal;
   padding: 3px 8px;
   cursor: pointer;
   font-family: inherit;
-  opacity: 0.8;
-  transition: opacity var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
+  white-space: nowrap;
 }
-
-.cb-roteiro-dialog:hover .cb-roteiro-copy-btn { opacity: 1; }
 
 .cb-roteiro-copy-btn:hover { background: var(--g3); }
 

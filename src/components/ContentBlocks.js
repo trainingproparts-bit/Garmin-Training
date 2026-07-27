@@ -196,7 +196,7 @@ function renderRoteiroBlock(b) {
             ${s.title ? `<h4 class="cb-roteiro-title">${s.title}</h4>` : ''}
             ${s.dialog ? `
               <div class="cb-roteiro-dialog">
-                “${s.dialog}”
+                <p class="cb-roteiro-dialog-text">“${s.dialog}”</p>
                 <button type="button" class="cb-roteiro-copy-btn" data-copy-text="${encodeURIComponent(s.dialog)}">📋 Copiar Argumento</button>
               </div>` : ''}
             ${s.tip ? `<div class="cb-roteiro-tip"><span>💡</span><span>${s.tip}</span></div>` : ''}
