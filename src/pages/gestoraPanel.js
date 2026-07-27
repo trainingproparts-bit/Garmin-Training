@@ -12,7 +12,7 @@
 //      seguem fora de escopo (hoje só os 13 já existentes).
 
 import { getCurrentProfile, isAdminProfile } from '../config/supabase.js';
-import { CATEGORIES, fetchAllPostsForAdmin, createPost } from '../services/blogService.js';
+import { CATEGORIES, fetchAllPostsForAdmin, createPost, updatePost, deletePost } from '../services/blogService.js';
 import { fetchAllQuizAttemptsReport } from '../services/gestoraService.js';
 import { initContentEditor } from './gestoraContentEditor.js';
 
@@ -50,6 +50,7 @@ async function initGestoraPanel() {
     `;
 
     wireBlogForm(container, profile);
+    wireBlogPostList(container, recentPosts);
     wireQuizReportSection(container, quizRows);
     initContentEditor(container.querySelector('[data-role="ce-root"]'));
   } catch (err) {
@@ -80,17 +81,112 @@ function renderBlogSection(recentPosts) {
       </form>
       ${recentPosts.length ? `
         <h4 style="margin:20px 0 10px; font-size:12.5px; color:var(--text3); text-transform:uppercase; letter-spacing:0.5px;">Últimos posts</h4>
-        <div style="display:flex; flex-direction:column; gap:6px;">
-          ${recentPosts.slice(0, 5).map((p) => `
-            <div style="display:flex; justify-content:space-between; gap:10px; font-size:13px; padding:8px 0; border-bottom:1px solid var(--border);">
-              <span>${p.title}${!p.is_published ? ' <span class="blog-badge blog-badge-draft">Rascunho</span>' : ''}</span>
-              <span style="color:var(--text3); white-space:nowrap;">${new Date(p.created_at).toLocaleDateString('pt-BR')}</span>
-            </div>
-          `).join('')}
+        <div data-role="gestora-blog-list" style="display:flex; flex-direction:column; gap:6px;">
+          ${recentPosts.slice(0, 5).map((p) => blogPostRowHtml(p)).join('')}
         </div>
-        <p style="margin-top:10px; font-size:12px; color:var(--text3);">Editar ou excluir um post existente: painel <strong>Blog</strong>.</p>
       ` : ''}
     </div>`;
+}
+
+function blogPostRowHtml(p) {
+  return `
+    <div data-role="gestora-blog-row" data-post-id="${p.id}" style="padding:8px 0; border-bottom:1px solid var(--border);">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; font-size:13px;">
+        <span>${p.title}${!p.is_published ? ' <span class="blog-badge blog-badge-draft">Rascunho</span>' : ''}</span>
+        <span style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
+          <span style="color:var(--text3); white-space:nowrap;">${new Date(p.created_at).toLocaleDateString('pt-BR')}</span>
+          <button type="button" class="cb-editor-btn" data-toggle-blog-edit style="padding:3px 8px; font-size:11px;">Editar</button>
+          <button type="button" class="cb-editor-btn cb-editor-btn-danger" data-delete-blog-post style="padding:3px 8px; font-size:11px;">Excluir</button>
+        </span>
+      </div>
+      <div data-role="gestora-blog-edit-area"></div>
+    </div>`;
+}
+
+function blogEditFormHtml(p) {
+  return `
+    <form data-role="gestora-blog-edit-form" class="blog-form" style="margin-top:10px;">
+      <input type="text" name="title" class="ranking-highlight-textarea" value="${p.title}" required>
+      <select name="category" class="ranking-highlight-textarea">
+        ${CATEGORIES.map((c) => `<option value="${c}" ${c === p.category ? 'selected' : ''}>${c}</option>`).join('')}
+      </select>
+      <input type="text" name="banner_url" class="ranking-highlight-textarea" value="${p.banner_url || ''}" placeholder="URL do banner (opcional)">
+      <textarea name="content" class="ranking-highlight-textarea" rows="5" required>${p.content}</textarea>
+      <label style="display:flex; align-items:center; gap:6px; font-size:13px; color:var(--text2);">
+        <input type="checkbox" name="is_published" ${p.is_published ? 'checked' : ''}> Publicado
+      </label>
+      <div class="cb-editor-save-row">
+        <button type="submit" class="cb-editor-btn">Salvar</button>
+        <button type="button" class="cb-editor-btn" data-cancel-blog-edit>Cancelar</button>
+        <div class="ranking-highlight-form-msg" data-role="msg"></div>
+      </div>
+    </form>`;
+}
+
+function wireBlogPostList(container, recentPosts) {
+  const listEl = container.querySelector('[data-role="gestora-blog-list"]');
+  if (!listEl) return;
+  listEl.querySelectorAll('[data-role="gestora-blog-row"]').forEach((row) => wireBlogRow(row, recentPosts));
+}
+
+/** Um listener por linha, ligado uma única vez em cada elemento — trocar o
+ * conteúdo de UMA linha (outerHTML) e rewire só ela evita empilhar
+ * listeners nas outras linhas que não mudaram (mesmo cuidado já documentado
+ * em wireModuleRowActions/gestoraContentEditor.js). */
+function wireBlogRow(row, recentPosts) {
+  const postId = row.dataset.postId;
+  const post = recentPosts.find((p) => p.id === postId);
+  if (!post) return;
+  const editArea = row.querySelector('[data-role="gestora-blog-edit-area"]');
+
+  row.querySelector('[data-toggle-blog-edit]').addEventListener('click', () => {
+    const opening = !editArea.innerHTML;
+    editArea.innerHTML = opening ? blogEditFormHtml(post) : '';
+    if (!opening) return;
+
+    editArea.querySelector('[data-cancel-blog-edit]').addEventListener('click', () => { editArea.innerHTML = ''; });
+
+    editArea.querySelector('[data-role="gestora-blog-edit-form"]').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const msgEl = form.querySelector('[data-role="msg"]');
+      const fd = new FormData(form);
+      msgEl.textContent = 'Salvando…';
+      msgEl.style.color = 'var(--text3)';
+      try {
+        const updated = await updatePost(postId, {
+          title: fd.get('title').trim(),
+          content: fd.get('content').trim(),
+          category: fd.get('category'),
+          bannerUrl: fd.get('banner_url').trim(),
+          isPublished: fd.get('is_published') === 'on',
+        });
+        Object.assign(post, updated);
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = blogPostRowHtml(post);
+        const newRow = wrapper.firstElementChild;
+        row.replaceWith(newRow);
+        wireBlogRow(newRow, recentPosts);
+      } catch (err) {
+        console.error('[GestoraPanel] erro ao salvar post:', err);
+        msgEl.textContent = 'Erro ao salvar: ' + err.message;
+        msgEl.style.color = 'var(--g)';
+      }
+    });
+  });
+
+  row.querySelector('[data-delete-blog-post]').addEventListener('click', async () => {
+    if (!window.confirm(`Excluir o post "${post.title}"? Essa ação não pode ser desfeita.`)) return;
+    try {
+      await deletePost(postId);
+      const idx = recentPosts.findIndex((p) => p.id === postId);
+      if (idx !== -1) recentPosts.splice(idx, 1);
+      row.remove();
+    } catch (err) {
+      console.error('[GestoraPanel] erro ao excluir post:', err);
+      alert('Não foi possível excluir agora.');
+    }
+  });
 }
 
 function wireBlogForm(container, profile) {

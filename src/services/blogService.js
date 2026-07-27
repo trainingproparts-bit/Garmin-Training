@@ -81,6 +81,8 @@ export async function updatePost(postId, { title, content, category, bannerUrl, 
 }
 
 export async function deletePost(postId) {
+  const { error: readsErr } = await supabase.from('blog_reads').delete().eq('post_id', postId);
+  if (readsErr) throw readsErr;
   const { error } = await supabase.from('blog_posts').delete().eq('id', postId);
   if (error) throw error;
 }

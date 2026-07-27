@@ -14,13 +14,13 @@
 
 import {
   fetchZonesWithBrand, fetchAllModulesAdmin, createModule, updateModule, deleteModule, reorderModules,
-  fetchAllLessonsAdmin, createLesson, updateLessonFields, deleteLesson, reorderLessons,
+  fetchAllLessonsAdmin, createLesson, updateLessonFields, deleteLesson, reorderLessons, fetchLessonBody,
   fetchAllQuizzesAdmin, createQuiz, updateQuiz, deleteQuiz,
   fetchQuestionsAdmin, createQuestion, updateQuestion, deleteQuestion,
   createAlternative, markAlternativeCorrect, updateAlternative, deleteAlternative,
 } from '../services/contentAdminService.js';
 import { fetchActiveBrands } from '../services/brandService.js';
-import { navigateToPanel } from '../router.js';
+import { setupBlockArrayEditor } from '../components/ContentBlocks.js';
 
 const TABS = [
   { id: 'modulos', label: 'Módulos' },
@@ -381,6 +381,7 @@ function renderLessonsList(container, moduleId, lessons) {
         </table>
       </div>
     ` : '<p class="learning-empty" style="margin-top:14px;">Nenhuma lição neste módulo ainda.</p>'}
+    <div data-role="ce-lesson-content-editor" style="margin-top:16px;"></div>
   `;
 
   const tbody = container.querySelector('[data-role="ce-lesson-list"] tbody');
@@ -402,7 +403,7 @@ function lessonRowHtml(l) {
       </td>
       <td style="white-space:nowrap;">
         <button type="button" class="cb-editor-btn" data-edit-lesson="${l.id}">Editar título</button>
-        <button type="button" class="cb-editor-btn" data-open-content="${l.id}" data-module-id="${l.module_id}">Editar conteúdo →</button>
+        <button type="button" class="cb-editor-btn" data-open-content="${l.id}">✏️ Editar conteúdo</button>
         <button type="button" class="cb-editor-btn cb-editor-btn-danger" data-delete-lesson="${l.id}">Excluir</button>
       </td>
     </tr>`;
@@ -482,10 +483,36 @@ function wireLessonRowActions(container, moduleId, lessons) {
   });
 
   container.querySelectorAll('[data-open-content]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      window.selectedModuleId = btn.dataset.moduleId;
-      window.moduloConteudoReturnPanel = 'gestora';
-      navigateToPanel('modulo-conteudo');
+    btn.addEventListener('click', async () => {
+      const lessonId = btn.dataset.openContent;
+      const l = lessons.find((x) => x.id === lessonId);
+      if (!l) return;
+
+      const editorWrap = container.querySelector('[data-role="ce-lesson-content-editor"]');
+      editorWrap.innerHTML = '<p class="learning-loading">Carregando conteúdo…</p>';
+      editorWrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+      try {
+        const body = await fetchLessonBody(lessonId);
+        editorWrap.innerHTML = `<div class="cb-editor-wrap"><h3 class="dash-section-label" style="margin-top:0;">Editar conteúdo, ${l.title}</h3></div>`;
+        const editorContainer = editorWrap.querySelector('.cb-editor-wrap');
+
+        setupBlockArrayEditor(editorContainer, body.blocks || [], {
+          onCancel: () => { editorWrap.innerHTML = ''; },
+          onSave: async (blocks) => {
+            try {
+              await updateLessonFields(lessonId, { body: { blocks } });
+              editorWrap.innerHTML = '<p class="admin-create-success">✓ Conteúdo salvo.</p>';
+            } catch (err) {
+              console.error('[GestoraContentEditor] erro ao salvar conteúdo da lição:', err);
+              alert('Não foi possível salvar o conteúdo agora.');
+            }
+          },
+        });
+      } catch (err) {
+        console.error('[GestoraContentEditor] erro ao carregar conteúdo da lição:', err);
+        editorWrap.innerHTML = '<p class="learning-error">Não foi possível carregar o conteúdo agora.</p>';
+      }
     });
   });
 

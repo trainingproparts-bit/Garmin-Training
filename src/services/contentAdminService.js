@@ -183,6 +183,13 @@ export async function updateLessonFields(lessonId, updates) {
   if (error) throw error;
 }
 
+/** fetchAllLessonsAdmin não traz `body` (lista fica pesada com o conteúdo inteiro de cada lição) — busca sob demanda só quando o editor de blocos abre. */
+export async function fetchLessonBody(lessonId) {
+  const { data, error } = await supabase.from('lessons').select('body').eq('id', lessonId).single();
+  if (error) throw error;
+  return data?.body || { blocks: [] };
+}
+
 export async function deleteLesson(lessonId) {
   await deleteReviewCatalogFor('lessons', [lessonId]);
   const { error: lpErr } = await supabase.from('lesson_progress').delete().eq('lesson_id', lessonId);
