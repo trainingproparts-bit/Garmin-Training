@@ -203,7 +203,7 @@ function runSession(container, sessionId, items) {
         feedbackEl.className = `revisao-quiz-card-feedback ${result === 'acerto' ? 'ok' : 'no'}`;
         feedbackEl.textContent = result === 'acerto'
           ? '✅ Boa! Você já domina isso.'
-          : `❌ ${question.explanation || 'Não dessa vez — vai voltar a aparecer em breve.'}`;
+          : `❌ ${question.explanation || 'Não dessa vez. Vai voltar a aparecer em breve.'}`;
 
         nextBtn.hidden = false;
         nextBtn.addEventListener('click', handleNext, { once: true });

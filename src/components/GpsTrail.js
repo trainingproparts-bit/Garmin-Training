@@ -168,7 +168,7 @@ function wireQuizCoverButtons(scopeEl, zones) {
       e.stopPropagation();
       const quizId = btn.dataset.editQuizCover;
       const cp = zones.flatMap((z) => z.checkpoints).find((c) => c.reference_id === quizId && c.checkpoint_type === 'quiz');
-      const url = window.prompt('URL da imagem de capa (16:9) — deixe em branco pra remover:', cp?.cover_url || '');
+      const url = window.prompt('URL da imagem de capa (16:9). Deixe em branco pra remover:', cp?.cover_url || '');
       if (url === null) return;
 
       try {
@@ -563,7 +563,7 @@ function renderCompactQuizGrid(items, isAdmin) {
 /** Painel horizontal único (ícone + texto + ação) pra desafios avulsos (duelos) — não entram na trilha principal, então não competem visualmente com o Circuito de Desafios. */
 function renderAvulsoPanel(cp, state) {
   const clickable = state !== 'locked';
-  const btnLabel = state === 'done' ? 'Concluído — revisar' : state === 'locked' ? 'Bloqueado' : 'Jogar duelo →';
+  const btnLabel = state === 'done' ? 'Revisar' : state === 'locked' ? 'Bloqueado' : 'Jogar duelo →';
 
   return `
     <div class="avulso-panel ${state}" data-checkpoint-id="${cp.id}" data-clickable="${clickable}">

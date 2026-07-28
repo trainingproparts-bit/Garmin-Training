@@ -222,7 +222,7 @@ function wireCoverEditors(container, quizMetaById, games) {
       e.stopPropagation();
       const quizId = btn.dataset.editCoverQuizId;
       const current = quizMetaById.get(quizId)?.cover_url || '';
-      const url = window.prompt('URL da imagem de capa (16:9) — deixe em branco pra remover:', current);
+      const url = window.prompt('URL da imagem de capa (16:9). Deixe em branco pra remover:', current);
       if (url === null) return;
       try {
         await updateQuizCover(quizId, url.trim());
@@ -239,7 +239,7 @@ function wireCoverEditors(container, quizMetaById, games) {
       e.stopPropagation();
       const gameId = btn.dataset.editCoverGameId;
       const current = games.find((g) => g.id === gameId)?.cover_url || '';
-      const url = window.prompt('URL da imagem de capa (16:9) — deixe em branco pra remover:', current);
+      const url = window.prompt('URL da imagem de capa (16:9). Deixe em branco pra remover:', current);
       if (url === null) return;
       try {
         await updateGameCover(gameId, url.trim());

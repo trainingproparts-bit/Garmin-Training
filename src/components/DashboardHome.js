@@ -182,7 +182,7 @@ export async function renderDashboardHome(container, data, onCheckpointClick) {
   });
 
   container.querySelector('[data-edit-trail-cover]')?.addEventListener('click', async () => {
-    const url = window.prompt('URL da imagem de capa em tela cheia (16:9) — deixe em branco pra remover:', coverUrl || '');
+    const url = window.prompt('URL da imagem de capa em tela cheia (16:9). Deixe em branco pra remover:', coverUrl || '');
     if (url === null) return;
 
     try {
@@ -696,7 +696,7 @@ function wireSpecialLineCards(container, items, isAdmin) {
       const slug = btn.dataset.editCoverSlug;
       const item = items.find((i) => i.slug === slug);
       const current = item.payload?.cover_url || '';
-      const url = window.prompt('URL da imagem de capa (16:9) — deixe em branco pra remover:', current);
+      const url = window.prompt('URL da imagem de capa (16:9). Deixe em branco pra remover:', current);
       if (url === null) return;
 
       try {

@@ -323,7 +323,7 @@ function wireModuleRowActions(body, zones, modules) {
         renderModuleGroups(body, zones, modules);
       } catch (err) {
         console.error('[GestoraContentEditor] erro ao excluir módulo:', err);
-        alert('Não foi possível excluir agora — ' + (err.message || 'verifique se ele ainda é referenciado pela trilha (checkpoint).'));
+        alert('Não foi possível excluir agora. ' + (err.message || 'Verifique se ele ainda é referenciado pela trilha (checkpoint).'));
       }
     });
   });

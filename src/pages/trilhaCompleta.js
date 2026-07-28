@@ -42,7 +42,7 @@ async function initTrilhaCompletaPage() {
     );
 
     const { total, done, pct } = calcularProgresso(zones, doneCheckpointIds);
-    if (progressEl) progressEl.textContent = `${done} de ${total} etapas concluídas — ${pct}%`;
+    if (progressEl) progressEl.textContent = `${done} de ${total} etapas concluídas (${pct}%)`;
 
     const proximo = proximoCheckpoint(zones, doneCheckpointIds);
     renderTrilhaCompletaAccordion(root, zones, doneCheckpointIds, abrirCheckpoint, proximo?.zone.id ?? null);
