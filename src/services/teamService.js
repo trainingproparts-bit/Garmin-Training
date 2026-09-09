@@ -99,7 +99,7 @@ export async function fetchUserQuizAnswers(userId) {
 export async function fetchLeaderZonaAtual() {
   const { data, error } = await supabase
     .from('v_lider_zona_atual')
-    .select('colaborador_id, nome, store_id, loja, cargo, zona_atual, modulo_atual, data_ultimo_progresso, dias_inatividade, data_referencia_onboarding, onboarding_data_estimada, alerta_onboarding')
+    .select('colaborador_id, nome, store_id, loja, cargo, zona_atual, modulo_atual, data_ultimo_progresso, dias_inatividade, ultimo_login, dias_desde_login, data_referencia_onboarding, onboarding_data_estimada, alerta_onboarding')
     .order('loja', { ascending: true })
     .order('nome', { ascending: true });
   if (error) throw error;
