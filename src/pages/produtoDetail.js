@@ -181,10 +181,17 @@ function wireBlockSectionEditor(container, product, sectionKey) {
 function renderHeaderRead(product, isAdmin) {
   const price = product.price_usd != null ? `US$ ${Number(product.price_usd).toFixed(2).replace('.', ',')}` : '';
   return `
-    <h2 class="academia-detail-name">${product.name}${product.model_code ? ` <span class="academia-detail-model">${product.model_code}</span>` : ''}</h2>
-    ${product.tagline ? `<p class="academia-detail-tagline">${product.tagline}</p>` : ''}
-    ${price ? `<span class="academia-detail-price">${price}</span>` : ''}
-    ${isAdmin ? '<button type="button" class="academia-edit-btn" data-edit-header>✎ Editar produto</button>' : ''}
+    <div class="academia-detail-header-row">
+      <div class="academia-detail-thumb" ${product.cover_url ? '' : 'style="background:linear-gradient(135deg, #1e293b, #0f172a);"'}>
+        ${product.cover_url ? `<img src="${product.cover_url}" alt="">` : '<span class="academia-detail-thumb-icon">⌚</span>'}
+      </div>
+      <div class="academia-detail-header-text">
+        <h2 class="academia-detail-name">${product.name}${product.model_code ? ` <span class="academia-detail-model">${product.model_code}</span>` : ''}</h2>
+        ${product.tagline ? `<p class="academia-detail-tagline">${product.tagline}</p>` : ''}
+        ${price ? `<span class="academia-detail-price">${price}</span>` : ''}
+        ${isAdmin ? '<button type="button" class="academia-edit-btn" data-edit-header>✎ Editar produto</button>' : ''}
+      </div>
+    </div>
   `;
 }
 
@@ -195,7 +202,8 @@ function renderHeaderForm(product) {
       <label>Código do modelo<input type="text" data-field="model_code" value="${product.model_code || ''}"></label>
       <label>Tagline<input type="text" data-field="tagline" value="${product.tagline || ''}"></label>
       <label>Preço (US$)<input type="number" step="0.01" data-field="price_usd" value="${product.price_usd ?? ''}"></label>
-      <label>URL da capa<input type="text" data-field="cover_url" value="${product.cover_url || ''}"></label>
+      <label>URL da foto/capa<input type="text" data-field="cover_url" value="${product.cover_url || ''}" placeholder="Cole aqui a URL de uma imagem do produto"></label>
+      <div class="academia-edit-cover-preview" data-role="cover-preview">${product.cover_url ? `<img src="${product.cover_url}" alt="">` : '<span>Sem imagem ainda</span>'}</div>
       <div class="academia-edit-form-actions">
         <button type="button" class="cb-editor-btn" data-save-header>Salvar</button>
         <button type="button" class="cb-editor-btn" data-cancel-header>Cancelar</button>
@@ -208,6 +216,11 @@ function wireHeaderEditor(container, product) {
 
   wrap.querySelector('[data-edit-header]')?.addEventListener('click', () => {
     wrap.innerHTML = renderHeaderForm(product);
+    wrap.querySelector('[data-field="cover_url"]').addEventListener('input', (e) => {
+      const preview = wrap.querySelector('[data-role="cover-preview"]');
+      const url = e.target.value.trim();
+      preview.innerHTML = url ? `<img src="${url}" alt="">` : '<span>Sem imagem ainda</span>';
+    });
     wrap.querySelector('[data-cancel-header]').addEventListener('click', () => {
       wrap.innerHTML = renderHeaderRead(product, true);
       wireHeaderEditor(container, product);
