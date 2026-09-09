@@ -46,6 +46,16 @@
 
 .cb-card-icon { font-size: 24px; display: block; margin-bottom: 8px; }
 
+.cb-card-image {
+  display: block;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  margin: -16px -16px 12px;
+  width: calc(100% + 32px);
+}
+
+.cb-card-has-image { overflow: hidden; }
+
 .cb-card-title { margin: 0 0 6px; font-size: 15px; font-weight: 700; color: var(--text); }
 
 .cb-card-text { margin: 0; font-size: 13.5px; color: var(--text2); line-height: 1.6; }
