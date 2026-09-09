@@ -344,6 +344,19 @@ function inatividadeBadge(dias, zonaAtual) {
   return `<span class="lib-pill" style="background:var(--acc-tint); color:var(--acc); border-color:var(--g4);">🟤 Em dia · ${dias}d</span>`;
 }
 
+/** Último login real (auth.users.last_sign_in_at) — sempre mostra a data, mesmo
+ * quando a pessoa já concluiu a trilha (diferente de inatividadeBadge, que
+ * depende de lesson_progress/quiz_attempts e some após a conclusão). */
+function ultimoLoginBadge(ultimoLogin, diasDesdeLogin) {
+  if (!ultimoLogin) return '<span class="lib-prod-series">Nunca logou</span>';
+  const dataFormatada = new Date(ultimoLogin).toLocaleDateString('pt-BR');
+  const relativo = diasDesdeLogin === 0 ? 'hoje' : diasDesdeLogin === 1 ? 'ontem' : `há ${diasDesdeLogin}d`;
+  let cor = 'style="background:var(--acc-tint); color:var(--acc); border-color:var(--g4);"';
+  if (diasDesdeLogin >= INATIVIDADE_LIMIAR_DIAS) cor = 'style="background:var(--g3); color:var(--g2); border-color:var(--g4);"';
+  else if (diasDesdeLogin >= 7) cor = 'style="background:var(--warn-tint); color:var(--warn); border-color:#e6c3c3;"';
+  return `<span class="lib-pill" ${cor}>${dataFormatada} · ${relativo}</span>`;
+}
+
 function onboardingBadge(row) {
   if (!row.alerta_onboarding) return '<span class="lib-prod-series">—</span>';
   const estimado = row.onboarding_data_estimada ? ' (data estimada)' : '';
@@ -359,8 +372,8 @@ function renderZonaAtualSection(zonaAtual) {
     <div style="margin-bottom:12px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
       <p class="dash-empty-text" style="margin:0;">
         Posição de cada colaborador no funil (só Explorador e Atleta têm conteúdo real hoje — Maratonista/Triatleta
-        ainda não têm módulo cadastrado). Inatividade calculada pela última lição/quiz real, já que sessão de
-        estudo/login ainda não é registrada em nenhuma tela.
+        ainda não têm módulo cadastrado). Inatividade calculada pela última lição/quiz real (some quando a pessoa
+        conclui a trilha); Último Login vem do login de verdade e continua aparecendo mesmo depois da conclusão.
       </p>
       ${stores.length > 1 ? `
         <select id="zonaAtualStoreFilter" class="login-input" style="max-width:200px;">
@@ -379,7 +392,7 @@ function zonaAtualTableHtml(rows) {
   return `
     <div class="lib-table-wrap" style="margin-bottom:28px;">
       <table class="lib-table">
-        <thead><tr><th>Nome</th><th>Loja</th><th>Zona Atual</th><th>Módulo Atual</th><th>Inatividade</th><th>Onboarding</th></tr></thead>
+        <thead><tr><th>Nome</th><th>Loja</th><th>Zona Atual</th><th>Módulo Atual</th><th>Inatividade</th><th>Último Login</th><th>Onboarding</th></tr></thead>
         <tbody>
           ${(rows || []).map((r) => `
             <tr>
@@ -388,6 +401,7 @@ function zonaAtualTableHtml(rows) {
               <td class="lib-prod-para">${r?.zona_atual || '—'}</td>
               <td class="lib-prod-dest">${r?.modulo_atual || '—'}</td>
               <td>${inatividadeBadge(r?.dias_inatividade, r?.zona_atual)}</td>
+              <td>${ultimoLoginBadge(r?.ultimo_login, r?.dias_desde_login)}</td>
               <td>${onboardingBadge(r || {})}</td>
             </tr>
           `).join('')}
