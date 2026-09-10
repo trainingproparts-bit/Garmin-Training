@@ -177,7 +177,7 @@
  * mesmo tingimento translúcido, que também funciona bem em fundo branco. */
 .sb-link.active {
   background: linear-gradient(90deg, rgba(228, 0, 43, 0.12), rgba(228, 0, 43, 0.02));
-  color: var(--g2);
+  color: var(--badge-danger-text);
   font-weight: 700;
   border-color: rgba(228, 0, 43, 0.25);
 }
@@ -325,10 +325,13 @@
 
 /* --gold (#F0A500) tem contraste insuficiente em texto pequeno sobre fundo
  * branco (~2.2:1, precisa de 4.5:1) — era ilegível só porque a sidebar
- * antiga era escura. Tom mais escuro aqui, só nesse uso de texto. */
+ * antiga era escura. Tom mais escuro aqui, só nesse uso de texto.
+ * var(--badge-gold-text) porque a sidebar agora escurece em modo escuro
+ * (--sidebar-bg) — o tom fixo #8a6200 ficava ilegível de novo, dessa vez
+ * por escurecer o fundo em vez de clarear (2026-09-10). */
 .sb-profile-level {
   font-size: 10.5px;
-  color: #8a6200;
+  color: var(--badge-gold-text);
   font-weight: 600;
 }
 
@@ -652,7 +655,7 @@
 
 .avatar-dropdown-link.sb-link.active {
   background: var(--g3);
-  color: var(--g2);
+  color: var(--badge-danger-text);
 }
 
 .avatar-dropdown-divider {
@@ -839,25 +842,25 @@
 .tag.blue {
   background: var(--g3);
   border-color: var(--g4);
-  color: var(--g2);
+  color: var(--badge-danger-text);
 }
 
 .tag.green {
   background: var(--acc-tint);
   border-color: #e0c3c7;
-  color: var(--acc);
+  color: var(--badge-accent-text);
 }
 
 .tag.orange {
   background: var(--warn-tint);
   border-color: #e6c3c3;
-  color: var(--warn);
+  color: var(--badge-warn-text);
 }
 
 .tag.gold {
-  background: #fffbec;
-  border-color: #fce09a;
-  color: #8a6200;
+  background: var(--gold-tint);
+  border-color: var(--gold-tint-border);
+  color: var(--badge-gold-text);
 }
 
 /* ── Menu mobile (hambúrguer + drawer) ──
