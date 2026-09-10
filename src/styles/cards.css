@@ -64,7 +64,7 @@
 
 .tag.blue {
   background: var(--acc-tint);
-  color: var(--acc);
+  color: var(--badge-accent-text);
   border-color: rgba(140, 31, 46, 0.2);
 }
 
@@ -613,7 +613,7 @@
   border-color: var(--border2);
 }
 
-.avulso-panel.done .avulso-cta { color: var(--acc); border-color: var(--acc); }
+.avulso-panel.done .avulso-cta { color: var(--badge-accent-text); border-color: var(--badge-accent-text); }
 .avulso-panel.done .avulso-cta:hover:not(:disabled) { background: var(--acc); color: #fff; }
 
 @media (max-width: 700px) {
