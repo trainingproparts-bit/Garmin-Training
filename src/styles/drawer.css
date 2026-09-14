@@ -152,6 +152,86 @@
 
 .mdrawer-history-score { font-size: 12.5px; font-weight: 700; color: var(--text2); flex-shrink: 0; }
 
+/* ── Extensão do Dashboard Executivo (progresso/forças/risco) ──────────
+ * Mantém a paleta padrão do app (--g/--acc/--warn), não a paleta estrita
+ * preto/branco/vermelho do Dashboard Executivo — o drawer é componente
+ * compartilhado, também aberto a partir do Painel do Líder e do Relatório
+ * de Gaps, então precisa continuar visualmente consistente nesses lugares. */
+
+.mdrawer-risk-badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.mdrawer-risk-alta_atencao { background: var(--g3); color: var(--g2); }
+.mdrawer-risk-atencao { background: var(--warn-tint); color: var(--warn); }
+.mdrawer-risk-normal { background: var(--off); color: var(--text2); }
+.mdrawer-risk-evolucao_positiva { background: var(--acc-tint); color: var(--acc); }
+
+.mdrawer-progress-row { display: flex; align-items: center; gap: 10px; }
+
+.mdrawer-progress-track {
+  flex: 1;
+  height: 6px;
+  background: var(--off);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.mdrawer-progress-fill { height: 100%; background: var(--g); }
+
+.mdrawer-progress-value { font-size: 13px; font-weight: 700; color: var(--text); flex-shrink: 0; }
+
+.mdrawer-forces-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+@media (max-width: 560px) {
+  .mdrawer-forces-grid { grid-template-columns: 1fr; }
+}
+
+.mdrawer-forces-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-bottom: 6px;
+}
+
+.mdrawer-forces-label-good { color: var(--acc); }
+.mdrawer-forces-label-warn { color: var(--warn); }
+
+.mdrawer-forces-list {
+  margin: 0;
+  padding-left: 16px;
+  font-size: 12.5px;
+  color: var(--text2);
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mdrawer-risk-details {
+  margin-top: 16px;
+  padding: 10px 12px;
+  background: var(--off);
+  border-radius: var(--r2);
+  font-size: 12.5px;
+  color: var(--text2);
+}
+
+.mdrawer-risk-details summary { cursor: pointer; font-weight: 600; color: var(--text); }
+
+.mdrawer-risk-breakdown { margin: 8px 0 0; padding-left: 16px; display: flex; flex-direction: column; gap: 3px; }
+
 @media (max-width: 560px) {
   .mdrawer-panel { width: 100%; padding: 20px; }
 }

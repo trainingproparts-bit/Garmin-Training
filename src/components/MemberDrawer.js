@@ -12,6 +12,7 @@
 
 import { fetchUserQuizAttempts, fetchUserQuizAnswers } from '../services/teamService.js';
 import { fetchUserCertifications } from '../services/certificationService.js';
+import { RISK_BAND_LABEL } from '../services/riskScoring.js';
 
 const GAPS_WINDOW_DAYS = 30;
 
@@ -78,7 +79,7 @@ export async function openMemberDrawer(member) {
       fetchUserQuizAnswers(member.id),
     ]);
 
-    bodyEl.innerHTML = renderBody({ certifications, attempts, answers });
+    bodyEl.innerHTML = renderBody({ certifications, attempts, answers, member });
   } catch (err) {
     console.error('[MemberDrawer] erro ao carregar diagnóstico do colaborador:', err);
     bodyEl.innerHTML = '<p class="learning-error">Não foi possível carregar o diagnóstico agora.</p>';
@@ -96,11 +97,12 @@ function renderHeader(member) {
         <h3 class="mdrawer-name">${member.full_name || 'Colaborador'}</h3>
         <p class="mdrawer-meta">${member.job_title || '—'} · ${storeName}</p>
         <span class="mdrawer-score">${score} pts</span>
+        ${member.risco ? `<span class="mdrawer-risk-badge mdrawer-risk-${member.risco.band}">${RISK_BAND_LABEL[member.risco.band]}</span>` : ''}
       </div>
     </div>`;
 }
 
-function renderBody({ certifications, attempts, answers }) {
+function renderBody({ certifications, attempts, answers, member }) {
   const certs = certifications || [];
   const attemptsList = attempts || [];
   const answersList = answers || [];
@@ -126,11 +128,74 @@ function renderBody({ certifications, attempts, answers }) {
       </div>
     </div>
 
+    ${renderExecutiveSections(member)}
+
     <h4 class="mdrawer-section-title">🎯 Gaps Ativos <span class="mdrawer-section-hint">(últimos ${GAPS_WINDOW_DAYS} dias)</span></h4>
     ${renderGapsSection(recentAnswers, recentMisses)}
 
     <h4 class="mdrawer-section-title">🕓 Histórico Recente</h4>
     ${renderHistorySection(attemptsList)}
+  `;
+}
+
+/**
+ * Seções adicionais (progresso geral, forças/pontos de atenção, avaliação
+ * trimestral, avaliações Google, detalhe do score de risco) — só aparecem
+ * quando quem abriu o drawer é o Dashboard Executivo (dashboardExecutivo.js,
+ * toDrawerMember()), que já calcula tudo isso e passa junto no objeto
+ * `member`. Chamadores antigos (Painel do Líder, Relatório de Gaps) passam
+ * um `member` sem esses campos — progresso_pct fica undefined e esta função
+ * devolve string vazia, sem alterar o comportamento que já existia.
+ */
+function renderExecutiveSections(member) {
+  if (!member || member.progresso_pct === undefined) return '';
+
+  const forcas = [];
+  const atencoes = [];
+
+  if (member.certificacao_mais_alta) forcas.push(`Certificação mais alta: ${member.certificacao_mais_alta}`);
+  if (member.streak_atual >= 5) forcas.push(`Streak ativo de ${member.streak_atual} dias seguidos`);
+  if (member.quiz_taxa_aprovacao_pct !== null && member.quiz_taxa_aprovacao_pct >= 80) forcas.push(`Alta taxa de aprovação em quiz (${member.quiz_taxa_aprovacao_pct}%)`);
+  if (member.avaliacao_trimestral_aprovado === true) forcas.push('Aprovado na última Avaliação Trimestral');
+  if (member.avaliacoes_google_media !== null && member.avaliacoes_google_media !== undefined && member.avaliacoes_google_media >= 4.5) forcas.push(`Reputação Google alta (${member.avaliacoes_google_media}/5)`);
+
+  if (member.dias_inatividade !== null && member.dias_inatividade >= 15) atencoes.push(`Sem atividade registrada há ${member.dias_inatividade} dias`);
+  if (member.dias_inatividade === null) atencoes.push('Nenhuma atividade registrada ainda');
+  if (member.quiz_taxa_aprovacao_pct !== null && member.quiz_taxa_aprovacao_pct !== undefined && member.quiz_taxa_aprovacao_pct < 50) atencoes.push(`Taxa de aprovação em quiz abaixo de 50% (${member.quiz_taxa_aprovacao_pct}%)`);
+  if (member.tem_reprovacao_recorrente) atencoes.push('Reprovação recorrente no mesmo quiz (2 tentativas seguidas)');
+  if (member.avaliacao_trimestral_aprovado === false) atencoes.push('Reprovado na última Avaliação Trimestral');
+
+  return `
+    <h4 class="mdrawer-section-title">📊 Progresso Geral</h4>
+    <div class="mdrawer-progress-row">
+      <div class="mdrawer-progress-track"><div class="mdrawer-progress-fill" style="width:${member.progresso_pct ?? 0}%"></div></div>
+      <span class="mdrawer-progress-value">${member.progresso_pct === null ? '—' : `${member.progresso_pct}%`}</span>
+    </div>
+    <p class="mdrawer-meta" style="margin:6px 0 0;">Streak atual: ${member.streak_atual ?? 0} dias · Última atividade: ${member.dias_inatividade === null ? 'sem registro' : `há ${member.dias_inatividade}d`}</p>
+
+    ${forcas.length || atencoes.length ? `
+      <h4 class="mdrawer-section-title">⚖️ Forças &amp; Pontos de Atenção</h4>
+      <div class="mdrawer-forces-grid">
+        <div>
+          <span class="mdrawer-forces-label mdrawer-forces-label-good">Forças</span>
+          ${forcas.length ? `<ul class="mdrawer-forces-list">${forcas.map((f) => `<li>${f}</li>`).join('')}</ul>` : '<p class="mdrawer-empty" style="margin-top:6px;">Nenhum destaque claro ainda.</p>'}
+        </div>
+        <div>
+          <span class="mdrawer-forces-label mdrawer-forces-label-warn">Pontos de Atenção</span>
+          ${atencoes.length ? `<ul class="mdrawer-forces-list">${atencoes.map((a) => `<li>${a}</li>`).join('')}</ul>` : '<p class="mdrawer-empty" style="margin-top:6px;">Nenhum ponto de atenção identificado.</p>'}
+        </div>
+      </div>` : ''}
+
+    ${member.risco ? `
+      <details class="mdrawer-risk-details">
+        <summary>Como o score de risco (${member.risco.score}/100) foi calculado</summary>
+        <ul class="mdrawer-risk-breakdown">
+          <li>Inatividade: ${member.risco.breakdown.inatividade} pts</li>
+          <li>Progresso abaixo da média do grupo: ${member.risco.breakdown.progressoRelativo} pts</li>
+          <li>Taxa de aprovação em quiz: ${member.risco.breakdown.aprovacaoQuiz} pts</li>
+          <li>Reprovação recorrente: ${member.risco.breakdown.reprovacaoRecorrente} pts</li>
+        </ul>
+      </details>` : ''}
   `;
 }
 

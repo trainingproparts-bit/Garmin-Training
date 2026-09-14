@@ -21,6 +21,7 @@ import './pages/produtoDetail.js';
 import './pages/comparativoDetail.js';
 import './pages/revisaoInteligente.js';
 import './pages/revisaoSession.js';
+import './pages/dashboardExecutivo.js';
 import './pages/liderDashboard.js';
 import './pages/teamGapsReport.js';
 import './pages/adminPanel.js';

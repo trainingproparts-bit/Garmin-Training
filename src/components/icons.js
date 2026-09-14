@@ -63,6 +63,8 @@ export const ICONS = {
   revisao: wrap(`<path d="M4 12a8 8 0 0 1 14-5.2M4 12a8 8 0 0 0 14 5.2"/><path d="M18 3v4h-4"/><path d="M6 21v-4h4"/>`),
 
   forum: wrap(`<path d="M4 5.5h13a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H10l-4.5 4v-4H4a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2z" transform="translate(1 0) scale(0.9)"/><circle cx="8" cy="10.5" r="0.9" fill="currentColor" stroke="none"/><circle cx="12" cy="10.5" r="0.9" fill="currentColor" stroke="none"/><circle cx="16" cy="10.5" r="0.9" fill="currentColor" stroke="none"/>`),
+
+  executivo: wrap(`<path d="M4 20V9.5"/><path d="M10.5 20V4"/><path d="M17 20v-7"/><path d="M3.5 20h17"/><path d="M14.5 8.5l2.5-2.5 2 2 3-3"/>`),
 };
 
 export function icon(name) {

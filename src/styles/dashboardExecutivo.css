@@ -1,0 +1,475 @@
+/* src/styles/dashboardExecutivo.css — Dashboard Executivo
+ *
+ * Identidade visual própria (decisão confirmada com o usuário): módulo de BI
+ * premium à parte do resto do hub, preto/branco/vermelho estritos — sem o
+ * vinho/dourado/verde que aparecem em outras telas do app. Tudo escopado
+ * dentro de .exec-dash pra não vazar pro resto da aplicação nem herdar
+ * tokens.css global. Reaproveita só as fontes já carregadas (Rajdhani/DM
+ * Sans) — nenhuma fonte nova.
+ */
+
+.exec-dash {
+  --ed-black: #0a0a0a;
+  --ed-white: #ffffff;
+  --ed-red: #E4002B;
+  --ed-red-dim: #b8001f;
+
+  --ed-gray-50: #fafafa;
+  --ed-gray-100: #f2f2f2;
+  --ed-gray-200: #e4e4e4;
+  --ed-gray-300: #cccccc;
+  --ed-gray-500: #8a8a8a;
+  --ed-gray-700: #4a4a4a;
+
+  --ed-bg: var(--ed-white);
+  --ed-surface: var(--ed-white);
+  --ed-border: var(--ed-gray-200);
+  --ed-text: var(--ed-black);
+  --ed-text2: var(--ed-gray-700);
+  --ed-text3: var(--ed-gray-500);
+
+  font-family: var(--font-body);
+  color: var(--ed-text);
+  background: var(--ed-bg);
+}
+
+body.dark-mode .exec-dash {
+  --ed-bg: var(--ed-black);
+  --ed-surface: #141414;
+  --ed-border: #2a2a2a;
+  --ed-text: var(--ed-white);
+  --ed-text2: #c8c8c8;
+  --ed-text3: #8a8a8a;
+}
+
+.exec-dash * { box-sizing: border-box; }
+
+/* ── Cabeçalho / contexto ────────────────────────────────────────────── */
+
+.ed-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--ed-border);
+}
+
+.ed-eyebrow {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--ed-red);
+  margin-bottom: 4px;
+}
+
+.ed-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 28px;
+  letter-spacing: 0.2px;
+  color: var(--ed-text);
+}
+
+.ed-subtitle {
+  margin: 4px 0 0;
+  font-size: 13.5px;
+  color: var(--ed-text3);
+  max-width: 640px;
+}
+
+.ed-updated-at {
+  font-size: 11.5px;
+  color: var(--ed-text3);
+  white-space: nowrap;
+}
+
+/* ── Filtros globais ─────────────────────────────────────────────────── */
+
+.ed-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.ed-filter-bar select,
+.ed-filter-bar input[type="search"] {
+  font-family: var(--font-body);
+  font-size: 13px;
+  padding: 8px 12px;
+  border: 1px solid var(--ed-border);
+  border-radius: 3px;
+  background: var(--ed-surface);
+  color: var(--ed-text);
+  min-width: 140px;
+}
+
+.ed-filter-bar select:focus,
+.ed-filter-bar input:focus {
+  outline: none;
+  border-color: var(--ed-black);
+}
+
+body.dark-mode .ed-filter-bar select:focus,
+body.dark-mode .ed-filter-bar input:focus {
+  border-color: var(--ed-white);
+}
+
+/* ── Abas ────────────────────────────────────────────────────────────── */
+
+.ed-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 28px;
+  border-bottom: 1px solid var(--ed-border);
+  overflow-x: auto;
+}
+
+.ed-tab {
+  appearance: none;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 10px 4px;
+  margin-right: 22px;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ed-text3);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 120ms ease, border-color 120ms ease;
+}
+
+.ed-tab:hover { color: var(--ed-text); }
+
+.ed-tab.is-active {
+  color: var(--ed-text);
+  border-bottom-color: var(--ed-red);
+}
+
+.ed-tabpanel { display: none; }
+.ed-tabpanel.is-active { display: block; }
+
+/* ── KPIs ────────────────────────────────────────────────────────────── */
+
+.ed-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1px;
+  background: var(--ed-border);
+  border: 1px solid var(--ed-border);
+  margin-bottom: 32px;
+}
+
+.ed-kpi-card {
+  background: var(--ed-surface);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ed-kpi-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: var(--ed-text3);
+}
+
+.ed-kpi-value {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--ed-text);
+}
+
+.ed-kpi-delta {
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.ed-kpi-delta.is-up { color: var(--ed-red); }
+.ed-kpi-delta.is-down { color: var(--ed-text3); }
+.ed-kpi-delta.is-flat { color: var(--ed-text3); }
+
+/* ── Seções / cards editoriais ───────────────────────────────────────── */
+
+.ed-section {
+  margin-bottom: 36px;
+}
+
+.ed-section-title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 4px;
+  color: var(--ed-text);
+}
+
+.ed-section-hint {
+  font-size: 12.5px;
+  color: var(--ed-text3);
+  margin: 0 0 16px;
+}
+
+.ed-card {
+  border: 1px solid var(--ed-border);
+  background: var(--ed-surface);
+  padding: 20px;
+}
+
+.ed-grid-2 {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 900px) {
+  .ed-grid-2 { grid-template-columns: 1fr; }
+}
+
+/* ── Estados vazios / carregando ─────────────────────────────────────── */
+
+.ed-empty, .ed-loading, .ed-error {
+  padding: 28px 20px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--ed-text3);
+  border: 1px dashed var(--ed-border);
+}
+
+.ed-error { color: var(--ed-red); border-color: var(--ed-red); }
+
+/* ── Insights automáticos ────────────────────────────────────────────── */
+
+.ed-insight-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.ed-insight-item {
+  display: flex;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--ed-border);
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--ed-text2);
+}
+
+.ed-insight-item:last-child { border-bottom: none; }
+
+.ed-insight-marker {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-top: 6px;
+  background: var(--ed-gray-300);
+}
+
+.ed-insight-item.tone-critical .ed-insight-marker { background: var(--ed-red); }
+.ed-insight-item.tone-warning .ed-insight-marker { background: var(--ed-gray-700); }
+.ed-insight-item.tone-positive .ed-insight-marker { background: var(--ed-black); }
+body.dark-mode .ed-insight-item.tone-positive .ed-insight-marker { background: var(--ed-white); }
+
+/* ── Badges de risco (sem verde — seta/peso tipográfico no lugar) ───────
+ * A paleta não permite verde, então "risco baixo/evolução positiva" não é
+ * comunicado por cor semântica de sucesso — é comunicado por intensidade de
+ * vermelho decrescente + símbolo, mantendo preto/branco/vermelho estritos. */
+
+.ed-risk-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  border: 1px solid currentColor;
+  white-space: nowrap;
+}
+
+.ed-risk-alta_atencao { color: var(--ed-white); background: var(--ed-red); border-color: var(--ed-red); }
+.ed-risk-atencao { color: var(--ed-red); background: transparent; }
+.ed-risk-normal { color: var(--ed-text2); background: transparent; border-color: var(--ed-border); }
+.ed-risk-evolucao_positiva { color: var(--ed-text); background: transparent; border-color: var(--ed-text); }
+
+/* ── Tabela Equipe & Risco ───────────────────────────────────────────── */
+
+.ed-table-wrap { overflow-x: auto; border: 1px solid var(--ed-border); }
+
+.ed-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+
+.ed-table th {
+  text-align: left;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: var(--ed-text3);
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--ed-border);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.ed-table th:hover { color: var(--ed-text); }
+
+.ed-table th.is-sorted::after { content: ' ▾'; font-size: 9px; }
+.ed-table th.is-sorted.is-asc::after { content: ' ▴'; font-size: 9px; }
+
+.ed-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--ed-border);
+  color: var(--ed-text2);
+  vertical-align: middle;
+}
+
+.ed-table tbody tr { cursor: pointer; transition: background 100ms ease; }
+.ed-table tbody tr:hover { background: var(--ed-gray-50); }
+body.dark-mode .ed-table tbody tr:hover { background: #1c1c1c; }
+
+.ed-table tbody tr:last-child td { border-bottom: none; }
+
+.ed-cell-name { font-weight: 600; color: var(--ed-text); }
+.ed-cell-sub { display: block; font-size: 11px; color: var(--ed-text3); font-weight: 400; }
+
+.ed-progress-track {
+  width: 72px;
+  height: 5px;
+  background: var(--ed-gray-200);
+  border-radius: 3px;
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+body.dark-mode .ed-progress-track { background: #2a2a2a; }
+
+.ed-progress-fill { height: 100%; background: var(--ed-black); }
+body.dark-mode .ed-progress-fill { background: var(--ed-white); }
+
+.ed-table-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.ed-pagination {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+  font-size: 12.5px;
+  color: var(--ed-text3);
+}
+
+.ed-pagination button {
+  appearance: none;
+  border: 1px solid var(--ed-border);
+  background: var(--ed-surface);
+  color: var(--ed-text);
+  padding: 5px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.ed-pagination button:disabled { opacity: 0.4; cursor: default; }
+.ed-pagination button:not(:disabled):hover { border-color: var(--ed-black); }
+body.dark-mode .ed-pagination button:not(:disabled):hover { border-color: var(--ed-white); }
+
+/* ── Gráficos SVG (chartsSvg.js) ─────────────────────────────────────── */
+
+.ed-chart { display: block; overflow: visible; }
+
+.ed-spark { color: var(--ed-red); }
+
+.ed-line-primary { stroke: var(--ed-red); }
+.ed-line-secondary { stroke: var(--ed-black); }
+body.dark-mode .ed-line-secondary { stroke: var(--ed-white); }
+.ed-line-primary-dot { fill: var(--ed-red); }
+.ed-line-secondary-dot { fill: var(--ed-black); }
+body.dark-mode .ed-line-secondary-dot { fill: var(--ed-white); }
+
+.ed-axis-line { stroke: var(--ed-border); stroke-width: 1; }
+.ed-axis-label { fill: var(--ed-text3); font-size: 10.5px; font-family: var(--font-body); }
+
+.ed-bar { fill: var(--ed-black); }
+body.dark-mode .ed-bar { fill: var(--ed-white); }
+.ed-bar-label { fill: var(--ed-text2); font-size: 11.5px; font-family: var(--font-body); }
+.ed-bar-value { fill: var(--ed-text); font-size: 11.5px; font-weight: 700; font-family: var(--font-body); }
+
+.ed-funnel-bar { fill: var(--ed-red); opacity: 0.9; }
+.ed-funnel-label { fill: var(--ed-white); font-size: 12px; font-weight: 700; font-family: var(--font-body); }
+.ed-funnel-value { fill: var(--ed-text); font-size: 13px; font-weight: 700; font-family: var(--font-display); }
+.ed-funnel-retention { fill: var(--ed-text3); font-size: 10.5px; font-family: var(--font-body); }
+
+/* ── Legenda simples ─────────────────────────────────────────────────── */
+
+.ed-legend { display: flex; gap: 16px; margin-bottom: 8px; flex-wrap: wrap; }
+.ed-legend-item { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ed-text2); }
+.ed-legend-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.ed-legend-dot.is-primary { background: var(--ed-red); }
+.ed-legend-dot.is-secondary { background: var(--ed-black); }
+body.dark-mode .ed-legend-dot.is-secondary { background: var(--ed-white); }
+
+/* ── Competências (funil de certificação) ───────────────────────────── */
+
+.ed-comp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1px; background: var(--ed-border); border: 1px solid var(--ed-border); }
+
+.ed-comp-card { background: var(--ed-surface); padding: 18px; display: flex; flex-direction: column; gap: 6px; }
+
+.ed-comp-title { font-size: 12.5px; font-weight: 700; color: var(--ed-text); }
+
+.ed-comp-pct { font-family: var(--font-display); font-size: 26px; font-weight: 700; color: var(--ed-red); }
+
+.ed-comp-meta { font-size: 11.5px; color: var(--ed-text3); }
+
+.ed-comp-track { width: 100%; height: 4px; background: var(--ed-gray-200); margin-top: 4px; }
+body.dark-mode .ed-comp-track { background: #2a2a2a; }
+.ed-comp-fill { height: 100%; background: var(--ed-red); }
+
+/* ── Botão de link (ex.: "Ver relatório completo") ──────────────────── */
+
+.ed-link-btn {
+  appearance: none;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--ed-text);
+  padding: 0 0 2px;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ed-text);
+  cursor: pointer;
+}
+
+.ed-link-btn:hover { color: var(--ed-red); border-color: var(--ed-red); }
+
+/* ── Responsivo ──────────────────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+  .ed-title { font-size: 22px; }
+  .ed-kpi-value { font-size: 26px; }
+}

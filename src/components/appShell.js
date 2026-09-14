@@ -62,6 +62,7 @@ const NAV_ITEMS = [
   // visibilidade por papel (revealRoleScopedNav) seguem funcionando sem
   // nenhuma mudança em router.js, porque os seletores são por classe/
   // atributo, não por posição no DOM.
+  { id: 'executivo', iconKey: 'executivo', label: 'Dashboard Executivo', brandScoped: false, rolesAllowed: ['admin'], location: 'avatar' },
   { id: 'lider', iconKey: 'lider', label: 'Painel do Líder', brandScoped: false, rolesAllowed: ['leader', 'admin'], location: 'avatar' },
   { id: 'relatorios', iconKey: 'relatorios', label: 'Relatórios', brandScoped: false, rolesAllowed: ['leader', 'admin'], location: 'avatar' },
   { id: 'admin', iconKey: 'admin', label: 'Painel Admin', brandScoped: false, rolesAllowed: ['admin'], location: 'avatar' },
@@ -345,6 +346,14 @@ export function renderAppShell(container) {
               <div class="panel-title"><span>Novo Tópico</span></div>
             </div>
             <div class="panel-body" id="forumNovoTopicoContainer"></div>
+          </div>
+
+          <div class="panel" id="panel-executivo" data-panel="executivo" hidden>
+            <div class="panel-header">
+              <button type="button" class="back-btn" data-back-to="home">← Início</button>
+              <div class="panel-title"><span>Dashboard Executivo</span></div>
+            </div>
+            <div class="panel-body" id="executivoContainer"></div>
           </div>
 
           <div class="panel" id="panel-lider" data-panel="lider" hidden>
