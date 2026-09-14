@@ -182,10 +182,17 @@ function wireBlockSectionEditor(container, product, sectionKey) {
 function renderHeaderRead(product, isAdmin) {
   const price = product.price_usd != null ? `US$ ${Number(product.price_usd).toFixed(2).replace('.', ',')}` : '';
   return `
-    <h2 class="academia-detail-name">${product.name}${product.model_code ? ` <span class="academia-detail-model">${product.model_code}</span>` : ''}</h2>
-    ${product.tagline ? `<p class="academia-detail-tagline">${product.tagline}</p>` : ''}
-    ${price ? `<span class="academia-detail-price">${price}</span>` : ''}
-    ${isAdmin ? '<button type="button" class="academia-edit-btn" data-edit-header>✎ Editar produto</button>' : ''}
+    <div class="academia-detail-header-row">
+      <div class="academia-detail-thumb" ${product.cover_url ? '' : 'style="background:linear-gradient(135deg, #1e293b, #0f172a);"'}>
+        ${product.cover_url ? `<img src="${product.cover_url}" alt="">` : '<span class="academia-detail-thumb-icon">⌚</span>'}
+      </div>
+      <div class="academia-detail-header-text">
+        <h2 class="academia-detail-name">${product.name}${product.model_code ? ` <span class="academia-detail-model">${product.model_code}</span>` : ''}</h2>
+        ${product.tagline ? `<p class="academia-detail-tagline">${product.tagline}</p>` : ''}
+        ${price ? `<span class="academia-detail-price">${price}</span>` : ''}
+        ${isAdmin ? '<button type="button" class="academia-edit-btn" data-edit-header>✎ Editar produto</button>' : ''}
+      </div>
+    </div>
   `;
 }
 

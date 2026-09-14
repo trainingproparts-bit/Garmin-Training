@@ -82,6 +82,18 @@
   --font-body: 'DM Sans', system-ui, sans-serif;
   --font-display: 'Rajdhani', system-ui, sans-serif;
   --font-wordmark: 'Barlow Condensed', system-ui, sans-serif;
+
+  /* Badge text-on-tint (2026-09-10) — tokens dedicados pra texto de
+   * badge/pill/tag sobre fundo "-tint" (--g3/--acc-tint/--warn-tint/gold).
+   * Separados de --g2/--acc/--warn porque esses também são usados como
+   * fundo sólido de botão (onde precisam continuar saturados/escuros) —
+   * só o PAR texto-sobre-tint precisa mudar em modo escuro. */
+  --badge-danger-text: var(--g2);
+  --badge-accent-text: var(--acc);
+  --badge-warn-text: var(--warn);
+  --badge-gold-text: #8a6200;
+  --gold-tint: #fffbec;
+  --gold-tint-border: #fce09a;
 }
 
 /* ── Modo escuro (2026-07-17) — sobrescreve só os tokens de superfície/texto
@@ -112,4 +124,16 @@ body.dark-mode {
   --sh-neutral-sm: 0 1px 3px rgba(0, 0, 0, 0.35), 0 1px 2px rgba(0, 0, 0, 0.25);
   --sh-neutral-md: 0 4px 16px rgba(0, 0, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.3);
   --sh-neutral-lg: 0 12px 32px rgba(0, 0, 0, 0.5);
+
+  /* Texto de badge/tag mais claro no escuro — os fundos -tint acima
+   * escureceram, mas --g2/--acc/--warn/#8a6200 continuam escuros (também
+   * servem de fundo sólido de botão em outros lugares, não podiam mudar
+   * de valor). Sem isso, texto escuro sobre fundo -tint escuro fica
+   * ilegível (relatado pelo usuário: "alguns textos somem"). */
+  --badge-danger-text: #ff9aa3;
+  --badge-accent-text: #e0919d;
+  --badge-warn-text: #e8918f;
+  --badge-gold-text: #f0c05a;
+  --gold-tint: #2e2308;
+  --gold-tint-border: #5c4813;
 }

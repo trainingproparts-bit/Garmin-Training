@@ -281,7 +281,8 @@ function renderCardGridBlock(b) {
   return `
     <div class="cb-card-grid cols-${cols}">
       ${items.map((it) => `
-        <div class="cb-card" style="border-left: 3px solid ${cardAccentColor(it.title || it.text)};">
+        <div class="cb-card ${it.imageUrl ? 'cb-card-has-image' : ''}" style="border-left: 3px solid ${cardAccentColor(it.title || it.text)};">
+          ${it.imageUrl ? `<img class="cb-card-image" src="${it.imageUrl}" alt="${it.title || ''}" loading="lazy">` : ''}
           ${it.title ? `<h4 class="cb-card-title">${it.title}</h4>` : ''}
           ${it.text ? `<p class="cb-card-text">${colorizeCheckmarks(it.text)}</p>` : ''}
           ${Array.isArray(it.tags) && it.tags.length ? `
@@ -545,7 +546,7 @@ function decodeMatchPairs(raw) {
 function encodeCardGridItems(items) {
   return (items || []).map((it) => {
     const tagsRaw = (it.tags || []).map((t) => `${t.label}:${t.color}`).join(', ');
-    return [it.title || '', it.text || '', tagsRaw].join(' | ');
+    return [it.title || '', it.text || '', tagsRaw, it.imageUrl || ''].join(' | ');
   }).join('\n');
 }
 
@@ -564,7 +565,7 @@ function decodeCardGridItems(raw) {
           const [label, color] = t.split(':').map((x) => x.trim());
           return { label: label || t, color: color || '' };
         });
-      return { title: parts[0] || '', text: parts[1] || '', tags };
+      return { title: parts[0] || '', text: parts[1] || '', tags, imageUrl: parts[3] || '' };
     });
 }
 
@@ -636,8 +637,8 @@ function renderBlockFields(block) {
           <option value="2" ${block.columns !== 3 ? 'selected' : ''}>2 colunas</option>
           <option value="3" ${block.columns === 3 ? 'selected' : ''}>3 colunas</option>
         </select>
-        <textarea data-field="items_raw" rows="5" placeholder="Um card por linha: Título | Texto | tag1:blue, tag2:green (opcional)">${encodeCardGridItems(block.items)}</textarea>
-        <p class="cb-editor-hint">Formato: Título | Texto | tags rótulo:cor separadas por vírgula (cores: blue, green, orange, gold), tags opcionais</p>`;
+        <textarea data-field="items_raw" rows="5" placeholder="Um card por linha: Título | Texto | tag1:blue, tag2:green (opcional) | URL da imagem (opcional)">${encodeCardGridItems(block.items)}</textarea>
+        <p class="cb-editor-hint">Formato: Título | Texto | tags rótulo:cor separadas por vírgula (cores: blue, green, orange, gold) | URL da imagem — os dois últimos campos são opcionais</p>`;
     case 'flip_card':
       return `
         <select data-field="columns">

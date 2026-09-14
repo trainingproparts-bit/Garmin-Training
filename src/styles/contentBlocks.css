@@ -46,6 +46,16 @@
 
 .cb-card-icon { font-size: 24px; display: block; margin-bottom: 8px; }
 
+.cb-card-image {
+  display: block;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  margin: -16px -16px 12px;
+  width: calc(100% + 32px);
+}
+
+.cb-card-has-image { overflow: hidden; }
+
 .cb-card-title { margin: 0 0 6px; font-size: 15px; font-weight: 700; color: var(--text); }
 
 .cb-card-text { margin: 0; font-size: 13.5px; color: var(--text2); line-height: 1.6; }
@@ -253,7 +263,7 @@
   gap: 4px;
   background: var(--white);
   border: 1px solid var(--g4);
-  color: var(--g2);
+  color: var(--badge-danger-text);
   border-radius: var(--r2);
   font-size: 11px;
   font-style: normal;
@@ -265,7 +275,7 @@
 
 .cb-roteiro-copy-btn:hover { background: var(--g3); }
 
-.cb-roteiro-copy-btn.is-copied { color: var(--acc); border-color: var(--acc); }
+.cb-roteiro-copy-btn.is-copied { color: var(--badge-accent-text); border-color: var(--badge-accent-text); }
 
 .cb-roteiro-tip {
   display: flex;
@@ -436,7 +446,7 @@
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: var(--g2);
+  color: var(--badge-danger-text);
   margin-bottom: 8px;
 }
 
@@ -494,7 +504,7 @@
   padding: 2px 8px;
   border-radius: 999px;
   background: rgba(240, 165, 0, 0.12);
-  color: #8a5c00;
+  color: var(--badge-gold-text);
   border: 1px solid rgba(240, 165, 0, 0.3);
   white-space: nowrap;
 }
