@@ -131,6 +131,28 @@
 
 .cb-timeline-text { margin: 4px 0 0; font-size: 13px; color: var(--text2); line-height: 1.5; }
 
+/* ── Imagem única (controle de tamanho: pequena/média/grande/largura total,
+ * ou largura personalizada via style inline no próprio bloco) — height:auto
+ * garante que a proporção original nunca é distorcida, em nenhum tamanho. */
+.cb-image {
+  margin: 16px auto;
+  text-align: center;
+}
+
+.cb-image img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--r2);
+  border: 1px solid var(--border);
+  display: block;
+  margin: 0 auto;
+}
+
+.cb-image-pequena { max-width: 320px; }
+.cb-image-media { max-width: 560px; }
+.cb-image-grande { max-width: 800px; }
+.cb-image-full { max-width: 100%; }
+
 /* ── Galeria ── */
 .cb-gallery {
   display: grid;

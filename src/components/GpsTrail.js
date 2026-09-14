@@ -12,6 +12,7 @@
 // só o container visual.
 
 import { updateQuizCover } from '../services/quizService.js';
+import { openImageEditModal } from './ImageEditModal.js';
 
 // Ícones outline (traço simples, sem preenchimento sólido — pedido
 // explícito do usuário: nada de emoji colorido nos cards do Circuito de
@@ -164,20 +165,20 @@ function wireCardClicks(scopeEl, zones, onCheckpointClick) {
 /** Admin: "Editar capa" nos cards compactos de quiz do Circuito de Desafios — mesmo padrão de arenaDesafios.js/updateQuizCover, só que reaplicado aqui (o card de imagem grande virou card numerado sem foto, mas o quiz em si continua com cover_url no banco). */
 function wireQuizCoverButtons(scopeEl, zones) {
   scopeEl.querySelectorAll('[data-edit-quiz-cover]').forEach((btn) => {
-    btn.addEventListener('click', async (e) => {
+    btn.addEventListener('click', (e) => {
       e.stopPropagation();
       const quizId = btn.dataset.editQuizCover;
       const cp = zones.flatMap((z) => z.checkpoints).find((c) => c.reference_id === quizId && c.checkpoint_type === 'quiz');
-      const url = window.prompt('URL da imagem de capa (16:9). Deixe em branco pra remover:', cp?.cover_url || '');
-      if (url === null) return;
 
-      try {
-        await updateQuizCover(quizId, url.trim());
-        if (cp) cp.cover_url = url.trim() || null;
-      } catch (err) {
-        console.error('[GpsTrail] erro ao salvar capa do quiz:', err);
-        alert('Não foi possível salvar a capa agora.');
-      }
+      openImageEditModal({
+        title: 'Capa do quiz',
+        currentUrl: cp?.cover_url || '',
+        folder: 'covers/quizzes',
+        onSave: async (url) => {
+          await updateQuizCover(quizId, url || '');
+          if (cp) cp.cover_url = url;
+        },
+      });
     });
   });
 }

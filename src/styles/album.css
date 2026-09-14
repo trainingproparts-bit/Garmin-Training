@@ -449,6 +449,36 @@
   box-sizing: border-box;
 }
 
+/* ImageUploadField vive dentro do modal de figurinha (fundo escuro sempre,
+ * independente do tema claro/escuro do app) — os tokens padrão do widget
+ * (--text2/--text3/--border) são escuros-sobre-claro e ficavam ilegíveis
+ * aqui, então sobrescrevemos as cores pra combinar com o resto do modal. */
+.album-modal .iuf-label,
+.album-modal .iuf-status { color: rgba(255, 255, 255, 0.65); }
+
+.album-modal .iuf-preview-empty { color: rgba(255, 255, 255, 0.45); }
+
+.album-modal .iuf-preview-wrap {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.album-modal .iuf-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.16);
+  color: #fff;
+}
+
+.album-modal .iuf-btn:hover { border-color: #fff; }
+
+.album-modal .iuf-link-btn,
+.album-modal .iuf-url-input { color: rgba(255, 255, 255, 0.75); }
+
+.album-modal .iuf-url-input {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
 .album-curated-row {
   display: flex;
   align-items: center;

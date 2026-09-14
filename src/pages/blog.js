@@ -14,6 +14,7 @@ import {
   markPostAsRead,
   fetchReadPostIds,
 } from '../services/blogService.js';
+import { imageUploadFieldHtml, wireImageUploadField } from '../components/ImageUploadField.js';
 
 const CATEGORY_CLASS = {
   'Caso Real': 'blog-badge-caso',
@@ -139,7 +140,7 @@ function postFormHtml(post) {
       <select name="category" class="ranking-highlight-textarea">
         ${CATEGORIES.map((c) => `<option value="${c}" ${c === p.category ? 'selected' : ''}>${c}</option>`).join('')}
       </select>
-      <input type="text" name="banner_url" class="ranking-highlight-textarea" placeholder="URL do banner (opcional)" value="${p.banner_url || ''}">
+      ${imageUploadFieldHtml({ fieldName: 'banner_url', currentUrl: p.banner_url || '', folder: 'covers/blog', label: 'Banner' })}
       <textarea name="content" class="ranking-highlight-textarea" rows="6" placeholder="Conteúdo (HTML permitido)" required>${p.content}</textarea>
       <label style="display:flex; align-items:center; gap:6px; font-size:13px; color:var(--text2);">
         <input type="checkbox" name="is_published" ${p.is_published ? 'checked' : ''}> Publicado
@@ -153,6 +154,7 @@ function postFormHtml(post) {
 
 function wirePostForm(formContainer, post, profile, onSaved) {
   const form = formContainer.querySelector('form');
+  wireImageUploadField(form.querySelector('[data-role="iuf-root"]'));
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const msgEl = form.querySelector('[data-role="msg"]');

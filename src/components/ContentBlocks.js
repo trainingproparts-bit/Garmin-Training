@@ -9,6 +9,7 @@
 // futura (Painel da Gestora completo, Fase 4 §6.6).
 
 import { navigateToPanel } from '../router.js';
+import { imageUploadFieldHtml, wireImageUploadField } from './ImageUploadField.js';
 
 export const BLOCK_TYPES = [
   { key: 'texto_rico', label: 'Texto Rico' },
@@ -17,6 +18,7 @@ export const BLOCK_TYPES = [
   { key: 'accordion', label: 'Accordion' },
   { key: 'timeline', label: 'Timeline' },
   { key: 'video', label: 'Vídeo' },
+  { key: 'imagem', label: 'Imagem' },
   { key: 'galeria', label: 'Galeria' },
   { key: 'quiz_embutido', label: 'Quiz Embutido' },
   { key: 'roteiro', label: 'Roteiro de Venda' },
@@ -36,6 +38,7 @@ export function defaultBlockFor(type) {
     case 'accordion': return { type, items: [] };
     case 'timeline': return { type, items: [] };
     case 'video': return { type, videoUrl: '', caption: '' };
+    case 'imagem': return { type, url: '', alt: '', size: 'media', customWidth: null };
     case 'galeria': return { type, images: [] };
     case 'quiz_embutido': return { type, quizId: '', label: '' };
     case 'roteiro': return { type, steps: [] };
@@ -68,6 +71,7 @@ function renderBlock(block, index) {
     case 'card': return renderCardBlock(block);
     case 'timeline': return renderTimelineBlock(block);
     case 'video': return renderVideoBlock(block);
+    case 'imagem': return renderImagemBlock(block);
     case 'galeria': return renderGaleriaBlock(block);
     case 'quiz_embutido': return renderQuizEmbutidoBlock(block);
     case 'roteiro': return renderRoteiroBlock(block, index);
@@ -160,6 +164,24 @@ function renderVideoBlock(b) {
       </div>
       ${b.caption ? `<p class="cb-video-caption">${b.caption}</p>` : ''}
     </div>`;
+}
+
+const IMAGE_SIZE_CLASS = { pequena: 'cb-image-pequena', media: 'cb-image-media', grande: 'cb-image-grande', full: 'cb-image-full' };
+
+/**
+ * Imagem única com controle de tamanho (pedido do usuário: pequena/média/
+ * grande/largura total + largura personalizada opcional). `height: auto` no
+ * CSS (contentBlocks.css) garante que a proporção original é sempre
+ * preservada, em qualquer tamanho — nunca distorce.
+ */
+function renderImagemBlock(b) {
+  if (!b.url) return '';
+  const sizeClass = IMAGE_SIZE_CLASS[b.size] || IMAGE_SIZE_CLASS.media;
+  const customStyle = b.customWidth ? ` style="max-width:${Number(b.customWidth)}px;"` : '';
+  return `
+    <figure class="cb-image ${sizeClass}"${customStyle}>
+      <img src="${b.url}" alt="${b.alt || ''}" loading="lazy">
+    </figure>`;
 }
 
 function renderGaleriaBlock(b) {
@@ -575,6 +597,18 @@ function renderBlockFields(block) {
       return `
         <input type="text" data-field="videoUrl" value="${block.videoUrl || ''}" placeholder="URL do vídeo (embed)">
         <input type="text" data-field="caption" value="${block.caption || ''}" placeholder="Legenda (opcional)">`;
+    case 'imagem':
+      return `
+        ${imageUploadFieldHtml({ fieldName: 'url', currentUrl: block.url || '', folder: 'blocks/licoes' })}
+        <input type="text" data-field="alt" value="${block.alt || ''}" placeholder="Texto alternativo (acessibilidade)">
+        <select data-field="size">
+          <option value="pequena" ${block.size === 'pequena' ? 'selected' : ''}>Pequena</option>
+          <option value="media" ${!block.size || block.size === 'media' ? 'selected' : ''}>Média</option>
+          <option value="grande" ${block.size === 'grande' ? 'selected' : ''}>Grande</option>
+          <option value="full" ${block.size === 'full' ? 'selected' : ''}>Largura total</option>
+        </select>
+        <input type="number" min="40" data-field="customWidth" value="${block.customWidth || ''}" placeholder="Largura personalizada em px (opcional, sobrepõe o tamanho acima)">
+        <p class="cb-editor-hint">A proporção da imagem é sempre preservada — a largura personalizada, se usada, sobrepõe o tamanho pré-definido escolhido acima.</p>`;
     case 'galeria':
       return `
         <textarea data-field="images_raw" rows="4" placeholder="Uma imagem por linha: URL | Legenda">${encodeItems(block.images, ['url', 'caption'])}</textarea>
@@ -654,6 +688,13 @@ function readBlockFromRow(row, type) {
     case 'accordion': return { type, items: decodeItems(get('items_raw'), ['title', 'html']) };
     case 'timeline': return { type, items: decodeItems(get('items_raw'), ['label', 'text']) };
     case 'video': return { type, videoUrl: get('videoUrl'), caption: get('caption') };
+    case 'imagem': return {
+      type,
+      url: get('url'),
+      alt: get('alt'),
+      size: get('size') || 'media',
+      customWidth: get('customWidth') ? Number(get('customWidth')) : null,
+    };
     case 'galeria': return { type, images: decodeItems(get('images_raw'), ['url', 'caption']) };
     case 'quiz_embutido': return { type, quizId: get('quizId'), label: get('label') };
     case 'roteiro': return { type, steps: decodeItems(get('steps_raw'), ['title', 'dialog', 'tip']) };
@@ -692,6 +733,13 @@ export function setupBlockArrayEditor(container, initialBlocks, { onSave, onCanc
     listEl.innerHTML = blocks.length
       ? blocks.map((b, i) => renderBlockEditorRow(b, i, blocks.length)).join('')
       : '<p class="cb-editor-hint">Nenhum bloco ainda, adicione um abaixo.</p>';
+
+    // Blocos do tipo 'imagem' embutem o ImageUploadField — precisa religar o
+    // widget (input de arquivo, preview, remover) a cada re-render da lista,
+    // mesma lógica de "um listener por elemento" já usada no resto do editor.
+    listEl.querySelectorAll('[data-role="iuf-root"]').forEach((widgetEl) => {
+      wireImageUploadField(widgetEl);
+    });
 
     listEl.querySelectorAll('[data-action]').forEach((btn) => {
       btn.addEventListener('click', () => {

@@ -15,6 +15,7 @@ import { getCurrentProfile, isAdminProfile } from '../config/supabase.js';
 import { CATEGORIES, fetchAllPostsForAdmin, createPost, updatePost, deletePost } from '../services/blogService.js';
 import { fetchAllQuizAttemptsReport } from '../services/gestoraService.js';
 import { initContentEditor } from './gestoraContentEditor.js';
+import { imageUploadFieldHtml, wireImageUploadField } from '../components/ImageUploadField.js';
 
 window.addEventListener('panel:activated', (e) => {
   if (e.detail.panelId === 'gestora') initGestoraPanel();
@@ -69,7 +70,7 @@ function renderBlogSection(recentPosts) {
         <select name="category" class="ranking-highlight-textarea">
           ${CATEGORIES.map((c) => `<option value="${c}">${c}</option>`).join('')}
         </select>
-        <input type="text" name="banner_url" class="ranking-highlight-textarea" placeholder="URL do banner (opcional)">
+        ${imageUploadFieldHtml({ fieldName: 'banner_url', currentUrl: '', folder: 'covers/blog', label: 'Banner' })}
         <textarea name="content" class="ranking-highlight-textarea" rows="5" placeholder="Conteúdo (HTML permitido)" required></textarea>
         <label style="display:flex; align-items:center; gap:6px; font-size:13px; color:var(--text2);">
           <input type="checkbox" name="is_published" checked> Publicado
@@ -110,7 +111,7 @@ function blogEditFormHtml(p) {
       <select name="category" class="ranking-highlight-textarea">
         ${CATEGORIES.map((c) => `<option value="${c}" ${c === p.category ? 'selected' : ''}>${c}</option>`).join('')}
       </select>
-      <input type="text" name="banner_url" class="ranking-highlight-textarea" value="${p.banner_url || ''}" placeholder="URL do banner (opcional)">
+      ${imageUploadFieldHtml({ fieldName: 'banner_url', currentUrl: p.banner_url || '', folder: 'covers/blog', label: 'Banner' })}
       <textarea name="content" class="ranking-highlight-textarea" rows="5" required>${p.content}</textarea>
       <label style="display:flex; align-items:center; gap:6px; font-size:13px; color:var(--text2);">
         <input type="checkbox" name="is_published" ${p.is_published ? 'checked' : ''}> Publicado
@@ -144,6 +145,7 @@ function wireBlogRow(row, recentPosts) {
     editArea.innerHTML = opening ? blogEditFormHtml(post) : '';
     if (!opening) return;
 
+    wireImageUploadField(editArea.querySelector('[data-role="iuf-root"]'));
     editArea.querySelector('[data-cancel-blog-edit]').addEventListener('click', () => { editArea.innerHTML = ''; });
 
     editArea.querySelector('[data-role="gestora-blog-edit-form"]').addEventListener('submit', async (e) => {
@@ -192,6 +194,8 @@ function wireBlogRow(row, recentPosts) {
 function wireBlogForm(container, profile) {
   const form = container.querySelector('#gestoraBlogForm');
   if (!form) return;
+
+  wireImageUploadField(form.querySelector('[data-role="iuf-root"]'));
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();

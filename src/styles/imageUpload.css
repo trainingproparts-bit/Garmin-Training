@@ -1,0 +1,142 @@
+/* src/styles/imageUpload.css — ImageUploadField.js / ImageEditModal.js
+ * Widget de upload de imagem reutilizado em todos os pontos da plataforma
+ * que hoje colam URL externa. Usa os tokens já existentes (tokens.css) —
+ * sem paleta nova, visual consistente com o resto do hub. */
+
+.iuf {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.iuf-label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text2);
+}
+
+.iuf-preview-wrap {
+  width: 100%;
+  max-width: 320px;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--r2);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  background: var(--off);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iuf-preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.iuf-preview-empty {
+  font-size: 12.5px;
+  color: var(--text3);
+}
+
+.iuf-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.iuf-btn {
+  appearance: none;
+  border: 1px solid var(--border2);
+  background: var(--card-bg);
+  color: var(--text);
+  border-radius: var(--r2);
+  padding: 6px 14px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+
+.iuf-btn:hover { border-color: var(--g); color: var(--g); }
+.iuf-btn:disabled { opacity: 0.5; cursor: default; }
+
+.iuf-btn-danger { color: var(--warn); border-color: var(--warn); }
+.iuf-btn-danger:hover { background: var(--warn-tint); color: var(--warn); border-color: var(--warn); }
+
+.iuf-link-btn {
+  appearance: none;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 12px;
+  color: var(--text3);
+  text-decoration: underline;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.iuf-link-btn:hover { color: var(--text); }
+
+.iuf-url-row {
+  display: flex;
+  gap: 8px;
+  max-width: 420px;
+}
+
+.iuf-url-input {
+  flex: 1;
+  font-size: 12.5px;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  background: var(--card-bg);
+  color: var(--text);
+}
+
+.iuf-status {
+  margin: 0;
+  font-size: 11.5px;
+  color: var(--text3);
+  min-height: 14px;
+}
+
+.iuf-status-error { color: var(--warn); }
+
+/* ── Modal (ImageEditModal.js) — mesmo padrão visual de openPasswordModal/appShell.js ── */
+
+.iuf-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.iuf-modal {
+  width: min(420px, 100%);
+  background: var(--card-bg);
+  border-radius: var(--r3);
+  box-shadow: var(--sh-neutral-lg);
+  padding: 22px;
+}
+
+.iuf-modal-title {
+  margin: 0 0 14px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.iuf-modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}

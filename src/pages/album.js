@@ -6,6 +6,7 @@
 
 import { getCurrentProfile, isAdminProfile } from '../config/supabase.js';
 import { fetchTeamAlbum, updateMyAlbumProfile, updateCuratedAlbumFields } from '../services/teamAlbumService.js';
+import { imageUploadFieldHtml, wireImageUploadField } from '../components/ImageUploadField.js';
 
 window.addEventListener('panel:activated', (e) => {
   if (e.detail.panelId === 'album') initAlbumPage();
@@ -306,7 +307,7 @@ function openEditMeModal(container) {
         <p style="text-align:center; font-size:11px; opacity:0.6; margin-bottom:14px;">Emoji, foto, frase e dados pessoais, só você edita os seus.</p>
         <form class="album-edit-form" data-role="edit-me-form">
           <input type="text" name="emoji" maxlength="4" value="${mine.emoji || ''}" placeholder="Emoji (ex: 🔥)">
-          <input type="text" name="avatar_url" value="${mine.avatar_url || ''}" placeholder="URL de uma foto (opcional)">
+          ${imageUploadFieldHtml({ fieldName: 'avatar_url', currentUrl: mine.avatar_url || '', folder: `avatars/${profile.id}`, label: 'Foto' })}
           <input type="text" name="specialty" value="${mine.specialty || ''}" placeholder="Especialidade / ponto forte">
           <input type="text" name="favorite_watch" value="${mine.favorite_watch || ''}" placeholder="Relógio favorito">
           <input type="text" name="sport" value="${mine.sport || ''}" placeholder="Esporte que pratica">
@@ -319,6 +320,8 @@ function openEditMeModal(container) {
         <button type="button" class="album-modal-close" data-role="modal-close">Fechar</button>
       </div>
     </div>`;
+
+  wireImageUploadField(root.querySelector('[data-role="iuf-root"]'));
 
   root.querySelector('[data-role="modal-backdrop"]').addEventListener('click', (e) => {
     if (e.target === e.currentTarget) root.innerHTML = '';

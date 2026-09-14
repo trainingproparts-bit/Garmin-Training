@@ -19,6 +19,7 @@ import {
   replaceMaterials, replaceRelationships, fetchAllProductsForBrand,
 } from '../services/academiaService.js';
 import { renderBlocks, wireBlockInteractions, setupBlockArrayEditor } from '../components/ContentBlocks.js';
+import { imageUploadFieldHtml, wireImageUploadField } from '../components/ImageUploadField.js';
 import { getCurrentProfile, isAdminProfile } from '../config/supabase.js';
 import {
   fetchQuestionsAdmin, createQuestion, updateQuestion, deleteQuestion,
@@ -195,7 +196,7 @@ function renderHeaderForm(product) {
       <label>Código do modelo<input type="text" data-field="model_code" value="${product.model_code || ''}"></label>
       <label>Tagline<input type="text" data-field="tagline" value="${product.tagline || ''}"></label>
       <label>Preço (US$)<input type="number" step="0.01" data-field="price_usd" value="${product.price_usd ?? ''}"></label>
-      <label>URL da capa<input type="text" data-field="cover_url" value="${product.cover_url || ''}"></label>
+      ${imageUploadFieldHtml({ fieldName: 'cover_url', currentUrl: product.cover_url || '', folder: 'covers/produtos', label: 'Capa' })}
       <div class="academia-edit-form-actions">
         <button type="button" class="cb-editor-btn" data-save-header>Salvar</button>
         <button type="button" class="cb-editor-btn" data-cancel-header>Cancelar</button>
@@ -208,6 +209,7 @@ function wireHeaderEditor(container, product) {
 
   wrap.querySelector('[data-edit-header]')?.addEventListener('click', () => {
     wrap.innerHTML = renderHeaderForm(product);
+    wireImageUploadField(wrap.querySelector('[data-role="iuf-root"]'));
     wrap.querySelector('[data-cancel-header]').addEventListener('click', () => {
       wrap.innerHTML = renderHeaderRead(product, true);
       wireHeaderEditor(container, product);

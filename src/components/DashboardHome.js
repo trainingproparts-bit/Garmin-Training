@@ -22,6 +22,7 @@ import { fetchAvaliacoesGoogleDoMes } from '../services/avaliacoesGoogleService.
 import { fetchReviewStats } from '../services/revisaoService.js';
 import { getCurrentProfile, isAdminProfile } from '../config/supabase.js';
 import { navigateToPanel } from '../router.js';
+import { openImageEditModal } from './ImageEditModal.js';
 
 // Canal Realtime do Mural — precisa ser cancelado antes de assinar de novo,
 // senão cada vez que o Dashboard Principal renderiza (ex.: voltar da trilha)
@@ -181,18 +182,17 @@ export async function renderDashboardHome(container, data, onCheckpointClick) {
     if (proximo) onCheckpointClick(proximo.checkpoint);
   });
 
-  container.querySelector('[data-edit-trail-cover]')?.addEventListener('click', async () => {
-    const url = window.prompt('URL da imagem de capa em tela cheia (16:9). Deixe em branco pra remover:', coverUrl || '');
-    if (url === null) return;
-
-    try {
-      await updateTrailCover(trail.id, url.trim());
-      trail.cover_url = url.trim() || null;
-      renderDashboardHome(container, data, onCheckpointClick);
-    } catch (err) {
-      console.error('[DashboardHome] erro ao salvar capa da trilha:', err);
-      alert('Não foi possível salvar a capa agora.');
-    }
+  container.querySelector('[data-edit-trail-cover]')?.addEventListener('click', () => {
+    openImageEditModal({
+      title: 'Capa da trilha',
+      currentUrl: coverUrl || '',
+      folder: 'covers/trilhas',
+      onSave: async (url) => {
+        await updateTrailCover(trail.id, url || '');
+        trail.cover_url = url;
+        renderDashboardHome(container, data, onCheckpointClick);
+      },
+    });
   });
 
   renderDestaquesPreview(container.querySelector('[data-role="destaques-preview"]'));
@@ -691,21 +691,21 @@ function wireSpecialLineCards(container, items, isAdmin) {
   if (!isAdmin) return;
 
   container.querySelectorAll('[data-edit-cover-slug]').forEach((btn) => {
-    btn.addEventListener('click', async (e) => {
+    btn.addEventListener('click', (e) => {
       e.stopPropagation();
       const slug = btn.dataset.editCoverSlug;
       const item = items.find((i) => i.slug === slug);
       const current = item.payload?.cover_url || '';
-      const url = window.prompt('URL da imagem de capa (16:9). Deixe em branco pra remover:', current);
-      if (url === null) return;
 
-      try {
-        await updateContentItem(item.id, { payload: { ...item.payload, cover_url: url.trim() } });
-        renderSpecialLines(container);
-      } catch (err) {
-        console.error('[DashboardHome] erro ao salvar capa:', err);
-        alert('Não foi possível salvar a capa agora.');
-      }
+      openImageEditModal({
+        title: 'Capa do artigo',
+        currentUrl: current,
+        folder: 'covers/biblioteca',
+        onSave: async (url) => {
+          await updateContentItem(item.id, { payload: { ...item.payload, cover_url: url || '' } });
+          renderSpecialLines(container);
+        },
+      });
     });
   });
 }

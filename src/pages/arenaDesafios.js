@@ -13,6 +13,7 @@ import { fetchTrilhaPublicada } from '../services/trilhaService.js';
 import { fetchQuizzesByIds, updateQuizCover, fetchBestScoresByQuizIds } from '../services/quizService.js';
 import { fetchPublishedGames, fetchBestScore, updateGameCover } from '../services/gameService.js';
 import { navigateToPanel } from '../router.js';
+import { openImageEditModal } from '../components/ImageEditModal.js';
 
 window.addEventListener('panel:activated', (e) => {
   if (e.detail.panelId === 'arena') initArenaPage();
@@ -218,36 +219,38 @@ function wireGameCards(container, profile) {
 
 function wireCoverEditors(container, quizMetaById, games) {
   container.querySelectorAll('[data-edit-cover-quiz-id]').forEach((btn) => {
-    btn.addEventListener('click', async (e) => {
+    btn.addEventListener('click', (e) => {
       e.stopPropagation();
       const quizId = btn.dataset.editCoverQuizId;
       const current = quizMetaById.get(quizId)?.cover_url || '';
-      const url = window.prompt('URL da imagem de capa (16:9). Deixe em branco pra remover:', current);
-      if (url === null) return;
-      try {
-        await updateQuizCover(quizId, url.trim());
-        initArenaPage();
-      } catch (err) {
-        console.error('[ArenaDesafios] erro ao salvar capa do quiz:', err);
-        alert('Não foi possível salvar a capa agora.');
-      }
+
+      openImageEditModal({
+        title: 'Capa do quiz',
+        currentUrl: current,
+        folder: 'covers/quizzes',
+        onSave: async (url) => {
+          await updateQuizCover(quizId, url || '');
+          initArenaPage();
+        },
+      });
     });
   });
 
   container.querySelectorAll('[data-edit-cover-game-id]').forEach((btn) => {
-    btn.addEventListener('click', async (e) => {
+    btn.addEventListener('click', (e) => {
       e.stopPropagation();
       const gameId = btn.dataset.editCoverGameId;
       const current = games.find((g) => g.id === gameId)?.cover_url || '';
-      const url = window.prompt('URL da imagem de capa (16:9). Deixe em branco pra remover:', current);
-      if (url === null) return;
-      try {
-        await updateGameCover(gameId, url.trim());
-        initArenaPage();
-      } catch (err) {
-        console.error('[ArenaDesafios] erro ao salvar capa do duelo:', err);
-        alert('Não foi possível salvar a capa agora.');
-      }
+
+      openImageEditModal({
+        title: 'Capa do duelo',
+        currentUrl: current,
+        folder: 'covers/games',
+        onSave: async (url) => {
+          await updateGameCover(gameId, url || '');
+          initArenaPage();
+        },
+      });
     });
   });
 }
