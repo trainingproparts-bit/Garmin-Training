@@ -43,7 +43,7 @@ export async function openProdutoQuickView(brandId, slug) {
         <h3 class="qv-name">${product.name}</h3>
         ${product.tagline ? `<p class="qv-tagline">${product.tagline}</p>` : ''}
         ${blocks.length ? `<div class="qv-blocks">${renderBlocks(blocks)}</div>` : '<p class="learning-empty">Sem visão geral cadastrada ainda.</p>'}
-        <button type="button" class="login-btn qv-cta" data-role="qv-open-full">Ver página completa na Academia →</button>
+        <button type="button" class="login-btn qv-cta" data-role="qv-open-full">Ver detalhes do produto completo →</button>
       </div>`;
 
     wireBlockInteractions(bodyEl);
