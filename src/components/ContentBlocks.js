@@ -30,6 +30,8 @@ export const BLOCK_TYPES = [
   { key: 'metric_card_grid', label: 'Cards de Métrica (expansível)' },
   { key: 'match_quiz', label: 'Quiz de Associação (aquecimento)' },
   { key: 'tabs', label: 'Abas Comparativas' },
+  { key: 'checklist', label: 'Checklist Interativo' },
+  { key: 'cenario_escolha', label: 'Cenário com Escolha' },
 ];
 
 export function defaultBlockFor(type) {
@@ -51,6 +53,8 @@ export function defaultBlockFor(type) {
     case 'metric_card_grid': return { type, columns: 2, items: [] };
     case 'match_quiz': return { type, pairs: [] };
     case 'tabs': return { type, items: [] };
+    case 'checklist': return { type, items: [], reflection: '' };
+    case 'cenario_escolha': return { type, context: '', prompt: '', options: [] };
     default: return { type };
   }
 }
@@ -85,6 +89,8 @@ function renderBlock(block, index) {
     case 'metric_card_grid': return renderMetricCardGridBlock(block, index);
     case 'match_quiz': return renderMatchQuizBlock(block, index);
     case 'tabs': return renderTabsBlock(block, index);
+    case 'checklist': return renderChecklistBlock(block, index);
+    case 'cenario_escolha': return renderCenarioEscolhaBlock(block, index);
     default: return '';
   }
 }
@@ -418,6 +424,55 @@ function renderTabsBlock(b, index) {
       </div>`).join('')}`;
 }
 
+/**
+ * Checklist interativo (2026-09-15, módulo Script de Atendimento) — itens
+ * marcáveis (não persiste no servidor, só estado da sessão, mesmo princípio
+ * do match_quiz/tabs). Ao marcar todos, revela uma reflexão curta — reforça
+ * o "porquê" da etapa sem virar mais um parágrafo de texto corrido.
+ */
+function renderChecklistBlock(b, index) {
+  const items = Array.isArray(b.items) ? b.items : [];
+  if (!items.length) return '';
+  return `
+    <div class="cb-checklist-interactive" data-cb-checklist="${index}">
+      ${items.map((text, i) => `
+        <button type="button" class="cb-checklist-item" data-checklist-item="${i}">
+          <span class="cb-checklist-box" aria-hidden="true"></span>
+          <span class="cb-checklist-text">${text}</span>
+        </button>`).join('')}
+    </div>
+    ${b.reflection ? `<p class="cb-checklist-reflection" data-cb-checklist-reflection="${index}" hidden>${b.reflection}</p>` : ''}`;
+}
+
+/**
+ * Cenário com escolha (2026-09-15, módulo Script de Atendimento) — fala do
+ * cliente + 2-4 opções de resposta do vendedor, uma marcada correta. Clicar
+ * mostra o feedback daquela opção específica (por que funciona ou não),
+ * sem travar em uma única tentativa. Preenche a lacuna que nenhum bloco
+ * existente cobria: exercício de múltipla escolha embutido na lição (o
+ * `quiz_embutido` manda pra uma página de quiz separada; isto fica na
+ * própria lição, como um mini role-play).
+ */
+function renderCenarioEscolhaBlock(b, index) {
+  const options = Array.isArray(b.options) ? b.options : [];
+  if (!options.length) return '';
+  return `
+    <div class="cb-cenario" data-cb-cenario="${index}">
+      ${b.context ? `<p class="cb-cenario-context">${b.context}</p>` : ''}
+      ${b.prompt ? `<p class="cb-cenario-prompt">${b.prompt}</p>` : ''}
+      <div class="cb-cenario-options">
+        ${options.map((opt, i) => `
+          <div class="cb-cenario-option-wrap">
+            <button type="button" class="cb-cenario-option" data-cenario-option="${i}" data-cenario-correct="${opt.correct ? 'true' : 'false'}">
+              <span class="cb-cenario-option-label">${String.fromCharCode(65 + i)}</span>
+              <span class="cb-cenario-option-text">${opt.text || ''}</span>
+            </button>
+            ${opt.feedback ? `<p class="cb-cenario-feedback" data-cenario-feedback="${i}" hidden>${opt.feedback}</p>` : ''}
+          </div>`).join('')}
+      </div>
+    </div>`;
+}
+
 /** Liga accordion e botão de quiz embutido depois do innerHTML ser inserido. */
 export function wireBlockInteractions(container, { returnPanel } = {}) {
   container.querySelectorAll('[data-cb-acc]').forEach((btn) => {
@@ -486,6 +541,37 @@ export function wireBlockInteractions(container, { returnPanel } = {}) {
         tabsEl.querySelectorAll('[data-tab-index]').forEach((b) => b.classList.toggle('active', b === btn));
         container.querySelectorAll(`[data-cb-tabs-panel="${blockIndex}"]`).forEach((panel) => {
           panel.hidden = panel.dataset.tabPanel !== tabIndex;
+        });
+      });
+    });
+  });
+
+  container.querySelectorAll('[data-cb-checklist]').forEach((root) => {
+    const blockIndex = root.dataset.cbChecklist;
+    const reflection = container.querySelector(`[data-cb-checklist-reflection="${blockIndex}"]`);
+    const items = root.querySelectorAll('[data-checklist-item]');
+    root.querySelectorAll('[data-checklist-item]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        btn.classList.toggle('is-checked');
+        if (reflection) {
+          const allChecked = [...items].every((i) => i.classList.contains('is-checked'));
+          reflection.hidden = !allChecked;
+        }
+      });
+    });
+  });
+
+  container.querySelectorAll('[data-cb-cenario]').forEach((root) => {
+    const blockIndex = root.dataset.cbCenario;
+    root.querySelectorAll('[data-cenario-option]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const optIndex = btn.dataset.cenarioOption;
+        root.querySelectorAll('[data-cenario-option]').forEach((b) => b.classList.remove('is-selected'));
+        btn.classList.add('is-selected', 'is-answered');
+        btn.classList.toggle('is-correct', btn.dataset.cenarioCorrect === 'true');
+        btn.classList.toggle('is-wrong', btn.dataset.cenarioCorrect !== 'true');
+        container.querySelectorAll(`[data-cb-cenario="${blockIndex}"] [data-cenario-feedback]`).forEach((f) => {
+          f.hidden = f.dataset.cenarioFeedback !== optIndex;
         });
       });
     });
@@ -562,6 +648,22 @@ function wireMatchQuiz(root) {
 // ---------------------------------------------------------------------------
 // Editor (formulário estruturado por tipo — sem drag-and-drop)
 // ---------------------------------------------------------------------------
+
+/** cenario_escolha guarda `correct` como boolean — encodeItems/decodeItems genéricos não convertem tipo, por isso par dedicado (igual ao par encode/decodeMatchPairs). */
+function encodeCenarioOptions(options) {
+  return (options || []).map((o) => `${o.text || ''} | ${o.correct ? 'certo' : 'errado'} | ${o.feedback || ''}`).join('\n');
+}
+
+function decodeCenarioOptions(raw) {
+  return raw
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => {
+      const [text, correctRaw, feedback] = line.split('|').map((p) => (p || '').trim());
+      return { text, correct: (correctRaw || '').toLowerCase().startsWith('cert'), feedback };
+    });
+}
 
 /** Uma linha "campo | campo" por item de lista (accordion/timeline/galeria). */
 function encodeItems(items, fields) {
@@ -733,6 +835,17 @@ function renderBlockFields(block) {
       return `
         <textarea data-field="items_raw" rows="6" placeholder="Uma aba por linha: Rótulo da aba | Título | Texto | Nota (opcional, ex.: Indicado para: ...)">${encodeItems(block.items, ['label', 'title', 'text', 'note'])}</textarea>
         <p class="cb-editor-hint">Formato: Rótulo da aba | Título | Texto | Nota opcional (uma aba por linha) — bom pra comparar modelos lado a lado sem virar tabela densa</p>`;
+    case 'checklist':
+      return `
+        <textarea data-field="items_raw" rows="5" placeholder="Um item por linha">${(block.items || []).join('\n')}</textarea>
+        <textarea data-field="reflection" rows="2" placeholder="Reflexão exibida quando todos os itens forem marcados (opcional)">${block.reflection || ''}</textarea>
+        <p class="cb-editor-hint">Um item por linha, sem marcadores. A reflexão aparece só depois que a pessoa marcar todos os itens.</p>`;
+    case 'cenario_escolha':
+      return `
+        <textarea data-field="context" rows="2" placeholder="Fala do cliente (opcional, ex.: Cliente: &quot;Estou procurando...&quot;)">${block.context || ''}</textarea>
+        <textarea data-field="prompt" rows="2" placeholder="Pergunta do exercício (ex.: Qual seria a melhor resposta?)">${block.prompt || ''}</textarea>
+        <textarea data-field="options_raw" rows="5" placeholder="Uma opção por linha: Texto da opção | certo ou errado | Feedback ao clicar">${encodeCenarioOptions(block.options)}</textarea>
+        <p class="cb-editor-hint">Formato: Texto da opção | "certo" ou "errado" | Feedback explicando por que essa opção funciona ou não (uma opção por linha, 2 a 4 opções)</p>`;
     default:
       return '';
   }
@@ -784,6 +897,8 @@ function readBlockFromRow(row, type) {
     case 'metric_card_grid': return { type, columns: Number(get('columns')) === 3 ? 3 : 2, items: decodeMetricItems(get('items_raw')) };
     case 'match_quiz': return { type, pairs: decodeMatchPairs(get('pairs_raw')) };
     case 'tabs': return { type, items: decodeItems(get('items_raw'), ['label', 'title', 'text', 'note']) };
+    case 'checklist': return { type, items: get('items_raw').split('\n').map((l) => l.trim()).filter(Boolean), reflection: get('reflection').trim() };
+    case 'cenario_escolha': return { type, context: get('context').trim(), prompt: get('prompt').trim(), options: decodeCenarioOptions(get('options_raw')) };
     default: return { type };
   }
 }

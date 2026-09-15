@@ -931,6 +931,38 @@ Editor do Supabase:
     conserta o trigger e refaz o mesmo delete de lesson_progress/lessons da
     sql/123, agora sem quebrar.
 
+53. **`125_reformula_modulo_script_atendimento.sql`**
+    Módulo "Script de Atendimento Garmin para Loja Premium" (sql/093) já
+    existia com conteúdo bom mas em blocos simples — usuário mandou um brief
+    completo no chat pedindo pra deixar no "padrão bonito dos três
+    primeiros" módulos da Zona Explorador (O Universo Garmin, Perfis de
+    Cliente, Portfólio de Produtos), com exemplos de fala e respostas
+    corretas já definidos por ele. Reorganizado nas mesmas 4 lições já
+    existentes (só `UPDATE title/body`, não mexe em checkpoints/quiz) — os
+    outros módulos da zona também usam várias lições focadas, não uma
+    mega-aula só (isso foi específico do Portfólio de Produtos).
+
+    **Dois tipos de bloco novos em `ContentBlocks.js`** (nenhum dos 17
+    existentes cobria a necessidade):
+    - `checklist` — itens marcáveis (client-side, não persiste no servidor,
+      mesmo princípio do `match_quiz`) que revelam uma reflexão curta ao
+      marcar todos. Pedido explícito do usuário ("checklist já existente"
+      só existia como bullets estáticos dentro de `texto_rico`, nunca como
+      interação de verdade).
+    - `cenario_escolha` — fala do cliente + 2 a 4 opções de resposta do
+      vendedor, uma marcada correta, feedback por opção ao clicar (sem
+      travar após errar). Cobre os 4 exercícios de múltipla escolha do
+      brief ("Escolha a melhor pergunta", "O que ainda precisamos
+      descobrir", "Demonstração orientada pela necessidade", e o modelo
+      pra qualquer exercício futuro do tipo). Nenhum bloco existente cobria
+      múltipla escolha embutida na própria lição — `quiz_embutido` manda
+      pra uma página de quiz separada, é outra coisa.
+
+    Os exercícios de "recomende com base no perfil" e "identifique a causa
+    da objeção" reaproveitam `match_quiz` (associação), já existente — sem
+    inventar produto: usa só Forerunner 265, Fēnix 8 e Vivoactive 6, todos
+    já cadastrados no conteúdo do Hub (sql/030, sql/120).
+
 ## O que ainda não está aqui
 
 - Cadastro de novo usuário pelo admin — exige a Supabase Admin API

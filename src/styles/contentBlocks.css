@@ -780,6 +780,152 @@
   .cb-match-columns { grid-template-columns: 1fr; }
 }
 
+/* ── Checklist interativo (2026-09-15, módulo Script de Atendimento) —
+ * itens marcáveis + reflexão revelada ao concluir. Estado só de sessão,
+ * mesmo princípio do match_quiz (não grava no servidor). ── */
+.cb-checklist-interactive {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.cb-checklist-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--off);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  font-family: inherit;
+  font-size: 13.5px;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
+}
+
+.cb-checklist-item:hover { border-color: var(--border2); }
+
+.cb-checklist-box {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  border-radius: 5px;
+  border: 1.5px solid var(--border2);
+  background: var(--card-bg);
+  transition: background var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+}
+
+.cb-checklist-item.is-checked { border-color: var(--ok); background: var(--ok-tint); }
+
+.cb-checklist-item.is-checked .cb-checklist-box {
+  background: var(--ok);
+  border-color: var(--ok);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='5 13 10 18 19 7'/%3E%3C/svg%3E");
+  background-size: 12px 12px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.cb-checklist-item.is-checked .cb-checklist-text { color: var(--ok2); }
+
+.cb-checklist-reflection {
+  margin: 12px 0 0;
+  padding: 14px 16px;
+  background: var(--g3);
+  border-left: 3px solid var(--g);
+  border-radius: var(--r2);
+  font-size: 13.5px;
+  font-style: italic;
+  color: var(--text2);
+  line-height: 1.55;
+}
+
+/* ── Cenário com escolha (2026-09-15) — fala do cliente + opções de
+ * resposta, feedback por opção ao clicar. Mesma paleta correct/incorrect
+ * já usada na Revisão Inteligente (--ok/--warn). ── */
+.cb-cenario {
+  margin: 16px 0;
+  padding: 16px 18px;
+  background: var(--off);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+}
+
+.cb-cenario-context {
+  margin: 0 0 8px;
+  font-size: 13.5px;
+  font-style: italic;
+  color: var(--text2);
+}
+
+.cb-cenario-prompt {
+  margin: 0 0 14px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.cb-cenario-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cb-cenario-option-wrap { display: flex; flex-direction: column; gap: 6px; }
+
+.cb-cenario-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 14px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  font-family: inherit;
+  font-size: 13.5px;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
+}
+
+.cb-cenario-option:hover { border-color: var(--border2); }
+
+.cb-cenario-option-label {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--off);
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text3);
+}
+
+.cb-cenario-option.is-correct { background: var(--ok-tint); border-color: var(--ok); }
+.cb-cenario-option.is-correct .cb-cenario-option-label { background: var(--ok); color: #fff; }
+.cb-cenario-option.is-correct .cb-cenario-option-text { color: var(--ok2); font-weight: 600; }
+
+.cb-cenario-option.is-wrong { background: var(--warn-tint); border-color: var(--warn); }
+.cb-cenario-option.is-wrong .cb-cenario-option-label { background: var(--warn); color: #fff; }
+.cb-cenario-option.is-wrong .cb-cenario-option-text { color: var(--warn); }
+
+.cb-cenario-feedback {
+  margin: 0;
+  padding: 10px 14px 10px 42px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--text2);
+}
+
 /* ── Tooltip de termo técnico (fora dos cards) — sublinhado pontilhado +
  * bolha flutuante no hover/focus (desktop) ou clique (touch, via .is-tip-open
  * alternado em wireTermTips). ── */
