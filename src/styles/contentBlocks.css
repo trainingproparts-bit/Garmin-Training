@@ -852,10 +852,12 @@
 
 /* Foto de fundo no lugar do emoji (coverUrl, opcional — 2026-09-15). Overlay
  * escuro pra manter o texto legível, mesma técnica do card de "Recomendação
- * principal" em library.css. */
+ * principal" em library.css. Sem `position` aqui — herda o `absolute` de
+ * .cb-flip-face acima (2026-09-15, bug: sobrescrever pra `relative` cancelava
+ * o `inset: 0`, e a face com foto encolhia pra altura do conteúdo em vez de
+ * preencher o card quadrado; o verso, sem essa classe, ficava certo). */
 .cb-flip-face.has-cover {
   border-color: transparent;
-  position: relative;
 }
 
 /* Degradê mais forte no topo (2026-09-15, pedido do usuário — título ilegível
