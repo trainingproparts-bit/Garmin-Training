@@ -1190,6 +1190,47 @@ Editor do Supabase:
     do chevron) — agora usa `icon()` monocromático, com CSS novo
     (`.cb-metric-icon`, `.cb-metric-tip-icon`) em `contentBlocks.css`.
 
+62. **`134_reformula_modulo_garmin_connect.sql`**
+    Reformula por completo o módulo "Garmin Connect" (Zona Atleta), de
+    página de consulta de funcionalidades para treinamento de produto de
+    integração. Brief do usuário: o novo colaborador precisa terminar o
+    módulo sabendo reconhecer uma métrica na tela do Garmin Connect,
+    entender o que ela significa, explicar para o cliente e relacioná-la
+    com uma necessidade real, não apenas memorizar nomes. Lógica
+    pedagógica: entender → reconhecer → interpretar → explicar → aplicar.
+    De 4 para 15 lições (reaproveita as 4 existentes, insere 11 novas,
+    mesmo padrão de sql/125/129/133 nesta sessão): Garmin Connect (o que é
+    o app) → Do relógio para o Garmin Connect (timeline) → O que o cliente
+    encontra no Connect (5 áreas, cards de métrica) → Conheça as principais
+    métricas (as 13 métricas do conteúdo original, agora como Card
+    Giratório, um por métrica) → Uma métrica raramente conta toda a
+    história (4 combinações) → Como explicar uma métrica (3 cenários,
+    definição x explicação) → Associe a necessidade à métrica (quiz de
+    associação) → Métrica + perfil de cliente (os 4 perfis do estudo de
+    caso original, agora como cenário de decisão + roteiro por perfil) →
+    Como apresentar o Garmin Connect na loja (roteiro de venda em 7 passos)
+    → Música no relógio → Garmin Pay → Estudo de caso (os mesmos 4 perfis,
+    como Card Giratório) → Erros comuns na demonstração (checklist) →
+    Checklist de integração (autoavaliação, 21 itens) → Encerramento.
+    Todo dado técnico das 13 métricas é o mesmo já cadastrado, nenhum
+    número novo — a estrutura pedagógica (o que é/para que serve/como
+    explicar/na venda) e os avisos contra promessa médica (SpO2, ciclo
+    menstrual, estresse, Status de Treinamento não "evita lesão") são a
+    parte nova, reforçando o que o conteúdo original já sugeria.
+    Música e Garmin Pay tiveram a lista de modelos/bancos específicos
+    genericizada (decisão explícita do brief, evita lista desatualizada);
+    o Garmin Pay manteve o aviso de compatibilidade de NFC/banco como
+    banner.
+    Flip Card com imagem: o pedido era o Card Giratório aceitar uma imagem
+    opcional na frente sem criar componente novo. Essa funcionalidade já
+    existia (campo `coverUrl`, criado nesta sessão para o Portfólio, ver
+    sql/121/128) — reaproveitada sem nenhuma alteração de código. Os 17
+    flip cards do módulo (13 métricas + 4 estudo de caso) já têm o campo no
+    schema, hoje vazio, pronto para o usuário colar as URLs reais das telas
+    do Garmin Connect depois. Por decisão explícita do brief (não usar
+    ilustração genérica, não inventar screenshot), nenhum emoji ou ícone
+    decorativo foi usado como substituto temporário.
+
 ## O que ainda não está aqui
 
 - Cadastro de novo usuário pelo admin — exige a Supabase Admin API

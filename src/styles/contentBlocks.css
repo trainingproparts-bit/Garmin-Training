@@ -568,6 +568,16 @@
 
 .cb-flip-card.flipped .cb-flip-card-inner { transform: rotateY(180deg); }
 
+/* Verso alto (tall, opcional) — versos com vários campos de texto (ex.:
+ * "o que é / para que serve / como explicar / na venda / importante" do
+ * módulo Garmin Connect) estouram o min-height padrão mesmo em 2 colunas.
+ * Opt-in via flag `tall` no bloco, não muda os flip cards existentes
+ * (Portfólio, Estudo de Caso) que não marcam essa flag. */
+.cb-flip-grid.cb-flip-tall .cb-flip-card,
+.cb-flip-grid.cb-flip-tall .cb-flip-card-inner {
+  min-height: 380px;
+}
+
 .cb-flip-face {
   position: absolute;
   inset: 0;

@@ -49,7 +49,7 @@ export function defaultBlockFor(type) {
     case 'objecao': return { type, items: [] };
     case 'tabela': return { type, headers: [], rows: [] };
     case 'card_grid': return { type, columns: 2, items: [] };
-    case 'flip_card': return { type, columns: 2, cards: [] };
+    case 'flip_card': return { type, columns: 2, tall: false, cards: [] };
     case 'metric_card_grid': return { type, columns: 2, items: [] };
     case 'match_quiz': return { type, pairs: [] };
     case 'tabs': return { type, items: [] };
@@ -321,12 +321,20 @@ function renderCardGridBlock(b) {
  * lugar. Puramente aditivo: cards antigos sem coverUrl continuam mostrando
  * o emoji exatamente como antes. Mesma técnica de overlay usada no card de
  * "Recomendação principal" da ficha de Perfis de Cliente (LibraryContent.js).
+ *
+ * `tall` (opcional, 2026-09-15) — pedido do módulo Garmin Connect: verso
+ * com 4-5 campos de texto (o que é/para que serve/como explicar/na venda/
+ * importante) estoura o min-height padrão (178px) em qualquer contagem de
+ * colunas, mesmo sem coverUrl. Mesmo padrão do `reveal` da timeline:
+ * puramente aditivo, só ativa `.cb-flip-tall` (min-height maior) quando
+ * marcado; sem `tall`, cards continuam exatamente como antes (Portfólio,
+ * Estudo de Caso).
  */
 function renderFlipCardBlock(b) {
   const cards = Array.isArray(b.cards) ? b.cards : [];
   const cols = [3, 4].includes(b.columns) ? b.columns : 2;
   return `
-    <div class="cb-flip-grid cols-${cols}">
+    <div class="cb-flip-grid cols-${cols} ${b.tall ? 'cb-flip-tall' : ''}">
       ${cards.map((c) => `
         <div class="cb-flip-card" data-flip-card>
           <div class="cb-flip-card-inner">
@@ -817,6 +825,7 @@ function renderBlockFields(block) {
           <option value="3" ${block.columns === 3 ? 'selected' : ''}>3 colunas</option>
           <option value="4" ${block.columns === 4 ? 'selected' : ''}>4 colunas</option>
         </select>
+        <label class="cb-editor-checkbox"><input type="checkbox" data-field="tall" ${block.tall ? 'checked' : ''}> Verso alto (para textos longos, evita rolagem dentro do card)</label>
         <textarea data-field="cards_raw" rows="6" placeholder="Um card por linha: Emoji | Título | Subtítulo | Texto da frente | Rótulo do verso | Texto do verso | URL da imagem de fundo (opcional, substitui o emoji)">${encodeItems(block.cards, ['emoji', 'title', 'subtitle', 'frontText', 'backLabel', 'backText', 'coverUrl'])}</textarea>
         <p class="cb-editor-hint">Formato: Emoji | Título | Subtítulo | Texto da frente | Rótulo do verso | Texto do verso (um card por linha, clique para virar)</p>`;
     case 'metric_card_grid':
@@ -893,7 +902,7 @@ function readBlockFromRow(row, type) {
       rows: get('rows_raw').split('\n').map((l) => l.trim()).filter(Boolean).map((l) => l.split('|').map((c) => c.trim())),
     };
     case 'card_grid': return { type, columns: Number(get('columns')) === 3 ? 3 : 2, items: decodeCardGridItems(get('items_raw')) };
-    case 'flip_card': return { type, columns: [3, 4].includes(Number(get('columns'))) ? Number(get('columns')) : 2, cards: decodeItems(get('cards_raw'), ['emoji', 'title', 'subtitle', 'frontText', 'backLabel', 'backText', 'coverUrl']) };
+    case 'flip_card': return { type, columns: [3, 4].includes(Number(get('columns'))) ? Number(get('columns')) : 2, tall: !!row.querySelector('[data-field="tall"]')?.checked, cards: decodeItems(get('cards_raw'), ['emoji', 'title', 'subtitle', 'frontText', 'backLabel', 'backText', 'coverUrl']) };
     case 'metric_card_grid': return { type, columns: Number(get('columns')) === 3 ? 3 : 2, items: decodeMetricItems(get('items_raw')) };
     case 'match_quiz': return { type, pairs: decodeMatchPairs(get('pairs_raw')) };
     case 'tabs': return { type, items: decodeItems(get('items_raw'), ['label', 'title', 'text', 'note']) };
