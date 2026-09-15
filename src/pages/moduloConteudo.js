@@ -64,14 +64,6 @@ async function initModuloConteudoPage() {
 function renderModule(container, module, lessons, profile, progress, nextQuiz) {
   const showQuizCta = progress.pct === 100 && Boolean(nextQuiz);
   const zoneName = module.zones?.name;
-  // "atual" = primeira lição ainda não concluída, mesmo critério já usado
-  // pra checkpoint em GpsTrail.js (statusPorCheckpoint) — sem estado de
-  // "bloqueada" aqui porque, ao contrário dos checkpoints da trilha, as
-  // lições dentro de um módulo não têm gate sequencial real no schema hoje
-  // (qualquer uma pode ser concluída em qualquer ordem); fingir um cadeado
-  // que não existe de verdade seria mentir pro usuário sobre o que o clique
-  // faz.
-  const firstIncompleteIndex = lessons.findIndex((l) => !progress.completedIds.has(l.id));
 
   container.innerHTML = `
     <div class="content-layout">
@@ -117,38 +109,8 @@ function renderModule(container, module, lessons, profile, progress, nextQuiz) {
           </div>
         `}
       </div>
-
-      <aside class="content-sidebar">
-        <div class="content-sidebar-card content-sidebar-sticky">
-          <h4 class="sidebar-card-title">Sobre este módulo</h4>
-          <p class="sidebar-card-text">${module.summary || 'Sem descrição disponível.'}</p>
-
-          ${lessons.length ? `
-            <div class="sidebar-progress">
-              <div class="sidebar-progress-track"><div class="sidebar-progress-fill" data-role="sidebar-progress-fill" style="width:${progress.pct}%"></div></div>
-              <span class="sidebar-progress-label" data-role="sidebar-progress-label">${progress.completed} de ${progress.total} lições · ${progress.pct}%</span>
-            </div>
-
-            ${module.estimated_minutes ? `<div class="sidebar-meta-time">⏱ ~${module.estimated_minutes} min de leitura</div>` : ''}
-
-            <ul class="sidebar-lesson-nav" data-role="sidebar-lesson-nav">
-              ${lessons.map((lesson, index) => {
-                const isDone = progress.completedIds.has(lesson.id);
-                const state = isDone ? 'done' : (index === firstIncompleteIndex ? 'current' : 'pending');
-                return `
-                  <li class="sidebar-lesson-item ${state}" data-role="sidebar-lesson-link" data-lesson-index="${index}">
-                    <span class="sidebar-lesson-status">${isDone ? '✓' : index + 1}</span>
-                    <span class="sidebar-lesson-title">${lesson.title}</span>
-                  </li>`;
-              }).join('')}
-            </ul>
-          ` : ''}
-        </div>
-      </aside>
     </div>
   `;
-
-  wireSidebarLessonNav(container);
 
   if (!profile) {
     wireBlockInteractions(container, { returnPanel: 'modulo-conteudo' });
@@ -159,16 +121,6 @@ function renderModule(container, module, lessons, profile, progress, nextQuiz) {
   wireCompleteButtons(container, progress, nextQuiz);
   wireQuizCta(container, nextQuiz);
   wireLessonEdit(container, lessons, module.id, nextQuiz);
-}
-
-/** Navegação rápida da sidebar — todas as lições já estão na mesma página (scroll), então "navegar" é rolar até o card certo. */
-function wireSidebarLessonNav(container) {
-  container.querySelectorAll('[data-role="sidebar-lesson-link"]').forEach((item) => {
-    item.addEventListener('click', () => {
-      const target = container.querySelector(`.content-article[data-lesson-index="${item.dataset.lessonIndex}"]`);
-      target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-  });
 }
 
 function wireQuizCta(container, nextQuiz) {
@@ -253,16 +205,6 @@ function markLessonAsCompleted(container, lessonId, pointsAwarded) {
     btn.disabled = true;
     btn.textContent = pointsAwarded > 0 ? `✓ Concluída · +${pointsAwarded} pts` : '✓ Concluída';
   }
-
-  // sidebar: marca essa lição como feita e promove a próxima pendente a "atual"
-  const navItem = container.querySelector(`.sidebar-lesson-item[data-lesson-index="${card?.dataset.lessonIndex}"]`);
-  if (navItem) {
-    navItem.classList.remove('current');
-    navItem.classList.add('done');
-    navItem.querySelector('.sidebar-lesson-status').textContent = '✓';
-    const nextPending = navItem.parentElement.querySelector('.sidebar-lesson-item.pending');
-    if (nextPending) nextPending.classList.replace('pending', 'current');
-  }
 }
 
 function updateProgressBar(container, progress, justCompletedLessonId) {
@@ -276,11 +218,6 @@ function updateProgressBar(container, progress, justCompletedLessonId) {
   const fillEl = container.querySelector('[data-role="progress-fill"]');
   if (countEl) countEl.textContent = `${progress.completed} de ${progress.total} lições`;
   if (fillEl) fillEl.style.width = `${progress.pct}%`;
-
-  const sidebarFillEl = container.querySelector('[data-role="sidebar-progress-fill"]');
-  const sidebarLabelEl = container.querySelector('[data-role="sidebar-progress-label"]');
-  if (sidebarFillEl) sidebarFillEl.style.width = `${progress.pct}%`;
-  if (sidebarLabelEl) sidebarLabelEl.textContent = `${progress.completed} de ${progress.total} lições · ${progress.pct}%`;
 }
 
 function wireLessonEdit(container, lessons, moduleId, nextQuiz) {
