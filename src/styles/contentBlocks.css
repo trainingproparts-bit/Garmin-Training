@@ -38,27 +38,31 @@
   border-top: 1px solid var(--border);
 }
 
-/* Sem a linha cinza automática quando o próprio texto_rico já começa com um
- * <hr class="cb-topic-divider"> (2026-09-15, pedido do usuário — "agora que
- * tem o traço, tira esse vermelho... duplicado"): o divisor vermelho já
- * cadastrado no conteúdo cumpre esse papel sozinho, não precisa das duas
- * linhas empilhadas. */
-.content-article-body:has(> .cb-topic-divider:first-child) {
-  border-top: none;
-  padding-top: 0;
+/* Quando o próprio texto_rico já começa com um <hr class="cb-topic-divider">,
+ * o traço cinza automático acima e o divisor manual caem exatamente no mesmo
+ * lugar — some o divisor manual (não o automático) nesse caso específico
+ * (2026-09-15, pedido do usuário — "tira o vermelho e deixa só o cinza",
+ * numa rodada anterior essa troca tinha sido feita ao contrário: recolorindo
+ * TODO divisor pra cinza, o que também apagava o destaque dele nos outros
+ * lugares onde ele é o único traço ali, ex.: dentro das seções da Academia
+ * de Produtos — "ficou poluído"). Fora dessa posição (primeiro filho), o
+ * divisor continua com o degradê vermelho de sempre. */
+.content-article-body:has(> .cb-topic-divider:first-child) > .cb-topic-divider:first-child {
+  display: none;
 }
 
 /* Separador de assunto (2026-09-15) — usado dentro do html de blocos
  * texto_rico pra marcar a virada de um tema pro outro (ex.: linha Forerunner
- * pra linha MARQ); sem isso, dois &lt;h3&gt; consecutivos ficavam próximos
- * demais e pareciam continuação do mesmo assunto. Cinza, igual ao traço
- * automático entre blocos (2026-09-15, pedido do usuário — "tirar o vermelho
- * e deixar só o cinza"; a versão em degradê vermelho foi a correção errada
- * de uma rodada anterior, invertendo o pedido). */
+ * pra linha MARQ, ou entre as seções da Academia de Produtos); sem isso,
+ * dois &lt;h3&gt; consecutivos ficavam próximos demais e pareciam continuação
+ * do mesmo assunto. Régua em degradê vermelho (2026-09-15, pedido do
+ * usuário — "divisórias muito fracas/genéricas") em vez de um fio cinza de
+ * 1px, pra marcar melhor onde uma parte termina. */
 .cb-topic-divider {
   border: none;
-  height: 1px;
-  background: var(--border);
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--g) 0%, var(--g4) 45%, transparent 100%);
   margin: 40px 0 30px;
 }
 

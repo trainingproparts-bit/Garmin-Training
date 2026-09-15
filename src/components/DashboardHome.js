@@ -618,7 +618,7 @@ function formatRelativeTime(iso) {
  * mesmos de sempre (sql/seeds/060/061), só reorganizados na apresentação.
  */
 const SPECIAL_LINE_GROUPS = [
-  { key: 'novidades', label: 'Novidades', slugs: ['novidades-2026-forerunner-70-170'] },
+  { key: 'novidades', label: 'Novidades', slugs: ['novidades-2026-forerunner-70-170', 'cirqa-monitoramento-sem-tela'] },
   {
     key: 'linhas-especiais',
     label: 'Linhas Especiais',
@@ -629,7 +629,6 @@ const SPECIAL_LINE_GROUPS = [
       'edge-ciclocomputadores',
       'blaze-equine-wellness',
       'marq-gen-2-linha-de-luxo',
-      'cirqa-monitoramento-sem-tela',
     ],
   },
   { key: 'ecossistema', label: 'Ecossistema Garmin', slugs: ['apps-integracoes-tecnologias-garmin'] },
