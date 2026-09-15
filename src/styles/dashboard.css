@@ -19,34 +19,6 @@
   flex-wrap: wrap;
 }
 
-/* mesmo tratamento visual do avatar do topbar (.app-topbar-avatar), só
- * maior — reforça "quem sou eu" logo na abertura do dashboard, em vez de um
- * <h2> solto sem nenhuma âncora visual. */
-.dash-welcome-avatar {
-  flex-shrink: 0;
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, var(--g), #7a0c14);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 20px;
-  color: #fff;
-  cursor: pointer;
-  overflow: hidden;
-}
-
-/* Foto de avatar (profiles.avatar_url) — clique leva pra Álbum da Equipe,
- * onde "Editar minha figurinha" já permite definir/trocar a própria foto. */
-.dash-welcome-avatar-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 .dash-welcome-text {
   flex: 1;
   min-width: 0;

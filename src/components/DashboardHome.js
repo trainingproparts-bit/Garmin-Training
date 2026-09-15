@@ -83,20 +83,10 @@ function heroZoneStatus(zones, doneCheckpointIds) {
  * @param {(checkpoint: object) => void} onCheckpointClick
  */
 export async function renderDashboardHome(container, data, onCheckpointClick) {
-  const { brandName, userName, userId, avatarUrl, trail, zones, doneCheckpointIds, moduleProgressMap, isAdmin } = data;
+  const { brandName, userName, userId, trail, zones, doneCheckpointIds, moduleProgressMap, isAdmin } = data;
   const progresso = calcularProgresso(zones, doneCheckpointIds);
   const proximo = proximoCheckpoint(zones, doneCheckpointIds);
   const coverUrl = trail?.cover_url;
-
-  const inicial = (userName || '?').charAt(0).toUpperCase();
-  // Foto de profiles.avatar_url (definida em Álbum da Equipe → "Editar minha
-  // figurinha") no lugar da inicial colorida, quando existir. Sem onerror
-  // inline (mesmo motivo do avatarHtml de album.js — evita interpolar texto
-  // livre dentro de um handler JS via string); fallback é resolvido depois
-  // de inserir no DOM, ver wireWelcomeAvatarFallback.
-  const avatarHtml = avatarUrl
-    ? `<img src="${avatarUrl}" alt="" class="dash-welcome-avatar-img" data-role="welcome-avatar-img">`
-    : inicial;
 
   // Zona do próximo passo (eyebrow) — quando a trilha inteira já terminou,
   // usa a última zona do caminho principal como referência.
@@ -117,7 +107,6 @@ export async function renderDashboardHome(container, data, onCheckpointClick) {
 
   container.innerHTML = `
     <div class="dash-welcome-row">
-      <div class="dash-welcome-avatar" data-role="welcome-avatar" title="Definir avatar em Álbum da Equipe">${avatarHtml}</div>
       <div class="dash-welcome-text">
         <h2 class="dash-welcome-title">${saudacaoPorHorario()}, ${userName}!</h2>
         <p class="dash-welcome-sub">Bem-vindo(a) ao ${brandName} <span class="dash-highlight">Training<span class="dash-highlight-icon">${BOLT_ICON}</span></span> · aprendizado contínuo, resultado que se destaca.</p>
@@ -158,12 +147,6 @@ export async function renderDashboardHome(container, data, onCheckpointClick) {
   `;
 
   renderHud(container, progresso);
-
-  const welcomeAvatarImg = container.querySelector('[data-role="welcome-avatar-img"]');
-  welcomeAvatarImg?.addEventListener('error', () => {
-    welcomeAvatarImg.replaceWith(Object.assign(document.createElement('span'), { textContent: inicial }));
-  }, { once: true });
-  container.querySelector('[data-role="welcome-avatar"]')?.addEventListener('click', () => navigateToPanel('album'));
 
   // Circuito de Desafios + Duelos saíram do Dashboard (pedido do usuário,
   // 2026-09-15 — "tirar a poluição do site"): já existem como página própria
