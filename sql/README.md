@@ -1231,6 +1231,22 @@ Editor do Supabase:
     ilustração genérica, não inventar screenshot), nenhum emoji ou ícone
     decorativo foi usado como substituto temporário.
 
+63. **`135_remove_duplicatas_modulo_garmin_connect.sql`**
+    Correção: sql/134 foi executada duas vezes no SQL Editor do Supabase. As
+    4 lições reaproveitadas (update) não duplicaram, mas as 11 lições novas
+    (insert, não idempotente) foram inseridas duas vezes cada — o módulo
+    ficou com 26 lições em vez de 15, cada uma das 11 novas repetida com o
+    mesmo order_index. Remove as 11 linhas duplicadas pelo id exato, mantendo
+    a primeira de cada par. Confirmado antes de remover que nenhuma delas
+    tinha registro em `lesson_progress` nem era referenciada por
+    `checkpoints` — sem risco de violar FK ou apagar progresso de usuário.
+    Lição para migrações futuras com múltiplos `insert`: preferir sempre
+    reexecução segura (ex.: `where not exists` checando por module_id+title,
+    ou registrar a migração já aplicada) quando o insert não for único por
+    natureza — as migrações anteriores desta sprint (125/129/133) tiveram
+    sorte de nunca terem sido rodadas duas vezes, mas o insert sozinho nunca
+    foi de fato idempotente.
+
 ## O que ainda não está aqui
 
 - Cadastro de novo usuário pelo admin — exige a Supabase Admin API
