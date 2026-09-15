@@ -898,6 +898,21 @@ Editor do Supabase:
     (`||`) um 9º item ao array `items` do bloco `card_grid` (índice 11),
     sem tocar nos 8 itens existentes.
 
+51. **`123_remove_licoes_forerunner_fenix_portfolio.sql`**
+    Remove as lições "Linha Forerunner" e "Linha Fenix" do módulo Portfólio
+    de Produtos — pedido do usuário, viravam títulos órfãos na tela (corpo
+    da sql/030 nunca foi aplicado nesta base, então apareciam vazias:
+    "Conteúdo desta aula ainda não cadastrado.") depois que a 3ª lição virou
+    a mega-aula que já recapitula as duas (sql/120/121). Apaga primeiro
+    `lesson_progress` das duas lições (sem isso o `delete from lessons`
+    quebra com erro de FK — `lesson_id` lá não tem `on delete cascade`,
+    diferente de `attachments.lesson_id` que tem) e só depois as lições.
+    XP já concedido fica intacto (`points_ledger.source_id` não tem FK pra
+    `lessons`) e `fetchModuleProgress` recalcula "X de Y lições" ao vivo —
+    módulo com 1 lição concluída continua em 100%, sem regressão de
+    progresso pro usuário. Mesmo padrão de segurança já usado na sql/031
+    (deduplicação de lições Garmin Connect/Coach).
+
 ## O que ainda não está aqui
 
 - Cadastro de novo usuário pelo admin — exige a Supabase Admin API
