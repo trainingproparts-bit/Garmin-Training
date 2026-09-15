@@ -106,6 +106,17 @@ export const ICONS = {
   checkCircle: wrap(`<circle cx="12" cy="12" r="8.5"/><path d="M8 12.3l2.6 2.6 5.4-6"/>`),
 
   pencil: wrap(`<path d="M4 20l0.6-3.4L15.2 6a1.8 1.8 0 0 1 2.6 0l0.2 0.2a1.8 1.8 0 0 1 0 2.6L7.4 19.4z"/><path d="M13.5 7.7l2.8 2.8"/>`),
+
+  // Ícones de blocos de conteúdo (2026-09-15) — troca os emoji fixos do
+  // renderer de banner/roteiro/objeção (ContentBlocks.js) por ícones
+  // monocromáticos, mesmo estilo dos demais.
+  infoCircle: wrap(`<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5" stroke-width="1.8"/><path d="M12 8h.01" stroke-width="2.6"/>`),
+
+  alertTriangle: wrap(`<path d="M12 3.5 21.5 20h-19z"/><path d="M12 9.5v4.5" stroke-width="1.8"/><path d="M12 17h.01" stroke-width="2.6"/>`),
+
+  lightbulb: wrap(`<path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c0.6 0.45 1 1.15 1 1.9V16h5v-0.2c0-0.75 0.4-1.45 1-1.9A6 6 0 0 0 12 3z"/>`),
+
+  clipboard: wrap(`<rect x="6" y="4.5" width="12" height="16" rx="1.8"/><rect x="9" y="2.5" width="6" height="3.5" rx="1"/><path d="M9 11h6M9 14.5h6" stroke-width="1.6"/>`),
 };
 
 export function icon(name) {

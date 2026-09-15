@@ -963,6 +963,28 @@ Editor do Supabase:
     inventar produto: usa só Forerunner 265, Fēnix 8 e Vivoactive 6, todos
     já cadastrados no conteúdo do Hub (sql/030, sql/120).
 
+54. **`126_limpa_emojis_modulo_concorrentes.sql`**
+    "Arruma o dos concorrentes & objeções" — sem brief novo do usuário, só
+    pediu o mesmo tratamento dado aos outros módulos da sessão. Ajuste de
+    forma, não de fato (nenhum dado novo): remove os emojis ✅/❌ dos
+    títulos de `card_grid` e o 💡 solto em 2 respostas de objeção (Apple
+    Watch, Polar), e separa os blocos `texto_rico` com 2 `&lt;h3&gt;`
+    consecutivos (intro + "Para quem X faz sentido") com
+    `&lt;hr class="cb-topic-divider"&gt;` — mesmo problema já corrigido no
+    Portfólio de Produtos (sql/120).
+
+    **Corrigido junto em `ContentBlocks.js`, afeta o site inteiro** — mesma
+    categoria de bug do `cardAccentColor` (Academia de Produtos): emoji
+    fixo no componente, não no dado do conteúdo, seguro de trocar
+    globalmente. `objecao` tinha 🗣️/✅ hardcoded no próprio renderer (agora
+    ícones `message`/`checkCircle`), `banner` tinha ℹ️/✅/⚠️ (agora
+    `infoCircle`/`checkCircle`/`alertTriangle`), `roteiro` tinha 📋/💡 no
+    botão de copiar e na dica (agora `clipboard`/`lightbulb`). De
+    passagem, corrige um bug real no botão "Copiar Argumento": o texto de
+    "✅ Copiado!" usava `btn.textContent` pra restaurar o rótulo original,
+    o que agora apagaria o ícone (textContent substitui todos os filhos,
+    SVG incluso) — trocado por `btn.innerHTML`.
+
 ## O que ainda não está aqui
 
 - Cadastro de novo usuário pelo admin — exige a Supabase Admin API

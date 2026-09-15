@@ -67,12 +67,16 @@
   border-left: 4px solid var(--text3);
 }
 
-.cb-banner-icon { font-size: 18px; line-height: 1.3; }
+.cb-banner-icon { flex-shrink: 0; display: flex; margin-top: 1px; color: var(--text3); }
+.cb-banner-icon svg { width: 18px; height: 18px; }
 
 .cb-banner-text { margin: 0; font-size: 14px; color: var(--text2); line-height: 1.6; }
 
 .cb-banner-success { background: var(--acc-tint); border-color: var(--acc); border-left-color: var(--acc); }
+.cb-banner-success .cb-banner-icon { color: var(--acc); }
 .cb-banner-warning { background: var(--warn-tint); border-color: var(--warn); border-left-color: var(--warn); }
+.cb-banner-warning .cb-banner-icon { color: var(--warn); }
+.cb-banner-info .cb-banner-icon { color: var(--text3); }
 
 /* ── Card ── */
 .cb-card {
@@ -378,6 +382,11 @@
 
 .cb-roteiro-copy-btn.is-copied { color: var(--badge-accent-text); border-color: var(--badge-accent-text); }
 
+.cb-roteiro-copy-btn svg { width: 12px; height: 12px; flex-shrink: 0; }
+
+.cb-roteiro-tip-icon { flex-shrink: 0; display: flex; margin-top: 1px; color: var(--text3); }
+.cb-roteiro-tip-icon svg { width: 14px; height: 14px; }
+
 .cb-roteiro-tip {
   display: flex;
   gap: 8px;
@@ -412,6 +421,9 @@
   color: var(--text2);
   line-height: 1.55;
 }
+
+.cb-objecao-icon { flex-shrink: 0; display: flex; margin-top: 2px; }
+.cb-objecao-icon svg { width: 15px; height: 15px; }
 
 /* ── Tabela comparativa ── */
 .cb-table-wrap {

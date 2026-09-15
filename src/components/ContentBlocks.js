@@ -95,13 +95,13 @@ function renderBlock(block, index) {
   }
 }
 
-const BANNER_ICON = { info: 'ℹ️', success: '✅', warning: '⚠️' };
+const BANNER_ICON = { info: 'infoCircle', success: 'checkCircle', warning: 'alertTriangle' };
 
 function renderBannerBlock(b) {
   const tone = BANNER_ICON[b.tone] ? b.tone : 'info';
   return `
     <div class="cb-banner cb-banner-${tone}">
-      <span class="cb-banner-icon">${BANNER_ICON[tone]}</span>
+      <span class="cb-banner-icon">${icon(BANNER_ICON[tone])}</span>
       <p class="cb-banner-text">${b.text || ''}</p>
     </div>`;
 }
@@ -241,9 +241,9 @@ function renderRoteiroBlock(b) {
             ${s.dialog ? `
               <div class="cb-roteiro-dialog">
                 <p class="cb-roteiro-dialog-text">“${s.dialog}”</p>
-                <button type="button" class="cb-roteiro-copy-btn" data-copy-text="${encodeURIComponent(s.dialog)}">📋 Copiar Argumento</button>
+                <button type="button" class="cb-roteiro-copy-btn" data-copy-text="${encodeURIComponent(s.dialog)}">${icon('clipboard')}Copiar Argumento</button>
               </div>` : ''}
-            ${s.tip ? `<div class="cb-roteiro-tip"><span>💡</span><span>${s.tip}</span></div>` : ''}
+            ${s.tip ? `<div class="cb-roteiro-tip"><span class="cb-roteiro-tip-icon">${icon('lightbulb')}</span><span>${s.tip}</span></div>` : ''}
           </div>
         </div>`).join('')}
     </div>`;
@@ -255,8 +255,8 @@ function renderObjecaoBlock(b) {
     <div class="cb-objecao">
       ${items.map((it) => `
         <div class="cb-objecao-item">
-          <p class="cb-objecao-q"><span>🗣️</span><span>${it.question || ''}</span></p>
-          <p class="cb-objecao-a"><span>✅</span><span>${it.answer || ''}</span></p>
+          <p class="cb-objecao-q"><span class="cb-objecao-icon">${icon('message')}</span><span>${it.question || ''}</span></p>
+          <p class="cb-objecao-a"><span class="cb-objecao-icon">${icon('checkCircle')}</span><span>${it.answer || ''}</span></p>
         </div>`).join('')}
     </div>`;
 }
@@ -504,11 +504,11 @@ export function wireBlockInteractions(container, { returnPanel } = {}) {
       const text = decodeURIComponent(btn.dataset.copyText);
       try {
         await navigator.clipboard.writeText(text);
-        const original = btn.textContent;
-        btn.textContent = '✅ Copiado!';
+        const original = btn.innerHTML;
+        btn.innerHTML = `${icon('checkCircle')}Copiado`;
         btn.classList.add('is-copied');
         setTimeout(() => {
-          btn.textContent = original;
+          btn.innerHTML = original;
           btn.classList.remove('is-copied');
         }, 1500);
       } catch (err) {
