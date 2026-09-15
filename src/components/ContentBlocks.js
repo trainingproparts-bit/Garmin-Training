@@ -827,7 +827,7 @@ function renderBlockFields(block) {
         </select>
         <label class="cb-editor-checkbox"><input type="checkbox" data-field="tall" ${block.tall ? 'checked' : ''}> Verso alto (para textos longos, evita rolagem dentro do card)</label>
         <textarea data-field="cards_raw" rows="6" placeholder="Um card por linha: Emoji | Título | Subtítulo | Texto da frente | Rótulo do verso | Texto do verso | URL da imagem de fundo (opcional, substitui o emoji)">${encodeItems(block.cards, ['emoji', 'title', 'subtitle', 'frontText', 'backLabel', 'backText', 'coverUrl'])}</textarea>
-        <p class="cb-editor-hint">Formato: Emoji | Título | Subtítulo | Texto da frente | Rótulo do verso | Texto do verso (um card por linha, clique para virar)</p>`;
+        <p class="cb-editor-hint">Formato: Emoji | Título | Subtítulo | Texto da frente | Rótulo do verso | Texto do verso | URL da imagem (um card por linha, clique para virar). Os dois últimos campos são opcionais. A URL da imagem substitui o emoji na frente do card.</p>`;
     case 'metric_card_grid':
       return `
         <select data-field="columns">
