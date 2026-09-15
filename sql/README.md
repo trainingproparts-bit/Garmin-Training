@@ -800,6 +800,28 @@ Editor do Supabase:
     jsonb_build_object(...)` — só as chaves listadas mudam, objections/emoji
     continuam intactos.
 
+48. **`120_reformula_licao_marq_portfolio_completo.sql`**
+    Reformula a 3ª (última) lição do módulo "Portfólio de Produtos" — antes
+    só cobria a linha MARQ; pedido do usuário para concentrar nela toda a
+    formação de produto+vendas do portfólio (o módulo só tem 3 lições,
+    Forerunner/Fenix/MARQ, sql/030). 17 seções: organização do portfólio,
+    resumo de Forerunner/Fenix (que mantêm lição própria), MARQ completo
+    (accordion Para quem é/O que entrega/O que diferencia/Como apresentar),
+    Edge (card_grid + tabela comparativa + accordion de upgrade), Varia,
+    Rally, HRM, Blaze, raciocínio de venda complementar (metric_card_grid),
+    conceitos técnicos (metric_card_grid), "como pensar durante o
+    atendimento", quiz de associação (`match_quiz`, tipo de bloco já
+    existente — nenhum componente novo) e quiz final (`quiz_embutido`
+    apontando pro quiz já existente `slug='produtos'`, id resolvido em
+    tempo de execução via `jsonb_set` com path negativo `{-1,quizId}`).
+    Textos de produto usam só o `dest` já cadastrado em `content_library`
+    (sql/seeds/040); Blaze usa só fatos já cadastrados na Academia de
+    Produtos (sql/090), deliberadamente sem afirmar "distância"/"recuperação"
+    por inconsistência entre as duas fontes cadastradas. Acrescenta 7
+    perguntas novas ao quiz `produtos` (Rally/Varia/Blaze/Fenix/HRM/MARQ) —
+    só INSERT, nunca mexe nas 10 perguntas existentes (evita quebrar
+    `quiz_attempts`/`quiz_answers` de quem já respondeu).
+
 ## O que ainda não está aqui
 
 - Cadastro de novo usuário pelo admin — exige a Supabase Admin API
