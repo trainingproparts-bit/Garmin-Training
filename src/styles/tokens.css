@@ -78,12 +78,13 @@
   --sp-7: 32px;
   --sp-8: 48px;
 
-  /* Typography — Georgia em tudo (pedido do usuário, 2026-09-15: "bota
-   * Georgia que é igual ao do Claude, bem mais bonita"). Fonte de sistema,
-   * sem precisar carregar do Google Fonts. */
-  --font-body: Georgia, 'Times New Roman', serif;
-  --font-display: Georgia, 'Times New Roman', serif;
-  --font-wordmark: Georgia, 'Times New Roman', serif;
+  /* Typography — Inter em tudo (pedido do usuário, 2026-09-15: Georgia
+   * "ficou bom não", queria algo mais parecido com a fonte do Claude —
+   * sans-serif limpa, não serifada). Carregada via Google Fonts no
+   * index.html. */
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-display: 'Inter', system-ui, sans-serif;
+  --font-wordmark: 'Inter', system-ui, sans-serif;
 
   /* Badge text-on-tint (2026-09-10) — tokens dedicados pra texto de
    * badge/pill/tag sobre fundo "-tint" (--g3/--acc-tint/--warn-tint/gold).
