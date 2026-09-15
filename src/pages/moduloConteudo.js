@@ -22,6 +22,7 @@ import {
 } from '../services/moduleService.js';
 import { navigateToPanel } from '../router.js';
 import { renderBlocks, wireBlockInteractions, setupBlockArrayEditor } from '../components/ContentBlocks.js';
+import { icon } from '../components/icons.js';
 
 window.addEventListener('panel:activated', (e) => {
   if (e.detail.panelId === 'modulo-conteudo') initModuloConteudoPage();
@@ -142,19 +143,22 @@ function renderLesson(lesson, index, isCompleted, canEdit) {
 
   // Edição de conteúdo é admin-only na RLS (lessons_admin_all) — o botão só
   // aparece pra quem de fato consegue salvar, pra não expor uma ação que
-  // sempre falharia (406 silencioso) pra líder/colaborador.
+  // sempre falharia (406 silencioso) pra líder/colaborador. Ícone discreto
+  // no canto (2026-09-15, pedido do usuário) em vez de botão de texto
+  // repetido ao final de cada lição — mesmo padrão já usado na Academia de
+  // Produtos (academia-edit-btn-header).
   const editBtnHtml = canEdit
-    ? `<button type="button" class="lesson-edit-btn" data-lesson-index="${index}" style="margin-top: 8px; padding: 6px 12px; background: var(--off); border: 1px solid var(--border); border-radius: var(--r2); cursor: pointer; font-size: 12px;">Editar conteúdo</button>`
+    ? `<button type="button" class="lesson-edit-btn" data-lesson-index="${index}" title="Editar conteúdo" aria-label="Editar conteúdo">${icon('pencil')}</button>`
     : '';
 
   return `
     <div class="content-article${cardCompleted}" data-lesson-index="${index}" data-lesson-id="${lesson.id}">
-      <h3 class="content-lesson-title">${lesson.title}</h3>
+      ${editBtnHtml}
+      <h2 class="content-lesson-title">${lesson.title}</h2>
       ${bodyHtml}
       <button type="button" class="content-complete-btn" data-role="complete-lesson" data-lesson-id="${lesson.id}" ${btnDisabled}>
         ${btnLabel}
       </button>
-      ${editBtnHtml}
     </div>
     <div id="lesson-edit-${index}" class="lesson-edit-panel" hidden></div>`;
 }

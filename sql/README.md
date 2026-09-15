@@ -1076,6 +1076,62 @@ Editor do Supabase:
     do brief do usuário. Sem emoji, sem travessão, conforme pedido
     explicitamente pelo usuário para este módulo.
 
+58. **`130_hierarquia_cards_alem_corrida.sql`**
+    Usuário mandou um segundo brief, desta vez de UX/layout pro módulo
+    inteiro (as 4 lições da sql/129, já aplicada). A maior parte do pedido
+    foi só CSS/JS, sem SQL (ver lista abaixo) — a única mudança de dado foi
+    nos cards densos de "Além da corrida" (8 perfis), que precisavam de
+    hierarquia label/valor em vez de texto corrido com `&lt;strong&gt;Label:
+    &lt;/strong&gt;` inline. **Não reescreve a sql/129** (já tinha sido
+    aplicada com o formato antigo antes deste pedido chegar — o arquivo
+    sql/129 no repositório foi revertido pra bater com o que realmente
+    rodou, nunca reescrevo uma migração já aplicada) — só faz um `UPDATE`
+    nos `items` daquele bloco `card_grid`, localizado pelo conteúdo (título
+    "Aventureiro / Trilheiro"), não por índice fixo.
+
+    **Mudanças só em código, sem SQL** (`ContentBlocks.js`,
+    `contentBlocks.css`, `moduloConteudo.js`, `modulo-content.css` — afetam
+    o site inteiro, não só este módulo, já que não existe CSS por-módulo
+    nesta arquitetura; usuário pediu escopo só neste módulo mas todas são
+    melhorias estritas, mesmo raciocínio já aplicado a `cardAccentColor`/
+    ícones de banner-objeção-roteiro antes nesta sessão):
+    - `.cb-banner` perde a borda completa (só a faixa lateral) — evita
+      "caixa dentro de caixa" quando já está dentro de `.content-article`.
+      Mesmo motivo pra `.cb-cenario`/`.cb-match-quiz`, que perdem o
+      wrapper com fundo+borda (as opções/pills individuais continuam com
+      borda própria).
+    - Accordion redesenhado como lista real: borda inferior fina em vez de
+      card fechado por item, hover state, chevron de ícone (era texto "▼").
+    - `cenario_escolha`: pergunta maior (14px→16px), contexto com friso
+      lateral de citação, badge de opção com anel de raio visível.
+    - `match_quiz`: ícone de elo em cada pill + hover com fundo, affordance
+      de clique mais claro (antes só mudava a cor da borda).
+    - `.cb-timeline-dot`/`.cb-timeline-label` trocam `var(--g)` por
+      `var(--text3)`/`var(--text)` — rótulo continua chamando atenção pelo
+      tamanho/peso (21px/800), não mais pela cor de marca (regra do
+      usuário: vermelho só em item ativo/ação primária/concluído).
+    - Botão "Editar conteúdo" vira ícone de lápis discreto no canto
+      superior direito de cada lição (`position:absolute`), no lugar do
+      botão de texto repetido ao final — mesmo padrão do
+      `academia-edit-btn-header`.
+    - Título de cada lição passa de `&lt;h3&gt;` pra `&lt;h2&gt;` (hierarquia
+      semântica correta — era o maior heading da página e usava tag de
+      3º nível).
+    - `.content-article-body` ganha `max-width:760px` (largura de leitura),
+      `.content-lesson-list` ajusta `gap` de 18px pro degrau 24px da escala
+      de espaçamento.
+    - Nova classe `.cb-field`/`.cb-field-label`/`.cb-field-value` (usada
+      pelo `UPDATE` acima) — label pequeno/maiúsculo/cinza acima do valor,
+      espaçamento vertical entre campos.
+
+    O usuário também reportou um "bug de espelhamento" no verso dos
+    flip_card — testado ao vivo (mesmo conteúdo, mesmo container) e o verso
+    renderiza corretamente, texto legível e não espelhado. A técnica atual
+    (face traseira pré-rotacionada 180deg + `backface-visibility:hidden`
+    nas duas faces) já é a padrão/correta; a correção sugerida pelo usuário
+    (rotação adicional no conteúdo interno) na real re-introduziria o
+    espelhamento. Não aplicado — sinalizado de volta pro usuário no chat.
+
 ## O que ainda não está aqui
 
 - Cadastro de novo usuário pelo admin — exige a Supabase Admin API

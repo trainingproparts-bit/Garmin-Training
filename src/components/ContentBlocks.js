@@ -117,7 +117,7 @@ function renderAccordionBlock(b, index) {
       ${items.map((it, i) => `
         <div class="cb-accordion-item">
           <button type="button" class="cb-accordion-btn" data-cb-acc="cb-acc-${index}-${i}">
-            <span>${it.title || ''}</span><span class="cb-accordion-chevron">▼</span>
+            <span>${it.title || ''}</span><span class="cb-accordion-chevron">${icon('chevronDown')}</span>
           </button>
           <div class="cb-accordion-body" id="cb-acc-${index}-${i}" hidden>${it.html || ''}</div>
         </div>`).join('')}
@@ -389,13 +389,13 @@ function renderMatchQuizBlock(b, index) {
   const defs = pairs.map((p, i) => ({ ...p, i })).sort(() => 0.5 - Math.random());
   return `
     <div class="cb-match-quiz" data-cb-match="${index}">
-      <p class="cb-match-instructions">🔗 Clique em um termo e depois na definição correspondente.</p>
+      <p class="cb-match-instructions">${icon('link2')} Clique em um termo e depois na definição correspondente.</p>
       <div class="cb-match-columns">
         <div class="cb-match-col" data-role="cb-match-terms">
-          ${terms.map((t) => `<button type="button" class="cb-match-pill" data-match-i="${t.i}">${t.term}</button>`).join('')}
+          ${terms.map((t) => `<button type="button" class="cb-match-pill" data-match-i="${t.i}"><span class="cb-match-pill-icon">${icon('link2')}</span>${t.term}</button>`).join('')}
         </div>
         <div class="cb-match-col" data-role="cb-match-defs">
-          ${defs.map((d) => `<button type="button" class="cb-match-pill" data-match-i="${d.i}">${d.definition}</button>`).join('')}
+          ${defs.map((d) => `<button type="button" class="cb-match-pill" data-match-i="${d.i}"><span class="cb-match-pill-icon">${icon('link2')}</span>${d.definition}</button>`).join('')}
         </div>
       </div>
       <p class="cb-match-progress" data-role="cb-match-progress">0 de ${pairs.length} associados</p>
