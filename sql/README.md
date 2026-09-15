@@ -866,6 +866,22 @@ Editor do Supabase:
     Storage) — nenhuma mudança de código necessária pra isso, é só reeditar
     o bloco já existente.
 
+49. **`121_ajusta_colunas_flipcard_marq_tabs.sql`**
+    Depois de rodar a sql/120, o usuário viu a lição renderizada e apontou
+    dois ajustes de design que a rodada anterior não cobriu: os `flip_card`
+    de Forerunner/Fēnix/Lifestyle (4 cards cada) ainda usavam só 2-3 colunas
+    (empilhavam em 2 linhas, pesado) e o `accordion` do MARQ continuava lá
+    mesmo já tendo sido pedido menos repetição desse padrão em rodadas
+    anteriores. Corrige os dois: `flip_card` ganha suporte a `columns: 4`
+    (aditivo, em `ContentBlocks.js` + `contentBlocks.css` — cards também
+    ficaram mais compactos, `min-height` 160px→132px, padding e fontes
+    reduzidos) e o `accordion` do MARQ vira `tabs` (mesmo padrão já usado
+    pro Edge e o HRM nesta lição) — texto idêntico ao do acordeão original,
+    só reorganizado em 2 parágrafos por aba (quem é + o que entrega /
+    diferencial + como apresentar), nenhum dado novo. Migração só ajusta o
+    `lessons.body` via `jsonb_set` nos índices fixos dos blocos (3, 5, 7, 9 —
+    estrutura conhecida da sql/120, lição só editada por migração).
+
 ## O que ainda não está aqui
 
 - Cadastro de novo usuário pelo admin — exige a Supabase Admin API

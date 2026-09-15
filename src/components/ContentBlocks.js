@@ -317,7 +317,7 @@ function renderCardGridBlock(b) {
  */
 function renderFlipCardBlock(b) {
   const cards = Array.isArray(b.cards) ? b.cards : [];
-  const cols = b.columns === 3 ? 3 : 2;
+  const cols = [3, 4].includes(b.columns) ? b.columns : 2;
   return `
     <div class="cb-flip-grid cols-${cols}">
       ${cards.map((c) => `
@@ -710,8 +710,9 @@ function renderBlockFields(block) {
     case 'flip_card':
       return `
         <select data-field="columns">
-          <option value="2" ${block.columns !== 3 ? 'selected' : ''}>2 colunas</option>
+          <option value="2" ${![3, 4].includes(block.columns) ? 'selected' : ''}>2 colunas</option>
           <option value="3" ${block.columns === 3 ? 'selected' : ''}>3 colunas</option>
+          <option value="4" ${block.columns === 4 ? 'selected' : ''}>4 colunas</option>
         </select>
         <textarea data-field="cards_raw" rows="6" placeholder="Um card por linha: Emoji | Título | Subtítulo | Texto da frente | Rótulo do verso | Texto do verso | URL da imagem de fundo (opcional, substitui o emoji)">${encodeItems(block.cards, ['emoji', 'title', 'subtitle', 'frontText', 'backLabel', 'backText', 'coverUrl'])}</textarea>
         <p class="cb-editor-hint">Formato: Emoji | Título | Subtítulo | Texto da frente | Rótulo do verso | Texto do verso (um card por linha, clique para virar)</p>`;
@@ -778,7 +779,7 @@ function readBlockFromRow(row, type) {
       rows: get('rows_raw').split('\n').map((l) => l.trim()).filter(Boolean).map((l) => l.split('|').map((c) => c.trim())),
     };
     case 'card_grid': return { type, columns: Number(get('columns')) === 3 ? 3 : 2, items: decodeCardGridItems(get('items_raw')) };
-    case 'flip_card': return { type, columns: Number(get('columns')) === 3 ? 3 : 2, cards: decodeItems(get('cards_raw'), ['emoji', 'title', 'subtitle', 'frontText', 'backLabel', 'backText', 'coverUrl']) };
+    case 'flip_card': return { type, columns: [3, 4].includes(Number(get('columns'))) ? Number(get('columns')) : 2, cards: decodeItems(get('cards_raw'), ['emoji', 'title', 'subtitle', 'frontText', 'backLabel', 'backText', 'coverUrl']) };
     case 'metric_card_grid': return { type, columns: Number(get('columns')) === 3 ? 3 : 2, items: decodeMetricItems(get('items_raw')) };
     case 'match_quiz': return { type, pairs: decodeMatchPairs(get('pairs_raw')) };
     case 'tabs': return { type, items: decodeItems(get('items_raw'), ['label', 'title', 'text', 'note']) };
