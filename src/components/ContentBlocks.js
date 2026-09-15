@@ -28,6 +28,7 @@ export const BLOCK_TYPES = [
   { key: 'flip_card', label: 'Card Giratório (flip)' },
   { key: 'metric_card_grid', label: 'Cards de Métrica (expansível)' },
   { key: 'match_quiz', label: 'Quiz de Associação (aquecimento)' },
+  { key: 'tabs', label: 'Abas Comparativas' },
 ];
 
 export function defaultBlockFor(type) {
@@ -36,7 +37,7 @@ export function defaultBlockFor(type) {
     case 'banner': return { type, tone: 'info', text: '' };
     case 'card': return { type, icon: '💡', title: '', text: '' };
     case 'accordion': return { type, items: [] };
-    case 'timeline': return { type, items: [] };
+    case 'timeline': return { type, items: [], reveal: false };
     case 'video': return { type, videoUrl: '', caption: '' };
     case 'imagem': return { type, url: '', alt: '', size: 'media', customWidth: null };
     case 'galeria': return { type, images: [] };
@@ -48,6 +49,7 @@ export function defaultBlockFor(type) {
     case 'flip_card': return { type, columns: 2, cards: [] };
     case 'metric_card_grid': return { type, columns: 2, items: [] };
     case 'match_quiz': return { type, pairs: [] };
+    case 'tabs': return { type, items: [] };
     default: return { type };
   }
 }
@@ -69,7 +71,7 @@ function renderBlock(block, index) {
     case 'texto_rico': return renderTextoRicoBlock(block);
     case 'accordion': return renderAccordionBlock(block, index);
     case 'card': return renderCardBlock(block);
-    case 'timeline': return renderTimelineBlock(block);
+    case 'timeline': return renderTimelineBlock(block, index);
     case 'video': return renderVideoBlock(block);
     case 'imagem': return renderImagemBlock(block);
     case 'galeria': return renderGaleriaBlock(block);
@@ -81,6 +83,7 @@ function renderBlock(block, index) {
     case 'flip_card': return renderFlipCardBlock(block);
     case 'metric_card_grid': return renderMetricCardGridBlock(block, index);
     case 'match_quiz': return renderMatchQuizBlock(block, index);
+    case 'tabs': return renderTabsBlock(block, index);
     default: return '';
   }
 }
@@ -140,16 +143,28 @@ function renderCardBlock(b) {
     </div>`;
 }
 
-function renderTimelineBlock(b) {
+/**
+ * `reveal` (opcional, 2026-09-15) — pedido do usuário pra procedimentos/
+ * perguntas onde faz sentido revelar um item de cada vez em vez de mostrar
+ * tudo de uma vez (evita a pessoa pular direto pro fim). Puramente aditivo:
+ * sem `reveal`, a timeline continua mostrando tudo de cara, como antes (ex.:
+ * o fluxo "Cliente fala → você identifica..." se beneficia de ver tudo junto,
+ * não de esconder passo por passo).
+ */
+function renderTimelineBlock(b, index) {
   const items = Array.isArray(b.items) ? b.items : [];
+  const reveal = !!b.reveal;
   return `
-    <div class="cb-timeline">
-      ${items.map((it) => `
+    <div class="cb-timeline ${reveal ? 'cb-timeline-reveal' : ''}">
+      ${items.map((it, i) => `
         <div class="cb-timeline-item">
           <div class="cb-timeline-dot"></div>
           <div class="cb-timeline-content">
-            <strong class="cb-timeline-label">${it.label || ''}</strong>
-            <p class="cb-timeline-text">${it.text || ''}</p>
+            <div class="cb-timeline-head">
+              <strong class="cb-timeline-label">${it.label || ''}</strong>
+              ${reveal ? `<button type="button" class="cb-timeline-reveal-btn" data-cb-timeline-reveal="${index}-${i}">ver</button>` : ''}
+            </div>
+            <p class="cb-timeline-text" ${reveal ? `data-cb-timeline-text="${index}-${i}" hidden` : ''}>${it.text || ''}</p>
           </div>
         </div>`).join('')}
     </div>`;
@@ -293,6 +308,13 @@ function renderCardGridBlock(b) {
     </div>`;
 }
 
+/**
+ * `coverUrl` (opcional, 2026-09-15) — antes o card só tinha emoji como
+ * identidade visual; alguns conteúdos preferem uma foto real de produto no
+ * lugar. Puramente aditivo: cards antigos sem coverUrl continuam mostrando
+ * o emoji exatamente como antes. Mesma técnica de overlay usada no card de
+ * "Recomendação principal" da ficha de Perfis de Cliente (LibraryContent.js).
+ */
 function renderFlipCardBlock(b) {
   const cards = Array.isArray(b.cards) ? b.cards : [];
   const cols = b.columns === 3 ? 3 : 2;
@@ -301,17 +323,17 @@ function renderFlipCardBlock(b) {
       ${cards.map((c) => `
         <div class="cb-flip-card" data-flip-card>
           <div class="cb-flip-card-inner">
-            <div class="cb-flip-face">
-              ${c.emoji ? `<div class="cb-flip-emoji">${c.emoji}</div>` : ''}
+            <div class="cb-flip-face ${c.coverUrl ? 'has-cover' : ''}" ${c.coverUrl ? `style="background-image:url('${c.coverUrl}')"` : ''}>
+              ${!c.coverUrl && c.emoji ? `<div class="cb-flip-emoji">${c.emoji}</div>` : ''}
               ${c.title ? `<div class="cb-flip-title">${c.title}</div>` : ''}
               ${c.subtitle ? `<div class="cb-flip-subtitle">${c.subtitle}</div>` : ''}
               <div class="cb-flip-text">${c.frontText || ''}</div>
-              <div class="cb-flip-hint">👆 toque para ver mais</div>
+              <div class="cb-flip-hint">toque para ver mais</div>
             </div>
             <div class="cb-flip-face cb-flip-face-back">
               ${c.backLabel ? `<div class="cb-flip-back-title">${c.backLabel}</div>` : ''}
               <div class="cb-flip-text">${c.backText || ''}</div>
-              <div class="cb-flip-hint">👆 toque para voltar</div>
+              <div class="cb-flip-hint">toque para voltar</div>
             </div>
           </div>
         </div>`).join('')}
@@ -373,6 +395,28 @@ function renderMatchQuizBlock(b, index) {
     </div>`;
 }
 
+/**
+ * Abas comparativas (2026-09-15) — pedido do usuário pra comparar modelos
+ * lado a lado sem virar tabela densa: a pessoa foca numa opção de cada vez
+ * em vez de ler tudo junto. Mesmo padrão visual/interativo já usado nos
+ * Guias Técnicos (`.itabs`/`.itab`, ver deepDiveDetail.js) — reaproveitado
+ * aqui como bloco de lição, não duplicado.
+ */
+function renderTabsBlock(b, index) {
+  const items = Array.isArray(b.items) ? b.items : [];
+  if (!items.length) return '';
+  return `
+    <div class="itabs cb-tabs" data-cb-tabs="${index}">
+      ${items.map((it, i) => `<button type="button" class="itab ${i === 0 ? 'active' : ''}" data-tab-index="${i}">${it.label || it.title || `Aba ${i + 1}`}</button>`).join('')}
+    </div>
+    ${items.map((it, i) => `
+      <div class="cb-tabs-panel" data-cb-tabs-panel="${index}" data-tab-panel="${i}" ${i === 0 ? '' : 'hidden'}>
+        ${it.title ? `<h4 class="cb-tabs-panel-title">${it.title}</h4>` : ''}
+        ${it.text ? `<p class="cb-tabs-panel-text">${it.text}</p>` : ''}
+        ${it.note ? `<p class="cb-tabs-panel-note">${it.note}</p>` : ''}
+      </div>`).join('')}`;
+}
+
 /** Liga accordion e botão de quiz embutido depois do innerHTML ser inserido. */
 export function wireBlockInteractions(container, { returnPanel } = {}) {
   container.querySelectorAll('[data-cb-acc]').forEach((btn) => {
@@ -421,7 +465,30 @@ export function wireBlockInteractions(container, { returnPanel } = {}) {
     card.addEventListener('click', () => card.classList.toggle('flipped'));
   });
 
+  container.querySelectorAll('[data-cb-timeline-reveal]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const key = btn.dataset.cbTimelineReveal;
+      const text = container.querySelector(`[data-cb-timeline-text="${key}"]`);
+      if (!text) return;
+      text.hidden = !text.hidden;
+      btn.textContent = text.hidden ? 'ver' : 'ocultar';
+    });
+  });
+
   container.querySelectorAll('[data-cb-match]').forEach(wireMatchQuiz);
+
+  container.querySelectorAll('[data-cb-tabs]').forEach((tabsEl) => {
+    const blockIndex = tabsEl.dataset.cbTabs;
+    tabsEl.querySelectorAll('[data-tab-index]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const tabIndex = btn.dataset.tabIndex;
+        tabsEl.querySelectorAll('[data-tab-index]').forEach((b) => b.classList.toggle('active', b === btn));
+        container.querySelectorAll(`[data-cb-tabs-panel="${blockIndex}"]`).forEach((panel) => {
+          panel.hidden = panel.dataset.tabPanel !== tabIndex;
+        });
+      });
+    });
+  });
 
   wireTermTips(container);
 }
@@ -592,6 +659,7 @@ function renderBlockFields(block) {
         <p class="cb-editor-hint">Formato: Título | HTML do conteúdo (um item por linha)</p>`;
     case 'timeline':
       return `
+        <label class="cb-editor-checkbox"><input type="checkbox" data-field="reveal" ${block.reveal ? 'checked' : ''}> Revelar um item de cada vez (botão "ver" em vez de mostrar tudo)</label>
         <textarea data-field="items_raw" rows="5" placeholder="Um item por linha: Rótulo | Texto">${encodeItems(block.items, ['label', 'text'])}</textarea>
         <p class="cb-editor-hint">Formato: Rótulo | Texto (um item por linha)</p>`;
     case 'video':
@@ -645,7 +713,7 @@ function renderBlockFields(block) {
           <option value="2" ${block.columns !== 3 ? 'selected' : ''}>2 colunas</option>
           <option value="3" ${block.columns === 3 ? 'selected' : ''}>3 colunas</option>
         </select>
-        <textarea data-field="cards_raw" rows="6" placeholder="Um card por linha: Emoji | Título | Subtítulo | Texto da frente | Rótulo do verso | Texto do verso">${encodeItems(block.cards, ['emoji', 'title', 'subtitle', 'frontText', 'backLabel', 'backText'])}</textarea>
+        <textarea data-field="cards_raw" rows="6" placeholder="Um card por linha: Emoji | Título | Subtítulo | Texto da frente | Rótulo do verso | Texto do verso | URL da imagem de fundo (opcional, substitui o emoji)">${encodeItems(block.cards, ['emoji', 'title', 'subtitle', 'frontText', 'backLabel', 'backText', 'coverUrl'])}</textarea>
         <p class="cb-editor-hint">Formato: Emoji | Título | Subtítulo | Texto da frente | Rótulo do verso | Texto do verso (um card por linha, clique para virar)</p>`;
     case 'metric_card_grid':
       return `
@@ -659,6 +727,10 @@ function renderBlockFields(block) {
       return `
         <textarea data-field="pairs_raw" rows="5" placeholder="Um par por linha: Termo | Definição curta">${encodeMatchPairs(block.pairs)}</textarea>
         <p class="cb-editor-hint">Formato: Termo | Definição (um par por linha). Vira um mini quiz de associação por clique, aquecimento antes do quiz final</p>`;
+    case 'tabs':
+      return `
+        <textarea data-field="items_raw" rows="6" placeholder="Uma aba por linha: Rótulo da aba | Título | Texto | Nota (opcional, ex.: Indicado para: ...)">${encodeItems(block.items, ['label', 'title', 'text', 'note'])}</textarea>
+        <p class="cb-editor-hint">Formato: Rótulo da aba | Título | Texto | Nota opcional (uma aba por linha) — bom pra comparar modelos lado a lado sem virar tabela densa</p>`;
     default:
       return '';
   }
@@ -687,7 +759,7 @@ function readBlockFromRow(row, type) {
     case 'banner': return { type, tone: get('tone') || 'info', text: get('text') };
     case 'card': return { type, icon: get('icon'), title: get('title'), text: get('text') };
     case 'accordion': return { type, items: decodeItems(get('items_raw'), ['title', 'html']) };
-    case 'timeline': return { type, items: decodeItems(get('items_raw'), ['label', 'text']) };
+    case 'timeline': return { type, items: decodeItems(get('items_raw'), ['label', 'text']), reveal: !!row.querySelector('[data-field="reveal"]')?.checked };
     case 'video': return { type, videoUrl: get('videoUrl'), caption: get('caption') };
     case 'imagem': return {
       type,
@@ -706,9 +778,10 @@ function readBlockFromRow(row, type) {
       rows: get('rows_raw').split('\n').map((l) => l.trim()).filter(Boolean).map((l) => l.split('|').map((c) => c.trim())),
     };
     case 'card_grid': return { type, columns: Number(get('columns')) === 3 ? 3 : 2, items: decodeCardGridItems(get('items_raw')) };
-    case 'flip_card': return { type, columns: Number(get('columns')) === 3 ? 3 : 2, cards: decodeItems(get('cards_raw'), ['emoji', 'title', 'subtitle', 'frontText', 'backLabel', 'backText']) };
+    case 'flip_card': return { type, columns: Number(get('columns')) === 3 ? 3 : 2, cards: decodeItems(get('cards_raw'), ['emoji', 'title', 'subtitle', 'frontText', 'backLabel', 'backText', 'coverUrl']) };
     case 'metric_card_grid': return { type, columns: Number(get('columns')) === 3 ? 3 : 2, items: decodeMetricItems(get('items_raw')) };
     case 'match_quiz': return { type, pairs: decodeMatchPairs(get('pairs_raw')) };
+    case 'tabs': return { type, items: decodeItems(get('items_raw'), ['label', 'title', 'text', 'note']) };
     default: return { type };
   }
 }

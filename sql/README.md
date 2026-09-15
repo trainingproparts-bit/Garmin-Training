@@ -804,23 +804,47 @@ Editor do Supabase:
     Reformula a 3ª (última) lição do módulo "Portfólio de Produtos" — antes
     só cobria a linha MARQ; pedido do usuário para concentrar nela toda a
     formação de produto+vendas do portfólio (o módulo só tem 3 lições,
-    Forerunner/Fenix/MARQ, sql/030). 17 seções: organização do portfólio,
-    resumo de Forerunner/Fenix (que mantêm lição própria), MARQ completo
-    (accordion Para quem é/O que entrega/O que diferencia/Como apresentar),
-    Edge (card_grid + tabela comparativa + accordion de upgrade), Varia,
-    Rally, HRM, Blaze, raciocínio de venda complementar (metric_card_grid),
-    conceitos técnicos (metric_card_grid), "como pensar durante o
-    atendimento", quiz de associação (`match_quiz`, tipo de bloco já
-    existente — nenhum componente novo) e quiz final (`quiz_embutido`
-    apontando pro quiz já existente `slug='produtos'`, id resolvido em
-    tempo de execução via `jsonb_set` com path negativo `{-1,quizId}`).
+    Forerunner/Fenix/MARQ, sql/030). Depois de várias rodadas de ajuste de
+    design pedidas ao vivo pelo usuário ("muito quadrado", "sem emoji",
+    "mais dinâmico", "separador entre assuntos"), a versão final intercala
+    prosa com 8 tipos de interação diferentes em vez de empilhar cards
+    repetidos: `flip_card` pras camadas de Forerunner/Fēnix/Lifestyle,
+    `accordion` pro MARQ, `tabs` (tipo de bloco NOVO — ver abaixo) pra
+    comparar Edge/HRM lado a lado sem virar tabela densa, `timeline` com
+    revelação por etapas (também novo — ver abaixo) pro Q&A do Blaze,
+    `metric_card_grid` pros combos de venda complementar e o glossário
+    técnico, `match_quiz` de aquecimento e `quiz_embutido` no final.
+    Separadores `<hr class="cb-topic-divider">` marcam a virada de cada
+    assunto (sem isso, dois `&lt;h3&gt;` consecutivos pareciam continuação
+    do mesmo tema). A lista "pergunte primeiro" do Edge virou checklist
+    visual (`.cb-checklist`). O card_grid de abertura (Relógios esportivos/
+    Ciclismo/Natação...) foi removido a pedido do usuário, que vai substituir
+    por uma imagem própria depois — texto das 7 categorias ficou só na prosa.
     Textos de produto usam só o `dest` já cadastrado em `content_library`
     (sql/seeds/040); Blaze usa só fatos já cadastrados na Academia de
     Produtos (sql/090), deliberadamente sem afirmar "distância"/"recuperação"
-    por inconsistência entre as duas fontes cadastradas. Acrescenta 7
-    perguntas novas ao quiz `produtos` (Rally/Varia/Blaze/Fenix/HRM/MARQ) —
-    só INSERT, nunca mexe nas 10 perguntas existentes (evita quebrar
-    `quiz_attempts`/`quiz_answers` de quem já respondeu).
+    por inconsistência entre as duas fontes cadastradas. **Fēnix 9 citado
+    pelo usuário não existe em nenhuma fonte de dados do projeto — não foi
+    incluído; precisa confirmação antes de entrar.** Acrescenta 7 perguntas
+    novas ao quiz `produtos` (Rally/Varia/Blaze/Fenix/HRM/MARQ) — só INSERT,
+    nunca mexe nas 10 perguntas existentes (evita quebrar `quiz_attempts`/
+    `quiz_answers` de quem já respondeu).
+
+    **Dois tipos de bloco novos em `ContentBlocks.js`** (nenhum dos 16
+    existentes cobria a necessidade — ver comentário no topo do arquivo):
+    - `tabs` ("Abas Comparativas") — reaproveita o mesmo par de classes
+      `.itabs`/`.itab` já usado nos Guias Técnicos (`deepDiveDetail.js`),
+      só que como bloco de lição reutilizável em vez de um campo específico
+      de `content_library.payload.tabs`. Shape: `{items:[{label,title,text,
+      note}]}`.
+    - `timeline` ganhou o campo opcional `reveal` (aditivo — sem ele, timeline
+      continua sempre visível como antes): quando `true`, cada item some
+      atrás de um botão "ver", pra não deixar a pessoa pular direto pro fim.
+    - `flip_card` ganhou o campo opcional `coverUrl` por card (aditivo) —
+      quando presente, uma foto de fundo substitui o emoji na frente do
+      card. Editor de blocos (`setupBlockArrayEditor`) atualizado pros 3
+      tipos, sem quebrar nenhum conteúdo antigo que já usa `flip_card`/
+      `timeline` sem esses campos.
 
 ## O que ainda não está aqui
 

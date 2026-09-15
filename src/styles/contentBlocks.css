@@ -16,6 +16,45 @@
   margin: 12px 0;
 }
 
+/* Separador de assunto (2026-09-15) — usado dentro do html de blocos
+ * texto_rico pra marcar a virada de um tema pro outro (ex.: linha Forerunner
+ * pra linha MARQ); sem isso, dois &lt;h3&gt; consecutivos ficavam próximos
+ * demais e pareciam continuação do mesmo assunto. */
+.cb-topic-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 36px 0 26px;
+}
+
+/* Checklist de perguntas de qualificação (2026-09-15) — usado dentro do html
+ * de blocos texto_rico quando a lista é literalmente um roteiro de perguntas
+ * a fazer, não uma lista de fatos. */
+.cb-checklist {
+  list-style: none;
+  padding-left: 0;
+  margin: 12px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cb-checklist li {
+  position: relative;
+  padding-left: 28px;
+}
+
+.cb-checklist li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 2px;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid var(--border2);
+  border-radius: 4px;
+  background: var(--card-bg);
+}
+
 /* ── Banner ── */
 .cb-banner {
   display: flex;
@@ -140,6 +179,50 @@
 }
 
 .cb-timeline-text { margin: 4px 0 0; font-size: 13px; color: var(--text2); line-height: 1.5; }
+
+/* Revelação por etapas (2026-09-15, `reveal: true`) — mesma timeline, só que
+ * o texto de cada item fica escondido atrás de um botão "ver", pra quem lê
+ * não pular direto pro fim/ignorar uma etapa. */
+.cb-timeline-reveal .cb-timeline-item { align-items: flex-start; }
+
+.cb-timeline-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cb-timeline-reveal .cb-timeline-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.cb-timeline-reveal-btn {
+  flex-shrink: 0;
+  padding: 4px 14px;
+  background: var(--text);
+  color: var(--white);
+  border: none;
+  border-radius: var(--r2);
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.cb-timeline-reveal-btn:hover { opacity: 0.85; }
+
+.cb-editor-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  color: var(--text2);
+  margin: 6px 0;
+}
 
 /* ── Imagem única (controle de tamanho: pequena/média/grande/largura total,
  * ou largura personalizada via style inline no próprio bloco) — height:auto
@@ -393,14 +476,14 @@
 .cb-flip-card {
   perspective: 1200px;
   cursor: pointer;
-  min-height: 260px;
+  min-height: 160px;
 }
 
 .cb-flip-card-inner {
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: 260px;
+  min-height: 160px;
   transition: transform 0.6s;
   transform-style: preserve-3d;
 }
@@ -419,6 +502,8 @@
   box-shadow: var(--sh-neutral-sm);
   display: flex;
   flex-direction: column;
+  background-size: cover;
+  background-position: center;
 }
 
 .cb-flip-face-back {
@@ -426,6 +511,33 @@
   background: var(--g3);
   border-color: var(--g4);
 }
+
+/* Foto de fundo no lugar do emoji (coverUrl, opcional — 2026-09-15). Overlay
+ * escuro pra manter o texto legível, mesma técnica do card de "Recomendação
+ * principal" em library.css. */
+.cb-flip-face.has-cover {
+  border-color: transparent;
+  position: relative;
+}
+
+.cb-flip-face.has-cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(15, 15, 15, 0.1) 0%, rgba(15, 15, 15, 0.75) 100%);
+}
+
+.cb-flip-face.has-cover > * {
+  position: relative;
+  z-index: 1;
+}
+
+.cb-flip-face.has-cover .cb-flip-title,
+.cb-flip-face.has-cover .cb-flip-text { color: #fff; }
+
+.cb-flip-face.has-cover .cb-flip-subtitle,
+.cb-flip-face.has-cover .cb-flip-hint { color: rgba(255, 255, 255, 0.75); }
 
 .cb-flip-emoji { font-size: 26px; margin-bottom: 6px; }
 
@@ -604,6 +716,38 @@
 }
 
 .cb-match-progress { margin: 10px 0 0; font-size: 11.5px; color: var(--text3); text-align: right; }
+
+/* Abas comparativas (2026-09-15) — .itabs/.itab (library.css) cuidam da barra
+ * de abas; aqui só o painel de conteúdo abaixo. */
+.cb-tabs-panel {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  padding: 18px 20px;
+  margin-bottom: 20px;
+}
+
+.cb-tabs-panel-title {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.cb-tabs-panel-text {
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--text2);
+  line-height: 1.6;
+}
+
+.cb-tabs-panel-note {
+  margin: 10px 0 0;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--acc);
+}
 
 @media (max-width: 700px) {
   .cb-match-columns { grid-template-columns: 1fr; }
