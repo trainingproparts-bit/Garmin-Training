@@ -35,6 +35,7 @@ declare
   v_quiz_id uuid;
   v_body jsonb;
   v_q_id uuid;
+  v_next_order int;
 begin
   select id into v_quiz_id from quizzes
    where brand_id = (select id from brands where slug = 'garmin') and slug = 'produtos';
@@ -42,6 +43,13 @@ begin
   if v_quiz_id is null then
     raise exception 'Quiz "produtos" não encontrado — rode sql/seeds/020_quizzes.sql antes desta migração.';
   end if;
+
+  -- calcula o próximo order_index em vez de supor que o quiz tem exatamente
+  -- 10 perguntas (sql/097) — achado real ao rodar em produção: o quiz já
+  -- tinha mais perguntas que isso (order_index 10 já existia), e um valor
+  -- fixo colide com `uq_questions_quiz_order`.
+  select coalesce(max(order_index), -1) + 1 into v_next_order
+    from questions where quiz_id = v_quiz_id;
 
   -- corpo da lição (17 seções do roteiro do usuário, quizId do bloco
   -- quiz_embutido preenchido dinamicamente com o id real do quiz acima)
@@ -61,11 +69,11 @@ begin
 
   -- 7 perguntas novas no quiz do módulo, cobrindo o conteúdo novo desta
   -- lição (Rally, Varia, Blaze, Fenix, HRM, MARQ) — puro INSERT, não mexe
-  -- nas 10 perguntas existentes (Forerunner/Fenix/MARQ já cobertas por
-  -- sql/097). order_index continua depois da última (9).
+  -- nas perguntas existentes. order_index começa em v_next_order (calculado
+  -- acima), não num número fixo.
 
   insert into questions (quiz_id, body, explanation, order_index)
-  values (v_quiz_id, 'Um cliente diz que corre três vezes por semana e quer começar a acompanhar melhor sua evolução. Qual linha deve ser considerada primeiro?', 'Corrida com frequência regular e interesse em evolução é o perfil clássico de Forerunner — o próximo passo é entender se ele já usa GPS pra escolher entre entrada e intermediário.', 10)
+  values (v_quiz_id, 'Um cliente diz que corre três vezes por semana e quer começar a acompanhar melhor sua evolução. Qual linha deve ser considerada primeiro?', 'Corrida com frequência regular e interesse em evolução é o perfil clássico de Forerunner — o próximo passo é entender se ele já usa GPS pra escolher entre entrada e intermediário.', v_next_order)
   returning id into v_q_id;
   insert into alternatives (question_id, body, is_correct, feedback, order_index) values (v_q_id, 'Forerunner', true, null, 0);
   insert into alternatives (question_id, body, is_correct, feedback, order_index) values (v_q_id, 'Fēnix', false, null, 1);
@@ -73,7 +81,7 @@ begin
   insert into alternatives (question_id, body, is_correct, feedback, order_index) values (v_q_id, 'Edge', false, null, 3);
 
   insert into questions (quiz_id, body, explanation, order_index)
-  values (v_quiz_id, 'Um cliente já possui um Garmin e está treinando para uma prova de ciclismo. Ele quer acompanhar potência. Qual oportunidade deve ser investigada?', 'Potência em watts é exatamente o que o Rally mede — é uma venda complementar a um Edge ou relógio que o cliente já tenha.', 11)
+  values (v_quiz_id, 'Um cliente já possui um Garmin e está treinando para uma prova de ciclismo. Ele quer acompanhar potência. Qual oportunidade deve ser investigada?', 'Potência em watts é exatamente o que o Rally mede — é uma venda complementar a um Edge ou relógio que o cliente já tenha.', v_next_order + 1)
   returning id into v_q_id;
   insert into alternatives (question_id, body, is_correct, feedback, order_index) values (v_q_id, 'Rally', true, null, 0);
   insert into alternatives (question_id, body, is_correct, feedback, order_index) values (v_q_id, 'Varia', false, null, 1);
@@ -81,7 +89,7 @@ begin
   insert into alternatives (question_id, body, is_correct, feedback, order_index) values (v_q_id, 'Descent', false, null, 3);
 
   insert into questions (quiz_id, body, explanation, order_index)
-  values (v_quiz_id, 'Um ciclista que já utiliza Edge pergunta como pode aumentar a segurança durante seus pedais de estrada. Qual categoria faz sentido apresentar?', 'O Varia (radar RTL515) detecta veículos se aproximando por trás e alerta direto no Edge ou no relógio — é a categoria de segurança do ciclista.', 12)
+  values (v_quiz_id, 'Um ciclista que já utiliza Edge pergunta como pode aumentar a segurança durante seus pedais de estrada. Qual categoria faz sentido apresentar?', 'O Varia (radar RTL515) detecta veículos se aproximando por trás e alerta direto no Edge ou no relógio — é a categoria de segurança do ciclista.', v_next_order + 2)
   returning id into v_q_id;
   insert into alternatives (question_id, body, is_correct, feedback, order_index) values (v_q_id, 'Varia', true, null, 0);
   insert into alternatives (question_id, body, is_correct, feedback, order_index) values (v_q_id, 'Rally', false, null, 1);
@@ -89,7 +97,7 @@ begin
   insert into alternatives (question_id, body, is_correct, feedback, order_index) values (v_q_id, 'Approach', false, null, 3);
 
   insert into questions (quiz_id, body, explanation, order_index)
-  values (v_quiz_id, 'Um cliente ligado à equitação quer acompanhar a frequência cardíaca e o desempenho do cavalo durante os treinos. Qual solução Garmin deve entrar na conversa?', 'O Blaze é a solução Garmin específica para monitoramento equino — não é uma linha de relógios, e sim um sistema próprio com sensor e app dedicado.', 13)
+  values (v_quiz_id, 'Um cliente ligado à equitação quer acompanhar a frequência cardíaca e o desempenho do cavalo durante os treinos. Qual solução Garmin deve entrar na conversa?', 'O Blaze é a solução Garmin específica para monitoramento equino — não é uma linha de relógios, e sim um sistema próprio com sensor e app dedicado.', v_next_order + 3)
   returning id into v_q_id;
   insert into alternatives (question_id, body, is_correct, feedback, order_index) values (v_q_id, 'Blaze', true, null, 0);
   insert into alternatives (question_id, body, is_correct, feedback, order_index) values (v_q_id, 'Descent', false, null, 1);
@@ -97,7 +105,7 @@ begin
   insert into alternatives (question_id, body, is_correct, feedback, order_index) values (v_q_id, 'GPSMAP', false, null, 3);
 
   insert into questions (quiz_id, body, explanation, order_index)
-  values (v_quiz_id, 'Um cliente busca um relógio que combine treinamento, aventura e atividades outdoor. Qual linha faz mais sentido investigar?', 'O fēnix combina treinamento, navegação e atividades outdoor numa proposta premium multiesporte — é a linha pra quem pratica mais de um esporte ou valoriza resistência e navegação.', 14)
+  values (v_quiz_id, 'Um cliente busca um relógio que combine treinamento, aventura e atividades outdoor. Qual linha faz mais sentido investigar?', 'O fēnix combina treinamento, navegação e atividades outdoor numa proposta premium multiesporte — é a linha pra quem pratica mais de um esporte ou valoriza resistência e navegação.', v_next_order + 4)
   returning id into v_q_id;
   insert into alternatives (question_id, body, is_correct, feedback, order_index) values (v_q_id, 'Fēnix', true, null, 0);
   insert into alternatives (question_id, body, is_correct, feedback, order_index) values (v_q_id, 'Forerunner', false, null, 1);
@@ -105,7 +113,7 @@ begin
   insert into alternatives (question_id, body, is_correct, feedback, order_index) values (v_q_id, 'Zūmo', false, null, 3);
 
   insert into questions (quiz_id, body, explanation, order_index)
-  values (v_quiz_id, 'Um atleta quer ampliar os dados de frequência cardíaca durante os treinos. Qual categoria de produto pode complementar o relógio?', 'Um sensor HRM (200 ou 600) complementa o relógio com uma leitura de frequência cardíaca mais precisa e específica que o sensor óptico do pulso.', 15)
+  values (v_quiz_id, 'Um atleta quer ampliar os dados de frequência cardíaca durante os treinos. Qual categoria de produto pode complementar o relógio?', 'Um sensor HRM (200 ou 600) complementa o relógio com uma leitura de frequência cardíaca mais precisa e específica que o sensor óptico do pulso.', v_next_order + 5)
   returning id into v_q_id;
   insert into alternatives (question_id, body, is_correct, feedback, order_index) values (v_q_id, 'HRM', true, null, 0);
   insert into alternatives (question_id, body, is_correct, feedback, order_index) values (v_q_id, 'Varia', false, null, 1);
@@ -113,7 +121,7 @@ begin
   insert into alternatives (question_id, body, is_correct, feedback, order_index) values (v_q_id, 'Edge', false, null, 3);
 
   insert into questions (quiz_id, body, explanation, order_index)
-  values (v_quiz_id, 'Um cliente procura um produto Garmin premium, mas também valoriza materiais sofisticados e exclusividade. Qual linha deve ser considerada?', 'A MARQ combina performance Garmin com materiais premium (titânio, couro italiano, fibra de carbono) e posicionamento de luxo — não é só "um relógio com mais recursos".', 16)
+  values (v_quiz_id, 'Um cliente procura um produto Garmin premium, mas também valoriza materiais sofisticados e exclusividade. Qual linha deve ser considerada?', 'A MARQ combina performance Garmin com materiais premium (titânio, couro italiano, fibra de carbono) e posicionamento de luxo — não é só "um relógio com mais recursos".', v_next_order + 6)
   returning id into v_q_id;
   insert into alternatives (question_id, body, is_correct, feedback, order_index) values (v_q_id, 'MARQ', true, null, 0);
   insert into alternatives (question_id, body, is_correct, feedback, order_index) values (v_q_id, 'Fēnix 8', false, null, 1);
