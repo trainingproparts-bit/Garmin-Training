@@ -823,9 +823,16 @@ Editor do Supabase:
     Textos de produto usam só o `dest` já cadastrado em `content_library`
     (sql/seeds/040); Blaze usa só fatos já cadastrados na Academia de
     Produtos (sql/090), deliberadamente sem afirmar "distância"/"recuperação"
-    por inconsistência entre as duas fontes cadastradas. **Fēnix 9 citado
-    pelo usuário não existe em nenhuma fonte de dados do projeto — não foi
-    incluído; precisa confirmação antes de entrar.** Acrescenta 7 perguntas
+    por inconsistência entre as duas fontes cadastradas. **Fēnix 9** — não
+    encontrado na busca inicial (nenhum arquivo `sql/` menciona), mas o
+    usuário confirmou que já existe cadastrado na Academia de Produtos
+    (produto real, categoria "Aventura & Multiesporte", visto ao vivo no
+    app rodando localmente — não em nenhum arquivo de migração/seed deste
+    repositório, então deve ter sido cadastrado direto pelo editor da
+    Academia). Adicionado como 4º card da linha Fēnix usando só fatos reais
+    da própria página do produto (visão geral, diferenciais, personas e
+    "quando indicar"/"quando não indicar" — inclusive a ressalva real de que
+    a versão Pro com LTE não é vendida no Brasil). Acrescenta 7 perguntas
     novas ao quiz `produtos` (Rally/Varia/Blaze/Fenix/HRM/MARQ) — só INSERT,
     nunca mexe nas 10 perguntas existentes (evita quebrar `quiz_attempts`/
     `quiz_answers` de quem já respondeu).
