@@ -11,14 +11,16 @@
  */
 
 .home-welcome h2 {
-  font-size: 24px;
-  font-weight: 800;
+  font-size: 27px;
+  font-weight: 400;
+  letter-spacing: -0.2px;
   color: var(--text);
   margin: 0 0 8px;
 }
 
 .home-welcome h2 span {
   color: var(--g);
+  font-weight: 500;
 }
 
 .home-welcome p {
@@ -58,11 +60,11 @@
 }
 
 .brand-card-name {
-  font-size: 18px;
-  font-weight: 800;
+  font-size: 17px;
+  font-weight: 500;
   color: var(--text);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 1.5px;
   margin: 0 0 8px;
 }
 
