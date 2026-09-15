@@ -7,7 +7,7 @@
 // relatório de auditoria: gamificação social não implementada), mostra um
 // estado vazio honesto em vez de nomes/números inventados.
 
-import { renderGpsTrail, calcularProgresso, proximoCheckpoint, renderHud } from './GpsTrail.js';
+import { calcularProgresso, proximoCheckpoint, renderHud } from './GpsTrail.js';
 import {
   fetchRecentActivity,
   fetchActivityById,
@@ -152,8 +152,6 @@ export async function renderDashboardHome(container, data, onCheckpointClick) {
       <div data-role="activity-feed"></div>
     </div>
 
-    <div class="dash-full-trail" data-role="trail-full"></div>
-
     <div data-role="revisao-card"></div>
 
     <div class="dash-special-lines" data-role="special-lines"></div>
@@ -167,9 +165,10 @@ export async function renderDashboardHome(container, data, onCheckpointClick) {
   }, { once: true });
   container.querySelector('[data-role="welcome-avatar"]')?.addEventListener('click', () => navigateToPanel('album'));
 
-  const fullTrailEl = container.querySelector('[data-role="trail-full"]');
-  const visibleZones = zones.filter((zone) => zone.free_order);
-  renderGpsTrail(fullTrailEl, visibleZones, doneCheckpointIds, onCheckpointClick, moduleProgressMap, isAdmin);
+  // Circuito de Desafios + Duelos saíram do Dashboard (pedido do usuário,
+  // 2026-09-15 — "tirar a poluição do site"): já existem como página própria
+  // na Arena de Desafios (src/pages/arenaDesafios.js, item da sidebar), sem
+  // precisar duplicar a fileira aqui.
 
   // trilha inteira (todas as zonas, inclusive as escondidas da fileira
   // grande) agora é uma página própria — acordeão por zona + mapa de fases,
