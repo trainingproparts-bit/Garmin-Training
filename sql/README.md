@@ -882,6 +882,22 @@ Editor do Supabase:
     `lessons.body` via `jsonb_set` nos índices fixos dos blocos (3, 5, 7, 9 —
     estrutura conhecida da sql/120, lição só editada por migração).
 
+50. **`122_adiciona_index_s2_licao_portfolio.sql`**
+    Usuário pediu pra incluir o Index S2 (balança de bioimpedância Garmin)
+    na lição de Portfólio de Produtos, junto das outras categorias não-relógio
+    (`card_grid` "Garmin é muito mais do que relógios"). Nenhum dado do
+    Index S2 estava cadastrado em lugar nenhum do projeto (nem Academia de
+    Produtos, nem `content_library`) — diferente do Fēnix 9 (sql/120), que já
+    estava cadastrado na Academia. Usuário pediu explicitamente pra pesquisar
+    as specs reais no site oficial da Garmin em vez de inventar; fatos usados
+    vêm do manual oficial (garmin.com/support — mede peso, IMC, % gordura
+    corporal, % água corporal, massa muscular esquelética e massa óssea por
+    bioimpedância; carga máxima 181,4 kg; sincroniza por Wi-Fi direto com o
+    Garmin Connect sem precisar do celular por perto; reconhece
+    automaticamente até 16 perfis de usuário). Migração só concatena
+    (`||`) um 9º item ao array `items` do bloco `card_grid` (índice 11),
+    sem tocar nos 8 itens existentes.
+
 ## O que ainda não está aqui
 
 - Cadastro de novo usuário pelo admin — exige a Supabase Admin API
