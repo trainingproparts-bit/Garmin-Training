@@ -607,12 +607,12 @@
 }
 
 .quiz-runner-feedback.ok {
-  background: linear-gradient(135deg, var(--acc-tint), #f0dde0);
+  background: linear-gradient(135deg, var(--acc-tint), var(--g4));
   color: var(--acc);
 }
 
 .quiz-runner-feedback.no {
-  background: linear-gradient(135deg, var(--g3), #fde3e5);
+  background: linear-gradient(135deg, var(--g3), var(--g4));
   color: var(--g2);
 }
 
