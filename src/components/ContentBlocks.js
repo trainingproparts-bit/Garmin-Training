@@ -360,16 +360,16 @@ function renderMetricCardGridBlock(b, index) {
       ${items.map((it, i) => `
         <div class="cb-metric-card">
           <div class="cb-metric-card-top">
-            <span class="cb-metric-icon">${it.icon || '📊'}</span>
+            <span class="cb-metric-icon">${it.icon || icon('checkCircle')}</span>
             <span class="cb-metric-name">${it.name || ''}</span>
             ${it.badge ? `<span class="cb-metric-badge">${it.badge}</span>` : ''}
           </div>
           <p class="cb-metric-def">${it.definition || ''}</p>
           <button type="button" class="cb-metric-toggle" data-cb-acc="cb-acc-${index}-${i}">
-            <span>Toque prático</span><span class="cb-accordion-chevron">▼</span>
+            <span>Toque prático</span><span class="cb-accordion-chevron">${icon('chevronDown')}</span>
           </button>
           <div class="cb-metric-tip" id="cb-acc-${index}-${i}" hidden>
-            <span class="cb-metric-tip-icon">🎯</span>
+            <span class="cb-metric-tip-icon">${icon('lightbulb')}</span>
             <p>${it.tip || ''}</p>
           </div>
         </div>`).join('')}

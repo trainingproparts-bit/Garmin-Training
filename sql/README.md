@@ -1160,6 +1160,36 @@ Editor do Supabase:
     "a versão Pro com LTE" → "LTE"). Testado ao vivo com o texto novo:
     176px, sem scroll, na largura mais estreita da grade.
 
+61. **`133_reformula_modulo_concorrentes_objecoes.sql`**
+    Reformula por completo o módulo "Concorrentes & Objeções", de página de
+    consulta para treinamento de comportamento de atendimento. Brief do
+    usuário: o módulo não devia mais "informar sobre concorrentes", devia
+    treinar a sequência conheça o cliente → entenda o critério → reconheça
+    o concorrente → apresente fatos → conecte ao uso → deixe o cliente
+    decidir, com a regra fixa "nunca fale mal de concorrente".
+    Reorganizado de 5 para 6 lições (reaproveita as 5 existentes, insere 1
+    nova, mesmo padrão de sql/125 e sql/129 nesta sessão): Antes de
+    comparar (cenário + grade de reconhecimento dos 4 concorrentes) →
+    Apple Watch e Polar → Coros e Samsung Galaxy Watch (cada dupla com abas
+    "Garmin se destaca em" / "[concorrente] se destaca em" e accordion de
+    objeções reestruturado em 4 campos: o que o cliente diz, como
+    interpretar, como responder, o que evitar) → O que realmente importa
+    (os 10 critérios como cards de métrica expansível, cada um conectado ao
+    uso real, mais quiz de associação perfil→concorrente) → Lidando com
+    objeções (timeline do método em 4 etapas + 4 objeções gerais
+    reestruturadas em 5 campos) → Pratique e domine, lição nova (4 cenários
+    de loja com escolha, checklist de erros a evitar, checklist final de
+    domínio, encerramento).
+    Todo dado técnico (bateria, GPS, preços relativos, certificações) é o
+    mesmo já cadastrado, nenhuma especificação nova — só a estrutura
+    pedagógica dos campos é nova.
+    De passagem corrigido em `ContentBlocks.js` (afeta o site inteiro,
+    mesma categoria de bug já corrigida antes nesta sessão para
+    banner/objecao/roteiro/accordion): `renderMetricCardGridBlock` tinha
+    emoji fixo no próprio renderer (📊 ícone padrão, 🎯 na dica, ▼ no lugar
+    do chevron) — agora usa `icon()` monocromático, com CSS novo
+    (`.cb-metric-icon`, `.cb-metric-tip-icon`) em `contentBlocks.css`.
+
 ## O que ainda não está aqui
 
 - Cadastro de novo usuário pelo admin — exige a Supabase Admin API
