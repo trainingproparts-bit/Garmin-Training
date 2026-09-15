@@ -14,6 +14,7 @@ import {
   updateProfileStatus,
   createUser,
   resetUserPassword,
+  deleteUser,
 } from '../services/adminService.js';
 import { fetchActiveBrands } from '../services/brandService.js';
 import { insertAvaliacaoGoogle } from '../services/avaliacoesGoogleService.js';
@@ -41,25 +42,25 @@ async function initAdminPanel() {
       fetchStores(),
       fetchActiveBrands(),
     ]);
-    renderPanel(container, profiles, roles, stores, brandsResult.data || []);
+    renderPanel(container, profiles, roles, stores, brandsResult.data || [], profile.id);
   } catch (err) {
     console.error('[AdminPanel] erro ao carregar usuários:', err);
     container.innerHTML = '<p class="learning-error">Não foi possível carregar os usuários agora.</p>';
   }
 }
 
-function renderPanel(container, profiles, roles, stores, brands) {
+function renderPanel(container, profiles, roles, stores, brands, currentProfileId) {
   container.innerHTML = `
     ${renderCreateUserForm(roles, stores, brands)}
     ${renderGoogleReviewForm(profiles)}
     <h3 class="dash-section-label" style="margin-top:28px;">Usuários cadastrados</h3>
-    <div id="usersTableSection">${renderTable(profiles, roles, stores)}</div>
+    <div id="usersTableSection">${renderTable(profiles, roles, stores, currentProfileId)}</div>
   `;
 
   // No sucesso do cadastro, só a tabela recarrega — o card com a senha
   // (exibição única, RN 1.1) não pode ser apagado por um refresh do painel
   // inteiro, senão o admin nunca teria tempo de ler/copiar a senha.
-  setupCreateUserForm(container, () => refreshUsersTable(container, roles, stores));
+  setupCreateUserForm(container, () => refreshUsersTable(container, roles, stores, currentProfileId));
   setupGoogleReviewForm(container, profiles);
   setupTableHandlers(container);
 }
@@ -134,12 +135,12 @@ function setupGoogleReviewForm(container, profiles) {
   });
 }
 
-async function refreshUsersTable(container, roles, stores) {
+async function refreshUsersTable(container, roles, stores, currentProfileId) {
   const section = container.querySelector('#usersTableSection');
   if (!section) return;
   try {
     const profiles = await fetchAllProfiles();
-    section.innerHTML = renderTable(profiles, roles, stores);
+    section.innerHTML = renderTable(profiles, roles, stores, currentProfileId);
     setupTableHandlers(container);
   } catch (err) {
     console.error('[AdminPanel] erro ao atualizar lista de usuários:', err);
@@ -235,7 +236,7 @@ function setupCreateUserForm(container, onCreated) {
   });
 }
 
-function renderTable(profiles, roles, stores) {
+function renderTable(profiles, roles, stores, currentProfileId) {
   if (!profiles.length) {
     return '<p class="learning-empty">Nenhum usuário cadastrado ainda.</p>';
   }
@@ -244,7 +245,7 @@ function renderTable(profiles, roles, stores) {
     <div id="resetPasswordResult"></div>
     <div class="lib-table-wrap">
       <table class="lib-table">
-        <thead><tr><th>Nome</th><th>Cargo</th><th>Loja</th><th>Status</th><th>Senha</th><th>Pontuação</th></tr></thead>
+        <thead><tr><th>Nome</th><th>Cargo</th><th>Loja</th><th>Status</th><th>Senha</th><th>Pontuação</th><th></th></tr></thead>
         <tbody>
           ${profiles.map((p) => `
             <tr data-profile-id="${p.id}">
@@ -271,6 +272,12 @@ function renderTable(profiles, roles, stores) {
                 </button>
               </td>
               <td class="lib-prod-dest">${p.performance_score ?? 0} pts</td>
+              <td>
+                ${p.id === currentProfileId ? '' : `
+                <button type="button" class="learning-card-btn" data-delete-user style="padding:5px 10px;font-size:11.5px;color:#b91c1c;">
+                  🗑 Remover
+                </button>`}
+              </td>
             </tr>
           `).join('')}
         </tbody>
@@ -327,6 +334,25 @@ function setupTableHandlers(container) {
         console.error('[AdminPanel] erro ao redefinir senha:', err);
         resultEl.innerHTML = `<p class="learning-error">${err.message || 'Não foi possível redefinir a senha agora.'}</p>`;
       } finally {
+        btn.disabled = false;
+      }
+    });
+  });
+
+  container.querySelectorAll('[data-delete-user]').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const row = btn.closest('[data-profile-id]');
+      const profileId = row.dataset.profileId;
+      const fullName = row.querySelector('.lib-prod-name')?.textContent || 'este usuário';
+      if (!window.confirm(`Remover ${fullName} da plataforma? A conta é desativada e o login para de funcionar; histórico e certificações são preservados, e um admin pode reverter depois no banco se precisar.`)) return;
+
+      btn.disabled = true;
+      try {
+        await deleteUser(profileId);
+        row.remove();
+      } catch (err) {
+        console.error('[AdminPanel] erro ao remover usuário:', err);
+        alert(err.message || 'Não foi possível remover o usuário agora.');
         btn.disabled = false;
       }
     });

@@ -13,6 +13,7 @@ export async function fetchAllProfiles() {
   const { data, error } = await supabase
     .from('profiles')
     .select('id, full_name, username, job_title, status, performance_score, role_id, store_id, roles(code, label), stores!profiles_store_id_fkey(name)')
+    .is('deleted_at', null)
     .order('full_name', { ascending: true });
   if (error) throw error;
   return data;
@@ -69,6 +70,18 @@ export async function createUser({ full_name, username, role_id, store_id, brand
   }
   if (data?.error) throw new Error(data.error);
   return data;
+}
+
+/**
+ * Remove um usuário da plataforma (RN — desligamento de colaborador). Nunca
+ * é um DELETE físico: chama fn_soft_delete_profile (sql/117), que marca
+ * status='inactive' e deleted_at=now(), preservando histórico/certificações
+ * e barrando login. A checagem de admin e o registro de quem fez a ação
+ * acontecem dentro da própria função (auth.uid() no servidor), não aqui.
+ */
+export async function deleteUser(profileId) {
+  const { error } = await supabase.rpc('fn_soft_delete_profile', { p_profile_id: profileId });
+  if (error) throw error;
 }
 
 /**
