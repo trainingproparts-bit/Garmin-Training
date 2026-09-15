@@ -985,6 +985,58 @@ Editor do Supabase:
     o que agora apagaria o ícone (textContent substitui todos os filhos,
     SVG incluso) — trocado por `btn.innerHTML`.
 
+55. **`127_limpa_emojis_modulo_perfis_cliente_trilha.sql`**
+    Usuário perguntou sobre deploy do "Perfis de Cliente" e só depois
+    esclareceu que não era a ficha da Biblioteca Técnica (reformulada antes
+    nesta sessão), e sim o módulo homônimo da trilha (Zona Explorador,
+    3 lições: Perfis de corrida / Perfis outdoor, lifestyle e
+    especialidades / Como sondar e identificar o cliente certo). Confirmado
+    via pergunta direta que queria o mesmo tratamento dos outros módulos.
+    Conteúdo **não veio do sql/030** (desatualizado) — a lição "Perfis de
+    corrida" já tinha sido editada ao vivo pelo admin depois da sql/030
+    (Forerunner 55→165 como entrada, "Training Readiness"→"Prontidão de
+    Treino"), sem deixar rastro em nenhum arquivo deste diretório; texto
+    extraído direto do DOM da lição publicada. Remove emoji de 11 blocos
+    `card` (convertidos em 2 `card_grid` de 2 colunas — mesmo padrão do
+    Concorrentes & Objeções) e de 2 títulos de card_grid em "Como sondar",
+    mais 1 separador de assunto entre o grupo outdoor/lifestyle e o de
+    especialidades (eram 8 cards emendados sem quebra temática).
+
+56. **`128_ajusta_portfolio_titulo_categorias.sql`**
+    4 problemas reportados ao vivo pelo usuário na lição do Portfólio de
+    Produtos, depois de rodar sql/120-122:
+    1. Título da lição continuava "Linha MARQ (Gen 2): relógios de luxo
+       Garmin" — já combinado numa rodada anterior desta sessão trocar pra
+       "Portfólio de Produtos Garmin" (resposta do usuário a uma pergunta
+       direta), mas nunca chegou a ser aplicado. UPDATE direto (editor de
+       título pelo admin ainda não existe na UI).
+    2. Flip cards com barra de rolagem interna sem necessidade — o
+       `min-height` de 132px (sql/121, pra caber 4 colunas) ficou pequeno
+       pro conteúdo real: 20 dos 24 cards da lição estouravam a altura
+       (confirmado via DOM, `scrollHeight` vs `clientHeight`). Corrigido em
+       CÓDIGO (`contentBlocks.css`, não em dado): `min-height` 132px→178px,
+       cobre todos os cards exceto 1 outlier real (verso do Fēnix 9, texto
+       mais longo por causa da ressalva do LTE).
+    3. Bloco `card_grid` de 9 categorias (Edge/Varia/Rally/HRM/Descent/
+       Approach/GPSMAP/Blaze/Index S2, sql/120+122) removido por completo —
+       usuário vai colocar uma imagem própria no lugar depois, pelo editor.
+       Filtra pelo conteúdo do bloco (não por índice fixo).
+    4. Bloco `tabs` do MARQ (Commander/Athlete/Golfer Carbon, sql/121)
+       trocado por 3 grupos de `timeline reveal:true` (4 perguntas cada:
+       Para quem é?/O que entrega?/O que diferencia?/Como apresentar?),
+       mesmo padrão de revelação por etapas do Blaze — pedido do usuário
+       ("deixa igual o blaze"). Texto idêntico ao já usado no `tabs`
+       anterior, só reorganizado peça por peça. Troca 1 bloco por 6, então
+       usa um array Postgres (`jsonb[]` via `array_agg` + `unnest` com
+       slices `[1:idx-1]`/`[idx+1:]`) em vez de `jsonb_set` (que só troca
+       1-por-1 no mesmo índice).
+
+    **De quebra (CSS, `contentBlocks.css`)**: títulos de modelo centralizados
+    (nova classe `.cb-model-heading`, usada nos 3 `<h4>` do MARQ) e a barra
+    de botões de abas centralizada só dentro de blocos de lição
+    (`.cb-tabs.itabs`, afeta Edge e HRM) — `.itabs` sozinha (Guias Técnicos,
+    `library.css`) continua alinhada à esquerda como já era.
+
 ## O que ainda não está aqui
 
 - Cadastro de novo usuário pelo admin — exige a Supabase Admin API

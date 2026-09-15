@@ -26,6 +26,15 @@
   margin: 36px 0 26px;
 }
 
+/* Título de modelo centralizado (2026-09-15) — usado em texto_rico quando o
+ * &lt;h4&gt; nomeia um modelo específico logo antes do bloco interativo dele
+ * (ex.: "MARQ Commander (Gen 2)" antes do timeline de revelação daquele
+ * modelo), pedido do usuário pra dar destaque de "ficha de produto" em vez
+ * de título de parágrafo comum. */
+.cb-model-heading {
+  text-align: center;
+}
+
 /* Checklist de perguntas de qualificação (2026-09-15) — usado dentro do html
  * de blocos texto_rico quando a lista é literalmente um roteiro de perguntas
  * a fazer, não uma lista de fatos. */
@@ -508,14 +517,14 @@
 .cb-flip-card {
   perspective: 1200px;
   cursor: pointer;
-  min-height: 132px;
+  min-height: 178px;
 }
 
 .cb-flip-card-inner {
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: 132px;
+  min-height: 178px;
   transition: transform 0.6s;
   transform-style: preserve-3d;
 }
@@ -757,7 +766,13 @@
 .cb-match-progress { margin: 10px 0 0; font-size: 11.5px; color: var(--text3); text-align: right; }
 
 /* Abas comparativas (2026-09-15) — .itabs/.itab (library.css) cuidam da barra
- * de abas; aqui só o painel de conteúdo abaixo. */
+ * de abas; aqui só o painel de conteúdo abaixo. Botões centralizados
+ * (pedido do usuário) só nesta instância — .itabs sozinha (Guias Técnicos,
+ * library.css) continua alinhada à esquerda como já era. */
+.cb-tabs.itabs {
+  justify-content: center;
+}
+
 .cb-tabs-panel {
   background: var(--card-bg);
   border: 1px solid var(--border);
@@ -772,6 +787,7 @@
   font-size: 16px;
   font-weight: 700;
   color: var(--text);
+  text-align: center;
 }
 
 .cb-tabs-panel-text {
