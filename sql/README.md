@@ -846,6 +846,19 @@ Editor do Supabase:
       tipos, sem quebrar nenhum conteúdo antigo que já usa `flip_card`/
       `timeline` sem esses campos.
 
+    **Imagem do ecossistema Garmin embutida como base64** (bloco `imagem`,
+    logo após a introdução) — o usuário mandou a imagem pronta e pediu pra
+    incluir no início da lição; sem acesso ao Storage do Supabase nesta
+    sessão (sem credenciais), ela foi embutida como data URI (~420KB) em vez
+    de subir como arquivo e referenciar por URL, que é o padrão do resto do
+    projeto (`uploadContentImage`, `ImageUploadField.js`). Funciona, mas
+    deixa a migração (e a linha de `lessons.body` no banco) bem mais pesada
+    que o normal. **Recomendado**: depois de rodar esta migração, o usuário
+    reabrir a lição no editor ("Editar conteúdo"), trocar a imagem pelo
+    mesmo arquivo via upload normal (troca o data URI por uma URL do
+    Storage) — nenhuma mudança de código necessária pra isso, é só reeditar
+    o bloco já existente.
+
 ## O que ainda não está aqui
 
 - Cadastro de novo usuário pelo admin — exige a Supabase Admin API
