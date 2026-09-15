@@ -30,8 +30,15 @@ import {
 // Nav de seção agrupada em 3 blocos (redesign 2026-09-15, pedido do usuário
 // — "agrupar itens por seção com espaçamento maior ou micro-headers"):
 // Produto (o que é/pra quem é) → Vendas (como vender) → Recursos (apoio).
+// "hardware" e "uso" (2026-09-15, pedido do usuário — redesign do CIRQA):
+// specs técnicas (peso/sensor/bateria/conectividade) e modo de uso
+// (pulso/bíceps, LEDs, botão físico, limitações) não cabiam em nenhuma seção
+// existente sem virar um "diferenciais" inchado demais. Genéricas o
+// suficiente pra qualquer produto usar depois, não exclusivas do CIRQA —
+// ficam vazias (mesmo estado "conteúdo não cadastrado" de qualquer seção
+// sem blocos) pros outros produtos até alguém preencher.
 const NAV_GROUPS = [
-  { label: 'Produto', sections: ['visao_geral', 'personas', 'diferenciais', 'novidades'] },
+  { label: 'Produto', sections: ['visao_geral', 'personas', 'diferenciais', 'hardware', 'uso', 'novidades'] },
   { label: 'Vendas', sections: ['comparativos', 'scripts_venda', 'objecoes', 'casos_uso'] },
   { label: 'Recursos', sections: ['faq', 'downloads', 'quiz', 'relacionados'] },
 ];
@@ -40,6 +47,8 @@ const NAV_SECTIONS = [
   { key: 'visao_geral', label: 'Visão Geral', icon: 'fileText' },
   { key: 'personas', label: 'Personas', icon: 'users' },
   { key: 'diferenciais', label: 'Diferenciais', icon: 'star' },
+  { key: 'hardware', label: 'Hardware', icon: 'watch' },
+  { key: 'uso', label: 'Uso', icon: 'checkCircle' },
   { key: 'novidades', label: 'O que há de novo?', icon: 'zap' },
   { key: 'comparativos', label: 'Comparativos', icon: 'scale' },
   { key: 'scripts_venda', label: 'Scripts de Venda', icon: 'message' },
@@ -52,7 +61,13 @@ const NAV_SECTIONS = [
 ];
 const NAV_SECTION_BY_KEY = new Map(NAV_SECTIONS.map((s) => [s.key, s]));
 
-const BLOCK_SECTION_KEYS = new Set(['visao_geral', 'personas', 'diferenciais', 'novidades', 'scripts_venda', 'objecoes', 'casos_uso', 'faq']);
+// "comparativos" (2026-09-15) — passa a aceitar blocos ricos também (ex.:
+// tabela/accordion de "CIRQA × Whoop", uma marca fora do catálogo, sem linha
+// possível em product_comparisons que exige os dois produtos cadastrados
+// aqui). renderSectionPanelInner mostra os blocos SE existirem, e sempre
+// mostra a lista de comparativos nativos (product_comparisons) depois —
+// aditivo, não muda nada pros produtos que só usam um dos dois caminhos.
+const BLOCK_SECTION_KEYS = new Set(['visao_geral', 'personas', 'diferenciais', 'hardware', 'uso', 'novidades', 'comparativos', 'scripts_venda', 'objecoes', 'casos_uso', 'faq']);
 const MATERIAL_ICON = { pdf: 'fileText', image: 'image', folder: 'folder', video: 'film' };
 const MATERIAL_TYPES = ['pdf', 'image', 'folder', 'video'];
 
@@ -147,7 +162,14 @@ function renderProdutoDetail(container, product, isAdmin, brandId) {
 }
 
 function renderSectionPanelInner(sectionKey, product, isAdmin) {
-  if (sectionKey === 'comparativos') return renderComparativos(product.comparisons, product.slug);
+  // "comparativos" (2026-09-15): mostra os blocos ricos cadastrados
+  // (product_sections, ex.: comparativo editorial "CIRQA × Whoop" — marca
+  // fora do catálogo, sem linha possível em product_comparisons) SEGUIDOS
+  // da lista nativa de comparativos entre produtos do catálogo. Aditivo:
+  // produto sem blocos aqui continua mostrando só a lista de sempre.
+  if (sectionKey === 'comparativos') {
+    return renderBlockSectionPanel(sectionKey, product, isAdmin) + renderComparativos(product.comparisons, product.slug);
+  }
   if (sectionKey === 'downloads') return renderDownloadsPanel(product, isAdmin);
   if (sectionKey === 'quiz') return renderQuiz(product.quizzes, isAdmin);
   if (sectionKey === 'relacionados') return renderRelacionadosPanel(product, isAdmin);

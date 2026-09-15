@@ -122,11 +122,15 @@
   box-shadow: var(--sh-neutral-sm);
 }
 
+/* Sem max-width (2026-09-15, pedido do usuário — "muito estreito, dá pra
+ * deixar mais largo"): um teto de 760px só no texto_rico deixava o
+ * parágrafo visivelmente mais estreito que os blocos vizinhos sem esse
+ * limite (checklist, card_grid, timeline), que preenchem a coluna inteira
+ * do .content-article. Mesmo ajuste já feito na Academia de Produtos. */
 .content-article .content-article-body {
   color: var(--text);
   font-size: 15px;
   line-height: 1.7;
-  max-width: 760px;
 }
 
 /* Editar conteúdo — ícone discreto no canto (2026-09-15, pedido do usuário)

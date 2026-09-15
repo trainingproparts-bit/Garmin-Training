@@ -9,6 +9,13 @@
  * alimentada por dados reais em vez de HTML estático duplicado.
  */
 
+/* Wrapper de "Linhas Especiais e Novidades" (redesign 2026-09-15) — nunca
+ * tinha regra própria (contava só com o margin-top de .special-lines-group,
+ * cards.css), então o espaçamento em relação ao card de Revisão acima
+ * dependia de colapso de margem entre wrappers, e na prática sumia. Margem
+ * explícita aqui, na mesma escala das outras seções do dashboard (32px). */
+.dash-special-lines { margin-top: 32px; }
+
 /* ── Topo de boas-vindas ── */
 .dash-welcome-row {
   display: flex;

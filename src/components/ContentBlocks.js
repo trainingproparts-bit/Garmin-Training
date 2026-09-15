@@ -50,7 +50,7 @@ export function defaultBlockFor(type) {
     case 'objecao': return { type, items: [] };
     case 'tabela': return { type, headers: [], rows: [] };
     case 'card_grid': return { type, columns: 2, items: [] };
-    case 'flip_card': return { type, columns: 2, tall: false, compact: false, cards: [] };
+    case 'flip_card': return { type, columns: 2, tall: false, compact: false, square: false, cards: [] };
     case 'metric_card_grid': return { type, columns: 2, items: [] };
     case 'match_quiz': return { type, pairs: [] };
     case 'tabs': return { type, items: [] };
@@ -103,7 +103,7 @@ function renderBannerBlock(b) {
   return `
     <div class="cb-banner cb-banner-${tone}">
       <span class="cb-banner-icon">${icon(BANNER_ICON[tone])}</span>
-      <p class="cb-banner-text">${b.text || ''}</p>
+      <div class="cb-banner-text">${b.text || ''}</div>
     </div>`;
 }
 
@@ -147,7 +147,7 @@ function renderCardBlock(b) {
     <div class="cb-card">
       <span class="cb-card-icon">${b.icon || '💡'}</span>
       <h4 class="cb-card-title">${b.title || ''}</h4>
-      <p class="cb-card-text">${b.text || ''}</p>
+      <div class="cb-card-text">${b.text || ''}</div>
     </div>`;
 }
 
@@ -317,7 +317,7 @@ function renderCardGridBlock(b) {
               ? `<span class="cb-card-feature-icon cb-card-feature-emoji">${it.icon}</span>`
               : `<span class="cb-card-feature-icon">${icon('checkCircle')}</span>`}
           ${it.title ? `<h4 class="cb-card-title">${it.title}</h4>` : ''}
-          ${it.text ? `<p class="cb-card-text">${colorizeCheckmarks(it.text)}</p>` : ''}
+          ${it.text ? `<div class="cb-card-text">${colorizeCheckmarks(it.text)}</div>` : ''}
           ${Array.isArray(it.tags) && it.tags.length ? `
             <div class="cb-card-grid-tags">
               ${it.tags.map((t) => `<span class="tag ${CARD_GRID_TAG_CLASSES.includes(t.color) ? t.color : ''}">${t.label}</span>`).join('')}
@@ -345,11 +345,18 @@ function renderCardGridBlock(b) {
  * pergunta rápida (frente = 1 frase, verso = 1 frase, ex.: "As perguntas que
  * ajudam a encontrar o caminho") sobram de espaço vazio no min-height padrão
  * de 178px. Puramente aditivo, mesmo mecanismo do `tall`.
+ *
+ * `square` (opcional, 2026-09-15) — pedido do usuário ao ver cards com foto
+ * de capa (coverUrl) em grade 2 colunas: min-height fixo de 178px numa
+ * coluna larga dava uma proporção "banner fino" em vez de foto quadrada.
+ * Usa aspect-ratio 1:1 (acompanha a largura da coluna em qualquer breakpoint,
+ * diferente de tall/compact que são min-height fixo em px). Prioridade sobre
+ * tall/compact se mais de uma flag vier marcada.
  */
 function renderFlipCardBlock(b) {
   const cards = Array.isArray(b.cards) ? b.cards : [];
   const cols = [3, 4].includes(b.columns) ? b.columns : 2;
-  const sizeClass = b.tall ? 'cb-flip-tall' : b.compact ? 'cb-flip-compact' : '';
+  const sizeClass = b.square ? 'cb-flip-square' : b.tall ? 'cb-flip-tall' : b.compact ? 'cb-flip-compact' : '';
   return `
     <div class="cb-flip-grid cols-${cols} ${sizeClass}">
       ${cards.map((c) => `
@@ -844,6 +851,7 @@ function renderBlockFields(block) {
         </select>
         <label class="cb-editor-checkbox"><input type="checkbox" data-field="tall" ${block.tall ? 'checked' : ''}> Verso alto (para textos longos, evita rolagem dentro do card)</label>
         <label class="cb-editor-checkbox"><input type="checkbox" data-field="compact" ${block.compact ? 'checked' : ''}> Card compacto (para frente/verso com 1 frase curta, evita espaço vazio)</label>
+        <label class="cb-editor-checkbox"><input type="checkbox" data-field="square" ${block.square ? 'checked' : ''}> Card quadrado (recomendado quando a frente tem foto de capa)</label>
         <textarea data-field="cards_raw" rows="6" placeholder="Um card por linha: Emoji | Título | Subtítulo | Texto da frente | Rótulo do verso | Texto do verso | URL da imagem de fundo (opcional, substitui o emoji)">${encodeItems(block.cards, ['emoji', 'title', 'subtitle', 'frontText', 'backLabel', 'backText', 'coverUrl'])}</textarea>
         <p class="cb-editor-hint">Formato: Emoji | Título | Subtítulo | Texto da frente | Rótulo do verso | Texto do verso | URL da imagem (um card por linha, clique para virar). Os dois últimos campos são opcionais. A URL da imagem substitui o emoji na frente do card.</p>
         ${(block.cards || []).length ? `
@@ -943,6 +951,7 @@ function readBlockFromRow(row, type) {
         columns: [3, 4].includes(Number(get('columns'))) ? Number(get('columns')) : 2,
         tall: !!row.querySelector('[data-field="tall"]')?.checked,
         compact: !!row.querySelector('[data-field="compact"]')?.checked,
+        square: !!row.querySelector('[data-field="square"]')?.checked,
         cards,
       };
     }

@@ -13,6 +13,8 @@ export const SECTION_TYPES = [
   { key: 'visao_geral', label: 'Visão Geral', icon: '📋' },
   { key: 'personas', label: 'Personas', icon: '🧑‍🤝‍🧑' },
   { key: 'diferenciais', label: 'Diferenciais', icon: '⭐' },
+  { key: 'hardware', label: 'Hardware', icon: '⌚' },
+  { key: 'uso', label: 'Uso', icon: '✅' },
   { key: 'comparativos', label: 'Comparativos', icon: '⚖️' },
   { key: 'scripts_venda', label: 'Scripts de Venda', icon: '🗣️' },
   { key: 'objecoes', label: 'Objeções', icon: '🛡️' },

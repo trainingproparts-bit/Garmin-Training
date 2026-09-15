@@ -12,8 +12,40 @@
 .cb-roteiro,
 .cb-objecao,
 .cb-table-wrap,
-.cb-card-grid {
-  margin: 12px 0;
+.cb-card-grid,
+.content-article-body,
+.content-video-wrapper,
+.cb-flip-grid {
+  margin: 22px 0;
+}
+
+/* Sem isso, dois blocos vizinhos sem margem própria (ex.: um texto_rico
+ * logo após um vídeo) colavam um no outro (2026-09-15, pedido do usuário —
+ * "nada fica com espaçamento automático"). Ao acrescentar uma classe nova
+ * na lista acima, é só isso: nenhum CSS por bloco individual precisa mudar,
+ * a margem já é automática pra qualquer combinação de blocos em sequência. */
+
+/* Linha de separação automática (2026-09-15, pedido do usuário — só margem
+ * "ainda fica esquisito" quando o bloco não tem nenhuma borda/fundo próprio
+ * pra marcar onde ele começa). Só nos tipos "soltos" — texto_rico, vídeo,
+ * flip_card — que não têm caixa própria como card/accordion/banner/tabela já
+ * têm; e só quando NÃO é o primeiro bloco da seção, senão sobra uma linha
+ * solta colada no topo, sem nada acima pra separar. */
+.content-article-body:not(:first-child),
+.content-video-wrapper:not(:first-child),
+.cb-flip-grid:not(:first-child) {
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+/* Sem a linha cinza automática quando o próprio texto_rico já começa com um
+ * <hr class="cb-topic-divider"> (2026-09-15, pedido do usuário — "agora que
+ * tem o traço, tira esse vermelho... duplicado"): o divisor vermelho já
+ * cadastrado no conteúdo cumpre esse papel sozinho, não precisa das duas
+ * linhas empilhadas. */
+.content-article-body:has(> .cb-topic-divider:first-child) {
+  border-top: none;
+  padding-top: 0;
 }
 
 /* Separador de assunto (2026-09-15) — usado dentro do html de blocos
@@ -205,6 +237,22 @@
 
 .cb-banner-text { margin: 0; font-size: 14px; color: var(--text2); line-height: 1.6; }
 
+/* Era um <p> (2026-09-15, mesmo bug real já corrigido em .cb-tabs-panel-text
+ * — ver comentário lá): quando `b.text` trazia uma lista <ul>, o navegador
+ * fechava o <p> sozinho antes do <ul>, que escapava do estilo do banner.
+ * Virou <div> (ver renderBannerBlock) e ganhou estilo de lista aqui. */
+.cb-banner-text p { margin: 0 0 8px; }
+.cb-banner-text p:last-child { margin-bottom: 0; }
+
+.cb-banner-text ul,
+.cb-banner-text ol {
+  margin: 6px 0 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 .cb-banner-success { background: var(--acc-tint); border-left-color: var(--acc); }
 .cb-banner-success .cb-banner-icon { color: var(--acc); }
 .cb-banner-warning { background: var(--warn-tint); border-left-color: var(--warn); }
@@ -263,6 +311,20 @@
 .cb-card-title { margin: 0 0 6px; font-size: 15px; font-weight: 700; color: var(--text); }
 
 .cb-card-text { margin: 0; font-size: 13.5px; color: var(--text2); line-height: 1.6; }
+
+/* Era um <p> — mesmo bug já corrigido em .cb-tabs-panel-text/.cb-banner-text
+ * (ver comentários lá). Virou <div> (renderCardBlock/renderCardGridBlock). */
+.cb-card-text p { margin: 0 0 6px; }
+.cb-card-text p:last-child { margin-bottom: 0; }
+
+.cb-card-text ul,
+.cb-card-text ol {
+  margin: 4px 0 0;
+  padding-left: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
 
 /* ── Accordion ── Redesenhado como lista real (2026-09-15, pedido do
  * usuário — "parecem inputs de formulário fechados"): borda inferior fina
@@ -741,6 +803,16 @@
   min-height: 128px;
 }
 
+/* Square (2026-09-15, pedido do usuário — "ficou muito estreito, era
+ * melhor quadrado" ao ver cards com foto de capa numa grade larga de 2
+ * colunas). aspect-ratio em vez de min-height fixo: acompanha a largura da
+ * coluna em qualquer breakpoint, sempre 1:1. */
+.cb-flip-grid.cb-flip-square .cb-flip-card,
+.cb-flip-grid.cb-flip-square .cb-flip-card-inner {
+  aspect-ratio: 1 / 1;
+  min-height: 0;
+}
+
 /* Texto centralizado nos compactos (pedido do usuário, 2026-09-15) — frente/
  * verso de 1 frase curta lêem melhor centralizados do que alinhados à
  * esquerda como os flip cards de texto mais longo (Portfólio, Estudo de
@@ -786,12 +858,18 @@
   position: relative;
 }
 
+/* Degradê mais forte no topo (2026-09-15, pedido do usuário — título ilegível
+ * em fotos claras): antes ia de quase transparente (10%) no topo até escuro
+ * (75%) embaixo, pensado só pro "hint" no rodapé — mas título/subtítulo
+ * ficam no TOPO do card, exatamente onde o overlay era mais fraco. Agora
+ * escurece o suficiente em toda a extensão pra manter o texto branco legível
+ * em qualquer foto, clara ou escura. */
 .cb-flip-face.has-cover::before {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: linear-gradient(180deg, rgba(15, 15, 15, 0.1) 0%, rgba(15, 15, 15, 0.75) 100%);
+  background: linear-gradient(180deg, rgba(15, 15, 15, 0.45) 0%, rgba(15, 15, 15, 0.85) 100%);
 }
 
 .cb-flip-face.has-cover > * {
