@@ -162,6 +162,22 @@
   line-height: 1.5;
 }
 
+/* Nome de produto clicável → popup rápido da Academia de Produtos (qualquer
+ * tela da Biblioteca: Perfis de Cliente, Produtos — ver renderProductName em
+ * LibraryContent.js). Sublinhado tracejado, não cor de link tradicional, pra
+ * não competir com o acento vermelho de ação (--g) já usado nos botões. */
+.lib-academia-link {
+  cursor: pointer;
+  text-decoration: underline dotted;
+  text-underline-offset: 2px;
+  text-decoration-color: var(--border2);
+}
+
+.lib-academia-link:hover {
+  color: var(--acc);
+  text-decoration-color: var(--acc);
+}
+
 .lib-persona-label {
   display: block;
   font-size: 10.5px;
@@ -429,6 +445,7 @@
 }
 
 .lib-prod-name {
+  display: block;
   font-weight: 700;
   color: var(--text);
 }
@@ -759,6 +776,88 @@
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
+}
+
+/* ── Popup rápido de produto (ProdutoQuickView.js) — abre em cima da tela
+ * em vez de navegar pra Academia de Produtos (pedido do usuário,
+ * 2026-09-15), reaproveitando o overlay `.iuf-modal-backdrop` já existente
+ * (imageUpload.css). Conteúdo rico (Visão Geral) reaproveita as classes
+ * `.cb-*` de contentBlocks.css sem nenhum ajuste. ── */
+.qv-modal {
+  position: relative;
+  width: min(640px, 100%);
+  max-height: 85vh;
+  overflow-y: auto;
+  background: var(--card-bg);
+  border-radius: var(--r3);
+  box-shadow: var(--sh-neutral-lg);
+}
+
+.qv-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--text);
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qv-cover {
+  height: 180px;
+  background-size: cover;
+  background-position: center;
+  border-radius: var(--r3) var(--r3) 0 0;
+  background-color: var(--off);
+}
+
+.qv-content {
+  padding: 22px 24px 26px;
+}
+
+.qv-eyebrow {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text3);
+}
+
+.qv-name {
+  margin: 4px 0 2px;
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.qv-tagline {
+  margin: 0 0 16px;
+  font-size: 13px;
+  color: var(--text2);
+}
+
+.qv-blocks {
+  margin-bottom: 20px;
+}
+
+.qv-cta {
+  width: auto;
+  padding: 10px 18px;
+  font-size: 13px;
+}
+
+@media (max-width: 600px) {
+  .qv-modal { max-height: 92vh; }
+  .qv-cover { height: 130px; }
+  .qv-content { padding: 18px 18px 22px; }
 }
 
 /* ── Responsivo mobile ── */

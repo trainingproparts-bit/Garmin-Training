@@ -203,11 +203,17 @@ export async function replaceRelationships(productId, relationships) {
   if (error) throw error;
 }
 
-/** Produtos publicados de TODAS as categorias da marca — pro seletor de "relacionado" no editor. */
+/**
+ * Produtos publicados de TODAS as categorias da marca — pro seletor de
+ * "relacionado" no editor, e pro link "Ver na Academia de Produtos →" que
+ * outras telas (Perfis de Cliente/Produtos da Biblioteca Técnica, um domínio
+ * de dados diferente — ver topo do arquivo) usam pra casar um nome de
+ * produto com o slug real aqui na Academia.
+ */
 export async function fetchAllProductsForBrand(brandId) {
   const { data, error } = await supabase
     .from('products')
-    .select('id, name')
+    .select('id, slug, name')
     .eq('brand_id', brandId)
     .eq('is_published', true)
     .order('name', { ascending: true });

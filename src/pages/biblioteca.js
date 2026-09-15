@@ -6,6 +6,7 @@
 // sql/seeds/040_biblioteca_tecnica.sql).
 
 import { CATEGORIES, fetchContentByCategory } from '../services/contentLibraryService.js';
+import { fetchAllProductsForBrand } from '../services/academiaService.js';
 import { renderLibrarySection } from '../components/LibraryContent.js';
 
 const TABS = [
@@ -60,6 +61,23 @@ function buildProdutoByNameMap(produtos) {
   return map;
 }
 
+/**
+ * Nome do produto (case-insensitive) → slug na Academia de Produtos — domínio
+ * de dados separado do catálogo da Biblioteca (`products`, não
+ * `content_library`, ver academiaService.js). Usado pra abrir o popup rápido
+ * (ProdutoQuickView.js) quando o nome citado num perfil/produto da Biblioteca
+ * bate com um produto já publicado lá. Nem todo produto da Biblioteca
+ * necessariamente já existe na Academia — sem match, o nome simplesmente não
+ * vira link (ver renderPerfis/renderProdutos em LibraryContent.js).
+ */
+function buildAcademiaSlugByName(produtosAcademia) {
+  const map = new Map();
+  produtosAcademia.forEach((p) => {
+    if (p.name && p.slug) map.set(p.name.toLowerCase(), p.slug);
+  });
+  return map;
+}
+
 async function loadCategory(category) {
   const container = document.getElementById('bibliotecaContainer');
   if (!container) return;
@@ -80,9 +98,15 @@ async function loadCategory(category) {
     // produto (sql/seeds/040) em vez de reescrever uma descrição nova —
     // ver renderPerfis em LibraryContent.js.
     let extra;
-    if (category === CATEGORIES.PERFIL_CLIENTE) {
-      const produtos = await fetchContentByCategory(brandId, CATEGORIES.PRODUTO);
-      extra = { produtoByName: buildProdutoByNameMap(produtos) };
+    if (category === CATEGORIES.PERFIL_CLIENTE || category === CATEGORIES.PRODUTO) {
+      const [produtos, produtosAcademia] = await Promise.all([
+        category === CATEGORIES.PERFIL_CLIENTE ? fetchContentByCategory(brandId, CATEGORIES.PRODUTO) : Promise.resolve([]),
+        fetchAllProductsForBrand(brandId),
+      ]);
+      extra = {
+        produtoByName: buildProdutoByNameMap(produtos),
+        academiaSlugByName: buildAcademiaSlugByName(produtosAcademia),
+      };
     }
 
     renderLibrarySection(container, category, items, extra);

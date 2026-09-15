@@ -9,6 +9,7 @@ import { updateContentItem } from '../services/contentLibraryService.js';
 import { navigateToPanel } from '../router.js';
 import { getCurrentProfile, isAdminProfile, isLeaderProfile } from '../config/supabase.js';
 import { openImageEditModal } from './ImageEditModal.js';
+import { openProdutoQuickView } from './ProdutoQuickView.js';
 
 export function renderLibrarySection(container, category, items, extra) {
   if (!items.length) {
@@ -18,7 +19,7 @@ export function renderLibrarySection(container, category, items, extra) {
 
   const renderers = {
     perfil_cliente: (list) => renderPerfis(list, extra),
-    produto: renderProdutos,
+    produto: (list) => renderProdutos(list, extra),
     faq: renderFaq,
     concorrente: renderConcorrentes,
     especialidade: renderEspecialidades,
@@ -35,12 +36,39 @@ export function renderLibrarySection(container, category, items, extra) {
     wireFlipCards(container);
     wirePersonaEdit(container, items, extra);
   }
+  if (category === 'perfil_cliente' || category === 'produto') wireAcademiaQuickView(container);
 }
 
 /** Clique em qualquer lugar do card vira ele — mesmo mecanismo do bloco de conteúdo "Card Giratório" (ContentBlocks.js/cb-flip-card), sem depender de admin/líder. */
 function wireFlipCards(container) {
   container.querySelectorAll('[data-flip-card]').forEach((card) => {
     card.addEventListener('click', () => card.classList.toggle('flipped'));
+  });
+}
+
+/**
+ * Nome de produto clicável → popup rápido da Academia de Produtos (pedido do
+ * usuário, 2026-09-15 — "faz isso pra todos que encontrar"). `data-academia-slug`
+ * só existe quando `renderProductName` achou o produto lá (extra.academiaSlugByName,
+ * montado em biblioteca.js) — nomes sem correspondência ficam como texto
+ * simples, sem link morto. `stopPropagation` porque em alguns lugares esse
+ * nome fica dentro de outro elemento clicável (o flip-card, a linha da
+ * tabela de produtos).
+ */
+function renderProductName(name, academiaSlugByName, className) {
+  const slug = academiaSlugByName?.get((name || '').toLowerCase());
+  if (!slug) return `<span class="${className}">${name}</span>`;
+  return `<span class="${className} lib-academia-link" data-academia-slug="${slug}" title="Ver na Academia de Produtos">${name}</span>`;
+}
+
+function wireAcademiaQuickView(container) {
+  container.querySelectorAll('[data-academia-slug]').forEach((el) => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const brandId = window.selectedBrandId;
+      if (!brandId) return;
+      openProdutoQuickView(brandId, el.dataset.academiaSlug);
+    });
   });
 }
 
@@ -84,6 +112,7 @@ function renderPersonaIntro() {
 
 function renderPerfis(items, extra) {
   const produtoByName = extra?.produtoByName || new Map();
+  const academiaSlugByName = extra?.academiaSlugByName || new Map();
 
   return `${renderPersonaIntro()}
   <div class="lib-persona-grid">${items.map((item, index) => {
@@ -127,7 +156,7 @@ function renderPerfis(items, extra) {
                 <div class="lib-persona-flip-face lib-persona-flip-front ${coverUrl ? 'has-cover' : ''}" ${coverUrl ? `style="background-image:url('${coverUrl}')"` : ''}>
                   <button type="button" class="lib-cover-edit-btn" data-edit-product-cover hidden>🖼️ Imagem</button>
                   <span class="lib-persona-product-kicker">Recomendação principal</span>
-                  <span class="lib-persona-product-name">${p.primario}</span>
+                  ${renderProductName(p.primario, academiaSlugByName, 'lib-persona-product-name')}
                   ${primarioProduto?.payload?.dest ? `<p class="lib-persona-product-blurb">${primarioProduto.payload.dest}</p>` : ''}
                   <span class="lib-persona-flip-hint">Toque para ver o argumento de venda →</span>
                 </div>
@@ -147,7 +176,7 @@ function renderPerfis(items, extra) {
               <span class="lib-persona-alts-kicker">Alternativas</span>
               ${alternativas.map((nome) => `
                 <div class="lib-persona-product lib-persona-product--alt">
-                  <span class="lib-persona-product-name">${nome}</span>
+                  ${renderProductName(nome, academiaSlugByName, 'lib-persona-product-name')}
                   ${acharProduto(nome)?.payload?.dest ? `<p class="lib-persona-product-blurb">${acharProduto(nome).payload.dest}</p>` : ''}
                 </div>
               `).join('')}
@@ -159,13 +188,15 @@ function renderPerfis(items, extra) {
   <div id="lib-persona-edit" class="lib-persona-edit" hidden></div>`;
 }
 
-function renderProdutos(items) {
+function renderProdutos(items, extra) {
+  const academiaSlugByName = extra?.academiaSlugByName || new Map();
+
   const rows = items.map((item, index) => {
     const p = item.payload;
     const dots = Array.from({ length: 5 }, (_, i) => `<div class="lib-dot ${i < (p.lvl || 0) ? 'on' : ''}"></div>`).join('');
     return `
       <tr class="lib-prod-row" data-prod-index="${index}" style="cursor: pointer;">
-        <td><div class="lib-prod-name">${p.name || item.title}</div><span class="lib-prod-series">${p.s || ''}</span></td>
+        <td>${renderProductName(p.name || item.title, academiaSlugByName, 'lib-prod-name')}<span class="lib-prod-series">${p.s || ''}</span></td>
         <td><div class="lib-level-dots">${dots}</div></td>
         <td class="lib-prod-para">${p.para || ''}</td>
         <td class="lib-prod-dest">${p.dest || item.summary || ''}</td>
