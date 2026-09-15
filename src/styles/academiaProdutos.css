@@ -66,74 +66,103 @@
 
 .academia-product-card-price { margin-top: 8px; font-size: 13px; font-weight: 700; color: var(--g); }
 
-/* ── Página de produto: breadcrumb + header ── */
+/* ── Página de produto: breadcrumb + header ──────────────────────────────
+ * Redesign 2026-09-15 (pedido do usuário — "padrão visual de plataformas
+ * corporativas de enablement": Highspot/Seismic/LinkedIn Learning Admin/
+ * Notion Enterprise/Guru). Thumb+nome+SKU+tagline num bloco compacto e
+ * alinhado, com divisória separando do conteúdo abaixo (era só margin,
+ * sem nenhuma fronteira visual). Preço deixa de usar --g (vermelho de
+ * marca) — não é uma ação nem o item ativo da navegação, só um dado. */
 .academia-detail-container { padding: 0; }
 
 .academia-detail-breadcrumb {
   font-size: 12.5px;
   color: var(--text3);
-  margin-bottom: 10px;
+  margin-bottom: var(--sp-3);
 }
 
 .academia-detail-breadcrumb-sep { margin: 0 6px; }
 
-.academia-detail-header { margin-bottom: 20px; }
+.academia-detail-header {
+  position: relative;
+  margin-bottom: var(--sp-6);
+  padding-bottom: var(--sp-5);
+  padding-right: 116px;
+  border-bottom: 1px solid var(--border);
+}
 
 .academia-detail-header-row {
   display: flex;
-  align-items: flex-start;
-  gap: 16px;
+  align-items: center;
+  gap: var(--sp-4);
 }
 
 .academia-detail-thumb {
   flex: 0 0 auto;
-  width: 84px;
-  height: 84px;
+  width: 64px;
+  height: 64px;
   border-radius: var(--r3);
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: var(--off);
+  border: 1px solid var(--border);
 }
 
 .academia-detail-thumb img { width: 100%; height: 100%; object-fit: cover; }
 
-.academia-detail-thumb-icon { font-size: 30px; opacity: 0.85; }
+.academia-detail-thumb-icon { display: flex; color: var(--text3); }
+.academia-detail-thumb-icon svg { width: 28px; height: 28px; }
 
 .academia-detail-header-text { flex: 1 1 auto; min-width: 0; }
 
+.academia-detail-header-meta {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
 .academia-detail-name {
   margin: 0;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 800;
   color: var(--text);
 }
 
 .academia-detail-model {
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 600;
   color: var(--text3);
 }
 
 .academia-detail-tagline {
   margin: 4px 0 0;
-  font-size: 14px;
+  font-size: 13.5px;
   color: var(--text2);
 }
 
 .academia-detail-price {
   display: inline-block;
-  margin-top: 8px;
-  font-size: 14px;
+  margin-top: var(--sp-2);
+  font-size: 13.5px;
   font-weight: 700;
-  color: var(--g);
+  color: var(--text);
 }
 
-/* ── Layout: nav lateral fixa + conteúdo ── */
+/* ── Layout: nav lateral fixa + conteúdo ──────────────────────────────────
+ * Nav agrupada em 3 blocos (Produto/Vendas/Recursos, ver NAV_GROUPS em
+ * produtoDetail.js) com micro-headers — antes era uma lista plana de 12
+ * itens sem nenhuma hierarquia. Item ativo: fundo suave (--g3) + barra
+ * lateral fina na cor de marca (::before) + texto semibold em --g2 (mais
+ * escuro que --g, contraste melhor sobre o fundo claro) — único lugar desta
+ * página que ainda usa vermelho de marca, por ser o estado ativo da
+ * navegação voltado ao usuário final (pedido do usuário, item 3/6). */
 .academia-detail-layout {
   display: grid;
-  grid-template-columns: 220px 1fr;
-  gap: 24px;
+  grid-template-columns: 228px 1fr;
+  gap: var(--sp-6);
   align-items: start;
 }
 
@@ -142,39 +171,104 @@
   top: 12px;
   display: flex;
   flex-direction: column;
-  gap: 2px;
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: var(--r3);
-  padding: 8px;
+  padding: var(--sp-3) var(--sp-2);
   box-shadow: var(--sh-neutral-sm);
 }
 
+.academia-nav-group + .academia-nav-group { margin-top: var(--sp-4); }
+
+.academia-nav-group-label {
+  padding: var(--sp-1) var(--sp-3) 6px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+
 .academia-nav-item {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 9px;
   width: 100%;
-  padding: 9px 10px;
+  padding: 8px 10px 8px 13px;
   background: none;
   border: none;
   border-radius: var(--r2);
   font-family: inherit;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text2);
   text-align: left;
   cursor: pointer;
   transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
 }
 
-.academia-nav-item:hover { background: var(--off); }
+.academia-nav-item:hover { background: var(--off); color: var(--text); }
 
-.academia-nav-item.active { background: var(--g3); color: var(--g); }
+.academia-nav-item.active { background: var(--g3); color: var(--g2); font-weight: 600; }
 
-.academia-nav-item-icon { font-size: 14px; flex-shrink: 0; }
+.academia-nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 6px;
+  bottom: 6px;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--g);
+}
+
+.academia-nav-item-icon { display: flex; flex-shrink: 0; color: inherit; }
+.academia-nav-item-icon svg { width: 16px; height: 16px; }
 
 .academia-detail-content { min-width: 0; }
+
+/* Tipografia do texto rico (Visão Geral/Personas/Diferenciais/etc) — causa
+ * real do visual "colado do Word" reportado pelo usuário: .content-article-body
+ * só tem regras de tipografia em modulo-content.css sob o seletor
+ * ".content-article .content-article-body", e a Academia nunca envolve o
+ * conteúdo num ".content-article" (isso só existe nas lições). Sem essa
+ * ancestralidade o parágrafo caía pro line-height/tamanho padrão do
+ * navegador — daí o espaçamento apertado/irregular e a largura sem limite.
+ * Corrige aqui em vez de mudar modulo-content.css, que é só das lições. */
+.academia-detail-content .content-article-body {
+  color: var(--text2);
+  font-size: 14.5px;
+  line-height: 1.65;
+  max-width: 720px;
+}
+
+.academia-detail-content .content-article-body p { margin: 0 0 var(--sp-4); }
+
+.academia-detail-content .content-article-body p:last-child { margin-bottom: 0; }
+
+.academia-detail-content .content-article-body strong { color: var(--text); font-weight: 700; }
+
+.academia-detail-content .content-article-body h1,
+.academia-detail-content .content-article-body h2,
+.academia-detail-content .content-article-body h3 {
+  color: var(--text);
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  margin: var(--sp-5) 0 var(--sp-2);
+}
+
+.academia-detail-content .content-article-body h2 { font-size: 18px; }
+.academia-detail-content .content-article-body h3 { font-size: 15.5px; }
+
+.academia-detail-content .content-article-body ul,
+.academia-detail-content .content-article-body ol {
+  margin: 0 0 var(--sp-4);
+  padding-left: 22px;
+}
+
+.academia-detail-content .content-article-body li { margin-bottom: 6px; }
 
 @media (max-width: 800px) {
   .academia-detail-layout { grid-template-columns: 1fr; }
@@ -183,8 +277,13 @@
     flex-direction: row;
     overflow-x: auto;
     flex-wrap: nowrap;
+    gap: 4px;
   }
+  .academia-nav-group { display: contents; }
+  .academia-nav-group-label { display: none; }
+  .academia-nav-group + .academia-nav-group { margin-top: 0; }
   .academia-nav-item { white-space: nowrap; }
+  .academia-nav-item.active::before { left: auto; top: auto; bottom: 0; right: 10px; width: 16px; height: 3px; }
 }
 
 /* ── Comparativos (lista dentro da página de produto) ── */
@@ -204,9 +303,10 @@
   transition: border-color var(--dur-fast) var(--ease);
 }
 
-.academia-comparison-card:hover { border-color: var(--g); }
+.academia-comparison-card:hover { border-color: var(--border2); box-shadow: var(--sh-neutral-sm); }
 
-.academia-comparison-card-icon { font-size: 20px; }
+.academia-comparison-card-icon { display: flex; flex-shrink: 0; color: var(--text3); }
+.academia-comparison-card-icon svg { width: 18px; height: 18px; }
 
 .academia-comparison-card-title { font-size: 14px; font-weight: 700; color: var(--text); }
 
@@ -228,15 +328,19 @@
   transition: border-color var(--dur-fast) var(--ease);
 }
 
-.academia-material-item:hover { border-color: var(--g); }
+.academia-material-item:hover { border-color: var(--border2); }
 
-.academia-material-icon { font-size: 18px; }
+.academia-material-icon { display: flex; flex-shrink: 0; color: var(--text3); }
+.academia-material-icon svg { width: 17px; height: 17px; }
 
 .academia-material-title { flex: 1; font-size: 13.5px; font-weight: 600; }
 
 .academia-material-arrow { color: var(--text3); }
 
-/* ── Quiz Especialista ── */
+/* ── Quiz Especialista — único CTA "principal" desta página além do item
+ * ativo da nav, por isso é o único outro lugar que mantém vermelho de
+ * marca (badge redondo do ícone), em vez do antigo gradiente + borda
+ * vermelha inteira do botão (competia com o resto da UI). ── */
 .academia-quiz-card { display: flex; flex-direction: column; gap: 10px; }
 
 .academia-quiz-item { display: flex; flex-direction: column; gap: 0; }
@@ -246,21 +350,37 @@
   align-items: center;
   gap: 14px;
   padding: 16px;
-  background: linear-gradient(135deg, var(--g3), var(--card-bg));
-  border: 1px solid var(--g);
+  background: var(--card-bg);
+  border: 1px solid var(--border);
   border-radius: var(--r3);
   cursor: pointer;
   text-align: left;
   font-family: inherit;
+  transition: border-color var(--dur-fast) var(--ease);
 }
 
-.academia-quiz-icon { font-size: 26px; }
+.academia-quiz-btn:hover { border-color: var(--g4); }
+
+.academia-quiz-icon {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--g3);
+  color: var(--g);
+}
+
+.academia-quiz-icon svg { width: 20px; height: 20px; }
 
 .academia-quiz-title { font-size: 14.5px; font-weight: 700; color: var(--text); }
 
 .academia-quiz-sub { font-size: 12px; color: var(--text2); margin-top: 2px; }
 
-/* ── Relacionados (grafo de conhecimento) ── */
+/* ── Relacionados (grafo de conhecimento) — neutro por padrão, acento de
+ * marca só ao passar o mouse (não é a navegação principal da página). ── */
 .academia-related-list { display: flex; flex-wrap: wrap; gap: 8px; }
 
 .academia-related-pill {
@@ -276,13 +396,14 @@
 
 .academia-related-pill-link {
   cursor: pointer;
-  color: var(--g);
-  border-color: var(--g);
-  background: var(--g3);
+  color: var(--text2);
+  border-color: var(--border);
+  background: var(--off);
   font-family: inherit;
+  transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
 }
 
-.academia-related-pill-link:hover { background: var(--g4); }
+.academia-related-pill-link:hover { color: var(--g2); border-color: var(--g4); background: var(--g3); }
 
 /* ── Página de comparativo (VS) ── */
 .academia-vs-header {
@@ -348,25 +469,37 @@
 /* ── Edição admin (2026-07-20) — "preciso editar todo o conteúdo facilmente" ──
  * Botões/formulários simples pros campos estruturados (cabeçalho, downloads,
  * relacionados, tabela de comparativo). Blocos ricos reaproveitam o editor já
- * existente (cb-editor-*, ver contentBlocks.css) — sem CSS novo pra eles. */
+ * existente (cb-editor-*, ver contentBlocks.css) — sem CSS novo pra eles.
+ * Redesign 2026-09-15: controle administrativo, não o foco da página — texto
+ * cinza discreto (era tracejado + virava vermelho de marca no hover,
+ * competindo com o item ativo da nav; agora só escurece pra cinza no hover). */
 .academia-edit-btn {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  margin-top: 10px;
-  padding: 7px 14px;
-  background: var(--off);
-  border: 1px dashed var(--border2);
+  gap: 5px;
+  margin-top: var(--sp-3);
+  padding: 5px 10px;
+  background: none;
+  border: 1px solid var(--border);
   border-radius: var(--r2);
   font-family: inherit;
   font-size: 12px;
   font-weight: 600;
-  color: var(--text2);
+  color: var(--text3);
   cursor: pointer;
-  transition: border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+  transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
 }
 
-.academia-edit-btn:hover { border-color: var(--g); color: var(--g); }
+.academia-edit-btn svg { width: 12px; height: 12px; }
+
+.academia-edit-btn:hover { background: var(--off); color: var(--text2); border-color: var(--border2); }
+
+.academia-edit-btn-header {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: 0;
+}
 
 .academia-edit-form {
   display: flex;

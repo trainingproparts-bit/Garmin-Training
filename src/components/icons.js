@@ -65,6 +65,47 @@ export const ICONS = {
   forum: wrap(`<path d="M4 5.5h13a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H10l-4.5 4v-4H4a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2z" transform="translate(1 0) scale(0.9)"/><circle cx="8" cy="10.5" r="0.9" fill="currentColor" stroke="none"/><circle cx="12" cy="10.5" r="0.9" fill="currentColor" stroke="none"/><circle cx="16" cy="10.5" r="0.9" fill="currentColor" stroke="none"/>`),
 
   executivo: wrap(`<path d="M4 20V9.5"/><path d="M10.5 20V4"/><path d="M17 20v-7"/><path d="M3.5 20h17"/><path d="M14.5 8.5l2.5-2.5 2 2 3-3"/>`),
+
+  // Ícones da Academia de Produtos (redesign 2026-09-15 — nav de seção do
+  // produto, materiais de download, cards de destaque) — mesmo estilo
+  // hand-drawn acima, sem dependência nova.
+  fileText: wrap(`<path d="M6 3.5h8l4 4V19a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4.5 19V5A1.5 1.5 0 0 1 6 3.5z"/><path d="M14 3.5V8h4"/><path d="M8 12.5h8M8 15.5h8M8 9.5h3"/>`),
+
+  users: wrap(`<circle cx="9" cy="8" r="3.2"/><path d="M3.5 19.5c0-3 2.5-5.3 5.5-5.3s5.5 2.3 5.5 5.3"/><circle cx="17" cy="9" r="2.4"/><path d="M15.8 14.3c2.3 0.4 4 2.5 4 5.2"/>`),
+
+  star: wrap(`<path d="M12 3.5l2.6 5.6 6 0.7-4.5 4.1 1.2 6-5.3-3-5.3 3 1.2-6-4.5-4.1 6-0.7z"/>`),
+
+  zap: wrap(`<path d="M13 2 4 13h6l-1 9 9-11h-6z"/>`),
+
+  scale: wrap(`<path d="M12 3v18M9 3h6"/><path d="M5 7h14"/><path d="M3 15a4 4 0 0 0 8 0L7 7z"/><path d="M13 15a4 4 0 0 0 8 0l-4-8z"/>`),
+
+  message: wrap(`<path d="M12 3.5c-4.7 0-8.5 3.1-8.5 7 0 2.4 1.5 4.5 3.8 5.8L6 20l4-2c0.6 0.1 1.3 0.2 2 0.2 4.7 0 8.5-3.1 8.5-7s-3.8-7-8.5-7z"/>`),
+
+  shield: wrap(`<path d="M12 3l7 3v5.5c0 5-3 8.5-7 9.5-4-1-7-4.5-7-9.5V6z"/><path d="M9 12l2 2 4-4.5"/>`),
+
+  briefcase: wrap(`<rect x="3" y="7.5" width="18" height="12" rx="1.8"/><path d="M8.5 7.5V6a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v1.5"/><path d="M3 12.5h18"/><path d="M10.5 12.5v1.6h3v-1.6"/>`),
+
+  helpCircle: wrap(`<circle cx="12" cy="12" r="8.5"/><path d="M9.3 9.6a2.8 2.8 0 0 1 5.4.9c0 1.7-2.2 2.2-2.6 3.7"/><path d="M12 17.2h.01" stroke-width="2.6"/>`),
+
+  download: wrap(`<path d="M12 4v10.5M8 11l4 4 4-4"/><path d="M5 17.5v1.8A1.7 1.7 0 0 0 6.7 21h10.6a1.7 1.7 0 0 0 1.7-1.7v-1.8"/>`),
+
+  award: wrap(`<circle cx="12" cy="9" r="5.5"/><path d="M9 13.5 7.5 20.5 12 18l4.5 2.5L15 13.5"/>`),
+
+  link2: wrap(`<path d="M9.5 17H7.3a4.8 4.8 0 0 1 0-9.6H9.5"/><path d="M14.5 7.4h2.2a4.8 4.8 0 0 1 0 9.6h-2.2"/><path d="M8.5 12.2h7"/>`),
+
+  image: wrap(`<rect x="3.5" y="4.5" width="17" height="15" rx="1.8"/><circle cx="8.5" cy="9.5" r="1.6"/><path d="M4 17l5-5 3.5 3.5L16 12l4.5 5.5"/>`),
+
+  folder: wrap(`<path d="M3.5 7.5A1.8 1.8 0 0 1 5.3 5.7H9l2 2.3h7.7a1.8 1.8 0 0 1 1.8 1.8v8A1.8 1.8 0 0 1 18.7 19.6H5.3a1.8 1.8 0 0 1-1.8-1.8z"/>`),
+
+  film: wrap(`<rect x="3" y="5.5" width="18" height="13" rx="1.8"/><path d="M10 9.3v5.4l4.6-2.7z" fill="currentColor" stroke="none"/>`),
+
+  watch: wrap(`<circle cx="12" cy="12" r="6.5"/><path d="M12 9v3.3l2.2 1.3"/><path d="M9.3 5.3l.6-2.3h4.2l.6 2.3M9.3 18.7l.6 2.3h4.2l.6-2.3"/>`),
+
+  search: wrap(`<circle cx="10.5" cy="10.5" r="6.5"/><path d="M19.5 19.5l-4.3-4.3"/>`),
+
+  checkCircle: wrap(`<circle cx="12" cy="12" r="8.5"/><path d="M8 12.3l2.6 2.6 5.4-6"/>`),
+
+  pencil: wrap(`<path d="M4 20l0.6-3.4L15.2 6a1.8 1.8 0 0 1 2.6 0l0.2 0.2a1.8 1.8 0 0 1 0 2.6L7.4 19.4z"/><path d="M13.5 7.7l2.8 2.8"/>`),
 };
 
 export function icon(name) {

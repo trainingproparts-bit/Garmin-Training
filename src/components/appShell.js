@@ -152,6 +152,7 @@ export function renderAppShell(container) {
         <div class="app-topbar" id="appTopbar" hidden>
           <button type="button" class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Abrir menu">${icon('menu')}</button>
           <div class="topbar-search-wrap" id="topbarSearchWrap">
+            <span class="topbar-search-icon">${icon('search')}</span>
             <input type="search" class="topbar-search-input" id="topbarSearchInput"
               placeholder="Buscar produtos, guias, módulos…" autocomplete="off" aria-label="Busca global">
             <div class="topbar-search-dropdown" id="topbarSearchDropdown" hidden></div>

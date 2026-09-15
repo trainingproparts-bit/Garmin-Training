@@ -21,28 +21,39 @@ import {
 import { renderBlocks, wireBlockInteractions, setupBlockArrayEditor } from '../components/ContentBlocks.js';
 import { imageUploadFieldHtml, wireImageUploadField } from '../components/ImageUploadField.js';
 import { getCurrentProfile, isAdminProfile } from '../config/supabase.js';
+import { icon } from '../components/icons.js';
 import {
   fetchQuestionsAdmin, createQuestion, updateQuestion, deleteQuestion,
   createAlternative, updateAlternative, deleteAlternative, markAlternativeCorrect,
 } from '../services/contentAdminService.js';
 
-const NAV_SECTIONS = [
-  { key: 'visao_geral', label: 'Visão Geral', icon: '📋' },
-  { key: 'personas', label: 'Personas', icon: '🧑‍🤝‍🧑' },
-  { key: 'diferenciais', label: 'Diferenciais', icon: '⭐' },
-  { key: 'novidades', label: 'O que há de novo?', icon: '🆕' },
-  { key: 'comparativos', label: 'Comparativos', icon: '⚖️' },
-  { key: 'scripts_venda', label: 'Scripts de Venda', icon: '🗣️' },
-  { key: 'objecoes', label: 'Objeções', icon: '🛡️' },
-  { key: 'casos_uso', label: 'Casos de Uso', icon: '💼' },
-  { key: 'faq', label: 'FAQ', icon: '❓' },
-  { key: 'downloads', label: 'Downloads', icon: '📥' },
-  { key: 'quiz', label: 'Quiz Especialista', icon: '🏆' },
-  { key: 'relacionados', label: 'Relacionados', icon: '🔗' },
+// Nav de seção agrupada em 3 blocos (redesign 2026-09-15, pedido do usuário
+// — "agrupar itens por seção com espaçamento maior ou micro-headers"):
+// Produto (o que é/pra quem é) → Vendas (como vender) → Recursos (apoio).
+const NAV_GROUPS = [
+  { label: 'Produto', sections: ['visao_geral', 'personas', 'diferenciais', 'novidades'] },
+  { label: 'Vendas', sections: ['comparativos', 'scripts_venda', 'objecoes', 'casos_uso'] },
+  { label: 'Recursos', sections: ['faq', 'downloads', 'quiz', 'relacionados'] },
 ];
 
+const NAV_SECTIONS = [
+  { key: 'visao_geral', label: 'Visão Geral', icon: 'fileText' },
+  { key: 'personas', label: 'Personas', icon: 'users' },
+  { key: 'diferenciais', label: 'Diferenciais', icon: 'star' },
+  { key: 'novidades', label: 'O que há de novo?', icon: 'zap' },
+  { key: 'comparativos', label: 'Comparativos', icon: 'scale' },
+  { key: 'scripts_venda', label: 'Scripts de Venda', icon: 'message' },
+  { key: 'objecoes', label: 'Objeções', icon: 'shield' },
+  { key: 'casos_uso', label: 'Casos de Uso', icon: 'briefcase' },
+  { key: 'faq', label: 'FAQ', icon: 'helpCircle' },
+  { key: 'downloads', label: 'Downloads', icon: 'download' },
+  { key: 'quiz', label: 'Quiz Especialista', icon: 'award' },
+  { key: 'relacionados', label: 'Relacionados', icon: 'link2' },
+];
+const NAV_SECTION_BY_KEY = new Map(NAV_SECTIONS.map((s) => [s.key, s]));
+
 const BLOCK_SECTION_KEYS = new Set(['visao_geral', 'personas', 'diferenciais', 'novidades', 'scripts_venda', 'objecoes', 'casos_uso', 'faq']);
-const MATERIAL_ICON = { pdf: '📄', image: '🖼️', folder: '🗂️', video: '🎬' };
+const MATERIAL_ICON = { pdf: 'fileText', image: 'image', folder: 'folder', video: 'film' };
 const MATERIAL_TYPES = ['pdf', 'image', 'folder', 'video'];
 
 window.addEventListener('panel:activated', (e) => {
@@ -97,10 +108,18 @@ function renderProdutoDetail(container, product, isAdmin, brandId) {
 
     <div class="academia-detail-layout">
       <nav class="academia-detail-nav" data-role="academia-nav">
-        ${NAV_SECTIONS.map((s, i) => `
-          <button type="button" class="academia-nav-item ${i === 0 ? 'active' : ''}" data-section="${s.key}">
-            <span class="academia-nav-item-icon">${s.icon}</span>${s.label}
-          </button>
+        ${NAV_GROUPS.map((group, gi) => `
+          <div class="academia-nav-group">
+            <div class="academia-nav-group-label">${group.label}</div>
+            ${group.sections.map((key) => {
+              const s = NAV_SECTION_BY_KEY.get(key);
+              const isFirst = gi === 0 && key === group.sections[0];
+              return `
+                <button type="button" class="academia-nav-item ${isFirst ? 'active' : ''}" data-section="${s.key}">
+                  <span class="academia-nav-item-icon">${icon(s.icon)}</span>${s.label}
+                </button>`;
+            }).join('')}
+          </div>
         `).join('')}
       </nav>
       <div class="academia-detail-content" data-role="academia-content">
@@ -140,7 +159,7 @@ function renderSectionPanelInner(sectionKey, product, isAdmin) {
 function renderBlockSectionPanel(sectionKey, product, isAdmin) {
   const blocks = product.sections.get(sectionKey)?.blocks;
   return `
-    ${isAdmin ? `<button type="button" class="academia-edit-btn" data-edit-section="${sectionKey}">✎ Editar seção</button>` : ''}
+    ${isAdmin ? `<button type="button" class="academia-edit-btn" data-edit-section="${sectionKey}">${icon('pencil')}Editar seção</button>` : ''}
     <div data-role="section-read-${sectionKey}">${renderBlocks(blocks)}</div>
   `;
 }
@@ -183,15 +202,18 @@ function renderHeaderRead(product, isAdmin) {
   const price = product.price_usd != null ? `US$ ${Number(product.price_usd).toFixed(2).replace('.', ',')}` : '';
   return `
     <div class="academia-detail-header-row">
-      <div class="academia-detail-thumb" ${product.cover_url ? '' : 'style="background:linear-gradient(135deg, #1e293b, #0f172a);"'}>
-        ${product.cover_url ? `<img src="${product.cover_url}" alt="">` : '<span class="academia-detail-thumb-icon">⌚</span>'}
+      <div class="academia-detail-thumb" ${product.cover_url ? '' : ''}>
+        ${product.cover_url ? `<img src="${product.cover_url}" alt="">` : `<span class="academia-detail-thumb-icon">${icon('watch')}</span>`}
       </div>
       <div class="academia-detail-header-text">
-        <h2 class="academia-detail-name">${product.name}${product.model_code ? ` <span class="academia-detail-model">${product.model_code}</span>` : ''}</h2>
+        <div class="academia-detail-header-meta">
+          <h2 class="academia-detail-name">${product.name}</h2>
+          ${product.model_code ? `<span class="academia-detail-model">${product.model_code}</span>` : ''}
+        </div>
         ${product.tagline ? `<p class="academia-detail-tagline">${product.tagline}</p>` : ''}
         ${price ? `<span class="academia-detail-price">${price}</span>` : ''}
-        ${isAdmin ? '<button type="button" class="academia-edit-btn" data-edit-header>✎ Editar produto</button>' : ''}
       </div>
+      ${isAdmin ? `<button type="button" class="academia-edit-btn academia-edit-btn-header" data-edit-header>${icon('pencil')}Editar produto</button>` : ''}
     </div>
   `;
 }
@@ -255,7 +277,7 @@ function renderComparativos(comparisons, currentSlug) {
         const other = c.product_a?.slug === currentSlug ? c.product_b : c.product_a;
         return `
           <button type="button" class="academia-comparison-card" data-comparison-slug="${c.slug}">
-            <span class="academia-comparison-card-icon">⚖️</span>
+            <span class="academia-comparison-card-icon">${icon('scale')}</span>
             <div>
               <div class="academia-comparison-card-title">${c.title}</div>
               ${other ? `<div class="academia-comparison-card-sub">Comparar com ${other.name}</div>` : ''}
@@ -270,7 +292,7 @@ function renderComparativos(comparisons, currentSlug) {
 function renderDownloadsPanel(product, isAdmin) {
   return `
     <div data-role="downloads-read">${renderDownloadsRead(product.materials)}</div>
-    ${isAdmin ? '<button type="button" class="academia-edit-btn" data-edit-downloads>✎ Editar downloads</button>' : ''}
+    ${isAdmin ? `<button type="button" class="academia-edit-btn" data-edit-downloads>${icon('pencil')}Editar downloads</button>` : ''}
   `;
 }
 
@@ -280,7 +302,7 @@ function renderDownloadsRead(materials) {
     <div class="academia-materials-list">
       ${materials.map((m) => `
         <a class="academia-material-item" href="${m.url}" target="_blank" rel="noopener noreferrer">
-          <span class="academia-material-icon">${MATERIAL_ICON[m.type] || '📎'}</span>
+          <span class="academia-material-icon">${icon(MATERIAL_ICON[m.type] || 'fileText')}</span>
           <span class="academia-material-title">${m.title}</span>
           <span class="academia-material-arrow">↗</span>
         </a>
@@ -378,13 +400,13 @@ function renderQuiz(quizzes, isAdmin) {
       ${quizzes.map((q) => `
         <div class="academia-quiz-item" data-quiz-item="${q.id}">
           <button type="button" class="academia-quiz-btn" data-quiz-id="${q.id}">
-            <span class="academia-quiz-icon">🏆</span>
+            <span class="academia-quiz-icon">${icon('award')}</span>
             <div>
               <div class="academia-quiz-title">${q.title}</div>
               <div class="academia-quiz-sub">Aprovação: ${q.passing_score_pct}% · Concluir concede XP e badge de especialista</div>
             </div>
           </button>
-          ${isAdmin ? `<button type="button" class="academia-edit-btn" data-edit-quiz="${q.id}">✎ Editar perguntas</button>` : ''}
+          ${isAdmin ? `<button type="button" class="academia-edit-btn" data-edit-quiz="${q.id}">${icon('pencil')}Editar perguntas</button>` : ''}
           <div data-role="quiz-editor-${q.id}"></div>
         </div>
       `).join('')}
@@ -575,7 +597,7 @@ async function persistQuestions(quizId, original, edited) {
 function renderRelacionadosPanel(product, isAdmin) {
   return `
     <div data-role="relacionados-read">${renderRelacionadosRead(product.relationships)}</div>
-    ${isAdmin ? '<button type="button" class="academia-edit-btn" data-edit-relacionados>✎ Editar relacionados</button>' : ''}
+    ${isAdmin ? `<button type="button" class="academia-edit-btn" data-edit-relacionados>${icon('pencil')}Editar relacionados</button>` : ''}
   `;
 }
 

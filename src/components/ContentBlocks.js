@@ -10,6 +10,7 @@
 
 import { navigateToPanel } from '../router.js';
 import { imageUploadFieldHtml, wireImageUploadField } from './ImageUploadField.js';
+import { icon } from './icons.js';
 
 export const BLOCK_TYPES = [
   { key: 'texto_rico', label: 'Texto Rico' },
@@ -136,7 +137,7 @@ function cardAccentColor(seed) {
 
 function renderCardBlock(b) {
   return `
-    <div class="cb-card" style="border-left: 3px solid ${cardAccentColor(b.title || b.text)};">
+    <div class="cb-card">
       <span class="cb-card-icon">${b.icon || '💡'}</span>
       <h4 class="cb-card-title">${b.title || ''}</h4>
       <p class="cb-card-text">${b.text || ''}</p>
@@ -296,8 +297,8 @@ function renderCardGridBlock(b) {
   return `
     <div class="cb-card-grid cols-${cols}">
       ${items.map((it) => `
-        <div class="cb-card ${it.imageUrl ? 'cb-card-has-image' : ''}" style="border-left: 3px solid ${cardAccentColor(it.title || it.text)};">
-          ${it.imageUrl ? `<img class="cb-card-image" src="${it.imageUrl}" alt="${it.title || ''}" loading="lazy">` : ''}
+        <div class="cb-card ${it.imageUrl ? 'cb-card-has-image' : ''}">
+          ${it.imageUrl ? `<img class="cb-card-image" src="${it.imageUrl}" alt="${it.title || ''}" loading="lazy">` : `<span class="cb-card-feature-icon">${icon('checkCircle')}</span>`}
           ${it.title ? `<h4 class="cb-card-title">${it.title}</h4>` : ''}
           ${it.text ? `<p class="cb-card-text">${colorizeCheckmarks(it.text)}</p>` : ''}
           ${Array.isArray(it.tags) && it.tags.length ? `
