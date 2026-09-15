@@ -2,6 +2,14 @@
 -- GARMIN TRAINING HUB — MIGRAÇÃO 123: Remove as lições "Linha Forerunner" e
 -- "Linha Fenix" do módulo Portfólio de Produtos (Zona Explorador)
 -- ============================================================================
+-- ⚠️ Ao rodar esta migração pela 1ª vez, o `delete from lessons` disparou um
+-- bug pré-existente no trigger de sync da Revisão Inteligente (hard delete
+-- em review_catalog, quebrando review_session_items_catalog_item_id_fkey
+-- pra quem já revisou algum bloco dessas lições) e a transação inteira deu
+-- rollback — nada chegou a ser apagado. Corrigido na sql/124, que conserta
+-- o trigger E refaz este mesmo delete. Rode a sql/124 (não esta) se ainda
+-- não rodou nenhuma das duas.
+--
 -- Pedido do usuário (2026-09-15, urgente — "tira esse título... linha
 -- forerunner... e linha fenix"): o módulo tinha 3 lições (Forerunner, Fenix,
 -- MARQ — sql/030). Desde a sql/120, a 3ª lição (MARQ) virou a mega-aula

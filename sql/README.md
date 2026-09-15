@@ -913,6 +913,24 @@ Editor do Supabase:
     progresso pro usuário. Mesmo padrão de segurança já usado na sql/031
     (deduplicação de lições Garmin Connect/Coach).
 
+    **⚠️ Falhou na 1ª tentativa real** (usuário rodou e reportou o erro) —
+    ver sql/124 pra causa e correção. Rode a sql/124 em vez desta.
+
+52. **`124_corrige_trigger_review_catalog_delete_lesson.sql`**
+    Corrige o erro real reportado ao rodar a sql/123: `delete from lessons`
+    dispara `fn_review_catalog_sync_lesson()` (sql/066), que no branch
+    DELETE fazia hard delete em `review_catalog` pros blocos daquela lição —
+    quebra `review_session_items_catalog_item_id_fkey` se algum colaborador
+    já revisou um desses blocos na Revisão Inteligente. É o MESMO bug que a
+    sql/092 já tinha corrigido, só que pro caminho de UPDATE
+    (`fn_review_catalog_sync_blocks`) — o branch DELETE de
+    `fn_review_catalog_sync_lesson` continuava fazendo delete puro. Corrige
+    com o mesmo princípio: `is_published=false` em vez de deletar. Como a
+    sql/123 rodou inteira dentro de um `do $$...$$` e deu erro no meio, a
+    transação inteira sofreu rollback (nada foi apagado) — esta migração
+    conserta o trigger e refaz o mesmo delete de lesson_progress/lessons da
+    sql/123, agora sem quebrar.
+
 ## O que ainda não está aqui
 
 - Cadastro de novo usuário pelo admin — exige a Supabase Admin API
