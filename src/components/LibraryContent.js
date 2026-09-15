@@ -9,14 +9,14 @@ import { updateContentItem } from '../services/contentLibraryService.js';
 import { navigateToPanel } from '../router.js';
 import { getCurrentProfile, isAdminProfile, isLeaderProfile } from '../config/supabase.js';
 
-export function renderLibrarySection(container, category, items) {
+export function renderLibrarySection(container, category, items, extra) {
   if (!items.length) {
     container.innerHTML = '<p class="learning-empty">Nenhum conteúdo cadastrado nesta categoria ainda.</p>';
     return;
   }
 
   const renderers = {
-    perfil_cliente: renderPerfis,
+    perfil_cliente: (list) => renderPerfis(list, extra),
     produto: renderProdutos,
     faq: renderFaq,
     concorrente: renderConcorrentes,
@@ -33,26 +33,84 @@ export function renderLibrarySection(container, category, items) {
   if (category === 'perfil_cliente') wirePersonaEdit(container, items);
 }
 
-function renderPerfis(items) {
-  return `<div class="lib-grid">${items.map((item, index) => {
+/**
+ * Ficha de consulta rápida do vendedor (pedido do usuário, 2026-09-15 —
+ * antes disso essa tela era um bloco de texto com pouca hierarquia). Ordem
+ * fixa PERFIL → IDENTIFICAÇÃO → PERGUNTA → RECOMENDAÇÃO → ARGUMENTO, igual
+ * para os 11 perfis (mesmo componente, sem solução específica por persona).
+ *
+ * "Como apresentar" reaproveita o `dest` já cadastrado de cada produto no
+ * catálogo (categoria `produto`, ver `extra.produtoDestByName` montado em
+ * biblioteca.js) em vez de inventar uma descrição nova — se um produto citado
+ * no perfil não existir no catálogo, o nome ainda aparece, só sem a linha de
+ * destaque. `comunicacao` (talking points já cadastrados) vira o gancho
+ * comercial no rodapé; nada do payload original foi removido, só reorganizado
+ * (objections/tags continuam intactos, só não têm um bloco dedicado aqui).
+ */
+function renderPerfis(items, extra) {
+  const destByName = extra?.produtoDestByName || new Map();
+
+  return `<div class="lib-persona-grid">${items.map((item, index) => {
     const p = item.payload;
+    const alternativas = (p.produtos || []).filter((nome) => nome !== p.primario);
+    const destaqueDe = (nome) => destByName.get((nome || '').toLowerCase()) || '';
+
     return `
-      <div class="lib-profile-card" data-persona-index="${index}">
-        <div class="lib-profile-top">
-          <div class="lib-profile-emoji">${p.emoji || ''}</div>
-          <div class="lib-profile-name">${p.name || item.title}</div>
+      <article class="lib-persona-card" data-persona-index="${index}">
+        <header class="lib-persona-head">
+          <span class="lib-persona-emoji" aria-hidden="true">${p.emoji || ''}</span>
+          <div class="lib-persona-head-text">
+            <h3 class="lib-persona-name">${p.name || item.title}</h3>
+            ${(p.tags || []).length ? `<div class="lib-persona-tags">${p.tags.map((t) => `<span class="lib-persona-tag-pill">${t}</span>`).join('')}</div>` : ''}
+          </div>
+          <button type="button" class="lib-edit-btn" data-persona-index="${index}" hidden>Editar</button>
+        </header>
+
+        <p class="lib-persona-desc">${p.tag || item.summary || ''}</p>
+
+        <div class="lib-persona-section">
+          <h4 class="lib-persona-label">Como identificar</h4>
+          <ul class="lib-persona-signals">${(p.sinais || []).map((s) => `<li>${s}</li>`).join('')}</ul>
         </div>
-        <p class="lib-profile-tag">${p.tag || item.summary || ''}</p>
-        <div class="lib-profile-section">
-          <div class="lib-label">Sinais de identificação</div>
-          <ul>${(p.sinais || []).map((s) => `<li>${s}</li>`).join('')}</ul>
+
+        ${p.pergunta_chave ? `
+          <div class="lib-persona-question">
+            <span class="lib-persona-label">Pergunta-chave</span>
+            <p>“${p.pergunta_chave}”</p>
+          </div>
+        ` : ''}
+
+        <div class="lib-persona-section">
+          <h4 class="lib-persona-label">Como apresentar</h4>
+
+          ${p.primario ? `
+            <div class="lib-persona-product lib-persona-product--main">
+              <span class="lib-persona-product-kicker">Recomendação principal</span>
+              <span class="lib-persona-product-name">${p.primario}</span>
+              ${destaqueDe(p.primario) ? `<p class="lib-persona-product-blurb">${destaqueDe(p.primario)}</p>` : ''}
+            </div>
+          ` : ''}
+
+          ${alternativas.length ? `
+            <div class="lib-persona-alts">
+              <span class="lib-persona-alts-kicker">Alternativas</span>
+              ${alternativas.map((nome) => `
+                <div class="lib-persona-product lib-persona-product--alt">
+                  <span class="lib-persona-product-name">${nome}</span>
+                  ${destaqueDe(nome) ? `<p class="lib-persona-product-blurb">${destaqueDe(nome)}</p>` : ''}
+                </div>
+              `).join('')}
+            </div>
+          ` : ''}
         </div>
-        <div class="lib-profile-section">
-          <div class="lib-label">Produtos indicados</div>
-          <div class="lib-pill-row">${(p.produtos || []).map((pr) => `<span class="lib-pill ${pr === p.primario ? 'main' : ''}">${pr}</span>`).join('')}</div>
-        </div>
-        <button type="button" class="lib-edit-btn" data-persona-index="${index}" hidden style="margin-top: 12px; padding: 6px 12px; background: var(--off); border: 1px solid var(--border); border-radius: var(--r2); cursor: pointer; font-size: 12px;">Editar</button>
-      </div>`;
+
+        ${(p.comunicacao || []).length ? `
+          <div class="lib-persona-hook">
+            <span class="lib-persona-label">Gancho comercial</span>
+            <ul>${p.comunicacao.map((c) => `<li>${c}</li>`).join('')}</ul>
+          </div>
+        ` : ''}
+      </article>`;
   }).join('')}</div>
   <div id="lib-persona-edit" class="lib-persona-edit" hidden></div>`;
 }
@@ -233,6 +291,10 @@ async function wirePersonaEdit(container, items) {
               <input type="text" name="emoji" value="${p.emoji || ''}" style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: var(--r2); font-size: 14px;">
             </div>
             <div style="margin-bottom: 12px;">
+              <label style="display: block; margin-bottom: 4px; font-size: 13px; font-weight: 600; color: var(--text);">Pergunta-chave (o que perguntar para confirmar o perfil):</label>
+              <input type="text" name="pergunta_chave" value="${p.pergunta_chave || ''}" style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: var(--r2); font-size: 14px;">
+            </div>
+            <div style="margin-bottom: 12px;">
               <label style="display: block; margin-bottom: 4px; font-size: 13px; font-weight: 600; color: var(--text);">Produto Primário:</label>
               <input type="text" name="primario" value="${p.primario || ''}" style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: var(--r2); font-size: 14px;">
             </div>
@@ -273,6 +335,7 @@ async function wirePersonaEdit(container, items) {
           updatedPayload.name = formData.get('name');
           updatedPayload.tag = formData.get('tag');
           updatedPayload.emoji = formData.get('emoji');
+          updatedPayload.pergunta_chave = formData.get('pergunta_chave');
           updatedPayload.primario = formData.get('primario');
           updatedPayload.produtos = formData.get('produtos').split(',').map(s => s.trim()).filter(s => s);
           updatedPayload.sinais = formData.get('sinais').split('\n').map(s => s.trim()).filter(s => s);

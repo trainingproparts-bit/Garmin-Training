@@ -32,91 +32,215 @@
   color: #fff;
 }
 
-.lib-grid {
+/* ── Perfis de Cliente — ficha de consulta rápida do vendedor (redesign
+ * 2026-09-15: era um card de texto corrido; virou PERFIL → IDENTIFICAÇÃO →
+ * PERGUNTA → RECOMENDAÇÃO → ARGUMENTO). Visual deliberadamente contido —
+ * sem gradiente, sem sombra pesada, sem cor além do acento já usado no resto
+ * do portal (--g/--g2/--g3/--g4) — para não parecer dashboard nem slide. ── */
+
+.lib-persona-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 24px;
 }
 
-/* Perfis de cliente */
-.lib-profile-card {
+.lib-persona-card {
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: var(--r3);
-  padding: 18px;
-  box-shadow: var(--sh-neutral-sm);
-}
-
-/* Faixa gradiente no topo do card (mesmo tratamento do protótipo original,
- * .profile-card-top) — "sangra" até a borda usando margin negativo igual
- * ao padding do card-pai, então não precisa mudar a estrutura HTML. */
-.lib-profile-top {
+  padding: 22px;
   display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: -18px -18px 12px;
-  padding: 14px 18px 10px;
-  background: linear-gradient(135deg, var(--off) 0%, var(--g3) 100%);
-  border-bottom: 1px solid var(--border);
+  flex-direction: column;
+  gap: 18px;
 }
 
-.lib-profile-emoji {
-  font-size: 24px;
+.lib-persona-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
 }
 
-.lib-profile-name {
+.lib-persona-emoji {
+  font-size: 22px;
+  line-height: 1;
+  margin-top: 2px;
+}
+
+.lib-persona-head-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.lib-persona-name {
+  margin: 0 0 6px;
+  font-size: 16.5px;
   font-weight: 700;
-  font-size: 15px;
   color: var(--text);
+  letter-spacing: -0.01px;
 }
 
-.lib-profile-tag {
-  font-size: 12px;
+.lib-persona-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.lib-persona-tag-pill {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 20px;
+  background: var(--off);
   color: var(--text3);
-  margin: 0 0 12px;
 }
 
-.lib-profile-section {
-  margin-top: 10px;
+.lib-persona-desc {
+  margin: -8px 0 0;
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.5;
 }
 
-.lib-label {
+.lib-persona-label {
+  display: block;
   font-size: 10.5px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   font-weight: 700;
-  color: var(--text2);
-  margin-bottom: 6px;
+  color: var(--text3);
+  margin-bottom: 8px;
 }
 
-.lib-profile-section ul {
+.lib-persona-section {
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.lib-persona-signals {
   margin: 0;
-  padding-left: 18px;
+  padding: 0;
+  list-style: none;
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.7;
+}
+
+.lib-persona-signals li {
+  padding-left: 14px;
+  position: relative;
+}
+
+.lib-persona-signals li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--text3);
+}
+
+.lib-persona-question {
+  padding: 12px 14px;
+  border-left: 3px solid var(--g);
+  background: var(--off);
+  border-radius: 0 var(--r2) var(--r2) 0;
+}
+
+.lib-persona-question p {
+  margin: 4px 0 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--text);
+}
+
+.lib-persona-product {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.lib-persona-product--main {
+  padding: 14px 16px;
+  border-radius: var(--r2);
+  background: var(--g3);
+  border: 1px solid var(--g4);
+  margin-bottom: 10px;
+}
+
+.lib-persona-product-kicker {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--badge-danger-text);
+}
+
+.lib-persona-product-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.lib-persona-product-blurb {
+  margin: 2px 0 0;
+  font-size: 12.5px;
+  color: var(--text2);
+  line-height: 1.5;
+}
+
+.lib-persona-alts {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lib-persona-alts-kicker {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text3);
+}
+
+.lib-persona-alts .lib-persona-product--alt {
+  padding-left: 12px;
+  border-left: 2px solid var(--border);
+}
+
+.lib-persona-alts .lib-persona-product-name {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.lib-persona-hook {
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.lib-persona-hook ul {
+  margin: 0;
+  padding-left: 16px;
   font-size: 12.5px;
   color: var(--text2);
   line-height: 1.6;
 }
 
-.lib-pill-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.lib-pill {
-  font-size: 11px;
-  font-weight: 600;
-  padding: 4px 10px;
-  border-radius: 20px;
+.lib-edit-btn {
+  flex-shrink: 0;
+  padding: 5px 12px;
   background: var(--off);
   border: 1px solid var(--border);
+  border-radius: var(--r2);
   color: var(--text2);
+  cursor: pointer;
+  font-size: 11.5px;
+  font-family: inherit;
 }
 
-.lib-pill.main {
-  background: var(--g3);
-  border-color: var(--g4);
-  color: var(--g2);
+.lib-edit-btn:hover {
+  border-color: var(--border2);
+  color: var(--text);
 }
 
 /* Produtos (tabela) */
@@ -508,10 +632,6 @@
     font-size: 11.5px;
   }
 
-  .lib-grid {
-    grid-template-columns: 1fr;
-  }
-
   .lib-table-wrap {
     border-radius: var(--r2);
   }
@@ -525,7 +645,16 @@
     padding: 10px 12px;
   }
 
-  .lib-profile-card,
+  .lib-persona-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .lib-persona-card {
+    padding: 18px;
+    gap: 16px;
+  }
+
   .lib-comp-card,
   .lib-sport-card {
     padding: 16px;

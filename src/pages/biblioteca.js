@@ -50,6 +50,16 @@ function initBibliotecaPage() {
   loadCategory(activeCategory);
 }
 
+/** Nome do produto (case-insensitive) → texto de destaque (`dest`) já cadastrado no catálogo. */
+function buildProdutoDestMap(produtos) {
+  const map = new Map();
+  produtos.forEach((item) => {
+    const name = item.payload?.name || item.title;
+    if (name) map.set(name.toLowerCase(), item.payload?.dest || item.summary || '');
+  });
+  return map;
+}
+
 async function loadCategory(category) {
   const container = document.getElementById('bibliotecaContainer');
   if (!container) return;
@@ -64,7 +74,18 @@ async function loadCategory(category) {
 
   try {
     const items = await fetchContentByCategory(brandId, category);
-    renderLibrarySection(container, category, items);
+
+    // Perfis de Cliente precisa do catálogo de produtos junto: o "Como
+    // apresentar" da ficha reaproveita o `dest` já cadastrado de cada
+    // produto (sql/seeds/040) em vez de reescrever uma descrição nova —
+    // ver renderPerfis em LibraryContent.js.
+    let extra;
+    if (category === CATEGORIES.PERFIL_CLIENTE) {
+      const produtos = await fetchContentByCategory(brandId, CATEGORIES.PRODUTO);
+      extra = { produtoDestByName: buildProdutoDestMap(produtos) };
+    }
+
+    renderLibrarySection(container, category, items, extra);
   } catch (err) {
     console.error('[Biblioteca] erro ao carregar categoria:', err);
     container.innerHTML = '<p class="learning-error">Não foi possível carregar este conteúdo agora.</p>';

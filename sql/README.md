@@ -769,6 +769,26 @@ Editor do Supabase:
       teste, de uma navegação avulsa — não relacionados a este item, vale
       investigar à parte).
 
+45. **`117_fix_fn_soft_delete_profile_admin_guard.sql`** — **rodar assim que possível**
+    `fn_soft_delete_profile` (schema base, item 11.8) nunca tinha sido chamada
+    por nenhum código do cliente até o botão "Remover" do Painel Admin ser
+    implementado nesta sessão — e por isso nunca tinha passado pelo mesmo
+    escrutínio de segurança de `034`/`036`: `SECURITY DEFINER`, recebe o id de
+    qualquer perfil como parâmetro, sem checagem interna de quem chama, com
+    `EXECUTE` de PUBLIC (grant padrão do Postgres). Adiciona `fn_is_admin()`
+    dentro da função, troca o `p_actor_id` (vinha do cliente, spoofável) por
+    `auth.uid()`, e bloqueia autoremoção.
+
+46. **`118_perfil_cliente_pergunta_chave.sql`**
+    Adiciona a chave `pergunta_chave` ao payload dos 11 perfis de cliente
+    (`content_library`, categoria `perfil_cliente`) — pedido do usuário para
+    transformar a tela "Perfis de Cliente" em ficha de consulta rápida
+    (`src/components/LibraryContent.js`). Não existia nenhum campo assim antes;
+    cada pergunta foi escrita a partir do próprio `sinais` daquele perfil (o
+    sinal de identificação virado pergunta), sem inventar informação de
+    produto. `jsonb_set` com `create_missing=true` — não toca em nenhuma outra
+    chave do payload.
+
 ## O que ainda não está aqui
 
 - Cadastro de novo usuário pelo admin — exige a Supabase Admin API
