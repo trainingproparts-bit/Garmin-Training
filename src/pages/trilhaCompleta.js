@@ -35,7 +35,14 @@ async function initTrilhaCompletaPage() {
       return;
     }
 
-    const { zones } = await fetchTrilhaPublicada(brandId);
+    const { zones: todasZonas } = await fetchTrilhaPublicada(brandId);
+    // Circuito de Desafios (zonas free_order) saiu daqui pelo mesmo motivo
+    // do Dashboard (DashboardHome.js, pedido do usuário — "reduzir a
+    // poluição visual"): já vive como página própria na sidebar (Arena de
+    // Desafios). O resumo "X de Y etapas" e o destaque de zona atual passam
+    // a considerar só a trilha sequencial, pra bater com o que a pessoa
+    // realmente vê no acordeão.
+    const zones = todasZonas.filter((zone) => !zone.free_order);
     const progressRows = await fetchUserProgress(profile.id);
     const doneCheckpointIds = new Set(
       progressRows.filter((p) => p.status === 'completed').map((p) => p.checkpoint_id)
