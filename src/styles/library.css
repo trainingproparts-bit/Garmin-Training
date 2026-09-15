@@ -38,6 +38,65 @@
  * sem gradiente, sem sombra pesada, sem cor além do acento já usado no resto
  * do portal (--g/--g2/--g3/--g4) — para não parecer dashboard nem slide. ── */
 
+.lib-persona-intro {
+  background: var(--off);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  padding: 18px 20px;
+  margin-bottom: 20px;
+}
+
+.lib-persona-intro-title {
+  margin: 0 0 6px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.lib-persona-intro-text {
+  margin: 0 0 14px;
+  font-size: 12.5px;
+  color: var(--text2);
+  line-height: 1.5;
+  max-width: 640px;
+}
+
+.lib-persona-intro-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: persona-step;
+}
+
+.lib-persona-intro-steps li {
+  counter-increment: persona-step;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text2);
+}
+
+.lib-persona-intro-steps li::before {
+  content: counter(persona-step);
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--card-bg);
+  border: 1px solid var(--border2);
+  color: var(--text3);
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .lib-persona-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
@@ -141,7 +200,7 @@
 
 .lib-persona-question {
   padding: 12px 14px;
-  border-left: 3px solid var(--g);
+  border-left: 3px solid var(--gold);
   background: var(--off);
   border-radius: 0 var(--r2) var(--r2) 0;
 }
@@ -160,20 +219,12 @@
   gap: 3px;
 }
 
-.lib-persona-product--main {
-  padding: 14px 16px;
-  border-radius: var(--r2);
-  background: var(--g3);
-  border: 1px solid var(--g4);
-  margin-bottom: 10px;
-}
-
 .lib-persona-product-kicker {
   font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: var(--badge-danger-text);
+  color: var(--badge-gold-text);
 }
 
 .lib-persona-product-name {
@@ -213,17 +264,107 @@
   font-weight: 600;
 }
 
-.lib-persona-hook {
-  padding-top: 14px;
-  border-top: 1px solid var(--border);
+/* Recomendação principal — flip-card (mesmo mecanismo 3D do "Card Giratório"
+ * de ContentBlocks.js/.cb-flip-card): frente com o produto (e opcionalmente
+ * uma foto por trás, editável), verso com o gancho comercial. Sem vermelho —
+ * dourado/neutro (--gold*), pra não sugerir alerta/erro. */
+.lib-persona-flip {
+  perspective: 1200px;
+  cursor: pointer;
+  min-height: 184px;
+  margin-bottom: 10px;
 }
 
-.lib-persona-hook ul {
-  margin: 0;
+.lib-persona-flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 184px;
+  transition: transform 0.5s;
+  transform-style: preserve-3d;
+}
+
+.lib-persona-flip.flipped .lib-persona-flip-inner {
+  transform: rotateY(180deg);
+}
+
+.lib-persona-flip-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: var(--r2);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  overflow: hidden;
+}
+
+.lib-persona-flip-front {
+  background: var(--gold-tint);
+  border: 1px solid var(--gold-tint-border);
+  background-size: cover;
+  background-position: center;
+}
+
+.lib-persona-flip-front.has-cover {
+  border-color: transparent;
+}
+
+.lib-persona-flip-front.has-cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(15, 15, 15, 0.15) 0%, rgba(15, 15, 15, 0.8) 100%);
+}
+
+.lib-persona-flip-front.has-cover .lib-persona-product-kicker { position: relative; z-index: 1; color: var(--gold); }
+.lib-persona-flip-front.has-cover .lib-persona-product-name { position: relative; z-index: 1; color: #fff; }
+.lib-persona-flip-front.has-cover .lib-persona-product-blurb { position: relative; z-index: 1; color: rgba(255, 255, 255, 0.85); }
+.lib-persona-flip-front.has-cover .lib-persona-flip-hint { position: relative; z-index: 1; color: rgba(255, 255, 255, 0.7); }
+
+.lib-persona-flip-back {
+  transform: rotateY(180deg);
+  background: var(--off);
+  border: 1px solid var(--border);
+  overflow-y: auto;
+}
+
+.lib-persona-flip-back ul {
+  margin: 4px 0 0;
   padding-left: 16px;
   font-size: 12.5px;
   color: var(--text2);
   line-height: 1.6;
+}
+
+.lib-persona-flip-hint {
+  margin-top: auto;
+  font-size: 10px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: var(--text3);
+  padding-top: 6px;
+}
+
+.lib-cover-edit-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  padding: 4px 9px;
+  font-size: 10.5px;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: inherit;
+  color: var(--text2);
+}
+
+.lib-cover-edit-btn:hover {
+  background: #fff;
 }
 
 .lib-edit-btn {

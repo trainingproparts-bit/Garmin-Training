@@ -8,6 +8,7 @@
 import { updateContentItem } from '../services/contentLibraryService.js';
 import { navigateToPanel } from '../router.js';
 import { getCurrentProfile, isAdminProfile, isLeaderProfile } from '../config/supabase.js';
+import { openImageEditModal } from './ImageEditModal.js';
 
 export function renderLibrarySection(container, category, items, extra) {
   if (!items.length) {
@@ -30,7 +31,17 @@ export function renderLibrarySection(container, category, items, extra) {
   if (category === 'faq') wireAccordion(container);
   if (category === 'deep_dive') wireDeepDiveLinks(container);
   if (category === 'produto') wireProductDetails(container, items);
-  if (category === 'perfil_cliente') wirePersonaEdit(container, items);
+  if (category === 'perfil_cliente') {
+    wireFlipCards(container);
+    wirePersonaEdit(container, items, extra);
+  }
+}
+
+/** Clique em qualquer lugar do card vira ele — mesmo mecanismo do bloco de conteúdo "Card Giratório" (ContentBlocks.js/cb-flip-card), sem depender de admin/líder. */
+function wireFlipCards(container) {
+  container.querySelectorAll('[data-flip-card]').forEach((card) => {
+    card.addEventListener('click', () => card.classList.toggle('flipped'));
+  });
 }
 
 /**
@@ -40,20 +51,47 @@ export function renderLibrarySection(container, category, items, extra) {
  * para os 11 perfis (mesmo componente, sem solução específica por persona).
  *
  * "Como apresentar" reaproveita o `dest` já cadastrado de cada produto no
- * catálogo (categoria `produto`, ver `extra.produtoDestByName` montado em
+ * catálogo (categoria `produto`, ver `extra.produtoByName` montado em
  * biblioteca.js) em vez de inventar uma descrição nova — se um produto citado
  * no perfil não existir no catálogo, o nome ainda aparece, só sem a linha de
- * destaque. `comunicacao` (talking points já cadastrados) vira o gancho
- * comercial no rodapé; nada do payload original foi removido, só reorganizado
+ * destaque. Nada do payload original foi removido, só reorganizado
  * (objections/tags continuam intactos, só não têm um bloco dedicado aqui).
+ *
+ * A recomendação principal é um flip-card (pedido do usuário, 2026-09-15 —
+ * a versão anterior usava fundo rosa/vermelho, que "parece erro"; e não
+ * tinha onde colocar uma foto do produto). Frente: produto + espaço para
+ * imagem (editável por admin/líder, reaproveitando o mesmo modal usado em
+ * capas de trilha/quiz — ver ImageEditModal.js); verso: `comunicacao`
+ * (gancho comercial), que antes vivia num bloco separado no rodapé. Mesmo
+ * mecanismo de virar do "Card Giratório" de ContentBlocks.js.
  */
-function renderPerfis(items, extra) {
-  const destByName = extra?.produtoDestByName || new Map();
+const PERSONA_STEPS = [
+  'Identifique o esporte ou objetivo',
+  'Faça a pergunta-chave',
+  'Entenda o nível de experiência',
+  'Apresente o produto principal',
+  'Mostre uma alternativa quando fizer sentido',
+];
 
-  return `<div class="lib-persona-grid">${items.map((item, index) => {
+function renderPersonaIntro() {
+  return `
+    <div class="lib-persona-intro">
+      <h4 class="lib-persona-intro-title">Como usar os perfis</h4>
+      <p class="lib-persona-intro-text">O perfil ajuda você a entender rapidamente o que o cliente pratica, o que procura e qual produto pode fazer mais sentido.</p>
+      <ol class="lib-persona-intro-steps">${PERSONA_STEPS.map((s) => `<li>${s}</li>`).join('')}</ol>
+    </div>`;
+}
+
+function renderPerfis(items, extra) {
+  const produtoByName = extra?.produtoByName || new Map();
+
+  return `${renderPersonaIntro()}
+  <div class="lib-persona-grid">${items.map((item, index) => {
     const p = item.payload;
     const alternativas = (p.produtos || []).filter((nome) => nome !== p.primario);
-    const destaqueDe = (nome) => destByName.get((nome || '').toLowerCase()) || '';
+    const acharProduto = (nome) => produtoByName.get((nome || '').toLowerCase());
+    const primarioProduto = p.primario ? acharProduto(p.primario) : null;
+    const coverUrl = primarioProduto?.payload?.cover_url || '';
 
     return `
       <article class="lib-persona-card" data-persona-index="${index}">
@@ -84,10 +122,23 @@ function renderPerfis(items, extra) {
           <h4 class="lib-persona-label">Como apresentar</h4>
 
           ${p.primario ? `
-            <div class="lib-persona-product lib-persona-product--main">
-              <span class="lib-persona-product-kicker">Recomendação principal</span>
-              <span class="lib-persona-product-name">${p.primario}</span>
-              ${destaqueDe(p.primario) ? `<p class="lib-persona-product-blurb">${destaqueDe(p.primario)}</p>` : ''}
+            <div class="lib-persona-flip" data-flip-card data-product-id="${primarioProduto?.id || ''}">
+              <div class="lib-persona-flip-inner">
+                <div class="lib-persona-flip-face lib-persona-flip-front ${coverUrl ? 'has-cover' : ''}" ${coverUrl ? `style="background-image:url('${coverUrl}')"` : ''}>
+                  <button type="button" class="lib-cover-edit-btn" data-edit-product-cover hidden>🖼️ Imagem</button>
+                  <span class="lib-persona-product-kicker">Recomendação principal</span>
+                  <span class="lib-persona-product-name">${p.primario}</span>
+                  ${primarioProduto?.payload?.dest ? `<p class="lib-persona-product-blurb">${primarioProduto.payload.dest}</p>` : ''}
+                  <span class="lib-persona-flip-hint">Toque para ver o argumento de venda →</span>
+                </div>
+                <div class="lib-persona-flip-face lib-persona-flip-back">
+                  <span class="lib-persona-product-kicker">Gancho comercial</span>
+                  ${(p.comunicacao || []).length
+                    ? `<ul>${p.comunicacao.map((c) => `<li>${c}</li>`).join('')}</ul>`
+                    : '<p class="lib-persona-product-blurb">Nenhum argumento cadastrado ainda.</p>'}
+                  <span class="lib-persona-flip-hint">Toque para voltar</span>
+                </div>
+              </div>
             </div>
           ` : ''}
 
@@ -97,19 +148,12 @@ function renderPerfis(items, extra) {
               ${alternativas.map((nome) => `
                 <div class="lib-persona-product lib-persona-product--alt">
                   <span class="lib-persona-product-name">${nome}</span>
-                  ${destaqueDe(nome) ? `<p class="lib-persona-product-blurb">${destaqueDe(nome)}</p>` : ''}
+                  ${acharProduto(nome)?.payload?.dest ? `<p class="lib-persona-product-blurb">${acharProduto(nome).payload.dest}</p>` : ''}
                 </div>
               `).join('')}
             </div>
           ` : ''}
         </div>
-
-        ${(p.comunicacao || []).length ? `
-          <div class="lib-persona-hook">
-            <span class="lib-persona-label">Gancho comercial</span>
-            <ul>${p.comunicacao.map((c) => `<li>${c}</li>`).join('')}</ul>
-          </div>
-        ` : ''}
       </article>`;
   }).join('')}</div>
   <div id="lib-persona-edit" class="lib-persona-edit" hidden></div>`;
@@ -255,7 +299,7 @@ function wireProductDetails(container, items) {
  * o botão aparecia pra qualquer um sem checagem nenhuma, e um colaborador
  * comum (RN: "William") conseguiu abrir e submeter o formulário de edição.
  */
-async function wirePersonaEdit(container, items) {
+async function wirePersonaEdit(container, items, extra) {
   const editEl = container.querySelector('#lib-persona-edit');
   if (!editEl) return;
 
@@ -265,6 +309,30 @@ async function wirePersonaEdit(container, items) {
 
   container.querySelectorAll('.lib-edit-btn').forEach((btn) => {
     btn.hidden = false;
+  });
+
+  container.querySelectorAll('[data-edit-product-cover]').forEach((btn) => {
+    btn.hidden = false;
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation(); // não pode virar o flip-card ao clicar no botão
+      const flipCard = btn.closest('[data-flip-card]');
+      const productId = flipCard?.dataset.productId;
+      if (!productId) return;
+      const produto = (extra?.produtoByName ? [...extra.produtoByName.values()] : []).find((it) => it.id === productId);
+      if (!produto) return;
+
+      openImageEditModal({
+        title: `Imagem — ${produto.payload.name || produto.title}`,
+        currentUrl: produto.payload.cover_url || '',
+        folder: 'covers/produtos',
+        onSave: async (url) => {
+          const updatedPayload = { ...produto.payload, cover_url: url || '' };
+          await updateContentItem(produto.id, { payload: updatedPayload });
+          produto.payload = updatedPayload;
+          renderLibrarySection(container, 'perfil_cliente', items, extra);
+        },
+      });
+    });
   });
 
   container.querySelectorAll('.lib-edit-btn').forEach((btn) => {

@@ -50,12 +50,12 @@ function initBibliotecaPage() {
   loadCategory(activeCategory);
 }
 
-/** Nome do produto (case-insensitive) → texto de destaque (`dest`) já cadastrado no catálogo. */
-function buildProdutoDestMap(produtos) {
+/** Nome do produto (case-insensitive) → item completo do catálogo (id, payload.dest, payload.cover_url). */
+function buildProdutoByNameMap(produtos) {
   const map = new Map();
   produtos.forEach((item) => {
     const name = item.payload?.name || item.title;
-    if (name) map.set(name.toLowerCase(), item.payload?.dest || item.summary || '');
+    if (name) map.set(name.toLowerCase(), item);
   });
   return map;
 }
@@ -82,7 +82,7 @@ async function loadCategory(category) {
     let extra;
     if (category === CATEGORIES.PERFIL_CLIENTE) {
       const produtos = await fetchContentByCategory(brandId, CATEGORIES.PRODUTO);
-      extra = { produtoDestByName: buildProdutoDestMap(produtos) };
+      extra = { produtoByName: buildProdutoByNameMap(produtos) };
     }
 
     renderLibrarySection(container, category, items, extra);

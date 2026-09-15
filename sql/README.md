@@ -789,6 +789,17 @@ Editor do Supabase:
     produto. `jsonb_set` com `create_missing=true` — não toca em nenhuma outra
     chave do payload.
 
+47. **`119_revisa_texto_perfis_cliente.sql`**
+    Revisão editorial do texto dos 11 perfis (pedido do usuário, mesma sessão
+    de `118`) — tag/tags/sinais/comunicacao reescritos para a ficha de
+    consulta rápida, pergunta-chave com redação final, "Atleta de Elite" vira
+    "Atleta de Alto Desempenho" e "Mulher Lifestyle" vira "Cliente Lifestyle"
+    (descrição deixa de presumir gênero). Corredor Iniciante troca a
+    recomendação principal de Forerunner 55 para Forerunner 70 (já cadastrado
+    no catálogo) e ganha o Forerunner 170 como alternativa. `payload ||
+    jsonb_build_object(...)` — só as chaves listadas mudam, objections/emoji
+    continuam intactos.
+
 ## O que ainda não está aqui
 
 - Cadastro de novo usuário pelo admin — exige a Supabase Admin API
