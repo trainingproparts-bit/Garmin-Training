@@ -51,14 +51,14 @@
 /* Separador de assunto (2026-09-15) — usado dentro do html de blocos
  * texto_rico pra marcar a virada de um tema pro outro (ex.: linha Forerunner
  * pra linha MARQ); sem isso, dois &lt;h3&gt; consecutivos ficavam próximos
- * demais e pareciam continuação do mesmo assunto. Régua em degradê vermelho
- * (2026-09-15, pedido do usuário — "divisórias muito fracas/genéricas") em
- * vez de um fio cinza de 1px, pra marcar melhor onde uma parte termina. */
+ * demais e pareciam continuação do mesmo assunto. Cinza, igual ao traço
+ * automático entre blocos (2026-09-15, pedido do usuário — "tirar o vermelho
+ * e deixar só o cinza"; a versão em degradê vermelho foi a correção errada
+ * de uma rodada anterior, invertendo o pedido). */
 .cb-topic-divider {
   border: none;
-  height: 3px;
-  border-radius: 2px;
-  background: linear-gradient(90deg, var(--g) 0%, var(--g4) 45%, transparent 100%);
+  height: 1px;
+  background: var(--border);
   margin: 40px 0 30px;
 }
 
