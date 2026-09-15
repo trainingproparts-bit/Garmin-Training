@@ -629,6 +629,7 @@ const SPECIAL_LINE_GROUPS = [
       'edge-ciclocomputadores',
       'blaze-equine-wellness',
       'marq-gen-2-linha-de-luxo',
+      'cirqa-monitoramento-sem-tela',
     ],
   },
   { key: 'ecossistema', label: 'Ecossistema Garmin', slugs: ['apps-integracoes-tecnologias-garmin'] },
@@ -643,6 +644,7 @@ const SPECIAL_LINE_TAG = {
   'edge-ciclocomputadores': 'Ciclismo',
   'blaze-equine-wellness': 'Linha Equina',
   'marq-gen-2-linha-de-luxo': 'Linha de Luxo',
+  'cirqa-monitoramento-sem-tela': 'Bem-Estar',
   'apps-integracoes-tecnologias-garmin': 'Ecossistema',
 };
 
