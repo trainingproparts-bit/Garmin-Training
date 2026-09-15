@@ -117,6 +117,8 @@ export const ICONS = {
   lightbulb: wrap(`<path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c0.6 0.45 1 1.15 1 1.9V16h5v-0.2c0-0.75 0.4-1.45 1-1.9A6 6 0 0 0 12 3z"/>`),
 
   clipboard: wrap(`<rect x="6" y="4.5" width="12" height="16" rx="1.8"/><rect x="9" y="2.5" width="6" height="3.5" rx="1"/><path d="M9 11h6M9 14.5h6" stroke-width="1.6"/>`),
+  target: wrap(`<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.7"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/>`),
+  dice: wrap(`<rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="8.5" cy="8.5" r="1" fill="currentColor" stroke="none"/><circle cx="15.5" cy="8.5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="8.5" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="15.5" cy="15.5" r="1" fill="currentColor" stroke="none"/>`),
 };
 
 export function icon(name) {

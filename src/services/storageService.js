@@ -54,3 +54,54 @@ export async function uploadContentImage(file, folder) {
   const { data } = supabase.storage.from(BUCKET).getPublicUrl(path);
   return data.publicUrl;
 }
+
+// ---------------------------------------------------------------------------
+// Upload de vídeo — bucket 'lesson-media' (já existia sem uso, ver sql/136),
+// mesmo padrão de uploadContentImage acima.
+// ---------------------------------------------------------------------------
+
+const VIDEO_BUCKET = 'lesson-media';
+
+export const ALLOWED_VIDEO_TYPES = ['video/mp4', 'video/webm', 'video/quicktime', 'video/ogg'];
+export const MAX_VIDEO_SIZE_BYTES = 200 * 1024 * 1024; // 200MB — mesmo limite do bucket (sql/136)
+
+/** @returns {string|null} mensagem de erro, ou null se o arquivo é válido */
+export function validateVideoFile(file) {
+  if (!file) return 'Nenhum arquivo selecionado.';
+  if (!ALLOWED_VIDEO_TYPES.includes(file.type)) {
+    return 'Formato não suportado. Envie um vídeo MP4, WEBM, MOV ou OGG.';
+  }
+  if (file.size > MAX_VIDEO_SIZE_BYTES) {
+    return `Vídeo muito grande (máx. ${Math.round(MAX_VIDEO_SIZE_BYTES / 1024 / 1024)}MB).`;
+  }
+  return null;
+}
+
+function extensionForVideo(file) {
+  const fromName = (file.name || '').split('.').pop()?.toLowerCase().replace(/[^a-z0-9]/g, '');
+  if (fromName) return fromName;
+  const fromType = { 'video/mp4': 'mp4', 'video/webm': 'webm', 'video/quicktime': 'mov', 'video/ogg': 'ogv' };
+  return fromType[file.type] || 'mp4';
+}
+
+/**
+ * Envia um vídeo pro bucket 'lesson-media' e devolve a URL pública.
+ * @param {File} file
+ * @param {string} folder - ex.: 'blocks/licoes'
+ * @returns {Promise<string>} URL pública do vídeo
+ */
+export async function uploadContentVideo(file, folder) {
+  const validationError = validateVideoFile(file);
+  if (validationError) throw new Error(validationError);
+
+  const path = `${folder}/${crypto.randomUUID()}.${extensionForVideo(file)}`;
+
+  const { error } = await supabase.storage.from(VIDEO_BUCKET).upload(path, file, {
+    contentType: file.type,
+    upsert: false,
+  });
+  if (error) throw error;
+
+  const { data } = supabase.storage.from(VIDEO_BUCKET).getPublicUrl(path);
+  return data.publicUrl;
+}

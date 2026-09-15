@@ -8,63 +8,241 @@
  * existente em contentBlocks.css — aqui só o "chrome" específico da Academia.
  */
 
-/* ── Tela inicial: categorias + grade de produtos ── */
-.academia-category-section {
-  margin-bottom: 28px;
+/* ── Tela inicial: "Portfólio Garmin" (redesign 2026-09-15) ────────────────
+ * Pedido do usuário: parar de parecer vitrine de e-commerce e virar uma
+ * ferramenta de estudo de portfólio — hierarquia (categoria → nível →
+ * produto), não uma lista de cards soltos. Paleta deliberadamente neutra
+ * (preto/cinza + bordas finas); vermelho de marca fica de fora daqui de
+ * propósito, reservado pro estado ativo de navegação em outras telas — aqui
+ * cor nenhuma deveria "competir" por atenção com o próprio portfólio. */
+.academia-hub-header { margin-bottom: 22px; }
+
+.academia-hub-title {
+  margin: 0 0 6px;
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  color: var(--text);
 }
 
-.academia-category-title {
+.academia-hub-subtitle { margin: 0; font-size: 14px; color: var(--text2); }
+
+.academia-hub-catnav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.academia-hub-catnav-item {
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--text2);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+
+.academia-hub-catnav-item:hover { border-color: var(--border2); color: var(--text); }
+
+.academia-hub-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.academia-hub-search {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 16px;
-  font-weight: 700;
+  flex: 1 1 220px;
+  max-width: 320px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  background: var(--card-bg);
+}
+
+.academia-hub-search-icon { display: flex; flex-shrink: 0; color: var(--text3); }
+.academia-hub-search-icon svg { width: 15px; height: 15px; }
+
+.academia-hub-search input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: none;
+  font-family: inherit;
+  font-size: 13px;
   color: var(--text);
-  margin: 0 0 14px;
 }
 
-.academia-category-icon { font-size: 18px; }
+.academia-hub-tier-filter { display: flex; flex-wrap: wrap; gap: 6px; }
 
-.academia-product-grid {
+.academia-hub-tier-btn {
+  padding: 7px 13px;
+  border-radius: var(--r2);
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--text2);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
+}
+
+.academia-hub-tier-btn:hover { border-color: var(--border2); }
+
+.academia-hub-tier-btn.is-active { background: var(--text); border-color: var(--text); color: var(--white); }
+
+.academia-hub-catnav-item:focus-visible,
+.academia-hub-tier-btn:focus-visible,
+.academia-hub-search input:focus-visible,
+.academia-hub-card:focus-visible {
+  outline: 2px solid var(--g);
+  outline-offset: 2px;
+}
+
+.academia-hub-category { margin-bottom: 48px; }
+.academia-hub-category:last-child { margin-bottom: 0; }
+
+.academia-hub-category-title {
+  margin: 0 0 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--text2);
+}
+
+.academia-hub-tier-group { margin-bottom: 26px; }
+.academia-hub-tier-group:last-child { margin-bottom: 0; }
+
+.academia-hub-tier-heading {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+
+.academia-hub-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
 }
 
-.academia-product-card {
+/* Card: imagem → etiqueta de nível → nome → descrição curta (2 linhas,
+ * clamp) — mesma altura visual pra qualquer produto, independente do
+ * tamanho da tagline. */
+.academia-hub-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: var(--r3);
   overflow: hidden;
   cursor: pointer;
+  transition: border-color var(--dur-base) var(--ease), box-shadow var(--dur-base) var(--ease), transform var(--dur-base) var(--ease);
+}
+
+.academia-hub-card:hover {
+  border-color: var(--border2);
   box-shadow: var(--sh-neutral-sm);
-  transition: transform var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
-}
-
-.academia-product-card:hover {
   transform: translateY(-2px);
-  box-shadow: var(--sh-neutral-md);
 }
 
-.academia-product-card-thumb {
-  aspect-ratio: 16 / 9;
+.academia-hub-card:hover .academia-hub-card-media img { transform: scale(1.03); }
+
+.academia-hub-card-media {
+  aspect-ratio: 4 / 3;
+  background: var(--off);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
 }
 
-.academia-product-card-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.academia-hub-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform var(--dur-slow) var(--ease);
+}
 
-.academia-product-card-thumb-icon { font-size: 32px; opacity: 0.85; }
+.academia-hub-card-media-fallback { display: flex; color: var(--text3); }
+.academia-hub-card-media-fallback svg { width: 34px; height: 34px; }
 
-.academia-product-card-body { padding: 14px; }
+.academia-hub-card-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 14px 16px 16px;
+}
 
-.academia-product-card-name { font-size: 14.5px; font-weight: 700; color: var(--text); }
+.academia-hub-card-tier {
+  margin-bottom: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--text3);
+}
 
-.academia-product-card-tagline { margin-top: 4px; font-size: 12.5px; color: var(--text2); line-height: 1.4; }
+.academia-hub-card-name {
+  margin: 0 0 4px;
+  font-size: 15.5px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text);
+}
 
-.academia-product-card-price { margin-top: 8px; font-size: 13px; font-weight: 700; color: var(--g); }
+.academia-hub-card-desc {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--text2);
+}
+
+.academia-hub-empty {
+  padding: 60px 20px;
+  text-align: center;
+  font-size: 13.5px;
+  color: var(--text3);
+}
+
+@media (max-width: 1000px) {
+  .academia-hub-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .academia-hub-grid { grid-template-columns: 1fr; }
+  .academia-hub-toolbar { flex-direction: column; align-items: stretch; }
+  .academia-hub-search { max-width: none; }
+  .academia-hub-title { font-size: 22px; }
+}
 
 /* ── Página de produto: breadcrumb + header ──────────────────────────────
  * Redesign 2026-09-15 (pedido do usuário — "padrão visual de plataformas

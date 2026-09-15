@@ -6,13 +6,14 @@
 
 import { navigateToPanel } from '../router.js';
 import { fetchReviewStats, fetchProductsForPicker, startReviewSession } from '../services/revisaoService.js';
+import { icon } from '../components/icons.js';
 
 const MODES = [
-  { key: 'rapida', icon: '⚡', label: 'Revisão Rápida', sub: '≈5 minutos · 8 conteúdos' },
-  { key: 'completa', icon: '📚', label: 'Revisão Completa', sub: '≈15 minutos · 20 conteúdos' },
-  { key: 'surpresa', icon: '🎲', label: 'Revisão Surpresa', sub: 'Conteúdo totalmente aleatório' },
-  { key: 'erros', icon: '🔁', label: 'Revisão dos Erros', sub: 'Só o que você errou ou ainda não domina' },
-  { key: 'produto', icon: '🔎', label: 'Revisão por Produto', sub: 'Escolha um produto, o resto é automático' },
+  { key: 'rapida', icon: 'zap', label: 'Revisão Rápida', sub: '≈5 minutos · 8 conteúdos' },
+  { key: 'completa', icon: 'biblioteca', label: 'Revisão Completa', sub: '≈15 minutos · 20 conteúdos' },
+  { key: 'surpresa', icon: 'dice', label: 'Revisão Surpresa', sub: 'Conteúdo totalmente aleatório' },
+  { key: 'erros', icon: 'revisao', label: 'Revisão dos Erros', sub: 'Só o que você errou ou ainda não domina' },
+  { key: 'produto', icon: 'search', label: 'Revisão por Produto', sub: 'Escolha um produto, o resto é automático' },
 ];
 
 window.addEventListener('panel:activated', (e) => {
@@ -48,7 +49,7 @@ function renderModePicker(container, stats, products, brandId) {
     <div class="revisao-mode-grid">
       ${MODES.map((m) => `
         <button type="button" class="revisao-mode-card" data-mode="${m.key}">
-          <span class="revisao-mode-icon">${m.icon}</span>
+          <span class="revisao-mode-icon">${icon(m.icon)}</span>
           <span class="revisao-mode-label">${m.label}</span>
           <span class="revisao-mode-sub">${m.sub}</span>
         </button>

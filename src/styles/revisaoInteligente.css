@@ -89,7 +89,19 @@
   transform: translateY(-2px);
 }
 
-.revisao-mode-icon { font-size: 26px; }
+.revisao-mode-icon {
+  display: flex;
+  width: 30px;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--g3);
+  color: var(--g);
+  margin-bottom: 4px;
+}
+
+.revisao-mode-icon svg { width: 17px; height: 17px; }
 
 .revisao-mode-label { font-size: 14.5px; font-weight: 700; color: var(--text); }
 
@@ -191,6 +203,9 @@
   border-radius: 999px;
   margin-bottom: 14px;
 }
+
+.revisao-source-tag-icon { display: flex; flex-shrink: 0; color: var(--text3); }
+.revisao-source-tag-icon svg { width: 13px; height: 13px; }
 
 @keyframes revisaoCardIn {
   from { opacity: 0; transform: translateY(10px); }
@@ -299,12 +314,18 @@
 .revisao-spec-option.incorrect { background: var(--warn-tint); border-color: var(--warn); }
 
 .revisao-quiz-card-feedback {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
   margin-top: 14px;
   padding: 12px 14px;
   border-radius: var(--r2);
   font-size: 13px;
   line-height: 1.5;
 }
+
+.revisao-quiz-card-feedback-icon { flex-shrink: 0; display: flex; margin-top: 1px; }
+.revisao-quiz-card-feedback-icon svg { width: 17px; height: 17px; }
 
 .revisao-quiz-card-feedback.ok { background: var(--acc-tint); color: var(--acc); }
 .revisao-quiz-card-feedback.no { background: var(--warn-tint); color: var(--warn); }
@@ -323,7 +344,18 @@
   padding: 60px 20px;
 }
 
-.revisao-empty-icon { font-size: 40px; }
+.revisao-empty-icon {
+  display: flex;
+  width: 56px;
+  height: 56px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--ok-tint);
+  color: var(--ok);
+}
+
+.revisao-empty-icon svg { width: 28px; height: 28px; }
 
 .revisao-empty-back {
   padding: 10px 20px;
@@ -346,7 +378,19 @@
   padding: 40px 20px;
 }
 
-.revisao-summary-icon { font-size: 42px; margin-bottom: 4px; }
+.revisao-summary-icon {
+  display: flex;
+  width: 60px;
+  height: 60px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--g3);
+  color: var(--g);
+  margin-bottom: 4px;
+}
+
+.revisao-summary-icon svg { width: 30px; height: 30px; }
 
 .revisao-summary h2 { font-size: 20px; color: var(--text); margin-bottom: 20px; }
 

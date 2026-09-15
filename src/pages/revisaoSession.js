@@ -13,6 +13,15 @@ import {
   finalizeReviewSession,
 } from '../services/revisaoService.js';
 import { renderBlocks, wireBlockInteractions } from '../components/ContentBlocks.js';
+import { icon } from '../components/icons.js';
+
+// Mesmo par de ícones (círculo com check / círculo com x) já usado em
+// QuizRunner.js pro feedback de certo/errado — duplicado aqui (não exportado
+// de lá) pra manter a mesma linguagem visual sem acoplar os dois arquivos.
+const RESULT_ICON = {
+  correct: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/></svg>',
+  incorrect: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>',
+};
 
 window.addEventListener('panel:activated', (e) => {
   if (e.detail.panelId === 'revisao-session') initRevisaoSessionPage();
@@ -48,7 +57,7 @@ async function initRevisaoSessionPage() {
 function renderEmptySession(container) {
   container.innerHTML = `
     <div class="revisao-empty">
-      <span class="revisao-empty-icon">✨</span>
+      <span class="revisao-empty-icon">${icon('checkCircle')}</span>
       <p>Nenhum conteúdo disponível pra esse modo agora — nada errado pra revisar, ou o catálogo ainda tá vazio.</p>
       <button type="button" class="revisao-empty-back" data-role="back">Voltar</button>
     </div>`;
@@ -122,16 +131,16 @@ function runSession(container, sessionId, items) {
   // produto ou título do comparativo/lição/artigo), só nunca tinha sido
   // exibido na tela — daí a confusão reportada pelo usuário.
   const SOURCE_ICON = {
-    product_sections: '📦',
-    product_comparisons: '⚖️',
-    lessons: '📘',
-    content_library: '📄',
+    product_sections: 'academia',
+    product_comparisons: 'scale',
+    lessons: 'trilha',
+    content_library: 'biblioteca',
   };
 
   function sourceTagHtml(catalogEntry) {
     if (!catalogEntry?.title) return '';
-    const icon = SOURCE_ICON[catalogEntry.source_table] || '📌';
-    return `<div class="revisao-source-tag">${icon} ${catalogEntry.title}</div>`;
+    const iconKey = SOURCE_ICON[catalogEntry.source_table] || 'fileText';
+    return `<div class="revisao-source-tag"><span class="revisao-source-tag-icon">${icon(iconKey)}</span>${catalogEntry.title}</div>`;
   }
 
   function renderCard(cardEl, nextBtn, item, content) {
@@ -201,9 +210,9 @@ function runSession(container, sessionId, items) {
         const feedbackEl = cardEl.querySelector('[data-role="feedback"]');
         feedbackEl.hidden = false;
         feedbackEl.className = `revisao-quiz-card-feedback ${result === 'acerto' ? 'ok' : 'no'}`;
-        feedbackEl.textContent = result === 'acerto'
-          ? '✅ Boa! Você já domina isso.'
-          : `❌ ${question.explanation || 'Não dessa vez. Vai voltar a aparecer em breve.'}`;
+        feedbackEl.innerHTML = `
+          <span class="revisao-quiz-card-feedback-icon">${RESULT_ICON[result === 'acerto' ? 'correct' : 'incorrect']}</span>
+          <span>${result === 'acerto' ? 'Boa! Você já domina isso.' : (question.explanation || 'Não dessa vez. Vai voltar a aparecer em breve.')}</span>`;
 
         nextBtn.hidden = false;
         nextBtn.addEventListener('click', handleNext, { once: true });
@@ -245,7 +254,9 @@ function runSession(container, sessionId, items) {
         const feedbackEl = cardEl.querySelector('[data-role="feedback"]');
         feedbackEl.hidden = false;
         feedbackEl.className = `revisao-quiz-card-feedback ${result === 'acerto' ? 'ok' : 'no'}`;
-        feedbackEl.textContent = result === 'acerto' ? '✅ Isso mesmo!' : '❌ Não dessa vez.';
+        feedbackEl.innerHTML = `
+          <span class="revisao-quiz-card-feedback-icon">${RESULT_ICON[result === 'acerto' ? 'correct' : 'incorrect']}</span>
+          <span>${result === 'acerto' ? 'Isso mesmo!' : 'Não dessa vez.'}</span>`;
 
         nextBtn.hidden = false;
         nextBtn.addEventListener('click', handleNext, { once: true });
@@ -281,7 +292,7 @@ function renderSummary(container, summary, startedAt) {
 
   container.innerHTML = `
     <div class="revisao-summary">
-      <span class="revisao-summary-icon">🎉</span>
+      <span class="revisao-summary-icon">${icon('award')}</span>
       <h2>Revisão concluída!</h2>
       <div class="revisao-summary-stats">
         <div class="revisao-summary-stat"><strong>${items_reviewed ?? 0}</strong><span>conteúdos revisados</span></div>

@@ -19,11 +19,15 @@
 /* Separador de assunto (2026-09-15) — usado dentro do html de blocos
  * texto_rico pra marcar a virada de um tema pro outro (ex.: linha Forerunner
  * pra linha MARQ); sem isso, dois &lt;h3&gt; consecutivos ficavam próximos
- * demais e pareciam continuação do mesmo assunto. */
+ * demais e pareciam continuação do mesmo assunto. Régua em degradê vermelho
+ * (2026-09-15, pedido do usuário — "divisórias muito fracas/genéricas") em
+ * vez de um fio cinza de 1px, pra marcar melhor onde uma parte termina. */
 .cb-topic-divider {
   border: none;
-  border-top: 1px solid var(--border);
-  margin: 36px 0 26px;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--g) 0%, var(--g4) 45%, transparent 100%);
+  margin: 40px 0 30px;
 }
 
 /* Título de modelo centralizado (2026-09-15) — usado em texto_rico quando o
@@ -33,6 +37,125 @@
  * de título de parágrafo comum. */
 .cb-model-heading {
   text-align: center;
+}
+
+/* Ficha de perfil de cliente (2026-09-15, pedido do usuário — "Perfis de
+ * corrida" virava uma lista corrida dentro do accordion, difícil de ler).
+ * Classes hand-authored dentro do html do accordion (mesmo padrão de
+ * .cb-topic-divider/.cb-field/.cb-model-heading acima: presentação
+ * estruturada sem precisar de um bloco novo no schema). Card único (o
+ * accordion body em si não tem borda, então não cria "caixa dentro de
+ * caixa"), com 3 seções lado a lado (Como identificar / O que ouvir / O que
+ * perguntar) — cada uma com ícone do mesmo conjunto svg de icons.js (sem
+ * emoji — decisão já tomada nesta mesma trilha, ver sql/127). */
+.cb-profile {
+  background: var(--off);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  padding: 18px 20px;
+  box-shadow: var(--sh-neutral-sm);
+}
+
+.cb-profile-quem {
+  margin: 0 0 16px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text2);
+}
+
+.cb-profile-quem strong { color: var(--text); }
+
+.cb-profile-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.cb-profile-section {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  padding: 12px 14px;
+}
+
+.cb-profile-section-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--text3);
+}
+
+.cb-profile-section-icon { display: flex; flex-shrink: 0; color: var(--g); }
+.cb-profile-section-icon svg { width: 15px; height: 15px; }
+
+.cb-profile-list {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cb-profile-list li { font-size: 13px; color: var(--text2); line-height: 1.5; }
+
+.cb-profile-quotes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cb-profile-quote {
+  margin: 0;
+  padding: 8px 10px;
+  background: var(--g3);
+  border-left: 2px solid var(--g4);
+  border-radius: var(--r2);
+  font-size: 12.5px;
+  font-style: italic;
+  color: var(--text2);
+  line-height: 1.45;
+}
+
+/* "O que perguntar" são falas do vendedor, não do cliente — tom neutro (sem
+ * itálico/vermelho) pra diferenciar visualmente de "O que você pode ouvir". */
+.cb-profile-quotes-ask .cb-profile-quote {
+  background: var(--card-bg);
+  border-left-color: var(--border2);
+  font-style: normal;
+}
+
+.cb-profile-conduzir {
+  margin: 0 0 14px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--text2);
+}
+
+.cb-profile-conduzir strong { color: var(--text); }
+
+.cb-profile-tags {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cb-profile-tags-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--text3);
+}
+
+@media (max-width: 700px) {
+  .cb-profile-grid { grid-template-columns: 1fr; }
 }
 
 /* Checklist de perguntas de qualificação (2026-09-15) — usado dentro do html
@@ -93,7 +216,7 @@
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: var(--r4);
-  padding: 16px;
+  padding: 18px;
   box-shadow: var(--sh-neutral-sm);
 }
 
@@ -116,6 +239,16 @@
 }
 
 .cb-card-feature-icon svg { width: 15px; height: 15px; }
+
+/* Emoji distinto por card (2026-09-15, pedido do usuário — "estão todos
+ * iguais e sem diferenciação"). Mesma base circular de .cb-card-feature-icon,
+ * só o fundo/cor mudam pra vermelho de marca — o emoji em si já diferencia
+ * cada card, o círculo vermelho reforça a identidade visual. */
+.cb-card-feature-emoji {
+  background: var(--g3);
+  font-size: 15px;
+  line-height: 1;
+}
 
 .cb-card-image {
   display: block;
@@ -179,36 +312,56 @@
   line-height: 1.6;
 }
 
-/* ── Timeline ── */
+/* ── Timeline ── Redesenhada como stepper visual (2026-09-15, pedido do
+ * usuário — "hoje são só bolinhas cinzas com uma linha vertical fraca").
+ * Nó numerado (ou com ícone, via `it.icon` opcional — ver renderTimelineBlock)
+ * em vermelho de marca, conectados por uma linha mais evidente. Mesmo
+ * padrão visual do círculo numerado já usado em .cb-roteiro-num, aplicado
+ * aqui pra dar a mesma sensação de "passo" numa timeline. */
 .cb-timeline { padding-left: 4px; }
 
 .cb-timeline-item {
   display: flex;
-  gap: 14px;
-  padding-bottom: 20px;
+  align-items: flex-start;
+  gap: 16px;
+  padding-bottom: 26px;
   position: relative;
 }
 
 .cb-timeline-item:not(:last-child)::before {
   content: '';
   position: absolute;
-  left: 6px;
-  top: 20px;
-  bottom: 0;
-  width: 2px;
-  background: var(--border2);
+  left: 17px;
+  top: 36px;
+  bottom: -8px;
+  width: 3px;
+  background: var(--g4);
 }
 
 .cb-timeline-dot {
-  width: 13px;
-  height: 13px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
-  background: var(--text3);
-  border: 2px solid var(--card-bg);
-  box-shadow: 0 0 0 1px var(--border2);
-  margin-top: 5px;
+  background: var(--g);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 4px var(--g3);
   flex-shrink: 0;
+  position: relative;
+  z-index: 1;
 }
+
+.cb-timeline-dot svg { width: 16px; height: 16px; }
+
+.cb-timeline-num {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.cb-timeline-content { padding-top: 4px; }
 
 /* Rótulo (normalmente o ano) em destaque — chama atenção pelo tamanho/peso
  * (21px/800), não mais pela cor de marca (2026-09-15, pedido do usuário —
@@ -505,12 +658,13 @@
   min-height: 128px;
   display: flex;
   flex-direction: column;
-  transition: transform var(--dur-base) var(--ease), box-shadow var(--dur-base) var(--ease);
+  transition: transform var(--dur-base) var(--ease), box-shadow var(--dur-base) var(--ease), border-color var(--dur-base) var(--ease);
 }
 
 .cb-card-grid .cb-card:hover {
   transform: translateY(-2px);
   box-shadow: var(--sh-neutral-md);
+  border-color: var(--g4);
 }
 
 .cb-card-grid-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
@@ -576,6 +730,30 @@
 .cb-flip-grid.cb-flip-tall .cb-flip-card,
 .cb-flip-grid.cb-flip-tall .cb-flip-card-inner {
   min-height: 380px;
+}
+
+/* Compact (oposto do tall acima, 2026-09-15) — cards de pergunta rápida
+ * (frente/verso com 1 frase curta) sobravam de espaço vazio no min-height
+ * padrão de 178px. Opt-in via flag `compact`, não muda os flip cards
+ * existentes que não marcam essa flag. */
+.cb-flip-grid.cb-flip-compact .cb-flip-card,
+.cb-flip-grid.cb-flip-compact .cb-flip-card-inner {
+  min-height: 128px;
+}
+
+/* Texto centralizado nos compactos (pedido do usuário, 2026-09-15) — frente/
+ * verso de 1 frase curta lêem melhor centralizados do que alinhados à
+ * esquerda como os flip cards de texto mais longo (Portfólio, Estudo de
+ * Caso), que continuam à esquerda. */
+.cb-flip-grid.cb-flip-compact .cb-flip-face {
+  align-items: center;
+  text-align: center;
+}
+
+.cb-flip-grid.cb-flip-compact .cb-flip-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .cb-flip-face {
@@ -856,12 +1034,34 @@
   text-align: center;
 }
 
+/* Era um <p> envolvendo o texto (2026-09-15, bug real reportado pelo
+ * usuário — "legibilidade muito ruim" nas abas "Garmin se destaca em /
+ * [concorrente] se destaca em"): quando `it.text` trazia uma lista <ul>, o
+ * navegador fechava o <p> sozinho antes do <ul> (tag de bloco dentro de
+ * <p> é HTML inválido), e a lista escapava inteira do escopo de
+ * .cb-tabs-panel-text — sem cor, sem espaçamento, estilo padrão do
+ * navegador. Virou <div> (ver renderTabsBlock) e ganhou estilo próprio de
+ * lista aqui, igual ao resto dos blocos ricos da plataforma. */
 .cb-tabs-panel-text {
   margin: 0;
   font-size: 13.5px;
   color: var(--text2);
   line-height: 1.6;
 }
+
+.cb-tabs-panel-text p { margin: 0 0 10px; }
+.cb-tabs-panel-text p:last-child { margin-bottom: 0; }
+
+.cb-tabs-panel-text ul,
+.cb-tabs-panel-text ol {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cb-tabs-panel-text li { line-height: 1.55; }
 
 .cb-tabs-panel-note {
   margin: 10px 0 0;
@@ -1129,6 +1329,19 @@
 }
 
 .cb-editor-hint { font-size: 11.5px; color: var(--text3); margin: 4px 0 0; }
+
+/* Uploads de capa por card do flip_card (2026-09-15) — um ImageUploadField
+ * por linha, abaixo do textarea principal. */
+.cb-flip-cover-uploads {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 8px;
+  padding: 12px;
+  background: var(--card-bg);
+  border: 1px dashed var(--border2);
+  border-radius: var(--r2);
+}
 
 .cb-editor-add-row {
   display: flex;

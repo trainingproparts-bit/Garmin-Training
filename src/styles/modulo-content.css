@@ -102,6 +102,16 @@
   height: 100%;
 }
 
+.content-video-native {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+}
+
 /* ── Artigo/Texto ── */
 .content-article {
   position: relative;
@@ -115,7 +125,7 @@
 .content-article .content-article-body {
   color: var(--text);
   font-size: 15px;
-  line-height: 1.65;
+  line-height: 1.7;
   max-width: 760px;
 }
 
@@ -278,23 +288,63 @@
   border-color: rgba(140, 31, 46, 0.4);
 }
 
+/* Hierarquia tipográfica (2026-09-15, pedido do usuário — "H2 muito parecido
+ * com H3/corpo, difícil ver o nível de cada bloco"). h2 vira o título de
+ * seção principal (maior, com régua vermelha embaixo pra marcar bem a
+ * virada de assunto); h3 um nível abaixo, sem régua; h4 vira um "kicker"
+ * pequeno em caixa alta (usado hoje só via .cb-model-heading, ex.: "A lógica
+ * do atendimento" antes de um bloco interativo) — nenhum dos três muda o
+ * HTML já cadastrado, só a apresentação. */
 .content-article .content-article-body h1,
 .content-article .content-article-body h2,
-.content-article .content-article-body h3 {
+.content-article .content-article-body h3,
+.content-article .content-article-body h4 {
   color: var(--text);
   font-family: var(--font-display);
-  font-weight: 800;
   letter-spacing: 0.2px;
-  margin-top: 18px;
-  margin-bottom: 8px;
 }
 
-.content-article .content-article-body h2 { font-size: 20px; }
-.content-article .content-article-body h3 { font-size: 17px; }
-
-.content-article .content-article-body p {
+.content-article .content-article-body h1 {
+  font-size: 24px;
+  font-weight: 800;
+  margin-top: 8px;
   margin-bottom: 12px;
 }
+
+.content-article .content-article-body h2 {
+  font-size: 22px;
+  font-weight: 800;
+  margin-top: 34px;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--g4);
+}
+
+.content-article .content-article-body h2:first-child { margin-top: 0; }
+
+.content-article .content-article-body h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: 28px;
+  margin-bottom: 10px;
+}
+
+.content-article .content-article-body h4 {
+  font-size: 12.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text3);
+  margin-top: 24px;
+  margin-bottom: 12px;
+}
+
+.content-article .content-article-body p {
+  margin-bottom: 16px;
+  line-height: 1.7;
+}
+
+.content-article .content-article-body p:last-child { margin-bottom: 0; }
 
 .content-article .content-article-body ul,
 .content-article .content-article-body ol {

@@ -23,6 +23,7 @@ import { fetchReviewStats } from '../services/revisaoService.js';
 import { getCurrentProfile, isAdminProfile } from '../config/supabase.js';
 import { navigateToPanel } from '../router.js';
 import { openImageEditModal } from './ImageEditModal.js';
+import { icon } from './icons.js';
 
 // Canal Realtime do Mural — precisa ser cancelado antes de assinar de novo,
 // senão cada vez que o Dashboard Principal renderiza (ex.: voltar da trilha)
@@ -603,12 +604,67 @@ function formatRelativeTime(iso) {
 }
 
 /**
- * Linhas Especiais e Novidades — fileira única com os artigos "deep_dive"
- * da Biblioteca Técnica (InReach, Edge, Náutico, GPS de Mão, Blaze, MARQ,
- * Apps/Integrações, Novidades — sql/seeds/060/061, redesign 2026-07-10).
- * Um card por artigo (não 6 fileiras separadas de 1 item cada). Clique
- * deep-linka pra Biblioteca já expandindo o artigo certo.
+ * Linhas Especiais e Novidades — redesenhada em 2026-09-15 (pedido do
+ * usuário: "não deve parecer carrossel de produtos", e sim uma biblioteca
+ * de treinamentos especiais). Antes era uma fileira única com scroll
+ * horizontal (.media-row, componente compartilhado com Trilha/Circuito de
+ * Desafios — não mexemos nele, criamos classes próprias .special-lines-*
+ * pra não afetar os outros carrosséis que reaproveitam o mesmo CSS).
+ *
+ * Grid sempre visível (3/2/1 colunas), agrupado em 3 blocos de leitura —
+ * Novidades / Linhas Especiais / Ecossistema Garmin — derivados do próprio
+ * ASSUNTO de cada artigo (ver SPECIAL_LINE_GROUPS), não um campo novo no
+ * banco: os 8 artigos "deep_dive" da Biblioteca Técnica continuam sendo os
+ * mesmos de sempre (sql/seeds/060/061), só reorganizados na apresentação.
  */
+const SPECIAL_LINE_GROUPS = [
+  { key: 'novidades', label: 'Novidades', slugs: ['novidades-2026-forerunner-70-170'] },
+  {
+    key: 'linhas-especiais',
+    label: 'Linhas Especiais',
+    slugs: [
+      'inreach-comunicadores-satelite',
+      'gps-de-mao-gpsmap-etrex',
+      'linha-nautica-sonares-chartplotters',
+      'edge-ciclocomputadores',
+      'blaze-equine-wellness',
+      'marq-gen-2-linha-de-luxo',
+    ],
+  },
+  { key: 'ecossistema', label: 'Ecossistema Garmin', slugs: ['apps-integracoes-tecnologias-garmin'] },
+];
+
+/** Tag curta de assunto por card ("CATEGORIA/TEMA" do brief) — extraída do próprio título do artigo, não um dado novo. */
+const SPECIAL_LINE_TAG = {
+  'novidades-2026-forerunner-70-170': 'Novidades',
+  'inreach-comunicadores-satelite': 'Conectividade',
+  'gps-de-mao-gpsmap-etrex': 'GPS de Mão',
+  'linha-nautica-sonares-chartplotters': 'Náutica',
+  'edge-ciclocomputadores': 'Ciclismo',
+  'blaze-equine-wellness': 'Linha Equina',
+  'marq-gen-2-linha-de-luxo': 'Linha de Luxo',
+  'apps-integracoes-tecnologias-garmin': 'Ecossistema',
+};
+
+const SPECIAL_LINE_RECENCY_DAYS = 21;
+
+/**
+ * "Novo"/"Atualizado" a partir de created_at/updated_at reais — nenhum dos
+ * 8 artigos atuais foi criado/editado nos últimos 21 dias (lote original de
+ * 2026-07-10, últimos ajustes em 07-28/07-30), então hoje isso não mostra
+ * nada; fica pronto pra acender sozinho quando a Gestora publicar ou editar
+ * algo de fato novo, sem precisar marcar manualmente.
+ */
+function specialLineRecencyBadge(item) {
+  const dayMs = 86400000;
+  const now = Date.now();
+  const created = item.created_at ? new Date(item.created_at).getTime() : null;
+  const updated = item.updated_at ? new Date(item.updated_at).getTime() : null;
+  if (created && now - created <= SPECIAL_LINE_RECENCY_DAYS * dayMs) return 'Novo';
+  if (updated && now - updated <= SPECIAL_LINE_RECENCY_DAYS * dayMs) return 'Atualizado';
+  return null;
+}
+
 async function renderSpecialLines(container) {
   if (!container) return;
 
@@ -627,15 +683,29 @@ async function renderSpecialLines(container) {
     }
 
     const isAdmin = isAdminProfile(profile);
+    const bySlug = new Map(items.map((i) => [i.slug, i]));
+
+    const groupsHtml = SPECIAL_LINE_GROUPS
+      .map((group) => {
+        const groupItems = group.slugs.map((s) => bySlug.get(s)).filter(Boolean);
+        if (!groupItems.length) return '';
+        return `
+          <div class="special-lines-section">
+            <span class="special-lines-section-label">${group.label}</span>
+            <div class="special-lines-grid">
+              ${groupItems.map((item) => specialLineCardHtml(item, isAdmin)).join('')}
+            </div>
+          </div>`;
+      })
+      .join('');
 
     container.innerHTML = `
-      <div class="media-row-group">
-        <div class="media-row-header">
-          <h3 class="media-row-title">🧭 Linhas Especiais e Novidades</h3>
+      <div class="special-lines-group">
+        <div class="special-lines-header">
+          <h3 class="special-lines-title">Linhas Especiais e Novidades</h3>
+          <p class="special-lines-subtitle">Conteúdos para ampliar seu conhecimento sobre o ecossistema Garmin.</p>
         </div>
-        <div class="media-row">
-          ${items.map((item) => specialLineCardHtml(item, isAdmin)).join('')}
-        </div>
+        ${groupsHtml}
       </div>`;
 
     wireSpecialLineCards(container, items, isAdmin);
@@ -647,26 +717,42 @@ async function renderSpecialLines(container) {
 
 function specialLineCardHtml(item, isAdmin) {
   const cover = item.payload?.cover_url;
+  const tag = SPECIAL_LINE_TAG[item.slug] || '';
+  const badge = specialLineRecencyBadge(item);
   return `
-    <div class="media-card" data-deepdive-slug="${item.slug}">
-      <div class="media-card-thumb media-card-thumb-deepdive">
-        ${cover ? `<img src="${cover}" alt="">` : '<span class="media-card-thumb-icon">📘</span>'}
+    <article class="special-line-card" data-deepdive-slug="${item.slug}" tabindex="0" role="button" aria-label="Ver treinamento: ${item.title}">
+      <div class="special-line-card-media">
+        ${cover ? `<img src="${cover}" alt="${item.title}" loading="lazy">` : `<span class="special-line-card-media-fallback">${icon('biblioteca')}</span>`}
+        ${badge ? `<span class="special-line-card-badge">${badge}</span>` : ''}
+        ${isAdmin ? `<button type="button" class="special-line-card-admin-btn" data-edit-cover-slug="${item.slug}" title="Editar capa" aria-label="Editar capa">${icon('pencil')}</button>` : ''}
       </div>
-      <div class="media-card-body">
-        <div class="media-card-title">${item.title}</div>
-        <p class="media-card-meta">${item.summary || ''}</p>
-        ${isAdmin ? `<button type="button" class="media-card-edit-cover-btn" data-edit-cover-slug="${item.slug}">Editar capa</button>` : ''}
+      <div class="special-line-card-body">
+        ${tag ? `<span class="special-line-card-tag">${tag}</span>` : ''}
+        <h4 class="special-line-card-title">${item.title}</h4>
+        ${item.summary ? `<p class="special-line-card-desc">${item.summary}</p>` : ''}
+        <span class="special-line-card-cta">Ver treinamento →</span>
       </div>
-    </div>`;
+    </article>`;
 }
 
 function wireSpecialLineCards(container, items, isAdmin) {
+  function openDeepDive(slug) {
+    window.selectedDeepDiveSlug = slug;
+    window.deepDiveReturnPanel = 'trilha';
+    navigateToPanel('deep-dive-detail');
+  }
+
   container.querySelectorAll('[data-deepdive-slug]').forEach((card) => {
     card.addEventListener('click', (e) => {
       if (e.target.closest('[data-edit-cover-slug]')) return;
-      window.selectedDeepDiveSlug = card.dataset.deepdiveSlug;
-      window.deepDiveReturnPanel = 'trilha';
-      navigateToPanel('deep-dive-detail');
+      openDeepDive(card.dataset.deepdiveSlug);
+    });
+    card.addEventListener('keydown', (e) => {
+      if (e.target.closest('[data-edit-cover-slug]')) return;
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openDeepDive(card.dataset.deepdiveSlug);
+      }
     });
   });
 

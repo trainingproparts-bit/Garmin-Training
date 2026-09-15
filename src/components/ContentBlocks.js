@@ -10,6 +10,7 @@
 
 import { navigateToPanel } from '../router.js';
 import { imageUploadFieldHtml, wireImageUploadField } from './ImageUploadField.js';
+import { videoUploadFieldHtml, wireVideoUploadField } from './VideoUploadField.js';
 import { icon } from './icons.js';
 
 export const BLOCK_TYPES = [
@@ -49,7 +50,7 @@ export function defaultBlockFor(type) {
     case 'objecao': return { type, items: [] };
     case 'tabela': return { type, headers: [], rows: [] };
     case 'card_grid': return { type, columns: 2, items: [] };
-    case 'flip_card': return { type, columns: 2, tall: false, cards: [] };
+    case 'flip_card': return { type, columns: 2, tall: false, compact: false, cards: [] };
     case 'metric_card_grid': return { type, columns: 2, items: [] };
     case 'match_quiz': return { type, pairs: [] };
     case 'tabs': return { type, items: [] };
@@ -165,7 +166,7 @@ function renderTimelineBlock(b, index) {
     <div class="cb-timeline ${reveal ? 'cb-timeline-reveal' : ''}">
       ${items.map((it, i) => `
         <div class="cb-timeline-item">
-          <div class="cb-timeline-dot"></div>
+          <div class="cb-timeline-dot">${it.icon ? icon(it.icon) : `<span class="cb-timeline-num">${i + 1}</span>`}</div>
           <div class="cb-timeline-content">
             <div class="cb-timeline-head">
               <strong class="cb-timeline-label">${it.label || ''}</strong>
@@ -177,13 +178,19 @@ function renderTimelineBlock(b, index) {
     </div>`;
 }
 
+/** Vídeo enviado pro nosso Storage (upload direto, ver VideoUploadField.js) tem extensão de arquivo reconhecível na URL; embed (YouTube/Vimeo) não. */
+function isDirectVideoUrl(url) {
+  return /\.(mp4|webm|mov|ogv|ogg)(\?|$)/i.test(url || '');
+}
+
 function renderVideoBlock(b) {
   if (!b.videoUrl) return '';
+  const player = isDirectVideoUrl(b.videoUrl)
+    ? `<video src="${b.videoUrl}" class="content-video-native" controls></video>`
+    : `<iframe src="${b.videoUrl}" class="content-video-iframe" frameborder="0" allowfullscreen></iframe>`;
   return `
     <div class="content-video-wrapper">
-      <div class="content-video-container">
-        <iframe src="${b.videoUrl}" class="content-video-iframe" frameborder="0" allowfullscreen></iframe>
-      </div>
+      <div class="content-video-container">${player}</div>
       ${b.caption ? `<p class="cb-video-caption">${b.caption}</p>` : ''}
     </div>`;
 }
@@ -304,7 +311,11 @@ function renderCardGridBlock(b) {
     <div class="cb-card-grid cols-${cols}">
       ${items.map((it) => `
         <div class="cb-card ${it.imageUrl ? 'cb-card-has-image' : ''}">
-          ${it.imageUrl ? `<img class="cb-card-image" src="${it.imageUrl}" alt="${it.title || ''}" loading="lazy">` : `<span class="cb-card-feature-icon">${icon('checkCircle')}</span>`}
+          ${it.imageUrl
+            ? `<img class="cb-card-image" src="${it.imageUrl}" alt="${it.title || ''}" loading="lazy">`
+            : it.icon
+              ? `<span class="cb-card-feature-icon cb-card-feature-emoji">${it.icon}</span>`
+              : `<span class="cb-card-feature-icon">${icon('checkCircle')}</span>`}
           ${it.title ? `<h4 class="cb-card-title">${it.title}</h4>` : ''}
           ${it.text ? `<p class="cb-card-text">${colorizeCheckmarks(it.text)}</p>` : ''}
           ${Array.isArray(it.tags) && it.tags.length ? `
@@ -329,12 +340,18 @@ function renderCardGridBlock(b) {
  * puramente aditivo, só ativa `.cb-flip-tall` (min-height maior) quando
  * marcado; sem `tall`, cards continuam exatamente como antes (Portfólio,
  * Estudo de Caso).
+ *
+ * `compact` (opcional, 2026-09-15) — oposto do `tall` acima: cards de
+ * pergunta rápida (frente = 1 frase, verso = 1 frase, ex.: "As perguntas que
+ * ajudam a encontrar o caminho") sobram de espaço vazio no min-height padrão
+ * de 178px. Puramente aditivo, mesmo mecanismo do `tall`.
  */
 function renderFlipCardBlock(b) {
   const cards = Array.isArray(b.cards) ? b.cards : [];
   const cols = [3, 4].includes(b.columns) ? b.columns : 2;
+  const sizeClass = b.tall ? 'cb-flip-tall' : b.compact ? 'cb-flip-compact' : '';
   return `
-    <div class="cb-flip-grid cols-${cols} ${b.tall ? 'cb-flip-tall' : ''}">
+    <div class="cb-flip-grid cols-${cols} ${sizeClass}">
       ${cards.map((c) => `
         <div class="cb-flip-card" data-flip-card>
           <div class="cb-flip-card-inner">
@@ -427,7 +444,7 @@ function renderTabsBlock(b, index) {
     ${items.map((it, i) => `
       <div class="cb-tabs-panel" data-cb-tabs-panel="${index}" data-tab-panel="${i}" ${i === 0 ? '' : 'hidden'}>
         ${it.title ? `<h4 class="cb-tabs-panel-title">${it.title}</h4>` : ''}
-        ${it.text ? `<p class="cb-tabs-panel-text">${it.text}</p>` : ''}
+        ${it.text ? `<div class="cb-tabs-panel-text">${it.text}</div>` : ''}
         ${it.note ? `<p class="cb-tabs-panel-note">${it.note}</p>` : ''}
       </div>`).join('')}`;
 }
@@ -724,7 +741,7 @@ function decodeMatchPairs(raw) {
 function encodeCardGridItems(items) {
   return (items || []).map((it) => {
     const tagsRaw = (it.tags || []).map((t) => `${t.label}:${t.color}`).join(', ');
-    return [it.title || '', it.text || '', tagsRaw, it.imageUrl || ''].join(' | ');
+    return [it.title || '', it.text || '', tagsRaw, it.imageUrl || '', it.icon || ''].join(' | ');
   }).join('\n');
 }
 
@@ -743,7 +760,7 @@ function decodeCardGridItems(raw) {
           const [label, color] = t.split(':').map((x) => x.trim());
           return { label: label || t, color: color || '' };
         });
-      return { title: parts[0] || '', text: parts[1] || '', tags, imageUrl: parts[3] || '' };
+      return { title: parts[0] || '', text: parts[1] || '', tags, imageUrl: parts[3] || '', icon: parts[4] || '' };
     });
 }
 
@@ -771,11 +788,11 @@ function renderBlockFields(block) {
     case 'timeline':
       return `
         <label class="cb-editor-checkbox"><input type="checkbox" data-field="reveal" ${block.reveal ? 'checked' : ''}> Revelar um item de cada vez (botão "ver" em vez de mostrar tudo)</label>
-        <textarea data-field="items_raw" rows="5" placeholder="Um item por linha: Rótulo | Texto">${encodeItems(block.items, ['label', 'text'])}</textarea>
-        <p class="cb-editor-hint">Formato: Rótulo | Texto (um item por linha)</p>`;
+        <textarea data-field="items_raw" rows="5" placeholder="Um item por linha: Rótulo | Texto | Ícone (opcional)">${encodeItems(block.items, ['label', 'text', 'icon'])}</textarea>
+        <p class="cb-editor-hint">Formato: Rótulo | Texto | Ícone opcional (um item por linha). Sem ícone, o passo mostra o número da etapa. Ícones disponíveis: users, zap, target, search, watch, star, award, shield, message, checkCircle...</p>`;
     case 'video':
       return `
-        <input type="text" data-field="videoUrl" value="${block.videoUrl || ''}" placeholder="URL do vídeo (embed)">
+        ${videoUploadFieldHtml({ fieldName: 'videoUrl', currentUrl: block.videoUrl || '', folder: 'blocks/licoes' })}
         <input type="text" data-field="caption" value="${block.caption || ''}" placeholder="Legenda (opcional)">`;
     case 'imagem':
       return `
@@ -816,8 +833,8 @@ function renderBlockFields(block) {
           <option value="2" ${block.columns !== 3 ? 'selected' : ''}>2 colunas</option>
           <option value="3" ${block.columns === 3 ? 'selected' : ''}>3 colunas</option>
         </select>
-        <textarea data-field="items_raw" rows="5" placeholder="Um card por linha: Título | Texto | tag1:blue, tag2:green (opcional) | URL da imagem (opcional)">${encodeCardGridItems(block.items)}</textarea>
-        <p class="cb-editor-hint">Formato: Título | Texto | tags rótulo:cor separadas por vírgula (cores: blue, green, orange, gold) | URL da imagem — os dois últimos campos são opcionais</p>`;
+        <textarea data-field="items_raw" rows="5" placeholder="Um card por linha: Título | Texto | tag1:blue, tag2:green (opcional) | URL da imagem (opcional) | Emoji (opcional)">${encodeCardGridItems(block.items)}</textarea>
+        <p class="cb-editor-hint">Formato: Título | Texto | tags rótulo:cor separadas por vírgula (cores: blue, green, orange, gold) | URL da imagem | Emoji — os três últimos campos são opcionais. O emoji substitui o ícone padrão quando não há imagem (ex.: 🏃, ⚡, 🚴).</p>`;
     case 'flip_card':
       return `
         <select data-field="columns">
@@ -826,8 +843,17 @@ function renderBlockFields(block) {
           <option value="4" ${block.columns === 4 ? 'selected' : ''}>4 colunas</option>
         </select>
         <label class="cb-editor-checkbox"><input type="checkbox" data-field="tall" ${block.tall ? 'checked' : ''}> Verso alto (para textos longos, evita rolagem dentro do card)</label>
+        <label class="cb-editor-checkbox"><input type="checkbox" data-field="compact" ${block.compact ? 'checked' : ''}> Card compacto (para frente/verso com 1 frase curta, evita espaço vazio)</label>
         <textarea data-field="cards_raw" rows="6" placeholder="Um card por linha: Emoji | Título | Subtítulo | Texto da frente | Rótulo do verso | Texto do verso | URL da imagem de fundo (opcional, substitui o emoji)">${encodeItems(block.cards, ['emoji', 'title', 'subtitle', 'frontText', 'backLabel', 'backText', 'coverUrl'])}</textarea>
-        <p class="cb-editor-hint">Formato: Emoji | Título | Subtítulo | Texto da frente | Rótulo do verso | Texto do verso | URL da imagem (um card por linha, clique para virar). Os dois últimos campos são opcionais. A URL da imagem substitui o emoji na frente do card.</p>`;
+        <p class="cb-editor-hint">Formato: Emoji | Título | Subtítulo | Texto da frente | Rótulo do verso | Texto do verso | URL da imagem (um card por linha, clique para virar). Os dois últimos campos são opcionais. A URL da imagem substitui o emoji na frente do card.</p>
+        ${(block.cards || []).length ? `
+          <p class="cb-editor-hint">Ou envie a imagem de capa de cada card direto do computador (substitui a URL da coluna acima ao salvar):</p>
+          <div class="cb-flip-cover-uploads">
+            ${(block.cards || []).map((c, i) => `
+              <div class="cb-flip-cover-upload-row" data-flip-cover-index="${i}">
+                ${imageUploadFieldHtml({ fieldName: `flip_cover_${i}`, currentUrl: c.coverUrl || '', folder: 'blocks/licoes', label: c.title || `Card ${i + 1}` })}
+              </div>`).join('')}
+          </div>` : ''}`;
     case 'metric_card_grid':
       return `
         <select data-field="columns">
@@ -883,7 +909,7 @@ function readBlockFromRow(row, type) {
     case 'banner': return { type, tone: get('tone') || 'info', text: get('text') };
     case 'card': return { type, icon: get('icon'), title: get('title'), text: get('text') };
     case 'accordion': return { type, items: decodeItems(get('items_raw'), ['title', 'html']) };
-    case 'timeline': return { type, items: decodeItems(get('items_raw'), ['label', 'text']), reveal: !!row.querySelector('[data-field="reveal"]')?.checked };
+    case 'timeline': return { type, items: decodeItems(get('items_raw'), ['label', 'text', 'icon']), reveal: !!row.querySelector('[data-field="reveal"]')?.checked };
     case 'video': return { type, videoUrl: get('videoUrl'), caption: get('caption') };
     case 'imagem': return {
       type,
@@ -902,7 +928,24 @@ function readBlockFromRow(row, type) {
       rows: get('rows_raw').split('\n').map((l) => l.trim()).filter(Boolean).map((l) => l.split('|').map((c) => c.trim())),
     };
     case 'card_grid': return { type, columns: Number(get('columns')) === 3 ? 3 : 2, items: decodeCardGridItems(get('items_raw')) };
-    case 'flip_card': return { type, columns: [3, 4].includes(Number(get('columns'))) ? Number(get('columns')) : 2, tall: !!row.querySelector('[data-field="tall"]')?.checked, cards: decodeItems(get('cards_raw'), ['emoji', 'title', 'subtitle', 'frontText', 'backLabel', 'backText', 'coverUrl']) };
+    case 'flip_card': {
+      const cards = decodeItems(get('cards_raw'), ['emoji', 'title', 'subtitle', 'frontText', 'backLabel', 'backText', 'coverUrl']);
+      // Upload direto de capa (por card, ver renderBlockFields) tem prioridade
+      // sobre o que estiver na coluna coverUrl do textarea, pra não perder o
+      // upload se a pessoa não copiar a URL de volta manualmente.
+      row.querySelectorAll('[data-flip-cover-index]').forEach((wrap) => {
+        const cardIndex = Number(wrap.dataset.flipCoverIndex);
+        const url = wrap.querySelector('[data-role="iuf-hidden-value"]')?.value;
+        if (cards[cardIndex] && url) cards[cardIndex].coverUrl = url;
+      });
+      return {
+        type,
+        columns: [3, 4].includes(Number(get('columns'))) ? Number(get('columns')) : 2,
+        tall: !!row.querySelector('[data-field="tall"]')?.checked,
+        compact: !!row.querySelector('[data-field="compact"]')?.checked,
+        cards,
+      };
+    }
     case 'metric_card_grid': return { type, columns: Number(get('columns')) === 3 ? 3 : 2, items: decodeMetricItems(get('items_raw')) };
     case 'match_quiz': return { type, pairs: decodeMatchPairs(get('pairs_raw')) };
     case 'tabs': return { type, items: decodeItems(get('items_raw'), ['label', 'title', 'text', 'note']) };
@@ -937,8 +980,16 @@ export function setupBlockArrayEditor(container, initialBlocks, { onSave, onCanc
     // Blocos do tipo 'imagem' embutem o ImageUploadField — precisa religar o
     // widget (input de arquivo, preview, remover) a cada re-render da lista,
     // mesma lógica de "um listener por elemento" já usada no resto do editor.
+    // Cobre também os uploads de capa por card do flip_card (mesmo
+    // componente, mesmo data-role="iuf-root" — ver renderBlockFields).
     listEl.querySelectorAll('[data-role="iuf-root"]').forEach((widgetEl) => {
       wireImageUploadField(widgetEl);
+    });
+
+    // Blocos do tipo 'video' embutem o VideoUploadField — mesma lógica de
+    // religar o widget a cada re-render acima.
+    listEl.querySelectorAll('[data-role="vuf-root"]').forEach((widgetEl) => {
+      wireVideoUploadField(widgetEl);
     });
 
     listEl.querySelectorAll('[data-action]').forEach((btn) => {

@@ -19,7 +19,7 @@ export const CATEGORIES = {
 export async function fetchContentByCategory(brandId, category) {
   const { data, error } = await supabase
     .from('content_library')
-    .select('id, slug, title, summary, payload, order_index')
+    .select('id, slug, title, summary, payload, order_index, created_at, updated_at')
     .eq('brand_id', brandId)
     .eq('category', category)
     .eq('is_published', true)
