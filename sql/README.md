@@ -1132,6 +1132,34 @@ Editor do Supabase:
     (rotação adicional no conteúdo interno) na real re-introduziria o
     espelhamento. Não aplicado — sinalizado de volta pro usuário no chat.
 
+59. **`131_marq_volta_para_abas.sql`**
+    Usuário testou a revelação por etapas do MARQ (sql/128, pedido dele
+    mesmo numa rodada anterior — "deixa igual o blaze") e não gostou:
+    "ficou ruim, melhor voltar pro layout original, que é igual ao do edge
+    e no centro". Desfaz a sql/128 nesse ponto específico: troca os 6
+    blocos (3x `texto_rico` "MARQ Commander/Athlete/Golfer Carbon" + 3x
+    `timeline reveal:true`) de volta por 1 bloco `tabs`, com o texto exato
+    de antes (sql/121) — nenhum dado novo. Continua centralizado (CSS já
+    existente desde a sql/128: `.cb-tabs.itabs`/`.cb-model-heading`), então
+    fica visualmente igual ao Edge/HRM, como pedido. Mesmo array Postgres
+    (`jsonb[]`) das outras migrações que trocam N blocos por M.
+
+60. **`132_enxuga_texto_fenix9_flipcard.sql`**
+    Usuário reportou que os flip_card "ainda estão com scrow desnecessário"
+    mesmo depois do `min-height` 132px→178px (sql/128). Testado ao vivo nas
+    3 larguras (mobile 390px, tablet 820px, desktop 1280px): dos 24
+    flip_card da lição, só 1 ainda estourava — o verso do Fēnix 9 ("Quando
+    oferecer", scrollHeight 253-270px conforme a largura). Não dá pra só
+    aumentar o `min-height` de novo: CSS Grid estica todo card da mesma
+    linha pra mesma altura, e os outros 3 cards da linha do Fēnix (E/8/
+    8-Sapphire) não precisam de mais espaço — aumentar geral deixaria eles
+    com espaço vazio enorme só pra caber esse um texto.
+    Em vez disso, enxuga o texto (mesmos fatos, zero corte: "Cliente quer o
+    relógio" → "Quer o", "e quer métricas dedicadas" removido por
+    redundante já que "pratica remo indoor/arco e flecha" já implica isso,
+    "a versão Pro com LTE" → "LTE"). Testado ao vivo com o texto novo:
+    176px, sem scroll, na largura mais estreita da grade.
+
 ## O que ainda não está aqui
 
 - Cadastro de novo usuário pelo admin — exige a Supabase Admin API
