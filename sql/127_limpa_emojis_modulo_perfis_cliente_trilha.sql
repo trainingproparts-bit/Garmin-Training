@@ -2,6 +2,13 @@
 -- GARMIN TRAINING HUB — MIGRAÇÃO 127: Remove emojis do módulo "Perfis de
 -- Cliente" da trilha (Zona Explorador) e converte cards soltos em grade
 -- ============================================================================
+-- ⚠️ SUPERSEDIDA pela sql/129 — o usuário mandou um brief completo pra
+-- reformular o módulo inteiro logo depois desta migração. A sql/129
+-- reescreve o body das 3 lições daqui (e adiciona uma 4ª) por completo, com
+-- estrutura nova de 9 etapas. Rodar esta aqui não é obrigatório se for
+-- rodar a sql/129 (que já sobrescreve tudo), mas rodar as duas em sequência
+-- também não quebra nada — só faz um trabalho intermediário sem efeito.
+--
 -- Pedido do usuário (2026-09-15): mesmo tratamento dado a Concorrentes &
 -- Objeções (sql/126) e Script de Atendimento (sql/125), desta vez no
 -- módulo "Perfis de Cliente" da trilha (não confundir com a ficha da

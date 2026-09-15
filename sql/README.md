@@ -1037,6 +1037,45 @@ Editor do Supabase:
     (`.cb-tabs.itabs`, afeta Edge e HRM) — `.itabs` sozinha (Guias Técnicos,
     `library.css`) continua alinhada à esquerda como já era.
 
+57. **`129_reformula_modulo_perfis_cliente_trilha.sql`**
+    Brief completo enviado pelo usuário no chat pra reformular por completo
+    o módulo "Perfis de Cliente" da trilha (Zona Explorador) — a sql/127
+    (mesma sessão) só tinha limpado emoji, esta reescreve o conteúdo inteiro
+    seguindo uma estrutura detalhada de 9 etapas + encerramento. Supersede a
+    sql/127 (ver aviso adicionado nela).
+
+    Reorganizado em 4 lições (o módulo tinha 3 — segue o padrão de várias
+    lições focadas do resto da zona, só com uma a mais pra não sobrecarregar
+    nenhuma tela):
+    1. **Comece pelo cliente** (reaproveita a lição existente) — intro do
+       módulo + objetivos + lógica do atendimento (`timeline` Pessoa→
+       Atividade→Objetivo→Necessidade→Produto) + `card_grid` de 11 sinais de
+       vocabulário do cliente.
+    2. **Perfis de corrida** (reaproveita) — `accordion` com os 3 perfis
+       (Iniciante/Dedicado/Performance — "Atleta de Elite/Triatleta" da
+       sql/030 virou "Atleta de Performance"), cada item com as 5 seções
+       pedidas pelo usuário (quem é/como identificar/o que ouvir/o que
+       perguntar/como conduzir/linhas). Forerunner 55→165 como entrada,
+       conforme o brief (mesmo ajuste que já tinha sido feito ao vivo antes
+       da sql/030, achado na sql/127).
+    3. **Além da corrida e as perguntas certas** (reaproveita) — `card_grid`
+       dos 8 perfis não-corredores reformatado em quem é/sinais/pergunta
+       inicial/linhas (bem mais enxuto que o texto corrido de antes) +
+       `flip_card` com as 5 perguntas de sondagem (frente = pergunta, verso
+       = o que ela revela).
+    4. **Pratique e domine** (lição NOVA, único `insert` desta migração) —
+       `match_quiz` de associação sinal→perfil, `cenario_escolha` da
+       Mariana (perfil duplo), mais 4 cenários de atendimento — o 1º tinha
+       alternativas reais no brief e virou `cenario_escolha`; os outros 3 só
+       tinham "resposta esperada" aberta, sem alternativas erradas
+       fornecidas, então viraram `timeline reveal:true` em vez de forçar
+       `cenario_escolha` com distratores inventados (regra do usuário: não
+       inventar conteúdo) — `checklist` final de 12 itens e encerramento.
+
+    Todo o texto (perguntas, falas de exemplo, produtos citados) é verbatim
+    do brief do usuário. Sem emoji, sem travessão, conforme pedido
+    explicitamente pelo usuário para este módulo.
+
 ## O que ainda não está aqui
 
 - Cadastro de novo usuário pelo admin — exige a Supabase Admin API
