@@ -20,11 +20,14 @@
 /* O h2 "Arena Proparts" foi removido (2026-09-16, pedido do usuário): o
  * cabeçalho do painel já diz "Arena de Desafios" logo acima, eram dois
  * títulos para a mesma tela. Sobra a linha de introdução. */
+/* Sem teto de largura (2026-09-16, pedido do usuário): o max-width de 560px
+ * quebrava a frase bem antes do fim da área de conteúdo, deixando o texto
+ * estreito ao lado de cards que ocupam a largura inteira. */
 .arena-intro-sub {
   margin: 0;
   font-size: 13px;
+  line-height: 1.5;
   color: var(--text3);
-  max-width: 560px;
 }
 
 .arena-section {
@@ -60,7 +63,6 @@
   font-size: 12px;
   line-height: 1.5;
   color: var(--text3);
-  max-width: 620px;
 }
 
 .arena-list {
