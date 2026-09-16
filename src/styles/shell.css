@@ -794,16 +794,20 @@
   z-index: 100;
 }
 
+/* Botão de voltar sem caixa (2026-09-16, pedido do usuário): antes tinha
+ * fundo cinza (--off) e borda, competindo com o título do painel. Agora é um
+ * link: só texto, com área de clique preservada pelo padding vertical. */
 .back-btn {
-  background: var(--off);
-  border: 1px solid var(--border);
+  background: none;
+  border: none;
   border-radius: var(--r2);
-  padding: 7px 12px;
+  padding: 6px 4px;
+  margin-left: -4px;
   font-size: 13px;
   font-weight: 600;
   color: var(--text2);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: color var(--dur-fast) var(--ease);
   display: flex;
   align-items: center;
   gap: 6px;
@@ -811,9 +815,12 @@
 }
 
 .back-btn:hover {
-  background: var(--g3);
-  border-color: var(--g);
   color: var(--g);
+}
+
+.back-btn:focus-visible {
+  outline: 2px solid var(--g);
+  outline-offset: 2px;
 }
 
 .panel-title {

@@ -49,7 +49,15 @@ async function initTrilhaCompletaPage() {
     );
 
     const { total, done, pct } = calcularProgresso(zones, doneCheckpointIds);
-    if (progressEl) progressEl.textContent = `${done} de ${total} etapas concluídas (${pct}%)`;
+    // Barra fina abaixo do texto (2026-09-16, pedido do usuário): o percentual
+    // sozinho não dava leitura rápida de quanto falta.
+    if (progressEl) {
+      progressEl.innerHTML = `
+        <span class="panel-title-progress-text">${done} de ${total} etapas concluídas (${pct}%)</span>
+        <span class="panel-title-progress-bar" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100">
+          <span class="panel-title-progress-fill" style="width:${pct}%"></span>
+        </span>`;
+    }
 
     const proximo = proximoCheckpoint(zones, doneCheckpointIds);
     renderTrilhaCompletaAccordion(root, zones, doneCheckpointIds, abrirCheckpoint, proximo?.zone.id ?? null);

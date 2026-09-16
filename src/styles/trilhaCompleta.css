@@ -19,6 +19,27 @@
   font-size: 12px;
   font-weight: 500;
   color: var(--text2);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 320px;
+}
+
+/* Barra fina de progresso da trilha (2026-09-16, pedido do usuário) */
+.panel-title-progress-bar {
+  display: block;
+  height: 6px;
+  border-radius: 4px;
+  background: var(--off);
+  overflow: hidden;
+}
+
+.panel-title-progress-fill {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+  background: var(--g);
+  transition: width var(--dur-slow) var(--ease);
 }
 
 /* ── Seção de zona ── */
@@ -31,8 +52,11 @@
   margin-bottom: 14px;
 }
 
+/* Zona atual sem borda vermelha (2026-09-16): o ícone da zona já é vermelho e
+ * o card do módulo em andamento, dentro dela, também tem o destaque. Três
+ * marcas pro mesmo estado poluíam a tela; fica só a sombra um pouco maior. */
 .zone-section.current {
-  border-color: var(--g);
+  border-color: var(--border);
   box-shadow: var(--sh-neutral-md);
 }
 
@@ -74,19 +98,23 @@
 .phase-card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 12px;
+  gap: 16px;
 }
 
+/* Superfície branca e uniforme (2026-09-16, pedido do usuário): antes o card
+ * base era cinza (--off) e cada estado pintava fundo/borda com cor forte,
+ * deixando a grade poluída. Agora todo card é branco com borda cinza de 1px,
+ * e só o estado que pede ação recebe destaque (ver .phase-card.current). */
 .phase-card {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 8px;
   min-height: 120px;
-  padding: 14px;
-  background: var(--off);
+  padding: 20px;
+  background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: var(--r2);
+  border-radius: var(--r);
   cursor: pointer;
   text-align: left;
   font-family: inherit;
@@ -125,19 +153,23 @@
   color: var(--text3);
 }
 
+/* Concluído em tom neutro: sem fundo tingido nem borda colorida. O que marca
+ * o estado é o ícone mais apagado e o texto de status. */
 .phase-card.done {
-  background: var(--acc-tint);
-  border-color: var(--acc);
+  background: var(--card-bg);
+  border-color: var(--border);
 }
 
-.phase-card.done .phase-card-icon {
-  color: var(--acc);
+.phase-card.done .phase-card-icon,
+.phase-card.done .phase-card-title {
+  color: var(--text3);
 }
 
+/* Único estado com destaque de cor: o módulo que ainda pede ação. Borda
+ * simples de 1px (o box-shadow duplicava a espessura e engrossava o traço). */
 .phase-card.current {
   background: var(--card-bg);
   border-color: var(--g);
-  box-shadow: 0 0 0 1px var(--g);
 }
 
 .phase-card.current .phase-card-icon {
@@ -202,19 +234,31 @@
   height: 100%;
 }
 
-.phase-card-quiz.done {
-  color: var(--acc);
-  border-color: var(--acc);
-}
-
 .phase-card-quiz.locked {
   opacity: 0.75;
 }
 
-.phase-card.milestone {
-  border-color: var(--gold);
+/* Selo de avaliação concluída — substitui o botão nesse estado: sem caixa,
+ * tipografia menor e cor de apoio, pra não competir com o card que ainda
+ * pede ação (2026-09-16, pedido do usuário). */
+.phase-card-quiz-badge {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 0;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text3);
 }
 
+.phase-card-quiz-badge .phase-card-quiz-icon {
+  width: 13px;
+  height: 13px;
+}
+
+/* Marco da zona: sem a borda amarela forte (2026-09-16, pedido do usuário).
+ * O ícone dourado já distingue o card o suficiente. */
 .phase-card.milestone .phase-card-icon {
   color: var(--gold);
 }

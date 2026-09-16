@@ -396,15 +396,24 @@ function renderPairedPhaseCard(moduleEntry, quizEntry, milestone) {
   const { cp: quizCp, state: quizState } = quizEntry;
   const iconSvg = moduleState === 'done' ? SVG_ICON.check : (milestone ? SVG_ICON.trophy : SVG_ICON[iconKeyFor(moduleCp)]);
 
+  // Avaliação já concluída não é mais um botão (2026-09-16, pedido do
+  // usuário): virar um selo discreto tira a redundância de oferecer uma ação
+  // pra algo que já foi feito, e deixa o botão só onde ainda há o que fazer.
+  const quizHtml = quizState === 'done'
+    ? `<span class="phase-card-quiz-badge">
+         <span class="phase-card-quiz-icon">${SVG_ICON.check}</span>${QUIZ_ROW_TEXT.done}
+       </span>`
+    : `<button type="button" class="phase-card-quiz ${quizState}" data-checkpoint-id="${quizCp.id}">
+         <span class="phase-card-quiz-icon">${SVG_ICON[QUIZ_ROW_ICON[quizState]]}</span>
+         ${QUIZ_ROW_TEXT[quizState]}
+       </button>`;
+
   return `
     <div class="phase-card phase-card-pair ${moduleState}${milestone ? ' milestone' : ''}" data-checkpoint-id="${moduleCp.id}" role="button" tabindex="0">
       <span class="phase-card-icon">${iconSvg}</span>
       <span class="phase-card-title">${moduleCp.title}</span>
       <span class="phase-card-status">${STATUS_LABEL[moduleState]}</span>
-      <button type="button" class="phase-card-quiz ${quizState}" data-checkpoint-id="${quizCp.id}">
-        <span class="phase-card-quiz-icon">${SVG_ICON[QUIZ_ROW_ICON[quizState]]}</span>
-        ${QUIZ_ROW_TEXT[quizState]}
-      </button>
+      ${quizHtml}
     </div>`;
 }
 
