@@ -14,6 +14,8 @@ import { fetchQuizzesByIds, updateQuizCover, fetchBestScoresByQuizIds } from '..
 import { fetchPublishedGames, fetchBestScore, updateGameCover } from '../services/gameService.js';
 import { navigateToPanel } from '../router.js';
 import { openImageEditModal } from '../components/ImageEditModal.js';
+import { icon } from '../components/icons.js';
+import { setupReveal, animateProgressFills } from '../components/motion.js';
 
 window.addEventListener('panel:activated', (e) => {
   if (e.detail.panelId === 'arena') initArenaPage();
@@ -111,23 +113,29 @@ async function initArenaPage() {
     // demais pra achar um item específico. Agrupado em 2 seções (Duelos /
     // Quizzes Extras) em vez de um grid misto, pra escanear mais rápido.
     container.innerHTML = `
-      <div class="arena-intro">
-        <h2 class="arena-intro-title">⚡ Arena Proparts</h2>
+      <div class="arena-intro" data-reveal>
         <p class="arena-intro-sub">Desafios rápidos da semana, teste seu conhecimento nos quizzes extras e dispute o Duelo de Especificações.</p>
       </div>
       ${games.length ? `
         <div class="arena-section">
-          <h3 class="arena-section-title">⚔️ Duelos</h3>
+          <h3 class="arena-section-title"><span class="arena-section-title-icon">${icon('zap')}</span>Duelos</h3>
+          <p class="arena-section-sub">Dois produtos frente a frente. A cada rodada você vê um critério (tela, bateria, GPS, sensores) e escolhe qual modelo atende melhor, ou se os dois atendem. A resposta mostra a especificação real de cada um, então dá pra treinar comparação na hora de atender.</p>
           <div class="arena-list">${duelRowsHtml}</div>
         </div>
       ` : ''}
       ${freeQuizCheckpoints.length ? `
         <div class="arena-section">
-          <h3 class="arena-section-title">📝 Quizzes Extras</h3>
+          <h3 class="arena-section-title"><span class="arena-section-title-icon">${icon('quizzes')}</span>Quizzes Extras</h3>
+          <p class="arena-section-sub">Quizzes de tema específico que ficam fora da trilha principal, então você responde na ordem que quiser. Cada um tem uma nota mínima para aprovação, e o XP é creditado na primeira vez que você passa.</p>
           <div class="arena-list">${quizRowsHtml}</div>
         </div>
       ` : ''}
     `;
+
+    // Cascata de entrada (0.05s por linha) e barras preenchendo de 0% ao
+    // valor real assim que a linha entra na tela.
+    setupReveal(container, { stagger: 0.05 });
+    animateProgressFills(container);
 
     wireQuizCards(container, profile);
     wireGameCards(container, profile);
@@ -138,26 +146,51 @@ async function initArenaPage() {
   }
 }
 
+/** CTA da linha — deixa explícito que o item é clicável, e o rótulo muda
+ *  conforme a pessoa já ter jogado/respondido ou não. */
+function arenaCtaHtml(label) {
+  return `
+    <span class="arena-row-cta">
+      <span class="arena-row-cta-text">${label}</span>
+      <span class="arena-row-cta-icon">${icon('chevronDown')}</span>
+    </span>`;
+}
+
+/**
+ * Título do duelo sem o prefixo repetido (2026-09-16, pedido do usuário).
+ * Todo duelo se chama "Duelo de Especificações: X vs Y" no banco, e dentro
+ * da seção "Duelos" esse começo é só repetição que empurrava o confronto
+ * (a parte útil) pra fora da linha. Preferimos `meta.titulo`, que já vem só
+ * com o confronto, e caímos no título completo sem o prefixo quando ele não
+ * existe. O dado no banco não é alterado.
+ */
+function duelDisplayTitle(g) {
+  const metaTitulo = g.config?.meta?.titulo;
+  if (typeof metaTitulo === 'string' && metaTitulo.trim()) return metaTitulo.trim();
+  return (g.title || '').replace(/^duelo\s+de\s+especifica[çc][õo]es\s*:\s*/i, '').trim() || g.title;
+}
+
 function renderDuelCard(g, bestScore, isAdmin) {
   const meta = g.config?.meta || {};
-  const is1v1 = meta.modo === 'duelo_1v1' && typeof meta.titulo === 'string' && meta.titulo.includes(' vs ');
   const totalRounds = meta.rodadas_por_partida || null;
   const pct = bestScore != null && totalRounds ? Math.round((bestScore / totalRounds) * 100) : 0;
+  const jaJogou = bestScore != null;
 
   return `
-    <div class="arena-row arena-row-duel" data-game-id="${g.id}">
+    <div class="arena-row arena-row-duel" data-reveal data-game-id="${g.id}">
       <div class="arena-row-thumb arena-row-thumb-duel">
-        ${g.cover_url ? `<img src="${g.cover_url}" alt="">` : `<span class="arena-row-vs">${is1v1 ? 'VS' : '⚔️'}</span>`}
+        ${g.cover_url ? `<img src="${g.cover_url}" alt="">` : `<span class="arena-row-vs">${ICON.bolt}</span>`}
       </div>
       <div class="arena-row-body">
         <div class="arena-row-top">
-          <span class="arena-row-title">${g.title}</span>
+          <span class="arena-row-title">${duelDisplayTitle(g)}</span>
           <span class="arena-reward-pill arena-reward-pill-game">+50 XP</span>
         </div>
-        <p class="arena-row-meta">${bestScore != null ? `Sua melhor pontuação: ${bestScore}${totalRounds ? `/${totalRounds}` : ''}` : 'Você ainda não jogou'}</p>
-        <div class="arena-progress-track"><div class="arena-progress-fill arena-progress-fill-game" style="width:${pct}%"></div></div>
+        <p class="arena-row-meta">${jaJogou ? `Sua melhor pontuação: ${bestScore}${totalRounds ? `/${totalRounds}` : ''}` : 'Você ainda não jogou'}</p>
+        <div class="arena-progress-track"><div class="arena-progress-fill arena-progress-fill-game" data-animate-progress style="width:${pct}%"></div></div>
       </div>
-      ${isAdmin ? `<button type="button" class="arena-edit-cover-btn" data-edit-cover-game-id="${g.id}" aria-label="Editar capa">✎</button>` : ''}
+      ${arenaCtaHtml(jaJogou ? 'Jogar de novo' : 'Desafiar')}
+      ${isAdmin ? `<button type="button" class="arena-edit-cover-btn" data-edit-cover-game-id="${g.id}" aria-label="Editar capa">${icon('pencil')}</button>` : ''}
     </div>
   `;
 }
@@ -170,7 +203,7 @@ function renderQuizCard(cp, meta, bestScore, isAdmin) {
   const passed = bestScore != null && bestScore >= passingPct;
 
   return `
-    <div class="arena-row arena-row-quiz" data-quiz-id="${cp.reference_id}">
+    <div class="arena-row arena-row-quiz" data-reveal data-quiz-id="${cp.reference_id}">
       <div class="arena-row-thumb arena-row-thumb-${theme.key}">
         ${meta?.cover_url ? `<img src="${meta.cover_url}" alt="">` : `<span class="arena-row-thumb-icon">${ICON[theme.icon]}</span>`}
         ${theme.key === 'water' ? '<span class="arena-water-waves" aria-hidden="true"></span>' : ''}
@@ -181,10 +214,11 @@ function renderQuizCard(cp, meta, bestScore, isAdmin) {
           <span class="arena-reward-pill">${reward.icon ? `${ICON[reward.icon]} ` : ''}${reward.text}</span>
         </div>
         <p class="arena-row-meta">${meta ? `Nota mínima ${meta.passing_score_pct}%${meta.max_attempts ? ` · ${meta.max_attempts} tentativas` : ' · tentativas ilimitadas'}` : 'Quiz extra da trilha'}</p>
-        <div class="arena-progress-track"><div class="arena-progress-fill ${passed ? 'is-passed' : ''}" style="width:${pct}%"></div></div>
+        <div class="arena-progress-track"><div class="arena-progress-fill ${passed ? 'is-passed' : ''}" data-animate-progress style="width:${pct}%"></div></div>
       </div>
       <span class="arena-row-status">${bestScore != null ? `${bestScore}%` : '—'}</span>
-      ${isAdmin ? `<button type="button" class="arena-edit-cover-btn" data-edit-cover-quiz-id="${cp.reference_id}" aria-label="Editar capa">✎</button>` : ''}
+      ${arenaCtaHtml(bestScore != null ? 'Refazer' : 'Responder')}
+      ${isAdmin ? `<button type="button" class="arena-edit-cover-btn" data-edit-cover-quiz-id="${cp.reference_id}" aria-label="Editar capa">${icon('pencil')}</button>` : ''}
     </div>
   `;
 }

@@ -17,15 +17,9 @@
   margin-bottom: 20px;
 }
 
-.arena-intro-title {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 22px;
-  letter-spacing: 0.3px;
-  color: var(--text);
-  margin: 0 0 4px;
-}
-
+/* O h2 "Arena Proparts" foi removido (2026-09-16, pedido do usuário): o
+ * cabeçalho do painel já diz "Arena de Desafios" logo acima, eram dois
+ * títulos para a mesma tela. Sobra a linha de introdução. */
 .arena-intro-sub {
   margin: 0;
   font-size: 13px;
@@ -38,12 +32,35 @@
 }
 
 .arena-section-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.6px;
   color: var(--text3);
   margin: 0 0 10px;
+}
+
+.arena-section-title-icon {
+  display: inline-flex;
+  width: 14px;
+  height: 14px;
+  color: var(--g);
+}
+
+.arena-section-title-icon svg { width: 100%; height: 100%; }
+
+/* Explicação curta do que é cada tipo de desafio (2026-09-16, pedido do
+ * usuário): sem isso, "Duelos" e "Quizzes Extras" não diziam a quem chega
+ * pela primeira vez o que cada um cobra. */
+.arena-section-sub {
+  margin: -4px 0 12px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text3);
+  max-width: 620px;
 }
 
 .arena-list {
@@ -53,21 +70,31 @@
 }
 
 /* ── Linha compacta (item de Duelo ou Quiz) ── */
+/* Container padronizado com o resto do sistema (2026-09-16): raio de 12px,
+ * padding de 16px, fundo de card e borda neutra de 1px. */
 .arena-row {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 8px 12px;
+  gap: 16px;
+  padding: 16px;
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: var(--r);
   cursor: pointer;
-  transition: border-color 150ms var(--ease), box-shadow 150ms var(--ease);
+  transition:
+    transform 0.2s var(--ease),
+    border-color 0.2s var(--ease),
+    box-shadow 0.2s var(--ease);
 }
 
 .arena-row:hover {
-  border-color: var(--border2);
-  box-shadow: var(--sh-neutral-sm);
+  transform: translateY(-2px);
+  border-color: var(--g);
+  box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.06);
+}
+
+.arena-row:active {
+  transform: scale(0.98);
 }
 
 .arena-row-thumb {
@@ -102,7 +129,9 @@
 
 .arena-row-thumb-default { background: linear-gradient(135deg, #3a1a1e, #170a0c); }
 .arena-row-thumb-heart { background: linear-gradient(135deg, #6b1e3a, #2e0d1a); }
-.arena-row-thumb-watch { background: linear-gradient(135deg, #1e293b, #0f172a); }
+/* Cinza neutro (2026-09-16): era slate azulado (#1e293b/#0f172a), fora da
+ * escala de cinza sem viés de cor dos tokens. */
+.arena-row-thumb-watch { background: linear-gradient(135deg, #34363b, #121316); }
 .arena-row-thumb-chat { background: linear-gradient(135deg, #4a1f2e, #240d16); }
 /* Água (tema "IPX & Resistência à Água") continua em azul, não teal — azul
  * não estava na lista de cores proibidas, e é a cor mais natural pro tema. */
@@ -125,26 +154,26 @@
   to { background-position: 0 -4px, 0 -6px, 0 -3px, 0 0; }
 }
 
-/* Thumbnail do duelo — versão em miniatura do corte diagonal "VS" da V1. */
+/* Thumbnail do duelo — o corte diagonal terminava em roxo (#4c1d8c), cor
+ * que não existe na paleta do projeto (2026-09-16). Agora é a mesma escala
+ * de cinza escuro dos outros thumbs. */
 .arena-row-thumb-duel {
-  background: linear-gradient(135deg, #3a3d44 45%, #4c1d8c 55%);
+  background: linear-gradient(135deg, #3a3d44 45%, #1a1c20 55%);
 }
 
+/* Marca do duelo: era o texto "VS" (ou o emoji ⚔️) dentro de um disco
+ * vermelho. Virou o ícone de raio do icons.js, em traço fino e cor neutra. */
 .arena-row-vs {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 11px;
-  color: #fff;
-  background: radial-gradient(circle at 35% 30%, var(--g), #7a0c14);
-  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.85);
   z-index: 1;
 }
+
+.arena-row-vs svg { width: 100%; height: 100%; }
 
 .arena-row-body {
   flex: 1;
@@ -158,14 +187,21 @@
   gap: 8px;
 }
 
+/* Até 2 linhas em vez de cortar com reticências (2026-09-16, pedido do
+ * usuário): em uma linha só, títulos como "Duelo de Especificações:
+ * Forerunner 570 vs 965" viravam "Forerunne…", escondendo justamente o
+ * confronto, que é a informação útil. */
 .arena-row-title {
   font-size: 13.5px;
   font-weight: 700;
   color: var(--text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  line-height: 1.3;
   min-width: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .arena-row-meta {
@@ -186,27 +222,30 @@
   text-align: right;
 }
 
-/* ── Selo de recompensa (dourado) — agora inline ao lado do título, não
- * mais sobreposto na thumbnail. ── */
+/* ── Selo de recompensa — inline ao lado do título.
+ * Padronizado em cinza (2026-09-16, pedido do usuário): era um degradê
+ * dourado, e a variante de duelo era roxa. Agora os dois usam a mesma
+ * superfície cinza clara; só a cor do texto distingue. ── */
 .arena-reward-pill {
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  gap: 3px;
-  padding: 2px 8px;
+  gap: 4px;
+  padding: 3px 8px;
   border-radius: 999px;
   font-size: 9.5px;
-  font-weight: 800;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.2px;
   white-space: nowrap;
-  color: #3a2400;
-  background: linear-gradient(135deg, #ffe9a8, var(--gold));
+  color: var(--text2);
+  background: var(--off);
 }
 
 .arena-reward-pill svg { width: 9px; height: 9px; }
 
-.arena-reward-pill-game { background: linear-gradient(135deg, #e9d5ff, #a855f7); color: #2e1065; }
+/* XP do duelo em vermelho institucional, mesma superfície cinza. */
+.arena-reward-pill-game { color: var(--g); }
 
 /* ── Botão "Editar capa" (admin) — ícone discreto no fim da linha, só
  * aparece no hover pra não poluir a lista. ── */
@@ -228,6 +267,9 @@
   transition: opacity 150ms var(--ease), background 150ms var(--ease), color 150ms var(--ease);
 }
 
+/* Passou a usar o ícone SVG de lápis do icons.js no lugar do caractere ✎. */
+.arena-edit-cover-btn svg { width: 13px; height: 13px; }
+
 .arena-row:hover .arena-edit-cover-btn { opacity: 1; }
 
 .arena-edit-cover-btn:hover { background: var(--g3); color: var(--g); }
@@ -240,22 +282,97 @@
   overflow: hidden;
 }
 
+/* Todas as barras no vermelho institucional (2026-09-16): antes eram três
+ * tratamentos diferentes (degradê tijolo/dourado, vinho e roxo). O estado
+ * "aprovado" continua diferenciado, só que pelo vinho da paleta. */
 .arena-progress-fill {
   height: 100%;
   border-radius: 999px;
-  background: linear-gradient(90deg, var(--warn), var(--gold));
-  transition: width var(--dur-slow) var(--ease);
+  background: var(--g);
+  transition: width 0.8s ease-out;
+}
+
+/* Vence o 1.2s genérico de motion.css: aqui o briefing pediu 0.8s. */
+.arena-progress-fill[data-animate-progress] {
+  transition: width 0.8s ease-out;
 }
 
 .arena-progress-fill.is-passed {
-  background: linear-gradient(90deg, var(--acc), #c0485a);
+  background: var(--acc);
 }
 
 .arena-progress-fill-game {
-  background: linear-gradient(90deg, #6d28d9, #a855f7);
+  background: var(--g);
+}
+
+/* ── CTA da linha ──
+ * É um <span>, não um <button>: a linha inteira já é o alvo de clique, e
+ * aninhar um botão dentro de um elemento clicável cria dois alvos
+ * sobrepostos (problema real de acessibilidade e de duplo disparo). Aqui o
+ * papel dele é deixar explícito que a linha é clicável. */
+.arena-row-cta {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  background: var(--card-bg);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text2);
+  white-space: nowrap;
+  transition: border-color 0.2s var(--ease), color 0.2s var(--ease), background 0.2s var(--ease);
+}
+
+.arena-row:hover .arena-row-cta {
+  border-color: var(--g);
+  color: var(--g);
+}
+
+/* O icons.js só tem chevron pra baixo; girar 90° é mais barato que duplicar
+ * um ícone novo só pra essa seta. A rotação fica no <svg> e o deslocamento
+ * no <span>, senão o translateX andaria no eixo já girado (pra cima). */
+.arena-row-cta-icon {
+  display: inline-flex;
+  width: 13px;
+  height: 13px;
+  transition: transform 0.2s ease;
+}
+
+.arena-row-cta-icon svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.arena-row:hover .arena-row-cta-icon {
+  transform: translateX(3px);
+}
+
+@media (max-width: 640px) {
+  .arena-row-cta { padding: 8px 10px; }
+  .arena-row-cta-text { display: none; }
 }
 
 @media (max-width: 480px) {
   .arena-row-meta { display: none; }
   .arena-row-status { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arena-row:hover,
+  .arena-row:active {
+    transform: none;
+  }
+
+  .arena-row:hover .arena-row-cta-icon {
+    transform: none;
+  }
+
+  .arena-progress-fill,
+  .arena-progress-fill[data-animate-progress] {
+    transition: none;
+  }
 }
