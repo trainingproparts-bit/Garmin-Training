@@ -236,6 +236,28 @@
   color: #fff;
 }
 
+/* Barra fina do Hero (2026-09-16): o progresso era só texto, sem leitura
+ * rápida de quanto falta. Preenchida por renderHud (data-hud="bar"), que
+ * já anima a partir de 0%. */
+.dash-hero-progress-bar {
+  display: block;
+  width: 180px;
+  max-width: 100%;
+  height: 6px;
+  margin-top: 6px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.18);
+  overflow: hidden;
+}
+
+.dash-hero-progress-fill {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+  background: var(--g);
+  transition: width 1.2s ease-out;
+}
+
 /* ── Checkpoint-row: as 5 zonas da jornada como pontos conectados ──
  * Grid de colunas iguais (2026-09-16, pedido do usuário): com flex +
  * justify-content:space-between + gap, os nós não ficavam uniformemente

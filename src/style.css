@@ -22,3 +22,5 @@
 @import './styles/imageUpload.css';
 @import './styles/academiaProdutos.css';
 @import './styles/revisaoInteligente.css';
+/* Por último: movimento pode precisar sobrescrever transições dos componentes. */
+@import './styles/motion.css';

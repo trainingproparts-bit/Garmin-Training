@@ -9,6 +9,7 @@ import { getCurrentProfile } from '../config/supabase.js';
 import { fetchTrilhaPublicada, fetchUserProgress } from '../services/trilhaService.js';
 import { renderTrilhaCompletaAccordion, calcularProgresso, proximoCheckpoint } from '../components/GpsTrail.js';
 import { navigateToPanel } from '../router.js';
+import { animateProgressFills } from '../components/motion.js';
 
 window.addEventListener('panel:activated', (e) => {
   if (e.detail.panelId === 'trilha-completa') initTrilhaCompletaPage();
@@ -55,8 +56,9 @@ async function initTrilhaCompletaPage() {
       progressEl.innerHTML = `
         <span class="panel-title-progress-text">${done} de ${total} etapas concluídas (${pct}%)</span>
         <span class="panel-title-progress-bar" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100">
-          <span class="panel-title-progress-fill" style="width:${pct}%"></span>
+          <span class="panel-title-progress-fill" data-animate-progress style="width:${pct}%"></span>
         </span>`;
+      animateProgressFills(progressEl);
     }
 
     const proximo = proximoCheckpoint(zones, doneCheckpointIds);

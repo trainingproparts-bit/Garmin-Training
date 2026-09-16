@@ -5,6 +5,8 @@
 // (layout e navegação misturados no mesmo arquivo). Agora qualquer página
 // importa só daqui, e appShell.js cuida apenas de montar o HTML do shell.
 
+import { fadeOutPanel } from './components/motion.js';
+
 const PANEL_SELECTOR = '.panel';
 const NAV_LINK_SELECTOR = '.sb-link[data-panel]';
 
@@ -71,9 +73,13 @@ export function initPanelNavigation() {
     });
   });
 
-  document.addEventListener('click', (e) => {
+  // Voltar com um fade curto de saída antes de trocar de painel (2026-09-16,
+  // pedido do usuário). O fadeOutPanel resolve na hora quando a pessoa pediu
+  // menos movimento, então a navegação nunca fica presa esperando animação.
+  document.addEventListener('click', async (e) => {
     const backBtn = e.target.closest('[data-back-to]');
     if (!backBtn) return;
+    await fadeOutPanel(backBtn.closest('.panel'));
     navigateToPanel(backBtn.dataset.backTo);
   });
 

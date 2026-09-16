@@ -1,0 +1,209 @@
+/* Proparts Training Hub — Movimento (2026-09-16)
+ *
+ * Animações de entrada, barras de progresso animadas e microinterações da
+ * Dashboard e da Trilha Completa. CSS puro; a orquestração (quando revelar,
+ * qual atraso) fica em src/components/motion.js.
+ *
+ * Duas regras de segurança valem pra tudo aqui:
+ *
+ * 1. O estado inicial escondido só existe sob `html.js-motion`, classe que o
+ *    motion.js adiciona assim que carrega. Sem JS (ou se o módulo falhar), o
+ *    conteúdo aparece normalmente em vez de ficar invisível pra sempre.
+ * 2. Tudo é desligado em `prefers-reduced-motion: reduce` (bloco no fim).
+ */
+
+:root {
+  /* Curva de saída suave pedida no briefing */
+  --ease-reveal: cubic-bezier(0.16, 1, 0.3, 1);
+  --reveal-shift: 16px;
+  --reveal-dur: 0.4s;
+}
+
+/* ── 1. Entrada em cascata (fade in + slide up) ── */
+html.js-motion [data-reveal] {
+  opacity: 0;
+  transform: translateY(var(--reveal-shift));
+  /* `opacity` e `transform` em vez de `all`: mesma percepção, sem animar
+   * sem querer largura/cor/borda de quem já tem transição própria. */
+  transition:
+    opacity var(--reveal-dur) var(--ease-reveal),
+    transform var(--reveal-dur) var(--ease-reveal);
+  transition-delay: var(--reveal-delay, 0s);
+  will-change: opacity, transform;
+}
+
+html.js-motion [data-reveal].is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Depois de revelado o will-change sai de cena, senão cada elemento segue
+ * ocupando uma camada de composição à toa. */
+html.js-motion [data-reveal].is-revealed.reveal-done {
+  will-change: auto;
+}
+
+/* ── 2. Barras de progresso animadas ── */
+[data-animate-progress] {
+  transition: width 1.2s ease-out;
+}
+
+/* ── 3. Microinterações: botões de ação ── */
+.dash-btn-continue,
+.dash-revisao-btn {
+  transition:
+    background var(--dur-base) var(--ease),
+    transform var(--dur-fast) var(--ease),
+    box-shadow var(--dur-base) var(--ease),
+    filter var(--dur-fast) var(--ease);
+}
+
+.dash-btn-continue:hover,
+.dash-revisao-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--sh-neutral-md);
+}
+
+.dash-btn-continue:active,
+.dash-revisao-btn:active {
+  transform: scale(0.97);
+}
+
+/* A seta avança no hover. O texto e a seta são irmãos dentro do botão: o
+ * motion.js embrulha a seta num <span class="btn-arrow"> pra dar o que
+ * animar, já que antes era só um caractere solto no texto. */
+.btn-arrow {
+  display: inline-block;
+  transition: transform var(--dur-base) var(--ease);
+}
+
+.dash-btn-continue:hover .btn-arrow,
+.dash-revisao-btn:hover .btn-arrow,
+.dash-trail-toggle-full:hover .btn-arrow,
+.special-line-card:hover .btn-arrow {
+  transform: translateX(3px);
+}
+
+/* ── 4. Microinterações: linhas de lista (Destaques e Atividades) ── */
+.destaque-preview-row,
+.activity-feed-item {
+  border-radius: var(--r2);
+  padding-left: 8px;
+  padding-right: 8px;
+  margin-left: -8px;
+  margin-right: -8px;
+  transition: background var(--dur-fast) var(--ease);
+}
+
+.destaque-preview-row:hover,
+.activity-feed-item:hover {
+  background: var(--off);
+}
+
+/* ── 5. Microinterações: grade de produtos (Linhas Especiais) ── */
+.special-line-card-media {
+  overflow: hidden;
+}
+
+.special-line-card:hover .special-line-card-media img {
+  transform: scale(1.05);
+}
+
+/* ── 6. Microinterações: cards de módulo da Trilha Completa ── */
+.phase-card {
+  transition:
+    transform var(--dur-base) var(--ease),
+    box-shadow var(--dur-base) var(--ease),
+    border-color var(--dur-base) var(--ease);
+}
+
+.phase-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.08);
+}
+
+.phase-card:active {
+  transform: scale(0.98);
+}
+
+.phase-card-icon {
+  transition: transform var(--dur-base) var(--ease), color var(--dur-base) var(--ease);
+}
+
+.phase-card:hover .phase-card-icon {
+  transform: scale(1.08);
+}
+
+/* Card bloqueado: chacoalha de leve pra dizer que ainda não é a vez dele.
+ * O `.shake` é posto e tirado pelo motion.js, pra poder repetir a cada
+ * passada do mouse. Continua clicável de propósito (a navegação livre entre
+ * etapas é decisão antiga do projeto, ver trilhaCompleta.css), por isso NÃO
+ * usa `cursor: not-allowed`, que prometeria um bloqueio que não existe. */
+@keyframes phase-card-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-2px); }
+  40% { transform: translateX(2px); }
+  60% { transform: translateX(-2px); }
+  80% { transform: translateX(2px); }
+}
+
+.phase-card.locked.shake {
+  animation: phase-card-shake 0.35s var(--ease);
+}
+
+/* Bloqueado não sobe no hover: só o chacoalho, senão o movimento sugere que
+ * o card está disponível como os outros. */
+.phase-card.locked:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* ── 7. Saída de tela (clique no "Voltar") ── */
+.panel.is-leaving {
+  opacity: 0;
+  transition: opacity 0.16s var(--ease);
+  pointer-events: none;
+}
+
+/* ── Acessibilidade: quem pediu menos movimento não recebe nenhum ── */
+@media (prefers-reduced-motion: reduce) {
+  html.js-motion [data-reveal],
+  html.js-motion [data-reveal].is-revealed {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    will-change: auto;
+  }
+
+  [data-animate-progress] {
+    transition: none;
+  }
+
+  .dash-btn-continue:hover,
+  .dash-revisao-btn:hover,
+  .phase-card:hover {
+    transform: none;
+  }
+
+  .dash-btn-continue:active,
+  .dash-revisao-btn:active,
+  .phase-card:active {
+    transform: none;
+  }
+
+  .phase-card:hover .phase-card-icon,
+  .special-line-card:hover .special-line-card-media img,
+  .dash-btn-continue:hover .btn-arrow,
+  .dash-revisao-btn:hover .btn-arrow,
+  .dash-trail-toggle-full:hover .btn-arrow {
+    transform: none;
+  }
+
+  .phase-card.locked.shake {
+    animation: none;
+  }
+
+  .panel.is-leaving {
+    transition: none;
+  }
+}

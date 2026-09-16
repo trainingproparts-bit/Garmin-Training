@@ -13,6 +13,7 @@
 
 import { updateQuizCover } from '../services/quizService.js';
 import { openImageEditModal } from './ImageEditModal.js';
+import { revealElements, wireLockedCardShake } from './motion.js';
 
 // Ícones outline (traço simples, sem preenchimento sólido — pedido
 // explícito do usuário: nada de emoji colorido nos cards do Circuito de
@@ -31,7 +32,11 @@ const SVG_ICON = {
   clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
   check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
   lock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>',
-  flag: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4 0 4-4 4-4-1-4-4V4l-2 1"/><path d="M4 4v16"/></svg>',
+  // `d` estava corrompido (2026-09-16): o trecho "4 0 4-4 4-4-1-4-4V4l-2 1"
+  // não é path válido e o navegador logava "attribute d: Expected number" a
+  // cada render da trilha, deixando o ícone quebrado. Trocado pelo desenho
+  // de bandeira correto, no mesmo estilo outline dos demais.
+  flag: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="M4 22v-7"/></svg>',
   compass: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>',
   trophy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M17 5h3a2 2 0 0 1-2 4h-1"/><path d="M7 5H4a2 2 0 0 0 2 4h1"/></svg>',
   chevron: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>',
@@ -315,6 +320,15 @@ function zoneIconKey(zone) {
 export function renderTrilhaCompletaAccordion(container, zones, doneCheckpointIds, onCheckpointClick, currentZoneId) {
   container.innerHTML = zones.map((zone) => renderZoneSection(zone, doneCheckpointIds, zone.id === currentZoneId)).join('');
   wirePhaseCardClicks(container, zones, onCheckpointClick);
+
+  // Cascata por zona: a seção entra primeiro e seus cards logo atrás, cada
+  // zona com a própria contagem. Escalonar na ordem global do DOM daria mais
+  // de um segundo de atraso pro último card da página.
+  Array.from(container.querySelectorAll('.zone-section')).forEach((section, i) => {
+    revealElements([section], { base: i * 0.06 });
+    revealElements(Array.from(section.querySelectorAll('[data-reveal]')), { base: 0.06, stagger: 0.04 });
+  });
+  wireLockedCardShake(container);
 }
 
 function renderZoneSection(zone, doneCheckpointIds, isCurrent) {
@@ -322,7 +336,7 @@ function renderZoneSection(zone, doneCheckpointIds, isCurrent) {
   const done = zone.checkpoints.filter((cp) => doneCheckpointIds.has(cp.id)).length;
 
   return `
-    <div class="zone-section ${isCurrent ? 'current' : ''}" data-zone-id="${zone.id}">
+    <div class="zone-section ${isCurrent ? 'current' : ''}" data-reveal data-zone-id="${zone.id}">
       <div class="zone-section-header">
         <span class="zone-section-icon">${SVG_ICON[zoneIconKey(zone)]}</span>
         <span class="zone-section-name">${zone.name}${zone.free_order ? ' <span class="tag blue">Ordem livre</span>' : ''}</span>
@@ -381,7 +395,7 @@ function renderSinglePhaseCard({ cp, state }, milestone) {
   const iconSvg = state === 'done' ? SVG_ICON.check : (milestone ? SVG_ICON.trophy : SVG_ICON[iconKeyFor(cp)]);
 
   return `
-    <div class="phase-card ${state}${milestone ? ' milestone' : ''}" data-checkpoint-id="${cp.id}" role="button" tabindex="0">
+    <div class="phase-card ${state}${milestone ? ' milestone' : ''}" data-reveal data-checkpoint-id="${cp.id}" role="button" tabindex="0">
       <span class="phase-card-icon">${iconSvg}</span>
       <span class="phase-card-title">${cp.title}</span>
       <span class="phase-card-status">${STATUS_LABEL[state]}</span>
@@ -409,7 +423,7 @@ function renderPairedPhaseCard(moduleEntry, quizEntry, milestone) {
        </button>`;
 
   return `
-    <div class="phase-card phase-card-pair ${moduleState}${milestone ? ' milestone' : ''}" data-checkpoint-id="${moduleCp.id}" role="button" tabindex="0">
+    <div class="phase-card phase-card-pair ${moduleState}${milestone ? ' milestone' : ''}" data-reveal data-checkpoint-id="${moduleCp.id}" role="button" tabindex="0">
       <span class="phase-card-icon">${iconSvg}</span>
       <span class="phase-card-title">${moduleCp.title}</span>
       <span class="phase-card-status">${STATUS_LABEL[moduleState]}</span>

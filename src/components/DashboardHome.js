@@ -24,6 +24,7 @@ import { getCurrentProfile, isAdminProfile } from '../config/supabase.js';
 import { navigateToPanel } from '../router.js';
 import { openImageEditModal } from './ImageEditModal.js';
 import { icon } from './icons.js';
+import { setupReveal, wrapButtonArrows } from './motion.js';
 
 // Canal Realtime do Mural — precisa ser cancelado antes de assinar de novo,
 // senão cada vez que o Dashboard Principal renderiza (ex.: voltar da trilha)
@@ -110,7 +111,7 @@ export async function renderDashboardHome(container, data, onCheckpointClick) {
     </div>`).join('');
 
   container.innerHTML = `
-    <div class="dash-welcome-row">
+    <div class="dash-welcome-row" data-reveal>
       <div class="dash-welcome-text">
         <h2 class="dash-welcome-title">${saudacaoPorHorario()}, ${userName}!</h2>
         <p class="dash-welcome-sub">Bem-vindo(a) ao ${brandName} <span class="dash-highlight">Training<span class="dash-highlight-icon">${BOLT_ICON}</span></span> · aprendizado contínuo, resultado que se destaca.</p>
@@ -119,7 +120,7 @@ export async function renderDashboardHome(container, data, onCheckpointClick) {
     </div>
 
     <div class="dash-main-grid">
-      <div class="dash-trail-card ${coverUrl ? 'has-cover' : ''}" ${coverUrl ? `style="background-image:url('${coverUrl}')"` : ''}>
+      <div class="dash-trail-card ${coverUrl ? 'has-cover' : ''}" data-reveal ${coverUrl ? `style="background-image:url('${coverUrl}')"` : ''}>
         <div class="dash-trail-top">
           <span class="dash-hero-eyebrow">Trilha atual${zonaAtualLabel ? ` · Zona ${zonaAtualLabel}` : ''}</span>
           ${isAdmin ? '<button type="button" class="dash-trail-edit-cover-btn" data-edit-trail-cover>Editar capa</button>' : ''}
@@ -133,6 +134,9 @@ export async function renderDashboardHome(container, data, onCheckpointClick) {
           <div class="dash-hero-progress">
             <span class="dash-hero-progress-label">Progresso da trilha</span>
             <span class="dash-hero-progress-value">${progresso.pct}% · <span data-hud="checkpoints">${progresso.done}<span class="unit">/${progresso.total}</span></span> checkpoints</span>
+            <span class="dash-hero-progress-bar">
+              <span class="dash-hero-progress-fill" data-hud="bar" style="width:0%"></span>
+            </span>
           </div>
         </div>
 
@@ -150,7 +154,11 @@ export async function renderDashboardHome(container, data, onCheckpointClick) {
     <div class="dash-special-lines" data-role="special-lines"></div>
   `;
 
+  // renderHud preenche a barra do Hero (data-hud="bar") com um setTimeout;
+  // ela nasce em 0% acima e a transição de motion.css faz o resto.
   renderHud(container, progresso);
+  setupReveal(container, { stagger: 0.06 });
+  wrapButtonArrows(container);
 
   // Circuito de Desafios + Duelos saíram do Dashboard (pedido do usuário,
   // 2026-09-15 — "tirar a poluição do site"): já existem como página própria
@@ -236,7 +244,7 @@ async function renderRevisaoCard(container) {
     const maxMin = Math.round((MAX_SESSION_ITEMS * SECONDS_PER_ITEM_ESTIMATE) / 60);
 
     container.innerHTML = `
-      <div class="dash-revisao-card">
+      <div class="dash-revisao-card" data-reveal>
         <div class="dash-revisao-card-text">
           <span class="dash-mini-tag"><span class="activity-header-icon">${icon('dice')}</span>Revisão Inteligente</span>
           <p class="dash-revisao-count">Pratique um pouco agora, sessões curtas de ${MIN_SESSION_ITEMS} a ${MAX_SESSION_ITEMS} perguntas</p>
@@ -247,6 +255,9 @@ async function renderRevisaoCard(container) {
         </div>
         <button type="button" class="dash-revisao-btn" data-role="revisar-agora">Revisar Agora →</button>
       </div>`;
+
+    setupReveal(container);
+    wrapButtonArrows(container);
 
     container.querySelector('[data-role="revisar-agora"]').addEventListener('click', () => navigateToPanel('revisao-inteligente'));
   } catch (err) {
@@ -401,10 +412,12 @@ async function renderDestaquesPreview(container) {
     ]);
 
     container.innerHTML = `
-      <div class="dash-mini-card destaques-preview-card">
+      <div class="dash-mini-card destaques-preview-card" data-reveal>
         <span class="dash-mini-tag"><span class="activity-header-icon">${TROPHY_ICON}</span>Destaques do Mês</span>
         <div class="destaque-preview-list">${rows.join('')}</div>
       </div>`;
+
+    setupReveal(container, { base: 0.08 });
 
     wireDestaqueAvatarFallbacks(container, fallbackByPos);
   } catch (err) {
@@ -427,7 +440,7 @@ async function renderActivityFeed(container) {
   activityFeedChannel = null;
 
   container.innerHTML = `
-    <div class="dash-mini-card activity-feed-card">
+    <div class="dash-mini-card activity-feed-card" data-reveal>
       <span class="dash-mini-tag"><span class="activity-header-icon">${ACTIVITY_HEADER_ICON}</span>Atividades Recentes</span>
       <div class="activity-feed-list" data-role="activity-list">
         <p class="dash-empty-text">Carregando…</p>
@@ -437,6 +450,8 @@ async function renderActivityFeed(container) {
       </div>
     </div>
     <div data-role="activity-modal-root"></div>`;
+
+  setupReveal(container, { base: 0.12 });
 
   const listEl = container.querySelector('[data-role="activity-list"]');
   const viewAllEl = container.querySelector('[data-role="view-all"]');
@@ -719,6 +734,9 @@ async function renderSpecialLines(container) {
         ${groupsHtml}
       </div>`;
 
+    // Cascata card a card dentro da seção de Novidades/Linhas Especiais.
+    setupReveal(container);
+    wrapButtonArrows(container);
     wireSpecialLineCards(container, items, isAdmin);
   } catch (err) {
     console.error('[DashboardHome] erro ao carregar linhas especiais:', err);
@@ -742,7 +760,7 @@ function specialLineCardHtml(item, isAdmin) {
   const tag = SPECIAL_LINE_TAG[item.slug] || '';
   const badge = specialLineRecencyBadge(item);
   return `
-    <article class="special-line-card" data-deepdive-slug="${item.slug}" tabindex="0" role="button" aria-label="Ver treinamento: ${item.title}">
+    <article class="special-line-card" data-reveal data-deepdive-slug="${item.slug}" tabindex="0" role="button" aria-label="Ver treinamento: ${item.title}">
       <div class="special-line-card-media ${isProductShot(cover) ? 'is-product' : ''}">
         ${cover ? `<img src="${cover}" alt="${item.title}" loading="lazy">` : `<span class="special-line-card-media-fallback">${icon('biblioteca')}</span>`}
         ${badge ? `<span class="special-line-card-badge">${badge}</span>` : ''}
