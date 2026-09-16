@@ -7,15 +7,20 @@
  */
 
 /* ── Card na Home ── */
+/* Superfície neutra (2026-09-16, pedido do usuário): antes era um degradê
+ * avermelhado (--g3) com borda vermelha de alerta, que puxava atenção como
+ * se fosse erro e destoava dos outros cards da Dashboard. Agora usa a mesma
+ * superfície dos demais: fundo de card, borda cinza de 1px e sombra leve.
+ * `align-items: center` mantém o botão no centro vertical do bloco de texto. */
 .dash-revisao-card {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
-  background: linear-gradient(135deg, var(--g3), var(--card-bg));
-  border: 1px solid var(--g);
-  border-radius: var(--r3);
-  padding: 18px 22px;
+  gap: 24px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 24px;
   margin-bottom: 24px;
   box-shadow: var(--sh-neutral-sm);
 }

@@ -77,28 +77,34 @@
 .dash-main-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  gap: 24px;
   margin-bottom: 32px;
 }
 
+/* Fundo neutro (2026-09-16): o gradiente anterior era slate azulado
+ * (#1e293b/#0f172a), destoando da paleta cinza neutra dos tokens. */
 .dash-trail-card {
   grid-column: 1 / -1;
   position: relative;
-  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  background: linear-gradient(135deg, #2a2a2a 0%, #141414 100%);
   background-size: cover;
   background-position: center;
-  border-radius: var(--r3);
-  padding: 20px 22px;
+  border-radius: var(--r);
+  padding: 24px;
   color: #fff;
-  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.1);
+  box-shadow: var(--sh-neutral-md);
   overflow: hidden;
 }
 
+/* Overlay escuro suave sobre a foto (2026-09-16, pedido do usuário): vai de
+ * cima para baixo, mais aberto no topo e mais fechado embaixo, onde ficam o
+ * CTA e a linha de zonas. Garante contraste do texto branco sem apagar a
+ * foto de ciclismo. */
 .dash-trail-card.has-cover::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.78) 100%);
+  background: linear-gradient(180deg, rgba(10, 10, 10, 0.62) 0%, rgba(10, 10, 10, 0.78) 55%, rgba(10, 10, 10, 0.88) 100%);
 }
 
 /* Linhas decorativas suaves (mesmo espírito do .hero-topo do layout de
@@ -186,17 +192,21 @@
   color: #f3a9b0;
 }
 
+/* Peso 600 e corpo um pouco menor (2026-09-16, pedido do usuário): em 800/26px
+ * o título dominava o card. */
 .dash-trail-title {
-  font-size: 26px;
-  font-weight: 800;
-  margin: 10px 0 6px 0;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  line-height: 1.25;
+  margin: 8px 0 8px 0;
   max-width: 480px;
 }
 
 .dash-trail-sub {
-  color: #94a3b8;
+  color: rgba(255, 255, 255, 0.72);
   font-size: 13.5px;
-  margin: 0 0 22px 0;
+  margin: 0 0 24px 0;
   max-width: 460px;
 }
 
@@ -216,7 +226,7 @@
 
 .dash-hero-progress-label {
   font-size: 11.5px;
-  color: #94a3b8;
+  color: rgba(255, 255, 255, 0.72);
 }
 
 .dash-hero-progress-value {
@@ -226,34 +236,59 @@
   color: #fff;
 }
 
-/* ── Checkpoint-row: as 5 zonas da jornada como pontos conectados ── */
+/* ── Checkpoint-row: as 5 zonas da jornada como pontos conectados ──
+ * Grid de colunas iguais (2026-09-16, pedido do usuário): com flex +
+ * justify-content:space-between + gap, os nós não ficavam uniformemente
+ * distribuídos nem assentados sobre uma linha base (a única linha era a
+ * borda superior do bloco, acima dos pontos). Agora cada zona ocupa uma
+ * fração idêntica e a linha base passa POR DENTRO dos pontos, desenhada por
+ * ::before em cada item (metades cortadas no primeiro e no último, pra linha
+ * começar e terminar exatamente no centro dos pontos das pontas). */
 .dash-hero-checkpoint-row {
   position: relative;
   margin-top: 24px;
   padding-top: 16px;
   border-top: 1px solid rgba(255, 255, 255, 0.12);
-  display: flex;
-  justify-content: space-between;
-  gap: 6px;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 0;
 }
 
 .dash-hero-checkpoint {
+  position: relative;
   font-size: 10.5px;
-  color: #94a3b8;
+  color: rgba(255, 255, 255, 0.72);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   text-align: center;
-  flex: 1;
   min-width: 0;
+  padding: 0 4px;
 }
 
+/* Linha base contínua, na altura do centro do ponto (ponto de 9px começa no
+ * topo do item, então o centro fica em 4.5px). */
+.dash-hero-checkpoint::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.dash-hero-checkpoint:first-child::before { left: 50%; }
+.dash-hero-checkpoint:last-child::before { right: 50%; }
+
 .dash-hero-checkpoint-dot {
+  position: relative;
   width: 9px;
   height: 9px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.28);
   flex-shrink: 0;
 }
 
@@ -303,8 +338,8 @@
 .dash-mini-card {
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: var(--r3);
-  padding: 20px;
+  border-radius: var(--r);
+  padding: 24px;
   box-shadow: var(--sh-neutral-sm);
 }
 
@@ -481,9 +516,12 @@
 
 /* ── Destaques do Mês (preview compacto, Dashboard Principal — visível a
  * todos; a curadoria de verdade acontece no Álbum da Equipe) ── */
+/* Sem teto de altura nem rolagem interna (2026-09-16, pedido do usuário): a
+ * lista tem 3 linhas fixas (2 lojas + melhor reputação), então cabe inteira.
+ * `height: 100%` mantém a altura igual à do Mural ao lado, pelo stretch do
+ * grid. */
 .destaques-preview-card {
   height: 100%;
-  max-height: 230px;
   display: flex;
   flex-direction: column;
 }
@@ -491,8 +529,7 @@
 .destaque-preview-list {
   display: flex;
   flex-direction: column;
-  margin-top: 6px;
-  overflow-y: auto;
+  margin-top: 8px;
   flex: 1;
   min-height: 0;
 }
@@ -592,48 +629,23 @@
  * Altura limitada (pedido do usuário, 2026-07-17 — o card tava ficando alto
  * demais ao lado de Destaques do Mês) — a lista interna rola o que exceder
  * esse teto, em vez de esticar o card pra caber tudo. */
+/* Sem teto de altura, rolagem interna nem degradê de "tem mais abaixo"
+ * (2026-09-16, pedido do usuário): o Mural agora mostra no máximo 3 itens
+ * (ACTIVITY_FEED_MAX_ITEMS em DashboardHome.js) e o resto fica no "ver todas
+ * as atividades". `height: 100%` casa a altura com o card de Destaques. */
 .activity-feed-card {
   height: 100%;
   display: flex;
   flex-direction: column;
   position: relative;
-  max-height: 230px;
 }
 
 .activity-feed-list {
   display: flex;
   flex-direction: column;
-  margin-top: 6px;
-  overflow-y: auto;
-  padding-right: 2px;
+  margin-top: 8px;
   flex: 1;
   min-height: 0;
-  scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
-}
-
-.activity-feed-list::-webkit-scrollbar {
-  width: 4px;
-}
-
-.activity-feed-list::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.activity-feed-list::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 2px;
-}
-
-.activity-feed-list::after {
-  content: '';
-  position: sticky;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 30px;
-  background: linear-gradient(to bottom, transparent, var(--card-bg));
-  pointer-events: none;
 }
 
 /* Ponto colorido + texto (layout de referência, 2026-07-17:
@@ -860,7 +872,6 @@
 
   .activity-feed-list {
     flex: none;
-    max-height: 170px;
   }
 }
 

@@ -1,4 +1,4 @@
-// src/components/DashboardHome.js
+﻿// src/components/DashboardHome.js
 // Dashboard real por marca — substitui os dois caminhos concorrentes que
 // existiam antes desta sprint (o painel hardcoded dentro de appShell.js e
 // a função renderizarDashboardInterno() de home.js, que reescrevia <main>
@@ -30,6 +30,9 @@ import { icon } from './icons.js';
 // empilha um listener novo ouvindo o mesmo INSERT várias vezes.
 let activityFeedChannel = null;
 
+/** Itens visíveis no Mural do Dashboard, sem rolagem interna no card. */
+const ACTIVITY_FEED_MAX_ITEMS = 3;
+
 /** Saudação pelo horário do acesso — só client-side (hora local do navegador), sem timezone de servidor envolvido. */
 function saudacaoPorHorario() {
   const hora = new Date().getHours();
@@ -38,7 +41,7 @@ function saudacaoPorHorario() {
   return 'Boa noite';
 }
 
-const BOLT_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>';
+const BOLT_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>';
 
 /**
  * Rótulo de zona pro eyebrow/checkpoint-row do Hero (layout de referência
@@ -95,7 +98,7 @@ export async function renderDashboardHome(container, data, onCheckpointClick) {
   const zonaAtualLabel = zonaAtualNome ? zoneLabel(zonaAtualNome) : '';
 
   const zonaRestantes = proximo ? proximo.zone.checkpoints.filter((cp) => !doneCheckpointIds.has(cp.id)).length : 0;
-  const heroTitle = proximo ? proximo.checkpoint.title : 'Trilha concluída! 🏁';
+  const heroTitle = proximo ? proximo.checkpoint.title : 'Trilha concluída';
   const heroDesc = proximo
     ? `Faltam ${zonaRestantes} checkpoint${zonaRestantes === 1 ? '' : 's'} para concluir esta zona.`
     : 'Confira suas certificações.';
@@ -222,7 +225,7 @@ async function renderRevisaoCard(container) {
       container.innerHTML = `
         <div class="dash-revisao-card">
           <div class="dash-revisao-card-text">
-            <span class="dash-mini-tag">🎲 Revisão Inteligente</span>
+            <span class="dash-mini-tag"><span class="activity-header-icon">${icon('dice')}</span>Revisão Inteligente</span>
             <p class="dash-revisao-count">Tudo em dia por agora, volte depois pra mais uma rodada.</p>
           </div>
         </div>`;
@@ -235,7 +238,7 @@ async function renderRevisaoCard(container) {
     container.innerHTML = `
       <div class="dash-revisao-card">
         <div class="dash-revisao-card-text">
-          <span class="dash-mini-tag">🎲 Revisão Inteligente</span>
+          <span class="dash-mini-tag"><span class="activity-header-icon">${icon('dice')}</span>Revisão Inteligente</span>
           <p class="dash-revisao-count">Pratique um pouco agora, sessões curtas de ${MIN_SESSION_ITEMS} a ${MAX_SESSION_ITEMS} perguntas</p>
           <div class="dash-revisao-meta">
             <span>Última revisão: <strong>${formatLastReview(stats.last_session_at)}</strong></span>
@@ -267,7 +270,7 @@ async function renderStreakPill(container, userId) {
     const dias = streak?.current_streak_days_effective || 0;
     if (dias < 2) return; // só vale destacar a partir de 2 dias seguidos
 
-    container.innerHTML = `<span class="dash-pill dash-pill-streak" title="Recorde: ${streak.longest_streak_days} dias">🔥 ${dias} dias seguidos</span>`;
+    container.innerHTML = `<span class="dash-pill dash-pill-streak" title="Recorde: ${streak.longest_streak_days} dias"><span class="activity-header-icon">${icon('zap')}</span>${dias} dias seguidos</span>`;
   } catch (err) {
     console.error('[DashboardHome] erro ao carregar streak:', err);
   }
@@ -291,8 +294,8 @@ const SEM_DESTAQUE_MES = 'Ainda sem destaque este mês';
 // preenchimento sólido): troféu pro critério "Ponta do Mês", estrela pro
 // critério "Melhor reputação" — a cor por trás de cada ícone (CSS) indica a
 // loja nas duas linhas de troféu.
-const TROPHY_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M17 5h3a2 2 0 0 1-2 4h-1"/><path d="M7 5H4a2 2 0 0 0 2 4h1"/></svg>';
-const STAR_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
+const TROPHY_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M17 5h3a2 2 0 0 1-2 4h-1"/><path d="M7 5H4a2 2 0 0 0 2 4h1"/></svg>';
+const STAR_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
 
 /** Iniciais (até 2 letras) pro avatar circular — só quando há gente real no destaque, senão mostra um traço neutro em vez de gerar iniciais erradas a partir do texto "Ainda sem destaque". */
 function initialsFor(name) {
@@ -399,7 +402,7 @@ async function renderDestaquesPreview(container) {
 
     container.innerHTML = `
       <div class="dash-mini-card destaques-preview-card">
-        <span class="dash-mini-tag">🏆 Destaques do Mês</span>
+        <span class="dash-mini-tag"><span class="activity-header-icon">${TROPHY_ICON}</span>Destaques do Mês</span>
         <div class="destaque-preview-list">${rows.join('')}</div>
       </div>`;
 
@@ -415,7 +418,7 @@ async function renderDestaquesPreview(container) {
  * (RN §6.10 / modelagem §6.8). Lê o feed já escopado por marca via RLS e
  * assina Realtime pra novos cards subirem sem recarregar a página.
  */
-const ACTIVITY_HEADER_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10v4a1 1 0 0 0 1 1h2l1 5h2l-1-5h1l10 4V6L9 10H4a1 1 0 0 0-1 1Z"/><path d="M15 8.5a3 3 0 0 1 0 7"/></svg>';
+const ACTIVITY_HEADER_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10v4a1 1 0 0 0 1 1h2l1 5h2l-1-5h1l10 4V6L9 10H4a1 1 0 0 0-1 1Z"/><path d="M15 8.5a3 3 0 0 1 0 7"/></svg>';
 
 async function renderActivityFeed(container) {
   if (!container) return;
@@ -507,10 +510,13 @@ function renderActivityList(listEl, rows, viewAllEl) {
     return;
   }
 
-  const displayRows = rows.slice(0, 5);
+  // Teto de 3 itens (2026-09-16, pedido do usuário): antes eram 5 com rolagem
+  // interna no card. Sem barra de rolagem dentro do card, o que passa disso
+  // fica no "ver todas as atividades".
+  const displayRows = rows.slice(0, ACTIVITY_FEED_MAX_ITEMS);
   listEl.innerHTML = displayRows.map((r) => activityItemHtml(r, formatRelativeTime(r.created_at))).join('');
 
-  if (rows.length > 5 && viewAllEl) {
+  if (rows.length > ACTIVITY_FEED_MAX_ITEMS && viewAllEl) {
     viewAllEl.hidden = false;
   }
 }
@@ -548,10 +554,14 @@ function highlightSubject(escapedMessage, row) {
 function activityItemHtml(row, timeLabel) {
   const type = getActivityType(row);
 
-  // Remove emojis duplicados do texto (o card já não tem mais ícone por
-  // tipo, só o ponto colorido — layout de referência, 2026-07-17)
+  // Remove emojis do texto (o card já não tem mais ícone por tipo, só o ponto
+  // colorido — layout de referência, 2026-07-17). A lista fixa de emojis
+  // deixava passar os que não estavam nela (ex.: ⚡ e 🎓 nas mensagens de
+  // badge/certificação); 2026-09-16 passou a limpar por faixa Unicode, que
+  // cobre qualquer emoji novo que entre por mensagem cadastrada no banco.
   const cleanedMessage = row.message
-    .replace(/🔥|💪|🏆|🥂|🍾|🏃‍♂️|🚀|⛰️|✨|⌚|➕|🎯|🥇|🏅|⭐|📌/g, '')
+    .replace(/[\u{1F000}-\u{1FAFF}\u{2190}-\u{2BFF}\u{FE0F}\u{200D}]/gu, '')
+    .replace(/\s{2,}/g, ' ')
     .trim();
 
   const html = highlightSubject(escapeHtml(cleanedMessage), row);
@@ -585,9 +595,9 @@ function prependActivityItem(listEl, row, viewAllEl) {
 
   // pilha enxuta — mantém o DOM leve, mesma filosofia de "peso zero" da tabela
   const items = listEl.querySelectorAll('.activity-feed-item');
-  if (items.length > 5) items[items.length - 1].remove();
+  if (items.length > ACTIVITY_FEED_MAX_ITEMS) items[items.length - 1].remove();
 
-  if (items.length > 4 && viewAllEl) {
+  if (items.length >= ACTIVITY_FEED_MAX_ITEMS && viewAllEl) {
     viewAllEl.hidden = false;
   }
 }
@@ -716,13 +726,24 @@ async function renderSpecialLines(container) {
   }
 }
 
+/**
+ * Capa de foto de produto (estúdio, fundo branco do CDN da Garmin) pede
+ * enquadramento diferente da capa editorial (foto de pessoa/paisagem):
+ * a editorial preenche o quadro (cover), a de produto precisa aparecer
+ * inteira (contain), senão o relógio fica cortado no meio. Ver
+ * `.special-line-card-media.is-product` em cards.css.
+ */
+function isProductShot(url) {
+  return /res\.garmin\.com\/.*(Product_Images|\/g\/)/i.test(url || '');
+}
+
 function specialLineCardHtml(item, isAdmin) {
   const cover = item.payload?.cover_url;
   const tag = SPECIAL_LINE_TAG[item.slug] || '';
   const badge = specialLineRecencyBadge(item);
   return `
     <article class="special-line-card" data-deepdive-slug="${item.slug}" tabindex="0" role="button" aria-label="Ver treinamento: ${item.title}">
-      <div class="special-line-card-media">
+      <div class="special-line-card-media ${isProductShot(cover) ? 'is-product' : ''}">
         ${cover ? `<img src="${cover}" alt="${item.title}" loading="lazy">` : `<span class="special-line-card-media-fallback">${icon('biblioteca')}</span>`}
         ${badge ? `<span class="special-line-card-badge">${badge}</span>` : ''}
         ${isAdmin ? `<button type="button" class="special-line-card-admin-btn" data-edit-cover-slug="${item.slug}" title="Editar capa" aria-label="Editar capa">${icon('pencil')}</button>` : ''}

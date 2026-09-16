@@ -668,7 +668,7 @@
 .special-lines-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
+  gap: 16px;
 }
 
 /* Dimensões reduzidas (2026-09-15, pedido do usuário — "cards ficaram
@@ -680,15 +680,16 @@
   height: 100%;
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: var(--r2);
+  border-radius: var(--r);
   overflow: hidden;
   cursor: pointer;
+  box-shadow: var(--sh-neutral-sm);
   transition: border-color var(--dur-base) var(--ease), box-shadow var(--dur-base) var(--ease), transform var(--dur-base) var(--ease);
 }
 
 .special-line-card:hover {
   border-color: var(--border2);
-  box-shadow: var(--sh-neutral-sm);
+  box-shadow: var(--sh-neutral-md);
   transform: translateY(-2px);
 }
 
@@ -703,7 +704,7 @@
 .special-line-card-media {
   position: relative;
   aspect-ratio: 21 / 9;
-  background: var(--off);
+  background: var(--card-bg);
   overflow: hidden;
 }
 
@@ -712,6 +713,16 @@
   height: 100%;
   object-fit: cover;
   transition: transform var(--dur-slow) var(--ease);
+}
+
+/* Capa de foto de produto (estúdio, fundo branco do CDN da Garmin): mantém o
+ * mesmo preenchimento das capas editoriais. Tentei `contain` + sombra aqui
+ * (2026-09-16) pra "soltar" a peça do fundo, mas as fotos de produto são
+ * quadradas e a caixa é 21:9 — o produto encolhia e sobrava vazio nas
+ * laterais ("ficaram esquisitas"). O que resolve o recorte bruto é o fundo
+ * da mídia ser o mesmo do card (acima), não o object-fit. */
+.special-line-card-media.is-product img {
+  object-position: center;
 }
 
 .special-line-card-media-fallback {
