@@ -27,6 +27,25 @@ export async function fetchActiveBrands() {
 }
 
 /**
+ * Grava o logo da marca (2026-09-16). Nem Garmin nem Shokz publicam um
+ * arquivo de logo atual e utilizável (as duas usam SVG inline no site), então
+ * o asset correto entra por upload do admin, mesmo caminho já usado pelas
+ * capas de trilha/quiz/duelo/biblioteca. RLS: só admin escreve em `brands`
+ * (policy brands_admin_all), leitura é pública.
+ *
+ * @param {string} brandId
+ * @param {string|null} logoUrl
+ */
+export async function updateBrandLogo(brandId, logoUrl) {
+  const { error } = await supabase
+    .from('brands')
+    .update({ logo_url: logoUrl || null })
+    .eq('id', brandId);
+
+  if (error) throw new Error(error.message);
+}
+
+/**
  * Busca uma marca específica por ID.
  * @param {string} brandId - ID da marca
  * @returns {Promise<{data: object|null, error?: string}>}

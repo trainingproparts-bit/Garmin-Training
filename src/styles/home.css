@@ -1,86 +1,357 @@
 /* Garmin Training Hub — Tela Início (seleção de marca)
  *
- * Substituído nesta sprint: o conteúdo anterior deste arquivo (.dash-welcome-row,
- * .gps-hud, .quick-access-grid...) era CSS órfão — nenhuma dessas classes é
- * usada por home.js ou appShell.js, e o nome ".dash-welcome-row" colidia
- * diretamente com a classe de mesmo nome em dashboard.css (cascata
- * imprevisível dependendo da ordem de import). As classes REALMENTE usadas
- * pelo painel "home" (.home-welcome, .home-brands-grid, .brand-card...)
- * nunca tinham estilo próprio em lugar nenhum — a tela sempre rendeu como
- * texto puro sem estilo, um bug real encontrado ao testar esta sprint.
+ * V2 (2026-09-16, pedido do usuário): portal de entrada centralizado, no
+ * espírito de uma seleção de perfil. Antes era um grid alinhado à esquerda
+ * com cards genéricos ("Clique para entrar na sua trilha"), sem nenhuma
+ * informação real sobre a marca. Agora cada card mostra o progresso real da
+ * trilha daquela marca e a tela inteira fica centrada na viewport.
  */
 
+.home-portal {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Entrada um pouco mais longa e com deslocamento maior que o padrão do
+ * motion.css (0.4s/16px): aqui são só 3 elementos numa tela vazia, e o
+ * movimento mais amplo dá o peso de "portal de entrada" que a tela pede. */
+html.js-motion .home-portal [data-reveal] {
+  --reveal-shift: 20px;
+  --reveal-dur: 0.5s;
+}
+
+/* ── Boas-vindas ── */
+.home-welcome {
+  margin-bottom: 40px;
+}
+
 .home-welcome h2 {
-  font-size: 27px;
-  font-weight: 400;
-  letter-spacing: -0.2px;
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: -0.3px;
   color: var(--text);
   margin: 0 0 8px;
 }
 
 .home-welcome h2 span {
   color: var(--g);
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .home-welcome p {
-  font-size: 14px;
+  font-size: 14.5px;
   color: var(--text2);
-  margin: 0 0 28px;
+  margin: 0;
 }
 
-.home-section-title {
-  font-size: 12px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--text2);
-  font-weight: 700;
-  margin: 0 0 14px;
-}
-
+/* ── Grade de marcas ── */
 .home-brands-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 32px;
+  flex-wrap: wrap;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .brand-card {
+  position: relative;
+  width: 320px;
+  min-height: 260px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: var(--r3);
-  padding: 24px;
-  cursor: pointer;
+  border-radius: var(--r);
   box-shadow: var(--sh-neutral-sm);
-  transition: transform 0.15s, border-color 0.15s;
+  cursor: pointer;
+  text-align: center;
+  transition:
+    transform 0.2s var(--ease),
+    box-shadow 0.2s var(--ease),
+    border-color 0.2s var(--ease),
+    opacity 0.2s var(--ease);
 }
 
 .brand-card:hover {
-  transform: translateY(-2px);
-  border-color: var(--border2);
+  transform: translateY(-8px);
+  box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.12);
+  border-color: var(--g);
+}
+
+.brand-card:active {
+  transform: scale(0.97);
+}
+
+.brand-card:focus-visible {
+  outline: 2px solid var(--g);
+  outline-offset: 3px;
+}
+
+/* Foco no card apontado: os demais recuam (mesma ideia da seleção de perfil
+ * do Netflix). `:has()` em vez de `:hover` no grid porque o grid inteiro,
+ * incluindo o vão entre os cards, também dispararia o hover. */
+.home-brands-grid:has(.brand-card:hover) .brand-card:not(:hover) {
+  opacity: 0.6;
+}
+
+/* ── Identidade da marca ──
+ * Não há logo cadastrado (brands.logo_url está vazio pras duas marcas), e
+ * inventar um logo seria pior que não ter. Enquanto não houver, mostramos a
+ * inicial da marca; assim que `logo_url` for preenchido no banco, o card já
+ * usa a imagem no lugar, sem mexer aqui. */
+.brand-card-emblem {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 20px;
+  border-radius: var(--r);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: var(--off);
+  color: var(--text2);
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  overflow: hidden;
+  transition: background 0.2s var(--ease), color 0.2s var(--ease);
+}
+
+.brand-card:hover .brand-card-emblem {
+  background: var(--g3);
+  color: var(--g);
+}
+
+/* Com logo a caixa fica deitada e sem fundo: wordmark não cabe legível num
+ * quadrado de 64px, e o fundo cinza brigaria com o fundo do próprio logo. */
+.brand-card-emblem.has-logo {
+  width: 100%;
+  max-width: 180px;
+  height: 56px;
+  background: none;
+  border-radius: 0;
+}
+
+.brand-card:hover .brand-card-emblem.has-logo {
+  background: none;
+}
+
+.brand-card-emblem img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Botão de editar logo (admin) — discreto, aparece no hover do card. */
+.brand-card-logo-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: var(--off);
+  color: var(--text3);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease), background var(--dur-base) var(--ease), color var(--dur-base) var(--ease);
+}
+
+.brand-card-logo-btn svg { width: 13px; height: 13px; }
+
+.brand-card:hover .brand-card-logo-btn { opacity: 1; }
+
+.brand-card-logo-btn:hover {
+  background: var(--g3);
+  color: var(--g);
+}
+
+.brand-card-logo-btn:focus-visible {
+  opacity: 1;
+  outline: 2px solid var(--g);
+  outline-offset: 1px;
 }
 
 .brand-card-name {
-  font-size: 17px;
-  font-weight: 500;
+  font-size: 18px;
+  font-weight: 600;
   color: var(--text);
   text-transform: uppercase;
   letter-spacing: 1.5px;
   margin: 0 0 8px;
 }
 
+/* Com logo carregado o nome sai da tela (2026-09-16, pedido do usuário): o
+ * wordmark da marca já escreve o nome, e o título embaixo repetia a mesma
+ * palavra. Continua no HTML, só fora da vista, porque é ele que dá o nome
+ * acessível do card junto com o alt da imagem. */
+.brand-card.has-logo .brand-card-name {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 .brand-card-desc {
   font-size: 13px;
   color: var(--text3);
-  margin: 0 0 16px;
+  margin: 0;
   line-height: 1.5;
 }
 
-.brand-card-action {
+/* ── Resumo de progresso da trilha ── */
+.brand-card-progress {
+  width: 100%;
+  margin-top: 18px;
+}
+
+.brand-card-progress-label {
+  display: block;
   font-size: 12px;
+  color: var(--text2);
+  margin-bottom: 6px;
+}
+
+.brand-card-progress-label strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* `display: block` é obrigatório aqui: o track é um <span>, e em elemento
+ * inline a altura de 4px seria ignorada (a barra saía grossa, encostando no
+ * CTA). */
+.brand-card-progress-track {
+  display: block;
+  width: 100%;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--off);
+  overflow: hidden;
+}
+
+.brand-card-progress-fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--g);
+  transition: width 1.2s ease-out;
+}
+
+/* ── CTA ── */
+.brand-card-action {
+  margin-top: auto;
+  padding-top: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
   font-weight: 700;
   color: var(--g);
 }
 
+.brand-card-action-icon {
+  display: inline-flex;
+  width: 14px;
+  height: 14px;
+  transition: transform 0.2s ease;
+}
+
+/* O icons.js só tem chevron pra baixo; girar 90° evita duplicar um ícone só
+ * pra essa seta. A rotação fica no <svg> e o deslocamento no <span>, senão o
+ * translateX andaria no eixo já girado. */
+.brand-card-action-icon svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.brand-card:hover .brand-card-action-icon {
+  transform: translateX(4px);
+}
+
+/* ── Chamada de login (só no modo visitante) ── */
+.home-login-cta {
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.home-login-cta-text {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text3);
+}
+
+.home-login-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  background: var(--card-bg);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text2);
+  cursor: pointer;
+  transition: border-color 0.2s var(--ease), color 0.2s var(--ease);
+}
+
+.home-login-cta-btn:hover {
+  border-color: var(--g);
+  color: var(--g);
+}
+
+.home-login-cta-btn:focus-visible {
+  outline: 2px solid var(--g);
+  outline-offset: 2px;
+}
+
+.home-login-cta-icon {
+  display: inline-flex;
+  width: 13px;
+  height: 13px;
+  transition: transform 0.2s ease;
+}
+
+.home-login-cta-icon svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.home-login-cta-btn:hover .home-login-cta-icon {
+  transform: translateX(3px);
+}
+
+/* ── Saída ao escolher a marca ── */
+.home-portal.is-leaving {
+  opacity: 0;
+  transition: opacity 0.18s var(--ease);
+  pointer-events: none;
+}
+
+/* ── Estados de carregamento / vazio / erro ── */
 .home-loading,
 .home-empty {
   color: var(--text3);
@@ -94,4 +365,45 @@
   border-radius: var(--r2);
   padding: 14px 16px;
   font-size: 13.5px;
+}
+
+@media (max-width: 720px) {
+  .home-portal {
+    min-height: auto;
+    padding: 24px 0;
+  }
+
+  .home-brands-grid {
+    gap: 16px;
+  }
+
+  .brand-card {
+    width: 100%;
+    max-width: 320px;
+    min-height: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-card:hover,
+  .brand-card:active {
+    transform: none;
+  }
+
+  .brand-card:hover .brand-card-action-icon {
+    transform: none;
+  }
+
+  .home-brands-grid:has(.brand-card:hover) .brand-card:not(:hover) {
+    opacity: 1;
+  }
+
+  .brand-card-progress-fill,
+  .home-portal.is-leaving {
+    transition: none;
+  }
+
+  .home-login-cta-btn:hover .home-login-cta-icon {
+    transform: none;
+  }
 }

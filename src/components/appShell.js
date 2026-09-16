@@ -214,15 +214,15 @@ export function renderAppShell(container) {
               <div class="panel-title"><span>Início</span></div>
             </div>
             <div class="panel-body">
-              <div class="home-welcome">
-                <h2 id="welcomeTitle">Olá, Visitante! ✨</h2>
-                <p id="welcomeText">Você está conhecendo o Garmin Training Hub. Para salvar seu progresso, faça login.</p>
-              </div>
-              <div class="home-brands-section">
-                <h3 class="home-section-title">Marcas Disponíveis</h3>
+              <div class="home-portal" id="homePortal">
+                <div class="home-welcome" data-reveal>
+                  <h2 id="welcomeTitle">Olá, Visitante!</h2>
+                  <p id="welcomeText">Selecione a marca para acessar seu painel de treinamento:</p>
+                </div>
                 <div id="brandsContainer" class="home-brands-grid">
                   <p class="home-loading">Carregando marcas...</p>
                 </div>
+                <div class="home-login-cta" id="homeLoginCta" hidden></div>
               </div>
             </div>
           </div>
