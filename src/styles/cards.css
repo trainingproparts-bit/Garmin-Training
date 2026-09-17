@@ -640,13 +640,22 @@
  * dois únicos elementos que pedem destaque de ação nesta seção. */
 .special-lines-group { margin-top: 8px; }
 
-.special-lines-header { margin-bottom: 18px; }
+/* Super-tag + título + apoio (2026-09-16): a seção tinha título e subtítulo
+ * mas nenhuma tag, enquanto Destaques e Atividades tinham só a tag. Os três
+ * blocos da Dashboard passam a abrir do mesmo jeito. */
+.special-lines-header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 18px;
+}
 
 .special-lines-title {
-  margin: 0 0 4px;
+  margin: 0;
   font-family: var(--font-display);
-  font-size: 16px;
-  font-weight: 700;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   color: var(--text);
 }
 

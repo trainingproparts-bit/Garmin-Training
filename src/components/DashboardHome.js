@@ -42,8 +42,6 @@ function saudacaoPorHorario() {
   return 'Boa noite';
 }
 
-const BOLT_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>';
-
 /**
  * Rótulo de zona pro eyebrow/checkpoint-row do Hero (layout de referência
  * anexado pelo usuário, 2026-07-17: gps-carreira-redesign.html). "Zona
@@ -84,11 +82,11 @@ function heroZoneStatus(zones, doneCheckpointIds) {
 
 /**
  * @param {HTMLElement} container
- * @param {{brandName: string, userName: string, trail: object, zones: Array, doneCheckpointIds: Set<string>, moduleProgressMap?: Map<string,number>}} data
+ * @param {{userName: string, trail: object, zones: Array, doneCheckpointIds: Set<string>, moduleProgressMap?: Map<string,number>}} data
  * @param {(checkpoint: object) => void} onCheckpointClick
  */
 export async function renderDashboardHome(container, data, onCheckpointClick) {
-  const { brandName, userName, userId, trail, zones, doneCheckpointIds, moduleProgressMap, isAdmin } = data;
+  const { userName, userId, trail, zones, doneCheckpointIds, moduleProgressMap, isAdmin } = data;
   const progresso = calcularProgresso(zones, doneCheckpointIds);
   const proximo = proximoCheckpoint(zones, doneCheckpointIds);
   const coverUrl = trail?.cover_url;
@@ -113,8 +111,8 @@ export async function renderDashboardHome(container, data, onCheckpointClick) {
   container.innerHTML = `
     <div class="dash-welcome-row" data-reveal>
       <div class="dash-welcome-text">
-        <h2 class="dash-welcome-title">${saudacaoPorHorario()}, ${userName}!</h2>
-        <p class="dash-welcome-sub">Bem-vindo(a) ao ${brandName} <span class="dash-highlight">Training<span class="dash-highlight-icon">${BOLT_ICON}</span></span> · aprendizado contínuo, resultado que se destaca.</p>
+        <h2 class="dash-welcome-title">${saudacaoPorHorario()}, ${userName}</h2>
+        <p class="dash-welcome-sub">Sua trilha, o desempenho da equipe e o que revisar hoje.</p>
       </div>
       <div class="dash-welcome-context" data-role="streak-pill"></div>
     </div>
@@ -122,7 +120,7 @@ export async function renderDashboardHome(container, data, onCheckpointClick) {
     <div class="dash-main-grid">
       <div class="dash-trail-card ${coverUrl ? 'has-cover' : ''}" data-reveal ${coverUrl ? `style="background-image:url('${coverUrl}')"` : ''}>
         <div class="dash-trail-top">
-          <span class="dash-hero-eyebrow">Trilha atual${zonaAtualLabel ? `<span class="dash-hero-eyebrow-sep">/</span><span class="dash-hero-eyebrow-zone">Zona ${zonaAtualLabel}</span>` : ''}</span>
+          <span class="dash-hero-eyebrow">Trilha atual${zonaAtualLabel ? `<span class="dash-hero-eyebrow-sep">•</span><span class="dash-hero-eyebrow-zone">Zona ${zonaAtualLabel}</span>` : ''}</span>
           ${isAdmin ? '<button type="button" class="dash-trail-edit-cover-btn" data-edit-trail-cover>Editar capa</button>' : ''}
         </div>
 
@@ -247,7 +245,8 @@ async function renderRevisaoCard(container) {
       <div class="dash-revisao-card" data-reveal>
         <div class="dash-revisao-card-text">
           <span class="dash-mini-tag"><span class="activity-header-icon">${icon('dice')}</span>Revisão Inteligente</span>
-          <p class="dash-revisao-count">Pratique um pouco agora, sessões curtas de ${MIN_SESSION_ITEMS} a ${MAX_SESSION_ITEMS} perguntas</p>
+          <h3 class="dash-revisao-title">Fixe o que você já estudou</h3>
+          <p class="dash-revisao-count">Sessões de ${MIN_SESSION_ITEMS} a ${MAX_SESSION_ITEMS} perguntas, montadas pelo seu histórico.</p>
           <div class="dash-revisao-meta">
             <span>Última revisão: <strong>${formatLastReview(stats.last_session_at)}</strong></span>
             <span>Duração: <strong>${minMin} a ${maxMin} min</strong></span>
@@ -733,8 +732,9 @@ async function renderSpecialLines(container) {
     container.innerHTML = `
       <div class="special-lines-group">
         <div class="special-lines-header">
+          <span class="dash-mini-tag">Biblioteca técnica</span>
           <h3 class="special-lines-title">Linhas Especiais e Novidades</h3>
-          <p class="special-lines-subtitle">Conteúdos para ampliar seu conhecimento sobre o ecossistema Garmin.</p>
+          <p class="special-lines-subtitle">Aprofundamento por linha de produto.</p>
         </div>
         ${groupsHtml}
       </div>`;

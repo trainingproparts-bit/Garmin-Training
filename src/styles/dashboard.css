@@ -48,25 +48,6 @@
   color: var(--text2);
 }
 
-.dash-highlight {
-  color: var(--g);
-  font-weight: 700;
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-}
-
-.dash-highlight-icon {
-  width: 12px;
-  height: 12px;
-  display: inline-flex;
-}
-
-.dash-highlight-icon svg {
-  width: 100%;
-  height: 100%;
-}
-
 /* ── Grid principal: Hero em cima (largura cheia) + Destaques/Atividades
  * lado a lado embaixo (layout de referência, 2026-07-17:
  * gps-carreira-redesign.html — .hero sozinho, depois .grid-2 com os 2
