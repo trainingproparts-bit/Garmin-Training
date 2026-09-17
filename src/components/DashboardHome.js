@@ -100,7 +100,9 @@ export async function renderDashboardHome(container, data, onCheckpointClick) {
   const heroTitle = proximo ? proximo.checkpoint.title : 'Trilha concluída';
   const heroDesc = proximo
     ? `Faltam ${zonaRestantes} checkpoint${zonaRestantes === 1 ? '' : 's'} para concluir esta zona.`
-    : 'Confira suas certificações.';
+    // Não manda mais pras Certificações: a seção saiu do menu (ver NAV_ITEMS
+    // em appShell.js) e a frase apontaria pra um lugar sem caminho visível.
+    : 'Todos os checkpoints desta trilha foram concluídos.';
 
   const checkpointRowHtml = heroZoneStatus(zones, doneCheckpointIds).map(({ label, state }) => `
     <div class="dash-hero-checkpoint">

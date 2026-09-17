@@ -1,4 +1,4 @@
-/**
+﻿/**
  * App Shell — estrutura base unificada do Garmin Training Hub.
  *
  * Sprint 1 (consolidação): este arquivo agora cuida SÓ de montar o HTML do
@@ -33,22 +33,35 @@ const NAV_ITEMS = [
   // "Início" saiu do menu — era redundante com "Trocar de marca" (mesmo
   // destino, panel 'home'). O painel e os "← Início" continuam existindo,
   // só não tem mais link fixo na sidebar pra ele.
-  { id: 'trilha', iconKey: 'trilha', label: 'Painel', brandScoped: true },
-  { id: 'arena', iconKey: 'arena', label: 'Arena de Desafios', brandScoped: true },
-  { id: 'certificacao', iconKey: 'certificacao', label: 'Certificações', brandScoped: true },
-  { id: 'biblioteca', iconKey: 'biblioteca', label: 'Biblioteca Técnica', brandScoped: true },
-  { id: 'ranking', iconKey: 'ranking', label: 'Ranking', brandScoped: true },
-  { id: 'album', iconKey: 'album', label: 'Álbum da Equipe', brandScoped: true },
-  // Segundo domínio da plataforma (2026-07-20) — independente das Trilhas,
-  // não é sobre progressão/checkpoint, é consulta rápida de produto durante
-  // atendimento. Fica brandScoped igual ao resto (é conteúdo específico da
-  // marca escolhida), mas não tem relação nenhuma com trilha/zona/checkpoint.
-  { id: 'academia-produtos', iconKey: 'academia', label: 'Academia de Produtos', brandScoped: true },
-  // Terceiro domínio (2026-07-20) — retenção de conhecimento via repetição
-  // espaçada, independente de Trilhas/Academia. brandScoped pelo mesmo motivo
-  // de academia-produtos (conteúdo específico da marca escolhida).
+  // Ordem por propósito (2026-09-16, pedido do usuário). Antes a lista
+  // misturava os três domínios: material de consulta (Academia, Biblioteca)
+  // aparecia separado por Ranking e Álbum no meio, e a Revisão Inteligente
+  // caía no fim, longe do Painel. `group` abre um rótulo quando muda.
+  //
+  // APRENDIZADO reúne os três domínios que o próprio código já documenta
+  // como pilares independentes: a trilha (progressão), a revisão (retenção
+  // por repetição espaçada) e a arena (prática).
+  { id: 'trilha', iconKey: 'trilha', label: 'Painel', brandScoped: true, group: 'Aprendizado' },
   { id: 'revisao-inteligente', iconKey: 'revisao', label: 'Revisão Inteligente', brandScoped: true },
-  { id: 'blog', iconKey: 'blog', label: 'Blog', brandScoped: false },
+  { id: 'arena', iconKey: 'arena', label: 'Arena de Desafios', brandScoped: true },
+
+  // CONSULTA é o que se abre durante um atendimento, não pra progredir:
+  // ficha de produto e aprofundamento por linha.
+  { id: 'academia-produtos', iconKey: 'academia', label: 'Academia de Produtos', brandScoped: true, group: 'Consulta' },
+  { id: 'biblioteca', iconKey: 'biblioteca', label: 'Biblioteca Técnica', brandScoped: true },
+
+  // Certificações saiu do menu (2026-09-16, pedido do usuário: "ainda não tô
+  // conseguindo cuidar disso"). Só o link saiu — o painel, a página
+  // (pages/certificacao.js) e o serviço continuam de pé, então voltar é
+  // devolver uma linha aqui. Quem chega pelo fim de uma avaliação
+  // (evaluationRunner navega pra 'certificacao') continua funcionando.
+
+  // EQUIPE é desempenho comparado (quem está onde). COMUNIDADE é conteúdo e
+  // conversa, e não é escopado por marca — por isso não ficam no mesmo grupo.
+  { id: 'ranking', iconKey: 'ranking', label: 'Ranking', brandScoped: true, group: 'Equipe' },
+  { id: 'album', iconKey: 'album', label: 'Álbum da Equipe', brandScoped: true },
+
+  { id: 'blog', iconKey: 'blog', label: 'Blog', brandScoped: false, group: 'Comunidade' },
   { id: 'forum', iconKey: 'forum', label: 'Fórum', brandScoped: false },
   // Não são brandScoped: visão de líder/admin é por loja/organização, não
   // por marca/trilha em andamento. Ficam escondidas até o papel ser
@@ -62,16 +75,42 @@ const NAV_ITEMS = [
   // visibilidade por papel (revealRoleScopedNav) seguem funcionando sem
   // nenhuma mudança em router.js, porque os seletores são por classe/
   // atributo, não por posição no DOM.
-  { id: 'executivo', iconKey: 'executivo', label: 'Dashboard Executivo', brandScoped: false, rolesAllowed: ['admin'], location: 'avatar' },
-  { id: 'lider', iconKey: 'lider', label: 'Painel do Líder', brandScoped: false, rolesAllowed: ['leader', 'admin'], location: 'avatar' },
-  { id: 'relatorios', iconKey: 'relatorios', label: 'Relatórios', brandScoped: false, rolesAllowed: ['leader', 'admin'], location: 'avatar' },
-  { id: 'admin', iconKey: 'admin', label: 'Painel Admin', brandScoped: false, rolesAllowed: ['admin'], location: 'avatar' },
-  { id: 'gestora', iconKey: 'gestora', label: 'Painel da Gestora', brandScoped: false, rolesAllowed: ['admin'], location: 'avatar' },
+  // Ordenados por escopo de papel (2026-09-16, pedido do usuário): antes a
+  // lista alternava entre item de líder e item exclusivo de admin, então
+  // quem é líder via dois links soltos no meio de coisas que não enxerga.
+  // Agora o que líder e admin compartilham vem primeiro, e o que é só de
+  // admin vem depois. O rótulo some sozinho quando o grupo inteiro está
+  // oculto pro papel da pessoa (ver syncAvatarGroupLabels).
+  // Rótulos dizem o que a tela mostra, não o cargo de quem entra (2026-09-16,
+  // pedido do usuário: "o painel do líder é pra quê?"). Quatro itens
+  // chamados "Painel de alguém" não diferenciavam nada entre si, e ainda
+  // colidiam com o "Painel" do menu principal. O cargo agora é dado pelo
+  // rótulo do grupo, não repetido em cada linha. Cada nome abaixo foi tirado
+  // do que a página realmente exibe.
+  { id: 'lider', iconKey: 'lider', label: 'Desempenho da Equipe', brandScoped: false, rolesAllowed: ['leader', 'admin'], location: 'avatar', group: 'Gestão' },
+  { id: 'relatorios', iconKey: 'relatorios', label: 'Gaps da Equipe', brandScoped: false, rolesAllowed: ['leader', 'admin'], location: 'avatar' },
+
+  { id: 'admin', iconKey: 'admin', label: 'Usuários e Cadastros', brandScoped: false, rolesAllowed: ['admin'], location: 'avatar', group: 'Administração' },
+  { id: 'gestora', iconKey: 'gestora', label: 'Conteúdo e Publicação', brandScoped: false, rolesAllowed: ['admin'], location: 'avatar' },
+  { id: 'executivo', iconKey: 'executivo', label: 'Visão da Operação', brandScoped: false, rolesAllowed: ['admin'], location: 'avatar' },
   { id: 'homologacao', iconKey: 'certificacao', label: 'Homologação Semanal', brandScoped: false, rolesAllowed: ['admin'], location: 'avatar' },
 ];
 
 const SIDEBAR_NAV_ITEMS = NAV_ITEMS.filter((item) => item.location !== 'avatar');
-const AVATAR_NAV_ITEMS = NAV_ITEMS.filter((item) => item.location === 'avatar');
+
+/**
+ * `group` só é declarado no primeiro item de cada grupo (é ele que abre o
+ * rótulo). Aqui o grupo corrente é propagado pros itens seguintes, pra cada
+ * link saber a que grupo pertence — é assim que syncAvatarGroupLabels
+ * descobre se um rótulo ficou sem nenhum item visível.
+ */
+let grupoCorrente = '';
+const AVATAR_NAV_ITEMS = NAV_ITEMS
+  .filter((item) => item.location === 'avatar')
+  .map((item) => {
+    if (item.group) grupoCorrente = item.group;
+    return { ...item, resolvedGroup: grupoCorrente };
+  });
 
 /** Lido de forma síncrona antes do primeiro render — evita flash de sidebar expandida antes de colapsar. */
 function readSidebarCollapsed() {
@@ -114,6 +153,7 @@ export function renderAppShell(container) {
 
         <nav class="sb-nav" id="sbNav">
           ${SIDEBAR_NAV_ITEMS.map((item) => `
+            ${item.group ? `<div class="sb-nav-group-label">${item.group}</div>` : ''}
             <a class="sb-link" href="#" data-panel="${item.id}" title="${item.label}" ${(item.brandScoped || item.rolesAllowed) ? 'hidden' : ''}>
               <span class="sb-icon">${icon(item.iconKey)}</span><span class="sb-label">${item.label}</span>
             </a>
@@ -123,14 +163,15 @@ export function renderAppShell(container) {
           </a>
         </nav>
 
+        <!-- Sobrou só o FAQ (2026-09-16, pedido do usuário: "última atividade
+             não vai pra lugar nenhum"). Os outros dois atalhos não levavam a
+             lugar nenhum de novo: "Última Atividade" chamava o painel
+             'trilha', que é o próprio Painel no topo do menu, e "Novidades"
+             chamava 'blog', que agora está visível em Comunidade. O FAQ fica
+             porque faz algo que o menu não faz: abre a Biblioteca já
+             filtrada nessa categoria. Sem o rótulo "Acesso Rápido", que com
+             um item só pesava mais que o próprio link. -->
         <div class="sb-quick-access" id="sbQuickAccess">
-          <div class="sb-quick-access-label">Acesso Rápido</div>
-          <button type="button" class="sb-link sb-quick-link" id="qaUltimaAtividade" title="Última Atividade">
-            <span class="sb-icon">${icon('trilha')}</span><span class="sb-label">Última Atividade</span>
-          </button>
-          <button type="button" class="sb-link sb-quick-link" id="qaNovidades" title="Novidades">
-            <span class="sb-icon">${icon('blog')}</span><span class="sb-label">Novidades</span>
-          </button>
           <button type="button" class="sb-link sb-quick-link" id="qaFaq" title="FAQ">
             <span class="sb-icon">${icon('quizzes')}</span><span class="sb-label">FAQ</span>
           </button>
@@ -180,7 +221,8 @@ export function renderAppShell(container) {
                 </div>
                 <div class="avatar-dropdown-links">
                   ${AVATAR_NAV_ITEMS.map((item) => `
-                    <a class="sb-link avatar-dropdown-link" href="#" data-panel="${item.id}" hidden>
+                    ${item.group ? `<div class="avatar-dropdown-group-label" data-group="${item.group}" hidden>${item.group}</div>` : ''}
+                    <a class="sb-link avatar-dropdown-link" href="#" data-panel="${item.id}" data-group="${item.resolvedGroup}" hidden>
                       <span class="sb-icon">${icon(item.iconKey)}</span><span class="sb-label">${item.label}</span>
                     </a>
                   `).join('')}
@@ -352,7 +394,7 @@ export function renderAppShell(container) {
           <div class="panel" id="panel-executivo" data-panel="executivo" hidden>
             <div class="panel-header">
               <button type="button" class="back-btn" data-back-to="home">← Início</button>
-              <div class="panel-title"><span>Dashboard Executivo</span></div>
+              <div class="panel-title"><span>Visão da Operação</span></div>
             </div>
             <div class="panel-body" id="executivoContainer"></div>
           </div>
@@ -360,7 +402,7 @@ export function renderAppShell(container) {
           <div class="panel" id="panel-lider" data-panel="lider" hidden>
             <div class="panel-header">
               <button type="button" class="back-btn" data-back-to="home">← Início</button>
-              <div class="panel-title"><span>Painel do Líder</span></div>
+              <div class="panel-title"><span>Desempenho da Equipe</span></div>
             </div>
             <div class="panel-body" id="liderContainer"></div>
           </div>
@@ -368,7 +410,7 @@ export function renderAppShell(container) {
           <div class="panel" id="panel-relatorios" data-panel="relatorios" hidden>
             <div class="panel-header">
               <button type="button" class="back-btn" data-back-to="home">← Início</button>
-              <div class="panel-title"><span>Relatório de Gaps da Equipe</span></div>
+              <div class="panel-title"><span>Gaps da Equipe</span></div>
             </div>
             <div class="panel-body" id="relatoriosContainer"></div>
           </div>
@@ -376,7 +418,7 @@ export function renderAppShell(container) {
           <div class="panel" id="panel-admin" data-panel="admin" hidden>
             <div class="panel-header">
               <button type="button" class="back-btn" data-back-to="home">← Início</button>
-              <div class="panel-title"><span>Painel Admin</span></div>
+              <div class="panel-title"><span>Usuários e Cadastros</span></div>
             </div>
             <div class="panel-body" id="adminContainer"></div>
           </div>
@@ -384,7 +426,7 @@ export function renderAppShell(container) {
           <div class="panel" id="panel-gestora" data-panel="gestora" hidden>
             <div class="panel-header">
               <button type="button" class="back-btn" data-back-to="home">← Início</button>
-              <div class="panel-title"><span>Painel da Gestora</span></div>
+              <div class="panel-title"><span>Conteúdo e Publicação</span></div>
             </div>
             <div class="panel-body" id="gestoraContainer"></div>
           </div>
@@ -583,6 +625,23 @@ function revealRoleScopedNav(profile) {
       link.hidden = !(role && item.rolesAllowed.includes(role));
     });
   });
+
+  syncAvatarGroupLabels();
+}
+
+/**
+ * Um rótulo de grupo do menu do avatar só aparece se sobrou algum item
+ * visível nele. Sem isso, um líder veria o título "Administração" sozinho,
+ * sem nenhum link embaixo, já que aqueles itens são só de admin.
+ */
+function syncAvatarGroupLabels() {
+  document.querySelectorAll('.avatar-dropdown-group-label').forEach((label) => {
+    const grupo = label.dataset.group;
+    const temItemVisivel = Array.from(
+      document.querySelectorAll(`.avatar-dropdown-link[data-group="${grupo}"]`)
+    ).some((link) => !link.hidden);
+    label.hidden = !temItemVisivel;
+  });
 }
 
 function formatScore(score) {
@@ -675,19 +734,12 @@ function setupSidebarCollapse() {
 }
 
 /**
- * Atalhos fixos da sidebar — "Favoritos" (citado como exemplo pelo usuário)
- * foi substituído por "Novidades" porque não existe sistema de favoritos no
- * schema; os 3 atalhos aqui apontam pra funcionalidade real já existente.
+ * Atalho fixo da sidebar. Sobrou só o FAQ: ele abre a Biblioteca já filtrada
+ * nessa categoria, coisa que nenhum item do menu faz. Os outros dois atalhos
+ * que existiam aqui foram removidos por repetirem destino de itens do menu
+ * (ver o comentário no HTML da sb-quick-access).
  */
 function setupQuickAccess() {
-  document.getElementById('qaUltimaAtividade')?.addEventListener('click', () => {
-    navigateToPanel('trilha');
-  });
-
-  document.getElementById('qaNovidades')?.addEventListener('click', () => {
-    navigateToPanel('blog');
-  });
-
   document.getElementById('qaFaq')?.addEventListener('click', () => {
     window.selectedLibraryCategory = 'faq';
     navigateToPanel('biblioteca');

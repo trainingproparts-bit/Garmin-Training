@@ -262,6 +262,34 @@
   display: none;
 }
 
+/* Rótulo de grupo da navegação (2026-09-16) — mesmo tratamento do rótulo do
+ * Acesso Rápido, pra sidebar ter um único jeito de separar seção. O primeiro
+ * não leva margem superior, senão abre um vão solto no topo do menu. */
+.sb-nav-group-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--text3);
+  padding: 3px 12px 4px;
+  margin-top: 14px;
+}
+
+.sb-nav-group-label:first-child {
+  margin-top: 0;
+}
+
+/* Colapsada só restam ícones: o rótulo vira um traço fino, que mantém a
+ * separação dos grupos sem texto cortado. */
+.app-sidebar.collapsed .sb-nav-group-label {
+  padding: 0;
+  margin: 10px 12px;
+  height: 1px;
+  overflow: hidden;
+  text-indent: -999px;
+  background: var(--border);
+}
+
 /* ── Acesso Rápido ── */
 .sb-quick-access {
   margin-top: 10px;
@@ -589,18 +617,24 @@
   position: relative;
 }
 
+/* Fundo preto (2026-09-16, pedido do usuário): era um degradê radial
+ * vermelho, que competia com o vermelho de ação (CTA, item ativo da
+ * sidebar). O avatar é identidade, não ação. */
 .app-topbar-avatar {
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, var(--g), #7a0c14);
+  /* O par fundo/texto usa tokens opostos pra inverter junto: no claro fica
+   * quase preto com letra branca; no escuro, quase branco com letra escura.
+   * Um `#fff` fixo aqui sumiria contra o fundo claro do modo escuro. */
+  background: var(--text);
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 12.5px;
-  color: #fff;
+  color: var(--card-bg);
   border: none;
   padding: 0;
   cursor: pointer;
@@ -608,7 +642,7 @@
 }
 
 .app-topbar-avatar:hover {
-  box-shadow: 0 0 0 3px var(--g4);
+  box-shadow: 0 0 0 3px var(--off);
 }
 
 /* Foto de avatar (profiles.avatar_url) — cada colaborador já pode definir a
@@ -670,6 +704,23 @@
 .avatar-dropdown-link.sb-link.active {
   background: var(--g3);
   color: var(--badge-danger-text);
+}
+
+/* Rótulo de grupo do menu do avatar (2026-09-16) — mesmo tratamento dos
+ * rótulos da sidebar, pra separar Gestão (líder e admin) de Administração
+ * (só admin). Fica oculto quando nenhum item do grupo aparece pro papel da
+ * pessoa, ver syncAvatarGroupLabels. */
+.avatar-dropdown-group-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--text3);
+  padding: 8px 12px 4px;
+}
+
+.avatar-dropdown-group-label:first-child {
+  padding-top: 2px;
 }
 
 .avatar-dropdown-divider {
