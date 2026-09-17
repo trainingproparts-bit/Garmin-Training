@@ -91,7 +91,6 @@ function renderHub(categories) {
   return `
     <div class="academia-hub">
       <header class="academia-hub-header">
-        <h1 class="academia-hub-title">Portfólio Garmin</h1>
         <p class="academia-hub-subtitle">Conheça as principais linhas e entenda onde cada produto se encaixa.</p>
       </header>
 

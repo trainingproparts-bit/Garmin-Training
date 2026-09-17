@@ -37,8 +37,11 @@ html.js-motion .home-portal [data-reveal] {
   margin: 0 0 8px;
 }
 
+/* Nome da pessoa em preto (2026-09-16, pedido do usuário): estava no
+ * vermelho da marca, que aqui disputava atenção com o CTA dos cards. O
+ * destaque fica só no peso da fonte. */
 .home-welcome h2 span {
-  color: var(--g);
+  color: var(--text);
   font-weight: 600;
 }
 

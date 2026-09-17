@@ -15,16 +15,10 @@
  * (preto/cinza + bordas finas); vermelho de marca fica de fora daqui de
  * propósito, reservado pro estado ativo de navegação em outras telas — aqui
  * cor nenhuma deveria "competir" por atenção com o próprio portfólio. */
+/* O h1 "Portfólio Garmin" foi removido (2026-09-16, pedido do usuário): o
+ * cabeçalho do painel já diz "Academia de Produtos" logo acima, eram dois
+ * títulos para a mesma tela. Sobra a linha de introdução. */
 .academia-hub-header { margin-bottom: 22px; }
-
-.academia-hub-title {
-  margin: 0 0 6px;
-  font-family: var(--font-display);
-  font-size: 26px;
-  font-weight: 800;
-  letter-spacing: 0.2px;
-  color: var(--text);
-}
 
 .academia-hub-subtitle { margin: 0; font-size: 14px; color: var(--text2); }
 
@@ -243,7 +237,6 @@
   .academia-hub-grid { grid-template-columns: 1fr; }
   .academia-hub-toolbar { flex-direction: column; align-items: stretch; }
   .academia-hub-search { max-width: none; }
-  .academia-hub-title { font-size: 22px; }
 }
 
 /* ── Página de produto: breadcrumb + header ──────────────────────────────
