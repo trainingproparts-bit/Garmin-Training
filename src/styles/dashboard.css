@@ -184,12 +184,28 @@
  * um pill "SUA TRILHA ATUAL" sem contexto de zona; texto simples pra bater
  * com o arquivo anexado, cor vermelho-claro pra dar destaque sutil sobre o
  * fundo escuro do Hero sem competir com o CTA). */
+/* Eyebrow do Hero (2026-09-16): era tudo num rosa claro (#f3a9b0) que não
+ * existe na paleta e dava um ar leitoso ao topo do card. Agora o rótulo fica
+ * em branco translúcido e só o nome da zona carrega o vermelho, separado por
+ * uma barra — o destaque vai pra informação que muda, não pra linha inteira. */
 .dash-hero-eyebrow {
-  font-size: 12px;
-  letter-spacing: 0.5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11.5px;
+  letter-spacing: 1.2px;
   text-transform: uppercase;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.dash-hero-eyebrow-sep {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.dash-hero-eyebrow-zone {
+  color: var(--g);
   font-weight: 700;
-  color: #f3a9b0;
 }
 
 /* Peso 600 e corpo um pouco menor (2026-09-16, pedido do usuário): em 800/26px
@@ -571,6 +587,23 @@
   border-bottom: none;
 }
 
+/* Posição ainda não conquistada: contorno tracejado no lugar do avatar
+ * colorido, e sem selo à direita. Fica claro que a linha é uma vaga, não
+ * alguém sem foto. */
+.destaque-preview-row.is-empty .destaque-preview-avatar {
+  background: none;
+  border: 1px dashed var(--border2);
+}
+
+.destaque-preview-row.is-empty .destaque-preview-name {
+  color: var(--text3);
+  font-weight: 500;
+}
+
+.destaque-preview-row.is-empty .destaque-preview-badge {
+  display: none;
+}
+
 .destaque-preview-pos {
   flex-shrink: 0;
   width: 16px;
@@ -675,19 +708,37 @@
  * vez dos cards tingidos com ícone em caixa de antes. A cor do ponto ainda
  * distingue o tipo de atividade (meta/badge/conquista), só que sem o
  * fundo/borda tingidos nem o ícone dentro de uma caixa. */
+/* Vira uma linha do tempo (2026-09-16): no lugar do divisor horizontal
+ * separando linhas soltas, um fio vertical liga os pontos, que é o que a
+ * lista realmente é — uma sequência no tempo. Também ganhou respiro: o
+ * espaçamento saiu de 9px pra 18px entre eventos. */
 .activity-feed-item {
+  position: relative;
   display: flex;
-  gap: 10px;
+  gap: 12px;
   align-items: flex-start;
-  padding: 9px 0;
-  border-bottom: 1px solid var(--border);
+  padding: 0 0 18px;
   transition: opacity var(--dur-slow) var(--ease), transform var(--dur-slow) var(--ease), max-height var(--dur-slow) var(--ease);
   opacity: 1;
   transform: translateY(0);
 }
 
+/* Fio começa logo abaixo do ponto (6px de margem + 7px de altura) e desce até
+ * o próximo. O último evento não puxa linha, senão sobraria um fio solto.
+ * O `left` acompanha o centro do ponto: recuo lateral do hover (definido em
+ * motion.css como --row-hover-inset) + metade dos 7px do ponto. */
+.activity-feed-item:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: calc(var(--row-hover-inset, 8px) + 3px);
+  top: 17px;
+  bottom: 0;
+  width: 1px;
+  background: var(--border);
+}
+
 .activity-feed-item:last-child {
-  border-bottom: none;
+  padding-bottom: 0;
 }
 
 .activity-feed-item-dot {

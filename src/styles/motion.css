@@ -85,14 +85,29 @@ html.js-motion [data-reveal].is-revealed.reveal-done {
 }
 
 /* ── 4. Microinterações: linhas de lista (Destaques e Atividades) ── */
+/* O recuo lateral é o mesmo valor usado pra posicionar o fio da linha do
+ * tempo do Mural (ver .activity-feed-item::before em dashboard.css): mexer
+ * aqui exige mexer lá. */
 .destaque-preview-row,
 .activity-feed-item {
   border-radius: var(--r2);
-  padding-left: 8px;
-  padding-right: 8px;
-  margin-left: -8px;
-  margin-right: -8px;
+  padding-left: var(--row-hover-inset, 8px);
+  padding-right: var(--row-hover-inset, 8px);
+  margin-left: calc(var(--row-hover-inset, 8px) * -1);
+  margin-right: calc(var(--row-hover-inset, 8px) * -1);
+}
+
+/* `transition` como longhand, não shorthand: como motion.css é o último
+ * import, um shorthand aqui apagaria a transição de opacity/transform que o
+ * Mural usa na animação de entrada de item novo (activity-feed-item-enter). */
+.destaque-preview-row {
   transition: background var(--dur-fast) var(--ease);
+}
+
+.activity-feed-item {
+  transition-property: opacity, transform, max-height, background;
+  transition-duration: var(--dur-slow), var(--dur-slow), var(--dur-slow), var(--dur-fast);
+  transition-timing-function: var(--ease);
 }
 
 .destaque-preview-row:hover,

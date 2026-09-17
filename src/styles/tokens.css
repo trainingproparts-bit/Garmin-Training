@@ -39,7 +39,7 @@
   --off: #eeeeee;
   --border: #dcdcdc;
   --border2: #c4c4c4;
-  --bg-page: #f5f5f5;
+  --bg-page: #fafafa; /* 2026-09-16: era #f5f5f5; um tom acima separa melhor o card branco do fundo sem endurecer a borda */
   --sidebar-bg: #ffffff; /* Sidebar branca (pedido do usuário, 2026-07-17) — era #1a1817 (escuro) */
   --sidebar-w: 250px;
   --sidebar-w-collapsed: 72px;

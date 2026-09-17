@@ -122,7 +122,7 @@ export async function renderDashboardHome(container, data, onCheckpointClick) {
     <div class="dash-main-grid">
       <div class="dash-trail-card ${coverUrl ? 'has-cover' : ''}" data-reveal ${coverUrl ? `style="background-image:url('${coverUrl}')"` : ''}>
         <div class="dash-trail-top">
-          <span class="dash-hero-eyebrow">Trilha atual${zonaAtualLabel ? ` · Zona ${zonaAtualLabel}` : ''}</span>
+          <span class="dash-hero-eyebrow">Trilha atual${zonaAtualLabel ? `<span class="dash-hero-eyebrow-sep">/</span><span class="dash-hero-eyebrow-zone">Zona ${zonaAtualLabel}</span>` : ''}</span>
           ${isAdmin ? '<button type="button" class="dash-trail-edit-cover-btn" data-edit-trail-cover>Editar capa</button>' : ''}
         </div>
 
@@ -299,7 +299,9 @@ async function renderStreakPill(container, userId) {
  * admin) — mesmo critério de recorte mensal já usado em "Ponta do Mês".
  */
 const DESTAQUE_STORES = ['Moema', 'Morumbi'];
-const SEM_DESTAQUE_MES = 'Ainda sem destaque este mês';
+// "Vaga em aberto" em vez de "Ainda sem destaque este mês" (2026-09-16): a
+// mesma informação lida como algo a conquistar, não como ausência de dado.
+const SEM_DESTAQUE_MES = 'Vaga em aberto';
 
 // Ícones outline (mesmo padrão do resto do hub — traço simples, sem
 // preenchimento sólido): troféu pro critério "Ponta do Mês", estrela pro
@@ -332,11 +334,14 @@ function destaqueRowHtml({ pos, hasData, avatarUrl, avatarClass, iconSvg, iconCl
   // DOM via data-avatar-pos, ver wireDestaqueAvatarFallbacks.
   const avatarInner = avatarUrl
     ? `<img src="${avatarUrl}" alt="" class="destaque-preview-avatar-img" data-avatar-pos="${pos}">`
-    : (hasData ? initialsFor(name) : '–');
+    : (hasData ? initialsFor(name) : '');
+  // Vaga ainda não preenchida ganha tratamento próprio (tracejado, sem cor de
+  // loja): antes era idêntica às linhas com dado, só com um traço no avatar,
+  // e lia como "pessoa sem foto" em vez de "posição em aberto".
   return `
-    <div class="destaque-preview-row">
+    <div class="destaque-preview-row${hasData ? '' : ' is-empty'}">
       <span class="destaque-preview-pos">${String(pos).padStart(2, '0')}</span>
-      <div class="destaque-preview-avatar ${avatarClass}">${avatarInner}</div>
+      <div class="destaque-preview-avatar ${hasData ? avatarClass : ''}">${avatarInner}</div>
       <div class="destaque-preview-text">
         <span class="destaque-preview-name">${name}</span>
         <span class="destaque-preview-sub">${subtitle}</span>
