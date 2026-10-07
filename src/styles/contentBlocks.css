@@ -765,6 +765,8 @@
 /* ── Card giratório (flip) — clique para virar e ver o verso ── */
 .cb-flip-grid { display: grid; gap: 12px; }
 
+.cb-flip-grid.cols-1 { grid-template-columns: minmax(0, 560px); }
+
 .cb-flip-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
 
 .cb-flip-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
@@ -889,6 +891,71 @@
 .cb-flip-face.has-cover .cb-flip-subtitle,
 .cb-flip-face.has-cover .cb-flip-hint { color: rgba(255, 255, 255, 0.75); }
 
+/* Imagem ilustrativa opcional (campo `image`, 2026-10-07) — screenshot
+ * inteiro, sem corte nem distorção (contain), numa faixa de altura fixa pra
+ * todos os cards do bloco ficarem alinhados. As faces são `absolute`, então
+ * a altura do card não cresce sozinha com o conteúdo: o bloco com imagem
+ * ganha um min-height maior, e só ele (blocos sem imagem não mudam). */
+.cb-flip-grid.cb-flip-has-image .cb-flip-card,
+.cb-flip-grid.cb-flip-has-image .cb-flip-card-inner {
+  min-height: 420px;
+}
+
+.cb-flip-image {
+  flex: 0 0 auto;
+  height: 220px;
+  margin: -2px -2px 10px;
+  border-radius: var(--r2);
+  background: var(--off);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.cb-flip-image img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* Dica prática opcional no verso (campo `practicalTip`). */
+.cb-flip-tip {
+  margin-top: 10px;
+  padding: 8px 10px;
+  border-radius: var(--r2);
+  background: var(--card-bg);
+  border-left: 3px solid var(--acc);
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--text2);
+}
+
+.cb-flip-tip-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text);
+  margin-bottom: 3px;
+}
+
+/* Com dica, o texto do verso para de esticar (flex: 1) pra dica ficar
+ * logo abaixo dele; o "toque para voltar" continua no rodapé (margin-top: auto). */
+.cb-flip-text:has(+ .cb-flip-tip) { flex: 0 0 auto; }
+
+.cb-flip-tip + .cb-flip-tip { margin-top: 8px; }
+
+.cb-flip-tip-sales { border-left-color: var(--g); }
+
+.cb-flip-tip p { margin: 0 0 4px; }
+
+.cb-flip-tip p:last-child { margin-bottom: 0; }
+
 .cb-flip-emoji { font-size: 26px; margin-bottom: 6px; }
 
 .cb-flip-title {
@@ -923,6 +990,14 @@
 }
 
 @media (max-width: 700px) {
+  .cb-flip-grid.cb-flip-has-image .cb-flip-card,
+  .cb-flip-grid.cb-flip-has-image .cb-flip-card-inner {
+    min-height: 460px;
+  }
+
+  .cb-flip-image { height: 180px; }
+
+  .cb-flip-grid.cols-1,
   .cb-flip-grid.cols-2,
   .cb-flip-grid.cols-3,
   .cb-flip-grid.cols-4 {

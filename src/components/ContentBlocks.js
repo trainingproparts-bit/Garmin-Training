@@ -355,15 +355,22 @@ function renderCardGridBlock(b) {
  */
 function renderFlipCardBlock(b) {
   const cards = Array.isArray(b.cards) ? b.cards : [];
-  const cols = [3, 4].includes(b.columns) ? b.columns : 2;
+  const cols = [1, 3, 4].includes(b.columns) ? b.columns : 2;
   const sizeClass = b.square ? 'cb-flip-square' : b.tall ? 'cb-flip-tall' : b.compact ? 'cb-flip-compact' : '';
+  // Imagem ilustrativa opcional (2026-10-07, módulo Prontidão de Treino) —
+  // diferente do coverUrl (foto de fundo com texto por cima), aqui a imagem
+  // aparece inteira acima do título, sem corte (object-fit: contain), pra
+  // caber screenshot do Garmin Connect. A classe extra só entra quando algum
+  // card do bloco tem imagem: sem imagem, o card continua do tamanho de antes.
+  const hasImage = cards.some((c) => c.image);
   return `
-    <div class="cb-flip-grid cols-${cols} ${sizeClass}">
+    <div class="cb-flip-grid cols-${cols} ${sizeClass} ${hasImage ? 'cb-flip-has-image' : ''}">
       ${cards.map((c) => `
         <div class="cb-flip-card" data-flip-card>
           <div class="cb-flip-card-inner">
             <div class="cb-flip-face ${c.coverUrl ? 'has-cover' : ''}" ${c.coverUrl ? `style="background-image:url('${c.coverUrl}')"` : ''}>
-              ${!c.coverUrl && c.emoji ? `<div class="cb-flip-emoji">${c.emoji}</div>` : ''}
+              ${c.image ? `<div class="cb-flip-image"><img src="${c.image}" alt="${(c.title || '').replace(/"/g, '&quot;')}" loading="lazy"></div>` : ''}
+              ${!c.coverUrl && !c.image && c.emoji ? `<div class="cb-flip-emoji">${c.emoji}</div>` : ''}
               ${c.title ? `<div class="cb-flip-title">${c.title}</div>` : ''}
               ${c.subtitle ? `<div class="cb-flip-subtitle">${c.subtitle}</div>` : ''}
               <div class="cb-flip-text">${c.frontText || ''}</div>
@@ -372,6 +379,8 @@ function renderFlipCardBlock(b) {
             <div class="cb-flip-face cb-flip-face-back">
               ${c.backLabel ? `<div class="cb-flip-back-title">${c.backLabel}</div>` : ''}
               <div class="cb-flip-text">${c.backText || ''}</div>
+              ${c.practicalTip ? `<div class="cb-flip-tip"><span class="cb-flip-tip-label">Na prática</span>${c.practicalTip}</div>` : ''}
+              ${c.salesTip ? `<div class="cb-flip-tip cb-flip-tip-sales"><span class="cb-flip-tip-label">Na venda</span>${c.salesTip}</div>` : ''}
               <div class="cb-flip-hint">toque para voltar</div>
             </div>
           </div>
@@ -555,8 +564,11 @@ export function wireBlockInteractions(container, { returnPanel } = {}) {
 
   container.querySelectorAll('[data-cb-timeline-reveal]').forEach((btn) => {
     btn.addEventListener('click', () => {
-      const key = btn.dataset.cbTimelineReveal;
-      const text = container.querySelector(`[data-cb-timeline-text="${key}"]`);
+      // Busca dentro do próprio item, não pela página toda: moduloConteudo.js
+      // renderiza todas as lições juntas e o índice do bloco reinicia em cada
+      // lição (mesmo problema já resolvido no accordion acima), então a chave
+      // "bloco-item" se repete entre lições.
+      const text = btn.closest('.cb-timeline-item')?.querySelector('[data-cb-timeline-text]');
       if (!text) return;
       text.hidden = !text.hidden;
       btn.textContent = text.hidden ? 'ver' : 'ocultar';
@@ -566,12 +578,16 @@ export function wireBlockInteractions(container, { returnPanel } = {}) {
   container.querySelectorAll('[data-cb-match]').forEach(wireMatchQuiz);
 
   container.querySelectorAll('[data-cb-tabs]').forEach((tabsEl) => {
-    const blockIndex = tabsEl.dataset.cbTabs;
+    // Painéis são os irmãos logo depois da barra de abas (ver renderTabsBlock);
+    // pegar pela página toda misturava abas de lições diferentes com o mesmo
+    // índice de bloco.
+    const panels = [];
+    for (let el = tabsEl.nextElementSibling; el && el.hasAttribute('data-cb-tabs-panel'); el = el.nextElementSibling) panels.push(el);
     tabsEl.querySelectorAll('[data-tab-index]').forEach((btn) => {
       btn.addEventListener('click', () => {
         const tabIndex = btn.dataset.tabIndex;
         tabsEl.querySelectorAll('[data-tab-index]').forEach((b) => b.classList.toggle('active', b === btn));
-        container.querySelectorAll(`[data-cb-tabs-panel="${blockIndex}"]`).forEach((panel) => {
+        panels.forEach((panel) => {
           panel.hidden = panel.dataset.tabPanel !== tabIndex;
         });
       });
@@ -579,8 +595,8 @@ export function wireBlockInteractions(container, { returnPanel } = {}) {
   });
 
   container.querySelectorAll('[data-cb-checklist]').forEach((root) => {
-    const blockIndex = root.dataset.cbChecklist;
-    const reflection = container.querySelector(`[data-cb-checklist-reflection="${blockIndex}"]`);
+    const next = root.nextElementSibling;
+    const reflection = next?.hasAttribute('data-cb-checklist-reflection') ? next : null;
     const items = root.querySelectorAll('[data-checklist-item]');
     root.querySelectorAll('[data-checklist-item]').forEach((btn) => {
       btn.addEventListener('click', () => {
@@ -594,7 +610,6 @@ export function wireBlockInteractions(container, { returnPanel } = {}) {
   });
 
   container.querySelectorAll('[data-cb-cenario]').forEach((root) => {
-    const blockIndex = root.dataset.cbCenario;
     root.querySelectorAll('[data-cenario-option]').forEach((btn) => {
       btn.addEventListener('click', () => {
         const optIndex = btn.dataset.cenarioOption;
@@ -602,7 +617,7 @@ export function wireBlockInteractions(container, { returnPanel } = {}) {
         btn.classList.add('is-selected', 'is-answered');
         btn.classList.toggle('is-correct', btn.dataset.cenarioCorrect === 'true');
         btn.classList.toggle('is-wrong', btn.dataset.cenarioCorrect !== 'true');
-        container.querySelectorAll(`[data-cb-cenario="${blockIndex}"] [data-cenario-feedback]`).forEach((f) => {
+        root.querySelectorAll('[data-cenario-feedback]').forEach((f) => {
           f.hidden = f.dataset.cenarioFeedback !== optIndex;
         });
       });
@@ -696,6 +711,9 @@ function decodeCenarioOptions(raw) {
       return { text, correct: (correctRaw || '').toLowerCase().startsWith('cert'), feedback };
     });
 }
+
+/** Colunas do textarea do flip_card; as novas entram sempre no fim, pra linhas antigas continuarem lendo igual. */
+const FLIP_CARD_FIELDS = ['emoji', 'title', 'subtitle', 'frontText', 'backLabel', 'backText', 'coverUrl', 'image', 'practicalTip', 'salesTip'];
 
 /** Uma linha "campo | campo" por item de lista (accordion/timeline/galeria). */
 function encodeItems(items, fields) {
@@ -845,21 +863,29 @@ function renderBlockFields(block) {
     case 'flip_card':
       return `
         <select data-field="columns">
-          <option value="2" ${![3, 4].includes(block.columns) ? 'selected' : ''}>2 colunas</option>
+          <option value="1" ${block.columns === 1 ? 'selected' : ''}>1 coluna (card único, largura limitada)</option>
+          <option value="2" ${![1, 3, 4].includes(block.columns) ? 'selected' : ''}>2 colunas</option>
           <option value="3" ${block.columns === 3 ? 'selected' : ''}>3 colunas</option>
           <option value="4" ${block.columns === 4 ? 'selected' : ''}>4 colunas</option>
         </select>
         <label class="cb-editor-checkbox"><input type="checkbox" data-field="tall" ${block.tall ? 'checked' : ''}> Verso alto (para textos longos, evita rolagem dentro do card)</label>
         <label class="cb-editor-checkbox"><input type="checkbox" data-field="compact" ${block.compact ? 'checked' : ''}> Card compacto (para frente/verso com 1 frase curta, evita espaço vazio)</label>
         <label class="cb-editor-checkbox"><input type="checkbox" data-field="square" ${block.square ? 'checked' : ''}> Card quadrado (recomendado quando a frente tem foto de capa)</label>
-        <textarea data-field="cards_raw" rows="6" placeholder="Um card por linha: Emoji | Título | Subtítulo | Texto da frente | Rótulo do verso | Texto do verso | URL da imagem de fundo (opcional, substitui o emoji)">${encodeItems(block.cards, ['emoji', 'title', 'subtitle', 'frontText', 'backLabel', 'backText', 'coverUrl'])}</textarea>
-        <p class="cb-editor-hint">Formato: Emoji | Título | Subtítulo | Texto da frente | Rótulo do verso | Texto do verso | URL da imagem (um card por linha, clique para virar). Os dois últimos campos são opcionais. A URL da imagem substitui o emoji na frente do card.</p>
+        <textarea data-field="cards_raw" rows="6" placeholder="Um card por linha: Emoji | Título | Subtítulo | Texto da frente | Rótulo do verso | Texto do verso | URL da imagem de fundo | URL da imagem ilustrativa | Na prática | Na venda (os quatro últimos são opcionais)">${encodeItems(block.cards, FLIP_CARD_FIELDS)}</textarea>
+        <p class="cb-editor-hint">Formato: Emoji | Título | Subtítulo | Texto da frente | Rótulo do verso | Texto do verso | URL da imagem de fundo | URL da imagem ilustrativa | Na prática | Na venda (um card por linha, clique para virar). Os quatro últimos campos são opcionais. A imagem de fundo fica atrás do texto da frente; a imagem ilustrativa aparece inteira acima do título, sem corte (ideal para screenshots). "Na prática" e "Na venda" aparecem em destaque no verso.</p>
         ${(block.cards || []).length ? `
           <p class="cb-editor-hint">Ou envie a imagem de capa de cada card direto do computador (substitui a URL da coluna acima ao salvar):</p>
           <div class="cb-flip-cover-uploads">
             ${(block.cards || []).map((c, i) => `
               <div class="cb-flip-cover-upload-row" data-flip-cover-index="${i}">
                 ${imageUploadFieldHtml({ fieldName: `flip_cover_${i}`, currentUrl: c.coverUrl || '', folder: 'blocks/licoes', label: c.title || `Card ${i + 1}` })}
+              </div>`).join('')}
+          </div>
+          <p class="cb-editor-hint">Imagem ilustrativa de cada card (opcional, ex.: screenshot do Garmin Connect):</p>
+          <div class="cb-flip-cover-uploads">
+            ${(block.cards || []).map((c, i) => `
+              <div class="cb-flip-cover-upload-row" data-flip-image-index="${i}">
+                ${imageUploadFieldHtml({ fieldName: `flip_image_${i}`, currentUrl: c.image || '', folder: 'blocks/licoes', label: c.title || `Card ${i + 1}` })}
               </div>`).join('')}
           </div>` : ''}`;
     case 'metric_card_grid':
@@ -937,7 +963,7 @@ function readBlockFromRow(row, type) {
     };
     case 'card_grid': return { type, columns: Number(get('columns')) === 3 ? 3 : 2, items: decodeCardGridItems(get('items_raw')) };
     case 'flip_card': {
-      const cards = decodeItems(get('cards_raw'), ['emoji', 'title', 'subtitle', 'frontText', 'backLabel', 'backText', 'coverUrl']);
+      const cards = decodeItems(get('cards_raw'), FLIP_CARD_FIELDS);
       // Upload direto de capa (por card, ver renderBlockFields) tem prioridade
       // sobre o que estiver na coluna coverUrl do textarea, pra não perder o
       // upload se a pessoa não copiar a URL de volta manualmente.
@@ -946,9 +972,17 @@ function readBlockFromRow(row, type) {
         const url = wrap.querySelector('[data-role="iuf-hidden-value"]')?.value;
         if (cards[cardIndex] && url) cards[cardIndex].coverUrl = url;
       });
+      row.querySelectorAll('[data-flip-image-index]').forEach((wrap) => {
+        const cardIndex = Number(wrap.dataset.flipImageIndex);
+        const url = wrap.querySelector('[data-role="iuf-hidden-value"]')?.value;
+        if (cards[cardIndex] && url) cards[cardIndex].image = url;
+      });
+      // Campos opcionais vazios saem do JSON, pra não gravar image: '' em
+      // todo card salvo pelo editor.
+      cards.forEach((c) => { ['coverUrl', 'image', 'practicalTip', 'salesTip'].forEach((f) => { if (!c[f]) delete c[f]; }); });
       return {
         type,
-        columns: [3, 4].includes(Number(get('columns'))) ? Number(get('columns')) : 2,
+        columns: [1, 3, 4].includes(Number(get('columns'))) ? Number(get('columns')) : 2,
         tall: !!row.querySelector('[data-field="tall"]')?.checked,
         compact: !!row.querySelector('[data-field="compact"]')?.checked,
         square: !!row.querySelector('[data-field="square"]')?.checked,
