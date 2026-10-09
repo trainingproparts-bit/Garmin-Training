@@ -131,6 +131,15 @@
 
 .mdrawer-gap-question { display: block; font-size: 13px; color: var(--text); font-weight: 600; line-height: 1.4; }
 
+/* Resposta marcada x resposta correta em cada gap (2026-10-09). */
+.mdrawer-gap-answer { display: block; margin-top: 4px; font-size: 12px; line-height: 1.4; }
+
+.mdrawer-gap-answer strong { font-weight: 700; }
+
+.mdrawer-gap-answer-wrong { color: var(--warn); }
+
+.mdrawer-gap-answer-right { color: var(--ok); }
+
 .mdrawer-gap-meta { display: block; margin-top: 3px; font-size: 11px; color: var(--text3); }
 
 .mdrawer-history-item {

@@ -686,6 +686,75 @@
   color: var(--text3);
 }
 
+/* Revisão dos erros no fim do quiz (2026-10-09, sql/177). Alinhada à
+ * esquerda, mesmo com o resultado centralizado, porque são frases longas. */
+.quiz-review { text-align: left; margin: 0 0 20px; }
+
+.quiz-review:empty { display: none; }
+
+.quiz-review-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 10px;
+}
+
+.quiz-review-perfect {
+  text-align: center;
+  font-size: 13px;
+  color: var(--ok);
+  font-weight: 600;
+  margin: 0;
+}
+
+.quiz-review-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.quiz-review-item {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  padding: 12px 14px;
+}
+
+.quiz-review-question {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.45;
+  margin: 0 0 8px;
+}
+
+.quiz-review-answer {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  font-size: 12.5px;
+  line-height: 1.45;
+  margin: 4px 0 0;
+}
+
+.quiz-review-answer-icon { flex: 0 0 auto; width: 16px; height: 16px; margin-top: 1px; }
+
+.quiz-review-answer-icon svg { width: 16px; height: 16px; display: block; }
+
+.quiz-review-answer-wrong { color: var(--warn); }
+
+.quiz-review-answer-right { color: var(--ok); }
+
+.quiz-review-explanation {
+  font-size: 12px;
+  color: var(--text3);
+  line-height: 1.45;
+  margin: 8px 0 0;
+}
+
 .quiz-result-back {
   background: var(--text);
   color: #fff;

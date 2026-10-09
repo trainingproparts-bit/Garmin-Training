@@ -211,11 +211,17 @@ function renderGapsSection(recentAnswers, recentMisses) {
 
   return `
     <ul class="mdrawer-gap-list">
-      ${recentMisses.map((a) => `
+      ${recentMisses.map((a) => {
+        const chosen = a?.alternatives?.body;
+        const correct = (a?.questions?.alternatives || []).find((alt) => alt?.is_correct)?.body;
+        return `
         <li class="mdrawer-gap-item">
           <span class="mdrawer-gap-question">${a?.questions?.body || 'Pergunta'}</span>
+          ${chosen ? `<span class="mdrawer-gap-answer mdrawer-gap-answer-wrong"><strong>Respondeu:</strong> ${chosen}</span>` : ''}
+          ${correct ? `<span class="mdrawer-gap-answer mdrawer-gap-answer-right"><strong>Correta:</strong> ${correct}</span>` : ''}
           <span class="mdrawer-gap-meta">${a?.questions?.quizzes?.title || 'Quiz'} · ${formatDate(a?.answered_at)}</span>
-        </li>`).join('')}
+        </li>`;
+      }).join('')}
     </ul>`;
 }
 

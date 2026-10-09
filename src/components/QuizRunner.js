@@ -10,6 +10,7 @@ import {
   startQuizAttempt,
   submitAnswer,
   finalizeQuizAttempt,
+  fetchAttemptReview,
 } from '../services/quizService.js';
 import { wireTermTips } from './ContentBlocks.js';
 
@@ -177,11 +178,50 @@ function runQuiz(container, quiz, questions, attemptId, opts) {
       <div class="quiz-result ${attempt.passed ? 'passed' : 'failed'}">
         <h3>${attempt.passed ? '✓ Aprovado!' : '✗ Não foi desta vez'}</h3>
         <p class="quiz-result-score">${attempt.score_pct}% <span>· corte mínimo ${quiz.passing_score_pct}%</span></p>
+        <div class="quiz-review" data-role="review"></div>
         <button type="button" class="quiz-result-back" data-role="back">Voltar</button>
       </div>
     `;
     container.querySelector('[data-role="back"]').addEventListener('click', () => {
       opts.onFinished?.(attempt);
     });
+    renderReview(container.querySelector('[data-role="review"]'));
+  }
+
+  // Revisão dos erros (2026-10-09): o gabarito vem do servidor só depois da
+  // tentativa finalizada (fn_quiz_attempt_review, sql/177). Se a busca
+  // falhar, a tela de resultado continua funcionando, só sem a revisão.
+  async function renderReview(reviewEl) {
+    if (!reviewEl) return;
+    try {
+      const items = await fetchAttemptReview(attemptId);
+      const misses = items.filter((it) => !it.is_correct);
+      if (!items.length) return;
+      if (!misses.length) {
+        reviewEl.innerHTML = '<p class="quiz-review-perfect">Você acertou todas as perguntas.</p>';
+        return;
+      }
+      reviewEl.innerHTML = `
+        <h4 class="quiz-review-title">Revise o que você errou (${misses.length} de ${items.length})</h4>
+        <ol class="quiz-review-list">
+          ${misses.map((it) => `
+            <li class="quiz-review-item">
+              <p class="quiz-review-question">${it.question_body}</p>
+              <p class="quiz-review-answer quiz-review-answer-wrong">
+                <span class="quiz-review-answer-icon">${RESULT_ICON.incorrect}</span>
+                <span><strong>Sua resposta:</strong> ${it.chosen_body}</span>
+              </p>
+              ${it.correct_body ? `
+              <p class="quiz-review-answer quiz-review-answer-right">
+                <span class="quiz-review-answer-icon">${RESULT_ICON.correct}</span>
+                <span><strong>Resposta correta:</strong> ${it.correct_body}</span>
+              </p>` : ''}
+              ${it.explanation ? `<p class="quiz-review-explanation">${it.explanation}</p>` : ''}
+            </li>`).join('')}
+        </ol>`;
+      wireTermTips(reviewEl);
+    } catch (err) {
+      console.error('[QuizRunner] erro ao carregar a revisão da tentativa:', err);
+    }
   }
 }

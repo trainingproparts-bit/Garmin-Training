@@ -138,6 +138,19 @@ export async function finalizeQuizAttempt(attemptId) {
   return data; // linha de quiz_attempts já atualizada
 }
 
+/**
+ * Revisão de uma tentativa já finalizada do próprio usuário: pergunta,
+ * alternativa marcada, alternativa correta e explicação (sql/177). O
+ * gabarito só sai do servidor depois do fim da tentativa.
+ */
+export async function fetchAttemptReview(attemptId) {
+  const { data, error } = await supabase.rpc('fn_quiz_attempt_review', {
+    p_attempt_id: attemptId,
+  });
+  if (error) throw error;
+  return data || [];
+}
+
 /** Histórico de tentativas do usuário neste quiz, mais recente primeiro. */
 export async function fetchAttemptHistory(userId, quizId) {
   const { data, error } = await supabase

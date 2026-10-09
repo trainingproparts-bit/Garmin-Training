@@ -75,11 +75,16 @@ export async function fetchUserQuizAttempts(userId, limit = 10) {
  * acerto (sem recorte de data) quanto os gaps ativos (recorte de 30 dias,
  * calculado no cliente a partir do mesmo resultado, sem 2ª query). RLS via
  * quiz_answers_select_leader (join quiz_attempts→profiles, escopo de loja).
+ *
+ * `alternatives` (a alternativa que a pessoa marcou) e `questions.alternatives`
+ * (todas, com is_correct) alimentam o "respondeu X / certa era Y" dos gaps.
+ * O gabarito só é legível por líder/admin (alternatives_select_leader_admin),
+ * exatamente quem abre este drawer.
  */
 export async function fetchUserQuizAnswers(userId) {
   const { data, error } = await supabase
     .from('quiz_answers')
-    .select('id, is_correct, answered_at, questions(body, quizzes(title)), quiz_attempts!inner(user_id)')
+    .select('id, is_correct, answered_at, alternatives(body), questions(body, quizzes(title), alternatives(body, is_correct)), quiz_attempts!inner(user_id)')
     .eq('quiz_attempts.user_id', userId)
     .order('answered_at', { ascending: false });
   if (error) throw error;
