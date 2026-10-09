@@ -10,7 +10,12 @@
 
 const AMOSTRA_MINIMA_GAP = 3; // menos que isso, uma taxa de erro de pergunta é ruído estatístico, não sinal
 const AMOSTRA_MINIMA_QUIZ_MES = 5; // tentativas de quiz no mês, pra taxa de aprovação mensal não virar ruído
-const INATIVIDADE_LIMIAR_DIAS = 15; // mesmo limiar "estagnado" do Painel do Líder (liderDashboard.js)
+// Mesmo limiar de 15 dias já usado no Desempenho da Equipe
+// (liderDashboard.js). Desde 2026-09-16 conta dias SEM ACESSAR, não sem
+// concluir atividade: sem conteúdo novo publicado, a equipe inteira caía
+// neste alerta sem ter deixado de aparecer (mesma razão da mudança em
+// riskScoring.js).
+const AUSENCIA_LIMIAR_DIAS = 15;
 
 function ultimosDoisMeses(evolucaoPorMes) {
   const meses = [...new Set((evolucaoPorMes || []).map((r) => r.mes))].sort();
@@ -34,15 +39,15 @@ function somaPorMes(evolucaoMensal, mes, campo) {
 export function computeInsights({ colaboradores = [], evolucaoMensal = [], gaps = [] } = {}) {
   const insights = [];
 
-  // 1) Inatividade prolongada
-  const inativos = colaboradores.filter((c) => (c.dias_inatividade ?? 0) >= INATIVIDADE_LIMIAR_DIAS);
-  if (inativos.length > 0) {
-    const nomes = inativos.slice(0, 3).map((c) => c.full_name).join(', ');
-    const resto = inativos.length > 3 ? ` e mais ${inativos.length - 3}` : '';
+  // 1) Ausência prolongada da plataforma
+  const ausentes = colaboradores.filter((c) => (c.dias_desde_login ?? 0) >= AUSENCIA_LIMIAR_DIAS);
+  if (ausentes.length > 0) {
+    const nomes = ausentes.slice(0, 3).map((c) => c.full_name).join(', ');
+    const resto = ausentes.length > 3 ? ` e mais ${ausentes.length - 3}` : '';
     insights.push({
-      id: 'inatividade',
+      id: 'ausencia',
       tone: 'critical',
-      text: `${inativos.length} colaborador${inativos.length > 1 ? 'es' : ''} sem atividade há ${INATIVIDADE_LIMIAR_DIAS}+ dias: ${nomes}${resto}.`,
+      text: `${ausentes.length} colaborador${ausentes.length > 1 ? 'es' : ''} sem acessar há ${AUSENCIA_LIMIAR_DIAS}+ dias: ${nomes}${resto}.`,
     });
   }
 

@@ -10,16 +10,24 @@
 //
 // ── Variáveis que entram (todas vêm de v_exec_colaborador_resumo, sql/115) ──
 //
-// 1. Inatividade (dias_inatividade) — peso máximo 45 pts
+// 1. Ausência da plataforma (dias_desde_login) — peso máximo 45 pts
 //    <7 dias: 0 · 7–14: 15 · 15–29: 30 · 30+: 45
-//    O limiar de 15 dias == "estagnado" reaproveita o mesmo vocabulário já
-//    usado no Painel do Líder (liderDashboard.js, INATIVIDADE_LIMIAR_DIAS).
-//    dias_inatividade nulo (nunca registrou nenhuma atividade real) entra
-//    como 30 pts, não 45 — LIMITAÇÃO: não dá pra distinguir com certeza
-//    "colaborador abandonado" de "colaborador recém-cadastrado que ainda não
-//    começou", porque hired_at está null pra boa parte da base real (ver
-//    onboarding_data_estimada em v_lider_zona_atual) — tratamos como sinal
-//    de atenção moderada, não crítica, até haver mais contexto.
+//    MUDOU em 2026-09-16 (pedido do usuário). Antes este fator usava
+//    dias_inatividade, que mede a última ATIVIDADE CONCLUÍDA (lição, quiz,
+//    duelo, avaliação). O problema, nas palavras dela: "se eu ficar 20 dias
+//    sem postar nada novo a galera vai ficar inativa à toa" — sem conteúdo
+//    novo pra concluir, uma equipe que entra todo dia era penalizada nos 45
+//    pts, que é o fator de maior peso da nota. Passar a medir ACESSO separa
+//    "parou de vir" (problema de engajamento, que é o que a nota quer pegar)
+//    de "não tem o que fazer" (problema de calendário de conteúdo, que não é
+//    culpa do colaborador).
+//    dias_desde_login nulo (nunca logou) entra como 30 pts, não 45 —
+//    LIMITAÇÃO: não dá pra distinguir com certeza "colaborador abandonado"
+//    de "recém-cadastrado que ainda não entrou", porque hired_at está null
+//    pra boa parte da base real (ver onboarding_data_estimada em
+//    v_lider_zona_atual) — tratamos como atenção moderada, não crítica.
+//    Fonte: auth.users.last_sign_in_at, exposto por v_exec_colaborador_resumo
+//    a partir de sql/166.
 //
 // 2. Progresso muito abaixo da média do grupo — peso máximo 25 pts
 //    Compara progresso_pct do colaborador contra a média do grupo filtrado
@@ -36,17 +44,20 @@
 //    num conteúdo específico, não um erro pontual.
 //
 // ── Faixas finais (0–100, soma das 4 variáveis) ──
-//   0–15  + atividade recente (<7 dias)  → "Evolução positiva"
-//   0–40  (sem a condição acima)          → "Normal"
-//   41–65                                 → "Atenção"
-//   66+                                   → "Alta atenção"
+//   0–15  + acesso recente (<7 dias)  → "Evolução positiva"
+//   0–40  (sem a condição acima)       → "Normal"
+//   41–65                              → "Atenção"
+//   66+                                → "Alta atenção"
 //
 // ── Limitações declaradas ──
 //   - Não mede "velocidade" de evolução (comparação com o mês anterior do
 //     PRÓPRIO colaborador) — só o estado atual. Tendência mês a mês é
 //     mostrada separadamente na aba Evolução, não entra nesta nota.
-//   - Não usa login/sessão (login_events/study_sessions nunca são gravadas
-//     por nenhuma tela do app — confirmado por auditoria de código).
+//   - Login mede presença, não esforço: alguém pode entrar todo dia sem
+//     concluir nada e pontuar 0 neste fator. Quem quiser olhar entrega tem a
+//     coluna de última atividade no Desempenho da Equipe, que mostra as duas
+//     coisas lado a lado. As tabelas próprias de sessão (login_events/
+//     study_sessions) continuam sem uso — o dado vem de auth.users.
 //   - Pesos são fixos nesta versão (não configuráveis por painel admin).
 
 export const RISK_BAND = {
@@ -63,11 +74,11 @@ export const RISK_BAND_LABEL = {
   [RISK_BAND.ALTA_ATENCAO]: 'Alta atenção',
 };
 
-function pontosInatividade(diasInatividade) {
-  if (diasInatividade === null || diasInatividade === undefined) return 30;
-  if (diasInatividade < 7) return 0;
-  if (diasInatividade < 15) return 15;
-  if (diasInatividade < 30) return 30;
+function pontosAusencia(diasDesdeLogin) {
+  if (diasDesdeLogin === null || diasDesdeLogin === undefined) return 30;
+  if (diasDesdeLogin < 7) return 0;
+  if (diasDesdeLogin < 15) return 15;
+  if (diasDesdeLogin < 30) return 30;
   return 45;
 }
 
@@ -95,13 +106,13 @@ function pontosAprovacaoQuiz(taxaAprovacaoPct) {
  * @returns {{ score: number, band: string, bandLabel: string, breakdown: object }}
  */
 export function computeRiskScore(colaborador, contexto = {}) {
-  const diasInatividade = colaborador?.dias_inatividade ?? null;
+  const diasDesdeLogin = colaborador?.dias_desde_login ?? null;
   const progressoPct = colaborador?.progresso_pct ?? null;
   const taxaAprovacaoPct = colaborador?.quiz_taxa_aprovacao_pct ?? null;
   const temReprovacaoRecorrente = !!colaborador?.tem_reprovacao_recorrente;
 
   const breakdown = {
-    inatividade: pontosInatividade(diasInatividade),
+    ausencia: pontosAusencia(diasDesdeLogin),
     progressoRelativo: pontosProgressoRelativo(progressoPct, contexto.mediaProgressoPct),
     aprovacaoQuiz: pontosAprovacaoQuiz(taxaAprovacaoPct),
     reprovacaoRecorrente: temReprovacaoRecorrente ? 10 : 0,
@@ -109,13 +120,13 @@ export function computeRiskScore(colaborador, contexto = {}) {
 
   const score = Math.min(
     100,
-    breakdown.inatividade + breakdown.progressoRelativo + breakdown.aprovacaoQuiz + breakdown.reprovacaoRecorrente,
+    breakdown.ausencia + breakdown.progressoRelativo + breakdown.aprovacaoQuiz + breakdown.reprovacaoRecorrente,
   );
 
-  const atividadeRecente = diasInatividade !== null && diasInatividade !== undefined && diasInatividade < 7;
+  const acessoRecente = diasDesdeLogin !== null && diasDesdeLogin !== undefined && diasDesdeLogin < 7;
 
   let band;
-  if (score <= 15 && atividadeRecente) band = RISK_BAND.EVOLUCAO_POSITIVA;
+  if (score <= 15 && acessoRecente) band = RISK_BAND.EVOLUCAO_POSITIVA;
   else if (score <= 40) band = RISK_BAND.NORMAL;
   else if (score <= 65) band = RISK_BAND.ATENCAO;
   else band = RISK_BAND.ALTA_ATENCAO;

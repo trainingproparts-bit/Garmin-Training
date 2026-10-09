@@ -1,4 +1,4 @@
-// src/pages/dashboardExecutivo.js
+﻿// src/pages/dashboardExecutivo.js
 // Dashboard Executivo — admin-only. Consolida em 5 abas o que hoje está
 // espalhado entre Painel do Líder, Relatório de Gaps e Painel da Gestora,
 // com identidade visual própria (preto/branco/vermelho, ver
@@ -41,7 +41,7 @@ const TABLE_COLUMNS = [
   { key: 'store_name', label: 'Loja' },
   { key: 'progresso_pct', label: 'Progresso' },
   { key: 'quiz_taxa_aprovacao_pct', label: 'Aprovação' },
-  { key: 'dias_inatividade', label: 'Atividade' },
+  { key: 'dias_desde_login', label: 'Último acesso' },
   { key: 'risco', label: 'Risco' },
 ];
 
@@ -256,6 +256,8 @@ function toDrawerMember(c) {
     // sem alteração.
     progresso_pct: c.progresso_pct,
     dias_inatividade: c.dias_inatividade,
+    dias_desde_login: c.dias_desde_login,
+    ultimo_login: c.ultimo_login,
     streak_atual: c.streak_atual,
     certificacoes_ativas: c.certificacoes_ativas,
     certificacao_mais_alta: c.certificacao_mais_alta,
@@ -311,7 +313,7 @@ function renderVisaoExecutiva(colaboradores, funil, evolucaoFiltrada, insights) 
   }
 
   const total = colaboradores.length;
-  const comAtividadeRecente = colaboradores.filter((c) => c.dias_inatividade !== null && c.dias_inatividade < 7).length;
+  const comAcessoRecente = colaboradores.filter((c) => c.dias_desde_login !== null && c.dias_desde_login < 7).length;
   const emAtencao = colaboradores.filter((c) => c._risco.band === 'atencao' || c._risco.band === 'alta_atencao').length;
   const progressoMedio = computeMediaProgresso(colaboradores);
 
@@ -327,7 +329,7 @@ function renderVisaoExecutiva(colaboradores, funil, evolucaoFiltrada, insights) 
   return `
     <div class="ed-kpi-grid">
       ${kpiCardHtml('Colaboradores Ativos', total)}
-      ${kpiCardHtml('Atividade Recente (7d)', `${Math.round((100 * comAtividadeRecente) / total)}%`, { sub: `${comAtividadeRecente} de ${total}` })}
+      ${kpiCardHtml('Acessaram nos últimos 7d', `${Math.round((100 * comAcessoRecente) / total)}%`, { sub: `${comAcessoRecente} de ${total}` })}
       ${kpiCardHtml('Progresso Médio da Trilha', progressoMedio === null ? '—' : `${Math.round(progressoMedio)}%`)}
       ${kpiCardHtml('Aprovação em Quiz (mês)', taxaAprovAtual === null ? '—' : `${taxaAprovAtual}%`, { delta: deltaAprov, deltaSuffix: 'pp' })}
       ${kpiCardHtml('Score Ganho no Mês', atual ? atual.xp : '—', { delta: deltaXp })}
@@ -394,14 +396,14 @@ function renderRiskPreview(colaboradores) {
   return `
     <div class="ed-table-wrap">
       <table class="ed-table">
-        <thead><tr><th>Colaborador</th><th>Loja</th><th>Progresso</th><th>Inatividade</th><th>Risco</th></tr></thead>
+        <thead><tr><th>Colaborador</th><th>Loja</th><th>Progresso</th><th>Último acesso</th><th>Risco</th></tr></thead>
         <tbody>
           ${emRisco.map((c) => `
             <tr data-risk-row="${c.colaborador_id}">
               <td><span class="ed-cell-name">${c.full_name}</span><span class="ed-cell-sub">${c.job_title || '—'}</span></td>
               <td>${c.store_name || '—'}</td>
               <td>${progressCellHtml(c.progresso_pct)}</td>
-              <td>${c.dias_inatividade === null ? 'Sem atividade' : `${c.dias_inatividade}d`}</td>
+              <td>${c.dias_desde_login === null ? 'Nunca entrou' : `${c.dias_desde_login}d`}</td>
               <td>${riskBadgeHtml(c._risco)}</td>
             </tr>`).join('')}
         </tbody>
@@ -462,7 +464,7 @@ function rowHtml(c) {
       <td>${c.store_name || '—'}</td>
       <td>${progressCellHtml(c.progresso_pct)}</td>
       <td>${c.quiz_taxa_aprovacao_pct === null || c.quiz_taxa_aprovacao_pct === undefined ? '—' : `${c.quiz_taxa_aprovacao_pct}%`}</td>
-      <td>${c.dias_inatividade === null ? 'Sem atividade' : `${c.dias_inatividade}d`}</td>
+      <td>${c.dias_desde_login === null ? 'Nunca entrou' : `${c.dias_desde_login}d`}</td>
       <td>${riskBadgeHtml(c._risco)}</td>
     </tr>`;
 }

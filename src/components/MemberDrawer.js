@@ -159,8 +159,10 @@ function renderExecutiveSections(member) {
   if (member.avaliacao_trimestral_aprovado === true) forcas.push('Aprovado na última Avaliação Trimestral');
   if (member.avaliacoes_google_media !== null && member.avaliacoes_google_media !== undefined && member.avaliacoes_google_media >= 4.5) forcas.push(`Reputação Google alta (${member.avaliacoes_google_media}/5)`);
 
-  if (member.dias_inatividade !== null && member.dias_inatividade >= 15) atencoes.push(`Sem atividade registrada há ${member.dias_inatividade} dias`);
-  if (member.dias_inatividade === null) atencoes.push('Nenhuma atividade registrada ainda');
+  // O alerta acompanha o score de risco, que desde 2026-09-16 conta ausência
+  // de ACESSO. A última atividade continua exibida abaixo, como contexto.
+  if (member.dias_desde_login !== null && member.dias_desde_login >= 15) atencoes.push(`Sem acessar a plataforma há ${member.dias_desde_login} dias`);
+  if (member.dias_desde_login === null) atencoes.push('Nunca acessou a plataforma');
   if (member.quiz_taxa_aprovacao_pct !== null && member.quiz_taxa_aprovacao_pct !== undefined && member.quiz_taxa_aprovacao_pct < 50) atencoes.push(`Taxa de aprovação em quiz abaixo de 50% (${member.quiz_taxa_aprovacao_pct}%)`);
   if (member.tem_reprovacao_recorrente) atencoes.push('Reprovação recorrente no mesmo quiz (2 tentativas seguidas)');
   if (member.avaliacao_trimestral_aprovado === false) atencoes.push('Reprovado na última Avaliação Trimestral');
@@ -171,7 +173,7 @@ function renderExecutiveSections(member) {
       <div class="mdrawer-progress-track"><div class="mdrawer-progress-fill" style="width:${member.progresso_pct ?? 0}%"></div></div>
       <span class="mdrawer-progress-value">${member.progresso_pct === null ? '—' : `${member.progresso_pct}%`}</span>
     </div>
-    <p class="mdrawer-meta" style="margin:6px 0 0;">Streak atual: ${member.streak_atual ?? 0} dias · Última atividade: ${member.dias_inatividade === null ? 'sem registro' : `há ${member.dias_inatividade}d`}</p>
+    <p class="mdrawer-meta" style="margin:6px 0 0;">Streak atual: ${member.streak_atual ?? 0} dias · Último acesso: ${member.dias_desde_login === null ? 'nunca entrou' : `há ${member.dias_desde_login}d`} · Última atividade concluída: ${member.dias_inatividade === null ? 'sem registro' : `há ${member.dias_inatividade}d`}</p>
 
     ${forcas.length || atencoes.length ? `
       <h4 class="mdrawer-section-title">⚖️ Forças &amp; Pontos de Atenção</h4>
@@ -190,7 +192,7 @@ function renderExecutiveSections(member) {
       <details class="mdrawer-risk-details">
         <summary>Como o score de risco (${member.risco.score}/100) foi calculado</summary>
         <ul class="mdrawer-risk-breakdown">
-          <li>Inatividade: ${member.risco.breakdown.inatividade} pts</li>
+          <li>Tempo sem acessar: ${member.risco.breakdown.ausencia} pts</li>
           <li>Progresso abaixo da média do grupo: ${member.risco.breakdown.progressoRelativo} pts</li>
           <li>Taxa de aprovação em quiz: ${member.risco.breakdown.aprovacaoQuiz} pts</li>
           <li>Reprovação recorrente: ${member.risco.breakdown.reprovacaoRecorrente} pts</li>
