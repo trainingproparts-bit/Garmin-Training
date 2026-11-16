@@ -10,7 +10,7 @@
 6. Marque **Publicar para participantes** e salve. A publicação exige ao menos uma pergunta completa.
 7. Use **Ver página** para conferir e **Copiar link para participantes** para compartilhar. Para testar como participante sem encerrar sua conta administrativa, use uma janela anônima.
 
-O participante também pode abrir o site normalmente e clicar em **Acessar treinamento de parceiros**. Escolhe a empresa, informa nome e e-mail e entra sem senha. O e-mail é informado pelo participante e não é validado por mensagem. Trata-se de identificação para o treinamento, não de comprovação de vínculo com a empresa.
+O participante também pode abrir o site normalmente e clicar em **Acessar treinamento de parceiros**. Escolhe entre Duty Free, Bayard, Centauro, Decathlon e Track n' Field, informa nome e e-mail e entra sem senha. Moema e Morumbi são lojas internas e continuam no login normal da equipe. O e-mail é informado pelo participante e não é validado por mensagem. Trata-se de identificação para o treinamento, não de comprovação de vínculo com a empresa.
 
 ## Acompanhar e exportar
 
@@ -29,4 +29,4 @@ No projeto `gnxglqjrvnetkbmzetfc`, a opção **Authentication → Sign In / Prov
 - Testes de banco: `sql/tests_partner_training.sql`, com rollback integral dos dados de verificação. Verificam cadastro, publicação, gabarito oculto, acesso por empresa, privacidade de respostas, correção, envio idempotente e bloqueio de edição após resposta.
 - Testes da exportação: `src/__tests__/PartnerTrainingExport.test.js`, incluindo acentos, separadores, empate na classificação e proteção contra fórmulas em células.
 - Frontend: `npm run build`; suíte: `npm test -- --run`.
-- Publicação no GitHub Pages: `.github/workflows/deploy-pages.yml` gera o build Vite na branch `main`, usando o caminho `/Garmin-Training/`. As duas variáveis públicas `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY` ficam nas variáveis de Actions do repositório. Não usar chaves administrativas nessas variáveis.
+- A hospedagem utilizada é o **Netlify**. `netlify.toml` configura `npm run build`, publicação da pasta `dist` e o redirecionamento da aplicação. O build usa a raiz `/`. No ambiente do Netlify devem estar configuradas `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY`, sempre com chave pública; não usar chave administrativa. O workflow de GitHub Pages criado durante a implementação foi removido após a confirmação da hospedagem correta.
