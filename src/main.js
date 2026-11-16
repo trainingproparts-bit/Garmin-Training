@@ -27,6 +27,9 @@ import './pages/teamGapsReport.js';
 import './pages/adminPanel.js';
 import './pages/gestoraPanel.js';
 import './pages/homologacaoAdmin.js';
+import './pages/partnerTraining.js';
+import './pages/partnerTrainingAdmin.js';
+import { supabase } from './config/supabase.js';
 import { isAuthenticated } from './services/authService.js';
 import { navigateToPanel } from './router.js';
 import './style.css';
@@ -42,5 +45,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // a classe "active" por padrão (só o link da sidebar tinha, um resquício
   // que não bastava para mostrar o painel correspondente).
   const authenticated = await isAuthenticated();
-  navigateToPanel(authenticated ? 'home' : 'login');
+  const { data: { session } } = await supabase.auth.getSession();
+  const partnerEntry = new URLSearchParams(location.search).has('treinamento') || session?.user?.is_anonymous;
+  navigateToPanel(partnerEntry ? 'partner-training' : authenticated ? 'home' : 'login');
 });

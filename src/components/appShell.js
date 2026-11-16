@@ -94,6 +94,7 @@ const NAV_ITEMS = [
   { id: 'gestora', iconKey: 'gestora', label: 'Conteúdo e Publicação', brandScoped: false, rolesAllowed: ['admin'], location: 'avatar' },
   { id: 'executivo', iconKey: 'executivo', label: 'Visão da Operação', brandScoped: false, rolesAllowed: ['admin'], location: 'avatar' },
   { id: 'homologacao', iconKey: 'certificacao', label: 'Homologação Semanal', brandScoped: false, rolesAllowed: ['admin'], location: 'avatar' },
+  { id: 'partner-training-admin', iconKey: 'gestora', label: 'Treinamentos de parceiros', brandScoped: false, rolesAllowed: ['admin'], location: 'avatar' },
 ];
 
 const SIDEBAR_NAV_ITEMS = NAV_ITEMS.filter((item) => item.location !== 'avatar');
@@ -423,6 +424,18 @@ export function renderAppShell(container) {
             <div class="panel-body" id="adminContainer"></div>
           </div>
 
+          <div class="panel panel-fullbleed" id="panel-partner-training" data-panel="partner-training" hidden>
+            <div id="partnerTrainingContainer"></div>
+          </div>
+
+          <div class="panel" id="panel-partner-training-admin" data-panel="partner-training-admin" hidden>
+            <div class="panel-header">
+              <button type="button" class="back-btn" data-back-to="home">← Início</button>
+              <div class="panel-title"><span>Treinamentos de parceiros</span></div>
+            </div>
+            <div class="panel-body" id="partnerTrainingAdminContainer"></div>
+          </div>
+
           <div class="panel" id="panel-gestora" data-panel="gestora" hidden>
             <div class="panel-header">
               <button type="button" class="back-btn" data-back-to="home">← Início</button>
@@ -538,7 +551,7 @@ function setupAuthListeners() {
   });
 
   window.addEventListener('auth:guest-access', () => {
-    navigateToPanel('home');
+    navigateToPanel('partner-training');
   });
 
   window.addEventListener('brand:selected', (e) => {

@@ -57,7 +57,7 @@ function renderLoginForm(container) {
         </div>
 
         <a href="#" id="continueAsGuest" class="login-guest-link">
-          Continuar como Visitante ➔
+          Acessar treinamento de parceiros ➔
         </a>
       </form>
 

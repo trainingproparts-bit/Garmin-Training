@@ -14,7 +14,7 @@ const NAV_LINK_SELECTOR = '.sb-link[data-panel]';
 const BRAND_SCOPED_PANELS = new Set(['trilha', 'arena', 'certificacao', 'biblioteca', 'ranking', 'album', 'academia-produtos', 'revisao-inteligente']);
 
 /** Painéis "de entrada" (login/escolha de marca) — o sidebar só aparece depois deles, dentro do dashboard. */
-const NO_SIDEBAR_PANELS = new Set(['login', 'home']);
+const NO_SIDEBAR_PANELS = new Set(['login', 'home', 'partner-training']);
 
 let activePanelId = null;
 

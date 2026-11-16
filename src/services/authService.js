@@ -71,7 +71,7 @@ export async function signOut() {
 export async function isAuthenticated() {
   try {
     const user = await getCurrentUser();
-    return user !== null;
+    return user !== null && !user.is_anonymous;
   } catch (err) {
     console.error('[authService] Erro ao verificar autenticação:', err);
     return false;
