@@ -15,7 +15,7 @@ function renderLoginForm(container) {
     <div class="login-card">
       <div class="login-header">
         <div class="login-logo">
-          <img src="/logo-preto.png" alt="Proparts Logo" class="login-logo-img" />
+          <img src="${import.meta.env.BASE_URL}logo-preto.png" alt="Proparts Logo" class="login-logo-img" />
           <div class="login-brand-label">Training <span>Hub</span></div>
         </div>
         <p class="login-subtitle">Insira seus dados para entrar na plataforma</p>

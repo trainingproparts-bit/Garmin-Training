@@ -1,0 +1,53 @@
+-- Integration assertions on the hosted database. Everything is rolled back.
+begin;
+do $$
+declare
+ v_admin uuid; v_company uuid; v_other uuid; v_guest uuid:=gen_random_uuid(); v_guest2 uuid:=gen_random_uuid();
+ v_event uuid; v_q uuid; v_result jsonb; v_event_data jsonb; v_questions jsonb; v_failed boolean;
+begin
+ select p.id into strict v_admin from public.profiles p join public.roles r on r.id=p.role_id where r.code='admin' limit 1;
+ select id into strict v_company from public.partner_companies where slug='duty-free';
+ select id into strict v_other from public.partner_companies where slug='centauro';
+ insert into auth.users(id,aud,role,is_anonymous,created_at,updated_at) values(v_guest,'authenticated','authenticated',true,now(),now()),(v_guest2,'authenticated','authenticated',true,now(),now());
+ perform set_config('request.jwt.claims',jsonb_build_object('sub',v_admin,'role','authenticated')::text,true);
+ v_event_data:=jsonb_build_object('partner_company_id',v_company,'title','Teste transacional','training_date','2026-11-17','is_published',false);
+ v_event:=public.fn_save_partner_training(v_event_data,'[]','[]');
+ v_event_data:=v_event_data || jsonb_build_object('id',v_event,'is_published',true);
+ v_failed:=false;
+ begin perform public.fn_save_partner_training(v_event_data,'[]','[]'); exception when others then v_failed:=true; end;
+ if not v_failed then raise exception 'FAIL: published empty questionnaire'; end if;
+ v_q:=gen_random_uuid();
+ v_questions:=jsonb_build_array(jsonb_build_object('id',v_q,'question_text','Pergunta de verificação','options_json',jsonb_build_array('Correta','Incorreta'),'correct_option',0,'order_index',0));
+ perform public.fn_save_partner_training(v_event_data,v_questions,'[{"kind":"library","title":"Material selecionado","payload":{"html":"<p>Conteúdo</p>"}}]');
+ perform set_config('request.jwt.claims',jsonb_build_object('sub',v_guest,'role','authenticated','is_anonymous',true)::text,true);
+ execute 'set local role authenticated';
+ perform public.fn_register_guest('Participante de teste','qa-transaction@example.invalid',v_company);
+ if exists(select 1 from public.partner_training_questions where event_id=v_event) then raise exception 'FAIL: answer key exposed'; end if;
+ if (public.fn_partner_training_questions(v_event)->0) ? 'correct_option' then raise exception 'FAIL: answer key in public RPC'; end if;
+ if not exists(select 1 from public.partner_training_materials where event_id=v_event) then raise exception 'FAIL: selected materials blocked'; end if;
+ v_failed:=false;
+ begin perform public.fn_save_partner_training(v_event_data,v_questions,'[]'); exception when others then v_failed:=true; end;
+ if not v_failed then raise exception 'FAIL: guest could edit training'; end if;
+ v_failed:=false;
+ begin perform public.fn_submit_partner_training(v_event,'[]'); exception when others then v_failed:=true; end;
+ if not v_failed then raise exception 'FAIL: incomplete submission accepted'; end if;
+ v_result:=public.fn_submit_partner_training(v_event,jsonb_build_array(jsonb_build_object('question_id',v_q,'selected_option',0)));
+ if (v_result->>'score_pct')::numeric<>100 or (v_result->>'correct_count')::int<>1 then raise exception 'FAIL: incorrect grading'; end if;
+ if public.fn_submit_partner_training(v_event,jsonb_build_array(jsonb_build_object('question_id',v_q,'selected_option',1)))->>'id'<>v_result->>'id' then raise exception 'FAIL: duplicate not idempotent'; end if;
+ if (select count(*) from public.partner_training_submissions where event_id=v_event)<>1 then raise exception 'FAIL: duplicate persisted'; end if;
+ perform set_config('request.jwt.claims',jsonb_build_object('sub',v_guest2,'role','authenticated','is_anonymous',true)::text,true);
+ perform public.fn_register_guest('Outro participante','qa-other@example.invalid',v_other);
+ if exists(select 1 from public.partner_training_submissions where event_id=v_event) then raise exception 'FAIL: another participant can read PII'; end if;
+ if exists(select 1 from public.partner_training_materials where event_id=v_event) then raise exception 'FAIL: another company can read materials'; end if;
+ v_failed:=false;
+ begin perform public.fn_partner_training_questions(v_event); exception when others then v_failed:=true; end;
+ if not v_failed then raise exception 'FAIL: another company can read questions'; end if;
+ perform set_config('request.jwt.claims',jsonb_build_object('sub',v_admin,'role','authenticated')::text,true);
+ if (select count(*) from public.partner_training_submissions where event_id=v_event)<>1 then raise exception 'FAIL: admin report unavailable'; end if;
+ perform public.fn_save_partner_training(v_event_data,v_questions,'[]');
+ v_failed:=false;
+ begin perform public.fn_save_partner_training(v_event_data,jsonb_set(v_questions,'{0,correct_option}','1'),'[]'); exception when others then v_failed:=true; end;
+ if not v_failed then raise exception 'FAIL: answer key changed after submission'; end if;
+ execute 'reset role';
+end $$;
+rollback;

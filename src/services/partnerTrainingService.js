@@ -15,7 +15,13 @@ export async function registerParticipant({ full_name, email, partner_company_id
   const { data: { session }, error } = await supabase.auth.getSession();
   if (error) throw error;
   if (session && !session.user.is_anonymous) throw new Error('Você está com um login da equipe aberto. Saia da conta para entrar como participante.');
-  if (!session) unwrap(await supabase.auth.signInAnonymously());
+  if (!session) {
+    const result = await supabase.auth.signInAnonymously();
+    if (result.error?.code === 'anonymous_provider_disabled' || /anonymous sign-ins are disabled/i.test(result.error?.message || '')) {
+      throw new Error('O acesso sem senha ainda não está disponível. Avise a pessoa responsável pelo treinamento.');
+    }
+    unwrap(result);
+  }
   return unwrap(await supabase.rpc('fn_register_guest', { p_full_name: full_name, p_email: email, p_partner_company_id: partner_company_id }));
 }
 export async function leaveParticipant() { unwrap(await supabase.auth.signOut()); }
@@ -39,7 +45,14 @@ export async function getMyTrainingSubmission(eventId) {
 }
 export async function submitTraining(eventId, answers) { return unwrap(await supabase.rpc('fn_submit_partner_training', { p_event_id: eventId, p_answers: answers })); }
 export async function saveTrainingEvent(event, questions, materials) { return unwrap(await supabase.rpc('fn_save_partner_training', { p_event: event, p_questions: questions, p_materials: materials })); }
-export async function listTrainingReport(eventId) { return unwrap(await supabase.from('partner_training_submissions').select('*').eq('event_id', eventId).order('score_pct', { ascending: false }).order('submitted_at')); }
+export async function listTrainingReport(eventId) {
+  const rows = [];
+  for (let offset = 0; ; offset += 500) {
+    const page = unwrap(await supabase.from('partner_training_submissions').select('*').eq('event_id', eventId).order('score_pct', { ascending: false }).order('submitted_at').order('id').range(offset, offset + 499));
+    rows.push(...page);
+    if (page.length < 500) return rows;
+  }
+}
 export async function createPartnerCompany({ name, slug, brand_id }) {
   if (!brand_id) {
     const brand = unwrap(await supabase.from('brands').select('id').eq('name', 'Garmin').single());

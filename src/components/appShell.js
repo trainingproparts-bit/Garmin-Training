@@ -1,4 +1,4 @@
-﻿/**
+/**
  * App Shell — estrutura base unificada do Garmin Training Hub.
  *
  * Sprint 1 (consolidação): este arquivo agora cuida SÓ de montar o HTML do
@@ -142,7 +142,7 @@ export function renderAppShell(container) {
     <div id="appShell">
       <aside class="app-sidebar${collapsed ? ' collapsed' : ''}" id="appSidebar" aria-label="Navegação principal" hidden>
         <div class="sb-brand">
-          <img src="/logo-preto.png" alt="Proparts" class="sb-brand-logo">
+          <img src="${import.meta.env.BASE_URL}logo-preto.png" alt="Proparts" class="sb-brand-logo">
           <span class="sb-brand-monogram">P</span>
           <div class="sb-brand-divider"></div>
           <div class="sb-brand-label">Training <span>Hub</span></div>
