@@ -16,7 +16,7 @@ function renderLoginForm(container) {
       <div class="login-header">
         <div class="login-logo">
           <img src="${import.meta.env.BASE_URL}logo-preto.png" alt="Proparts Logo" class="login-logo-img" />
-          <div class="login-brand-label">Training <span>Hub</span></div>
+          <div class="login-brand-label">Training</div>
         </div>
         <p class="login-subtitle">Insira seus dados para entrar na plataforma</p>
       </div>
@@ -49,7 +49,7 @@ function renderLoginForm(container) {
         </div>
 
         <button type="submit" class="login-btn">
-          Entrar no Hub
+          Entrar
         </button>
 
         <div class="login-divider">
@@ -92,7 +92,7 @@ function renderLoginForm(container) {
       errorEl.textContent = result.error;
       errorEl.hidden = false;
       submitBtn.disabled = false;
-      submitBtn.textContent = 'Entrar no Hub';
+      submitBtn.textContent = 'Entrar';
     }
   });
 

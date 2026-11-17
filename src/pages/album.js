@@ -77,7 +77,7 @@ function renderAlbum(container) {
 
   container.innerHTML = `
     <div class="album-intro">
-      <div class="album-intro-eyebrow">Training Hub · Temporada 2026</div>
+      <div class="album-intro-eyebrow">Training · Temporada 2026</div>
       <div class="album-intro-title">Álbum da Equipe</div>
       <p class="album-intro-sub">Cada colaborador tem sua figurinha. A classe evolui conforme as certificações da trilha.</p>
       <details class="album-score-explainer">

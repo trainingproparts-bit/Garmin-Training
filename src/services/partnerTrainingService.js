@@ -101,16 +101,20 @@ export function csvCell(value) {
   if (/^[\s\uFEFF]*[=+\-@\t\r\n]/.test(text)) text = "'" + text;
   return '"' + text.replaceAll('"', '""') + '"';
 }
-export function trainingReportCsv(rows) {
-  const header = ['Classificação','Nome','E-mail','Empresa','Treinamento','Data do treinamento','Enviado em','Acertos','Perguntas','Nota (%)','Pergunta','Resposta escolhida','Resposta correta','Acertou'];
-  const sorted = [...rows].sort((a,b)=>Number(b.score_pct)-Number(a.score_pct) || String(a.submitted_at).localeCompare(String(b.submitted_at)));
-  const output = [header];
-  let rank = 1;
-  sorted.forEach((r,index)=>{
-    if (index && Number(r.score_pct)!==Number(sorted[index-1].score_pct)) rank=index+1;
-    for (const a of r.answers || []) output.push([rank,r.full_name,r.email,r.company_name,r.title,r.training_date,new Date(r.submitted_at).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'}),r.correct_count,r.total_questions,String(r.score_pct).replace('.',','),a.question_text,a.selected_text,a.correct_text,a.is_correct?'Sim':'Não']);
-  });
-  return '\uFEFF' + output.map(row=>row.map(csvCell).join(';')).join('\r\n');
+export function trainingReportCsv(entries){
+ const header=['Classificação','Nome','E-mail','Empresa','Treinamento','Data do treinamento','Enviado em','Acertos','Total de perguntas','Nota (%)','Perguntas erradas','Detalhes dos erros'];
+ const sorted=[...entries].sort((a,b)=>Number(b.score_pct)-Number(a.score_pct)||String(a.submitted_at).localeCompare(String(b.submitted_at)));
+ const rows=[header];let rank=1;
+ sorted.forEach((entry,index)=>{
+  if(index&&Number(entry.score_pct)!==Number(sorted[index-1].score_pct))rank=index+1;
+  const answers=Array.isArray(entry.answers)?entry.answers:[];
+  const wrong=answers.map((answer,index)=>({answer,number:index+1})).filter(({answer})=>answer.is_correct===false);
+  const complete=answers.length===Number(entry.total_questions)&&answers.every(answer=>typeof answer.is_correct==='boolean');
+  const wrongNumbers=wrong.length?wrong.map(({number})=>'Q'+number).join(', '):(Number(entry.correct_count)===Number(entry.total_questions)?'Nenhuma':complete?'Nenhuma':'Detalhamento indisponível');
+  const details=wrong.map(({answer,number})=>'Q'+number+': '+(answer.question_text||'Pergunta sem texto')+'\nMarcada: '+(answer.selected_text||'Não informada')+'\nCorreta: '+(answer.correct_text||'Não informada')).join('\n\n');
+  rows.push([rank,entry.full_name,entry.email,entry.company_name,entry.title,entry.training_date,new Date(entry.submitted_at).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'}),entry.correct_count,entry.total_questions,String(entry.score_pct).replace('.',','),wrongNumbers,details]);
+ });
+ return '\uFEFF'+rows.map(row=>row.map(csvCell).join(';')).join('\r\n');
 }
 export async function downloadTrainingReport(eventId) {
   const rows = await listTrainingReport(eventId);

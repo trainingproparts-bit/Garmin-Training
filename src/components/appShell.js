@@ -145,7 +145,7 @@ export function renderAppShell(container) {
           <img src="${import.meta.env.BASE_URL}logo-preto.png" alt="Proparts" class="sb-brand-logo">
           <span class="sb-brand-monogram">P</span>
           <div class="sb-brand-divider"></div>
-          <div class="sb-brand-label">Training <span>Hub</span></div>
+          <div class="sb-brand-label">Training</div>
         </div>
 
         <button type="button" class="sb-collapse-btn" id="sbCollapseBtn" aria-label="Recolher/expandir menu">
