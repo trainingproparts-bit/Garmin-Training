@@ -1,6 +1,6 @@
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 vi.mock('../config/supabase.js', () => ({ supabase: {} }));
-import { csvCell, trainingReportCsv } from '../services/partnerTrainingService.js';
+import { csvCell, trainingReportCsv, downloadTrainingReport } from '../services/partnerTrainingService.js';
 
 describe('Partner training report for Excel', () => {
   it('preserves accents, delimiters, quotes and multiline answers', () => {
@@ -34,5 +34,26 @@ describe('Report completeness',()=>{
  expect(csv.split('\r\n')).toHaveLength(3);
  expect(csv).toContain('Detalhamento indisponível');
  expect(csv).toContain('Nenhuma');
+ });
+});
+
+describe('Download the displayed class results', () => {
+ afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals(); vi.useRealTimers(); });
+ it('exports loaded results without querying again', async () => {
+  vi.useFakeTimers();
+  const createObjectURL=vi.fn(()=> 'blob:report');
+  vi.stubGlobal('URL',{createObjectURL,revokeObjectURL:vi.fn()});
+  vi.stubGlobal('Blob', class { constructor(parts){this.parts=parts;} });
+  const click=vi.spyOn(HTMLAnchorElement.prototype,'click').mockImplementation(()=>{});
+  await downloadTrainingReport('class-2',[{event_id:'class-2',full_name:'Participante',correct_count:1,total_questions:1,score_pct:100,submitted_at:'2026-11-18T12:00:00Z',answers:[{is_correct:true}]}]);
+  expect(click).toHaveBeenCalledOnce();
+  expect(createObjectURL.mock.calls[0][0].parts[0]).toContain('Participante');
+  vi.runAllTimers();
+ });
+ it('rejects results from another class',async()=>{
+  await expect(downloadTrainingReport('class-2',[{event_id:'class-1'}])).rejects.toThrow('outra turma');
+ });
+ it('identifies an empty loaded report without querying another class',async()=>{
+  await expect(downloadTrainingReport('class-2',[])).rejects.toThrow('Não há respostas carregadas');
  });
 });

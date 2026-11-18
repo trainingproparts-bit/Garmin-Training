@@ -116,9 +116,10 @@ export function trainingReportCsv(entries){
  });
  return '\uFEFF'+rows.map(row=>row.map(csvCell).join(';')).join('\r\n');
 }
-export async function downloadTrainingReport(eventId) {
-  const rows = await listTrainingReport(eventId);
-  if (!rows.length) throw new Error('Este treinamento ainda não recebeu respostas.');
+export async function downloadTrainingReport(eventId, displayedRows) {
+  const rows = displayedRows ?? await listTrainingReport(eventId);
+  if (!rows.length) throw new Error('Não há respostas carregadas para este treinamento. Confira o nome da turma em Resultados da turma.');
+  if (rows.some(row => row.event_id && row.event_id !== eventId)) throw new Error('Os resultados carregados pertencem a outra turma. Reabra o treinamento antes de exportar.');
   const blob = new Blob([trainingReportCsv(rows)], { type:'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a'); a.href=url; a.download=`treinamento-${eventId}.csv`;
